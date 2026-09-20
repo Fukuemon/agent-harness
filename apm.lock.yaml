@@ -1,0 +1,154 @@
+lockfile_version: '1'
+apm_version: 0.31.0
+dependencies:
+- repo_url: _local/code-comments
+  name: code-comments
+  version: unknown
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/code-comments
+  - .agents/skills/code-comments/SKILL.md
+  - .claude/skills/code-comments
+  - .claude/skills/code-comments/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/code-comments/SKILL.md: sha256:2c4d3162fa6a0dca1d8fde352d056b1a6cfd27b589866a1f7c07d18887f49f37
+    .claude/skills/code-comments/SKILL.md: sha256:2c4d3162fa6a0dca1d8fde352d056b1a6cfd27b589866a1f7c07d18887f49f37
+  source: local
+  local_path: ./skills/code-comments
+- repo_url: _local/docs-writing
+  name: docs-writing
+  version: unknown
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/docs-writing
+  - .agents/skills/docs-writing/SKILL.md
+  - .claude/skills/docs-writing
+  - .claude/skills/docs-writing/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/docs-writing/SKILL.md: sha256:c39187e5a85c160c393e0140bc48ed804a2a8b4b9962aed74968e8ee45756fe6
+    .claude/skills/docs-writing/SKILL.md: sha256:c39187e5a85c160c393e0140bc48ed804a2a8b4b9962aed74968e8ee45756fe6
+  source: local
+  local_path: ./skills/docs-writing
+- repo_url: _local/git-commit
+  name: git-commit
+  version: unknown
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/git-commit
+  - .agents/skills/git-commit/SKILL.md
+  - .claude/skills/git-commit
+  - .claude/skills/git-commit/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/git-commit/SKILL.md: sha256:237d6cd945e20d1c0958ba48932642d261b0e6faccb7534030d4756f81aef546
+    .claude/skills/git-commit/SKILL.md: sha256:237d6cd945e20d1c0958ba48932642d261b0e6faccb7534030d4756f81aef546
+  source: local
+  local_path: ./skills/git-commit
+deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/skills/code-comments
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/code-comments
+  active_owner: ./skills/code-comments
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/code-comments/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/code-comments
+  active_owner: ./skills/code-comments
+  content_hash: sha256:2c4d3162fa6a0dca1d8fde352d056b1a6cfd27b589866a1f7c07d18887f49f37
+- kind: project-relative
+  target: claude
+  value: .claude/skills/docs-writing
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/docs-writing
+  active_owner: ./skills/docs-writing
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/docs-writing/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/docs-writing
+  active_owner: ./skills/docs-writing
+  content_hash: sha256:c39187e5a85c160c393e0140bc48ed804a2a8b4b9962aed74968e8ee45756fe6
+- kind: project-relative
+  target: claude
+  value: .claude/skills/git-commit
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/git-commit
+  active_owner: ./skills/git-commit
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/git-commit/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/git-commit
+  active_owner: ./skills/git-commit
+  content_hash: sha256:237d6cd945e20d1c0958ba48932642d261b0e6faccb7534030d4756f81aef546
+- kind: project-relative
+  target: codex
+  value: .agents/skills/code-comments
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/code-comments
+  active_owner: ./skills/code-comments
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/code-comments/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/code-comments
+  active_owner: ./skills/code-comments
+  content_hash: sha256:2c4d3162fa6a0dca1d8fde352d056b1a6cfd27b589866a1f7c07d18887f49f37
+- kind: project-relative
+  target: codex
+  value: .agents/skills/docs-writing
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/docs-writing
+  active_owner: ./skills/docs-writing
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/docs-writing/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/docs-writing
+  active_owner: ./skills/docs-writing
+  content_hash: sha256:c39187e5a85c160c393e0140bc48ed804a2a8b4b9962aed74968e8ee45756fe6
+- kind: project-relative
+  target: codex
+  value: .agents/skills/git-commit
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/git-commit
+  active_owner: ./skills/git-commit
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/git-commit/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/git-commit
+  active_owner: ./skills/git-commit
+  content_hash: sha256:237d6cd945e20d1c0958ba48932642d261b0e6faccb7534030d4756f81aef546

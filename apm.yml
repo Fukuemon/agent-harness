@@ -1,0 +1,9 @@
+name: agent-harness
+version: 0.1.0
+description: AI エージェントにプロジェクト固有の知識とガードレールを与えるパッケージ
+targets: [claude, codex]
+dependencies:
+  apm:
+    - ./skills/docs-writing
+    - ./skills/git-commit
+    - ./skills/code-comments
