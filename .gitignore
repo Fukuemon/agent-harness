@@ -1,0 +1,7 @@
+.ai-out/
+node_modules/
+
+apm_modules/
+
+.claude/skills/
+.agents/skills/

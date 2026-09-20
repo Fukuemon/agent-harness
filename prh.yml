@@ -1,0 +1,52 @@
+version: 1
+
+rules:
+  - expected: context
+    patterns:
+      - 知識文書
+      - 知識の層
+  - expected: spec
+    pattern: 作業文書
+  - expected: ガードレール
+    pattern: 安全制約
+  - expected: 自動チェック
+    pattern: 検証手段
+  - expected: モデルの弱さを補う指示
+    pattern: 補助指示
+  - expected: プロジェクト固有の知識
+    pattern: 固有コンテキスト
+  - expected: パッケージ
+    patterns:
+      - 共通資産
+      - 配布物
+  - expected: 利用者の環境
+    pattern: 導入先
+  - expected: 名前で指す
+    pattern: /\b(?!S3\b|M[1-4]\b|V8\b|D1\b|R2\b)(?:DQ|[GSMQRVD])\d{1,2}\b/
+    prh: 記号の採番は使わない。記号だけでは、その文が単独で意味を持たない。名前や節の見出しで指す
+  - expected: この文書に必要な事実だけを書く
+    pattern: /(?:詳細|実現方法|調査結果|選定|結果|書式)は、?\s?(?:DesignDoc|Design Doc|PRD|ADR)(?:\.md)?\s?(?:に|で)(?:書|定め|記載)/
+    prh: 「詳細は Design Doc に書く」のような案内文は書かない。内容は各文書の中で完結させる
+  - expected: サードパーティの拡張機能
+    pattern: 外部の拡張
+  - expected: サードパーティ
+    pattern: サードパーティー
+    prh: Claude Code の日本語の公式文書は、長音を付けずに書く
+  - expected: スキル
+    pattern: /(?<!Agent )\bSkill\b/
+    prh: Claude Code の日本語の公式文書はカタカナで書く。仕様の名前の Agent Skills は英字のまま
+  - expected: プラグイン
+    pattern: /(?<!Agent )\bPlugin\b/
+    prh: Claude Code の日本語の公式文書はカタカナで書く。仕様の名前の Agent Plugins は英字のまま
+  - expected: フック
+    pattern: /\bHook\b/
+    prh: Claude Code の日本語の公式文書はカタカナで書く
+  - expected: 拡張機能
+    pattern: /拡張(?=[のをはがにともや、。])/
+    prh: スキル、プラグイン、フックなどをまとめて指すときは、Claude Code の日本語の公式文書に合わせて拡張機能と書く
+  - expected: 日付を書かない
+    pattern: /\d{4}\s?年(?!分|間|目|以上|後|前|ごと)(?:\s?\d{1,2}\s?月)?/
+    prh: 文書に日付を書かない。履歴はコミットから読み取れる。バージョンなど、日付を使わずに時点を特定できる情報で書く
+  - expected: 更新日を書かない
+    pattern: /\bUpdated:/
+    prh: 文書に更新日を書かない。履歴はコミットから読み取れる
