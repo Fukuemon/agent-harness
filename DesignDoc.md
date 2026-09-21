@@ -13,6 +13,37 @@ agent-harness は、AI エージェントにプロジェクト固有の知識と
 
 対象のコーディングエージェントは Claude Code と Codex CLI である。Cursor は可能な範囲で対応する。
 
+## リポジトリの構成
+
+```text
+agent-harness/
+├── .claude-plugin/
+│   └── marketplace.json        パッケージの一覧
+├── packages/
+│   └── <パッケージの名前>/
+│       ├── .claude-plugin/
+│       │   └── plugin.json
+│       ├── skills/
+│       │   └── <スキルの名前>/
+│       │       ├── SKILL.md
+│       │       └── assets/     利用者のリポジトリへ写すテンプレート
+│       └── hooks/              hooks.json と、フックが呼ぶスクリプト
+├── lefthook/
+│   └── <パッケージの名前>.yml  lefthook の remotes で配る設定
+├── .lefthook/                  Git のフックが呼ぶスクリプト
+├── skills/                     このリポジトリの開発に使うスキル
+├── adr/
+├── PRD.md
+├── DesignDoc.md
+├── apm.yml
+└── apm.lock.yaml
+```
+
+- パッケージは、`packages/` の下に 1 つずつ置く。形は Claude Code の形式のプラグインである。
+- ルートの一覧は、Claude Code と Codex CLI の標準の方法で導入する利用者が使う。
+- Git のフックの設定は `lefthook/` に、Git のフックが呼ぶスクリプトは `.lefthook/` に置く。lefthook の `remotes` は、配る側のリポジトリのルートにあるスクリプトだけを配れる。
+- パッケージ同士は依存させない。
+
 ## 設計の前提
 
 - Codex CLI と Cursor は AGENTS.md を読む。Claude Code は v2.1.277 以降、CLAUDE.md がないリポジトリで AGENTS.md を直接読む。CLAUDE.md がある場合は CLAUDE.md だけを読む。
@@ -197,11 +228,17 @@ Design Doc と context は frontmatter を持つ。
 
 ## 配布の形式
 
-パッケージは、Agent Skills と Agent Plugins の形式で公開する。
+パッケージは、Claude Code の形式のプラグインにする。中のスキルは、Agent Skills の形式で書く。  
+Agent Plugins の公式のスキーマは宣言しない。宣言すると、パッケージマネージャーが Claude Code と Codex CLI へ配置しなくなる。
 
-- パッケージマネージャーを使う利用者は、マニフェストに配布元を書いて導入する。
-- パッケージマネージャーを使わない利用者は、コーディングエージェントの標準の方法で導入する。
-- パッケージマネージャー専用の形式は、マニフェストの例だけに使う。パッケージの本体には使わない。
+利用者がパッケージを導入する方法は、3 つある。
+
+- **パッケージマネージャー:** マニフェストに `Fukuemon/agent-harness/packages/<名前>` とタグを書く。バージョンの固定と再現ができる。
+- **コーディングエージェントの標準の方法:** ルートの一覧から、プラグインを選んで導入する。Claude Code はプロジェクトの単位で、Codex CLI は利用者の単位で導入する。
+- **lefthook の `remotes`:** Git のフックを使うパッケージで、利用者が自分の `lefthook.yml` に、このリポジトリの URL とタグを書く。
+
+利用者のリポジトリへ写すテンプレートは、スキルの `assets/` に置く。スキルが、利用者の求めに応じて写す。  
+パッケージマネージャー専用の形式は、マニフェストの例だけに使う。パッケージの本体には使わない。
 
 ## 進め方の標準
 
@@ -233,9 +270,8 @@ Design Doc と context は frontmatter を持つ。
 - [意味の判定が要るルールには、任意の追加として Jev を使う](adr/0006-semantic-check.md) — 提案の状態にある ADR
 - [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md) — 承認済みの ADR
 - [進め方の標準はこのリポジトリに置き、具体のワークフローのハーネスは別のリポジトリに置く](adr/0008-workflow-harness.md) — 承認済みの ADR
-- [パッケージは、用途ごとのプラグインとして packages/ の下に置く](adr/0009-package-layout.md) — 提案の状態にある ADR
+- [パッケージは、用途ごとのプラグインとして packages/ の下に置く](adr/0009-package-layout.md) — 承認済みの ADR
 - [How Claude remembers your project](https://code.claude.com/docs/en/memory) — Claude Code が AGENTS.md と CLAUDE.md を読む条件
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — 規約ファイルの指示とフックの違い
-- [Agent Skills 仕様](https://agentskills.io/specification) — スキルの配布の形式
-- [Agent Plugins 仕様](https://agent-plugins.org/specification) — プラグインの配布の形式
+- [Agent Skills 仕様](https://agentskills.io/specification) — スキルの形式
 
