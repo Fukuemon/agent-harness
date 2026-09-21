@@ -233,6 +233,7 @@ Design Doc と context は frontmatter を持つ。
 - [意味の判定が要るルールには、任意の追加として Jev を使う](adr/0006-semantic-check.md) — 提案の状態にある ADR
 - [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md) — 承認済みの ADR
 - [進め方の標準はこのリポジトリに置き、具体のワークフローのハーネスは別のリポジトリに置く](adr/0008-workflow-harness.md) — 承認済みの ADR
+- [パッケージは、用途ごとのプラグインとして packages/ の下に置く](adr/0009-package-layout.md) — 提案の状態にある ADR
 - [How Claude remembers your project](https://code.claude.com/docs/en/memory) — Claude Code が AGENTS.md と CLAUDE.md を読む条件
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — 規約ファイルの指示とフックの違い
 - [Agent Skills 仕様](https://agentskills.io/specification) — スキルの配布の形式
