@@ -1,6 +1,7 @@
 {
   "name": "agent-harness",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "lint:text": "textlint \"*.md\" \"adr/*.md\" \"skills/**/*.md\"",
     "prepare": "lefthook install"
