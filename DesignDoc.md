@@ -203,6 +203,15 @@ Design Doc と context は frontmatter を持つ。
 - パッケージマネージャーを使わない利用者は、コーディングエージェントの標準の方法で導入する。
 - パッケージマネージャー専用の形式は、マニフェストの例だけに使う。パッケージの本体には使わない。
 
+## ブランチとリリース
+
+ブランチは、main と、issue ごとの作業用のブランチだけにする。main へは、変更の依頼を通して取り込む。
+
+バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
+バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決める。
+
+これは、このリポジトリ自身の選択である。利用者のブランチ運用と、バージョンの付け方は、利用者が決める。
+
 ## 関連ドキュメント
 
 - [PRD](PRD.md) — 課題、目標、受け入れの条件
@@ -212,6 +221,7 @@ Design Doc と context は frontmatter を持つ。
 - [サードパーティの拡張機能はプロジェクトの単位で宣言し、global は最小に保つ](adr/0004-third-party-extensions.md) — 承認済みの ADR
 - [自動でチェックできるルールは textlint などに任せ、できないルールは 1 つのスキルにまとめる](adr/0005-rules-by-check-or-skill.md) — 承認済みの ADR
 - [意味の判定が要るルールには、任意の追加として Jev を使う](adr/0006-semantic-check.md) — 提案の状態にある ADR
+- [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md) — 承認済みの ADR
 - [How Claude remembers your project](https://code.claude.com/docs/en/memory) — Claude Code が AGENTS.md と CLAUDE.md を読む条件
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — 規約ファイルの指示とフックの違い
 - [Agent Skills 仕様](https://agentskills.io/specification) — スキルの配布の形式
