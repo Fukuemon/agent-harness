@@ -25,8 +25,8 @@ dependencies:
   - .claude/skills/docs-writing
   - .claude/skills/docs-writing/SKILL.md
   deployed_file_hashes:
-    .agents/skills/docs-writing/SKILL.md: sha256:2dffd516e82e060caec8e579aa9e7ce5ebf59370484172cf5d6359c306d7d6eb
-    .claude/skills/docs-writing/SKILL.md: sha256:2dffd516e82e060caec8e579aa9e7ce5ebf59370484172cf5d6359c306d7d6eb
+    .agents/skills/docs-writing/SKILL.md: sha256:263065f2f20cabea6eea866435123f0c7c23882e4fd964e81a6fc5d03650cb08
+    .claude/skills/docs-writing/SKILL.md: sha256:263065f2f20cabea6eea866435123f0c7c23882e4fd964e81a6fc5d03650cb08
   source: local
   local_path: ./skills/docs-writing
 - repo_url: _local/git-commit
@@ -79,7 +79,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:2dffd516e82e060caec8e579aa9e7ce5ebf59370484172cf5d6359c306d7d6eb
+  content_hash: sha256:263065f2f20cabea6eea866435123f0c7c23882e4fd964e81a6fc5d03650cb08
 - kind: project-relative
   target: claude
   value: .claude/skills/git-commit
@@ -133,7 +133,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:2dffd516e82e060caec8e579aa9e7ce5ebf59370484172cf5d6359c306d7d6eb
+  content_hash: sha256:263065f2f20cabea6eea866435123f0c7c23882e4fd964e81a6fc5d03650cb08
 - kind: project-relative
   target: codex
   value: .agents/skills/git-commit
