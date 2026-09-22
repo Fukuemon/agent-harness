@@ -13,6 +13,8 @@ agent-harness は、AI エージェントにプロジェクト固有の知識と
 
 対象のコーディングエージェントは Claude Code と Codex CLI である。Cursor は可能な範囲で対応する。
 
+- [PRD](PRD.md) — 課題、目標、受け入れの条件
+
 ## リポジトリの構成
 
 ```text
@@ -40,6 +42,7 @@ agent-harness/
 ```
 
 - パッケージは、`packages/` の下に 1 つずつ置く。形は Claude Code の形式のプラグインである。
+  - [パッケージは、用途ごとのプラグインとして packages/ の下に置く](adr/0009-package-layout.md)
 - ルートの一覧は、Claude Code と Codex CLI の標準の方法で導入する利用者が使う。
 - Git のフックの設定は `lefthook/` に、Git のフックが呼ぶスクリプトは `.lefthook/` に置く。lefthook の `remotes` は、配る側のリポジトリのルートにあるスクリプトだけを配れる。
 - パッケージ同士は依存させない。
@@ -78,8 +81,12 @@ flowchart LR
 パッケージマネージャーには microsoft/apm を使う。  
 マニフェストはリポジトリのルートの `apm.yml`、ロックファイルは `apm.lock.yaml` である。どちらも Git で管理する。
 
+- [拡張機能のパッケージマネージャーに microsoft/apm を使う](adr/0001-management-tool.md)
+
 サードパーティの拡張機能は、使うプロジェクトのマニフェストに書く。global には入れないことを既定にする。  
 配置された拡張機能のファイルは Git で管理しない。clone の後に、導入のコマンドを 1 度実行する。
+
+- [サードパーティの拡張機能はプロジェクトの単位で宣言し、global は最小に保つ](adr/0004-third-party-extensions.md)
 
 パッケージマネージャーは 1 つだけ使う。  
 複数を併用すると、同じスキルの置き場所、同じフックの設定、同じ規約ファイルへ書き込み、ロックファイルも複数になる。どれが正しいか分からなくなる。
@@ -105,7 +112,9 @@ flowchart LR
 - 機械で判定できるルールは、自動チェックで持つ。文章のルールには textlint を使う。
   - 文書を編集した後のフックと、CI で実行する。
   - スキルや AGENTS.md には、同じルールを書かない。
+  - [自動でチェックできるルールは textlint などに任せ、できないルールは 1 つのスキルにまとめる](adr/0005-rules-by-check-or-skill.md)
 - 機械で判定できないルールは、領域ごとに 1 つのスキルにまとめる。文章、コミット、コードのコメントが領域の例である。スキルの本文は 150 行以内に保つ。
+  - [意味の判定が要るルールには、任意の追加として Jev を使う](adr/0006-semantic-check.md) — 提案の状態にある ADR
 - フックで毎回コンテキストを追加するパッケージは作らない。
   - 変わらないルールをフックで足すのは、公式の文書が勧める使い方ではない。関係のない作業でもコンテキストを使い、守られたかも確かめられない。
 - コードのコメントのルールは、ファイルの編集の後のフックで扱う。コメントが足されたときだけ、確かめるよう促す文をコンテキストに追加する。編集は拒否しない。
@@ -127,6 +136,7 @@ flowchart LR
 - **spec:** issue ごとの要求、論点、受け入れ基準、決定の経緯。Git で管理し、issue を閉じる時点で削除する。
   - 要求ごとの進め方の宣言を、YAML として同じ場所に置く。spec と一緒に削除する。
   - レビューを依頼する前に、1 本の HTML へ変換する。最終のセルフレビューが終わった後に行う。
+    - [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](adr/0003-spec-review-html.md)
   - 変換した HTML をコミットし、CI が変更の依頼ごとに公開する。レビューする人は、公開された URL を開いて読む。
   - HTML の骨組みは、テンプレートとしてパッケージに持つ。
   - issue を閉じる時点で、HTML も spec と一緒に削除する。
@@ -145,6 +155,7 @@ Design Doc と context は frontmatter を持つ。
 この形式は Open Knowledge Format に適合する。  
 同仕様に依存するのは、必須の `type` と、予約されたファイル名の 2 点だけにする。`governs` と `verified_commit` は、同仕様が認める独自のキーである。
 
+- [context を Open Knowledge Format に適合させ、依存は 2 点に絞る](adr/0002-context-format.md)
 - [Open Knowledge Format 仕様](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md)
 
 キーは次のとおり。
@@ -234,6 +245,9 @@ Design Doc と context は frontmatter を持つ。
 パッケージは、Claude Code の形式のプラグインにする。中のスキルは、Agent Skills の形式で書く。  
 Agent Plugins の公式のスキーマは宣言しない。宣言すると、パッケージマネージャーが Claude Code と Codex CLI へ配置しなくなる。
 
+- [パッケージは、用途ごとのプラグインとして packages/ の下に置く](adr/0009-package-layout.md)
+- [Agent Skills 仕様](https://agentskills.io/specification)
+
 利用者がパッケージを導入する方法は、3 つある。
 
 - **パッケージマネージャー:** マニフェストに `Fukuemon/agent-harness/packages/<名前>` とタグを書く。バージョンの固定と再現ができる。
@@ -248,6 +262,8 @@ Agent Plugins の公式のスキーマは宣言しない。宣言すると、パ
 進め方の標準は、このリポジトリで管理する。  
 ワークフローのハーネスは、作業をいつ、どの順に進めるかを制御する拡張機能のまとまりである。  
 具体のワークフローのハーネスは、別のリポジトリで管理する。
+
+- [進め方の標準はこのリポジトリに置き、具体のワークフローのハーネスは別のリポジトリに置く](adr/0008-workflow-harness.md)
 
 開発のプロセスは、種類と、要求ごとに決める点だけを定める。  
 選んだ結果は、YAML で宣言する。
@@ -374,21 +390,6 @@ sequenceDiagram
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
 バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決める。
 
+- [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
+
 これは、このリポジトリ自身の選択である。利用者のブランチ運用と、バージョンの付け方は、利用者が決める。
-
-## 関連ドキュメント
-
-- [PRD](PRD.md) — 課題、目標、受け入れの条件
-- [拡張機能のパッケージマネージャーに microsoft/apm を使う](adr/0001-management-tool.md) — 承認済みの ADR
-- [context を Open Knowledge Format に適合させ、依存は 2 点に絞る](adr/0002-context-format.md) — 承認済みの ADR
-- [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](adr/0003-spec-review-html.md) — 承認済みの ADR
-- [サードパーティの拡張機能はプロジェクトの単位で宣言し、global は最小に保つ](adr/0004-third-party-extensions.md) — 承認済みの ADR
-- [自動でチェックできるルールは textlint などに任せ、できないルールは 1 つのスキルにまとめる](adr/0005-rules-by-check-or-skill.md) — 承認済みの ADR
-- [意味の判定が要るルールには、任意の追加として Jev を使う](adr/0006-semantic-check.md) — 提案の状態にある ADR
-- [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md) — 承認済みの ADR
-- [進め方の標準はこのリポジトリに置き、具体のワークフローのハーネスは別のリポジトリに置く](adr/0008-workflow-harness.md) — 承認済みの ADR
-- [パッケージは、用途ごとのプラグインとして packages/ の下に置く](adr/0009-package-layout.md) — 承認済みの ADR
-- [開発のプロセスは種類と決める点だけを定め、選んだ結果は YAML で宣言する](adr/0010-process-and-tailoring.md) — 承認済みの ADR
-- [How Claude remembers your project](https://code.claude.com/docs/en/memory) — Claude Code が AGENTS.md と CLAUDE.md を読む条件
-- [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — 規約ファイルの指示とフックの違い
-- [Agent Skills 仕様](https://agentskills.io/specification) — スキルの形式
