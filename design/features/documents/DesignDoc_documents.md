@@ -8,9 +8,19 @@ keywords: [Design Doc, context, ADR, spec, frontmatter, Open Knowledge Format, i
 
 # 文書の体系
 
-パッケージ「文書の体系」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。
+## 概要
 
-## 文書の種類と寿命
+パッケージ「文書の体系」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
+利用者のリポジトリに置く文書の種類と寿命、frontmatter、文書のチェックを定める。
+
+## 範囲
+
+- 持つもの: Design Doc、context、ADR、spec の構造。どの情報をどの文書に書くかのルール。文書のチェック。テンプレート。
+- 持たないもの: 利用者の知識の中身。内容の正しさの判定。作業を次へ進める制御。
+
+## 設計
+
+### 文書の種類と寿命
 
 利用者のリポジトリに次の文書を置く。ディレクトリ名は、プロジェクトごとの値で変更できる。
 
@@ -38,7 +48,7 @@ spec は長くなりやすく、読み手が検証しきれない。残し続け
 Design Doc、context、ADR から spec へリンクしない。spec は削除されるため、リンクは必ず切れる。  
 未解決の論点を指す場合だけ issue 番号を書ける。論点が解決したら、その記述ごと消す。
 
-## frontmatter
+### frontmatter
 
 Design Doc と context は frontmatter を持つ。  
 この形式は Open Knowledge Format に適合する。  
@@ -65,7 +75,21 @@ Design Doc と context は frontmatter を持つ。
 
 手書きの更新日は持たない。日付は更新し忘れを検出できないが、commit と履歴の差分は検出できる。
 
-## チェック
+### spec を削除する前の保証
+
+作業を次へ進める制御を持たないため、残す設計を移す機会は、次の 3 つで守る。
+
+- ルールを 1 つ置く。「spec を閉じる前に、残す設計を Design Doc と context へ、比較して決めた判断を ADR へ移す」
+- spec の消し忘れのチェックで、削除されていない spec を報告する。
+- issue の close をきっかけに、spec と要求ごとの YAML を削除する変更の提案を自動で作る。提案を取り込むかどうかの判断が、移し終えたことの確認になる。自動では削除しない。
+
+## 利用者のリポジトリでの形
+
+- 置くファイル: Design Doc、context、ADR、spec と、context の目次 `index.md`。ルートに AGENTS.md。
+- 読む値: 各文書のディレクトリ名。
+- 動くチェック: 次の表のとおり。
+
+### チェック
 
 | チェック | 内容 | 失敗の扱い |
 | --- | --- | --- |
@@ -82,15 +106,7 @@ Design Doc と context は frontmatter を持つ。
 時間の経過だけで古いとみなす判定も入れない。  
 安定した領域に警告が出続け、警告の全体が読まれなくなる。
 
-## spec を削除する前の保証
-
-作業を次へ進める制御を持たないため、残す設計を移す機会は、次の 3 つで守る。
-
-- ルールを 1 つ置く。「spec を閉じる前に、残す設計を Design Doc と context へ、比較して決めた判断を ADR へ移す」
-- spec の消し忘れのチェックで、削除されていない spec を報告する。
-- issue の close をきっかけに、spec と要求ごとの YAML を削除する変更の提案を自動で作る。提案を取り込むかどうかの判断が、移し終えたことの確認になる。自動では削除しない。
-
-## コーディングエージェントへの接続
+### コーディングエージェントへの接続
 
 - リポジトリのルートに AGENTS.md を置き、context の目次への参照を 1 か所だけ書く。AGENTS.md は目次への参照と禁止事項だけを持ち、ルールの本文は持たない。
 - CLAUDE.md は置かない。CLAUDE.md を置くプロジェクトでは、CLAUDE.md から AGENTS.md を取り込む。
