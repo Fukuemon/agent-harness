@@ -41,6 +41,8 @@ agent-harness/
 ├── lefthook/
 │   └── <パッケージの名前>.yml  lefthook の remotes で配る設定
 ├── .lefthook/                  Git のフックが呼ぶスクリプト
+├── schemas/                    プロジェクトごとの値の schema
+├── examples/                   マニフェストの例
 ├── skills/                     このリポジトリの開発に使うスキル
 ├── design/
 │   ├── DesignDoc.md            全体像
@@ -73,9 +75,10 @@ agent-harness/
 
 agent-harness のリポジトリは配布元である。  
 取得と配置はパッケージマネージャーが行う。  
-agent-harness のチェックは、利用者の環境を読み取るだけで変更しない。
+agent-harness のチェックは、利用者の環境を読み取るだけで変更しない。  
+パッケージマネージャーで確認できないことのチェックは、実機で不足を確かめたものだけを、その時点で足す。
 
-次の図は、パッケージマネージャーで導入する場合の、開発者、agent-harness、コーディングエージェントの関係を示す。  
+次の図は、パッケージマネージャーで導入する場合の、開発者、コーディングエージェント、agent-harness の関係を示す。  
 コーディングエージェントの標準の方法と lefthook の remotes で導入する場合は、[配布の形式](#配布の形式)の節に書いてある。
 
 ```mermaid
@@ -90,38 +93,35 @@ C4Context
 
     UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
 
-    %% 1行目
+    %% 1 行目: 人と、人が使うもの
     Person(dev, "開発者", "複数のリポジトリで Claude Code や Codex CLI を使う")
-    System(ah, "agent-harness", "テンプレート、ガードレール、チェック、マニフェストの例の配布元")
+    System_Ext(agent, "コーディングエージェント", "Claude Code、Codex CLI")
 
-    %% 2行目
+    %% 2 行目: 導入の道具と、導入先
     System_Ext(apm, "microsoft/apm", "取得、バージョンの固定、配置、差分の検出")
     System_Ext(repo, "利用者のリポジトリ", "マニフェスト、ロックファイル、context、コーディングエージェントごとの設定")
 
-    %% 3行目
+    %% 3 行目: 配布元
+    System(ah, "agent-harness", "テンプレート、ガードレール、チェック、マニフェストの例の配布元")
     System_Ext(third, "サードパーティの配布元", "サードパーティのスキルとプラグイン")
-    System_Ext(agent, "コーディングエージェント", "Claude Code、Codex CLI")
 
-    Rel_R(dev, ah, "パッケージを選び、マニフェストに書く")
+    Rel_R(dev, agent, "作業を頼む")
     Rel_D(dev, apm, "導入のコマンドを実行する")
+    Rel(dev, repo, "マニフェストにパッケージを書く")
+    Rel_D(agent, repo, "スキル、フック、context を読む")
 
-    Rel_U(apm, ah, "パッケージを取得する")
-    Rel_D(apm, third, "拡張機能を取得する")
     Rel_R(apm, repo, "スキルとフックを配置する")
-
-    Rel_U(agent, repo, "スキル、フック、context を読む")
-    Rel(dev, agent, "作業を頼む")
+    Rel_D(apm, ah, "パッケージを取得する")
+    Rel(apm, third, "拡張機能を取得する")
 
     %% ラベル位置の微調整
-    UpdateRelStyle(dev, ah, $offsetY="-18")
+    UpdateRelStyle(dev, agent, $offsetY="-18")
     UpdateRelStyle(dev, apm, $offsetX="-35")
-
-    UpdateRelStyle(apm, ah, $offsetX="30", $offsetY="-10")
-    UpdateRelStyle(apm, third, $offsetX="-35")
+    UpdateRelStyle(dev, repo, $offsetX="10", $offsetY="-30")
+    UpdateRelStyle(agent, repo, $offsetX="10")
     UpdateRelStyle(apm, repo, $offsetY="-18")
-
-    UpdateRelStyle(agent, repo, $offsetX="30")
-    UpdateRelStyle(dev, agent, $offsetX="-40", $offsetY="-10")
+    UpdateRelStyle(apm, ah, $offsetX="-35")
+    UpdateRelStyle(apm, third, $offsetX="10", $offsetY="-30")
 ```
 
 パッケージマネージャーには microsoft/apm を使う。  
@@ -141,16 +141,20 @@ C4Context
 
 ## パッケージ
 
-パッケージは互いに依存させない。1 つを外しても残りが動く。
+パッケージは 3 つである。互いに依存させない。1 つを外しても残りが動く。
 
 - **文書の体系:** Design Doc、context、ADR、spec の構造と、どの情報をどの文書に書くかのルール、文書のチェックを持つ。利用者の知識の中身は持たない。内容の正しさは判定しない。
   - [文書の体系の Design Doc](features/documents/DesignDoc_documents.md)
 - **進め方の標準:** 開発のプロセスの定義、要求ごとに決める点と選択肢、宣言の schema を持つ。作業を次へ進める制御は持たない。
   - [進め方の標準の Design Doc](features/process/DesignDoc_process.md)
 - **ガードレール:** 保護ブランチの保護と、秘密情報の混入の防止をフックとして持つ。コーディングエージェントの権限の仕組みそのものは実装しない。
-- **プロジェクトごとの値の定義:** 値を置くファイルの schema を持つ。値そのものは持たない。
-- **マニフェストの例:** プロジェクトのマニフェストの例を持つ。取得、配置、更新は行わない。
-- **補いのチェック:** パッケージマネージャーで確認できないことを確認する。環境は変更しない。
+
+## パッケージの外に置くもの
+
+複数のパッケージが読むものと、利用者が写して使うものは、パッケージにしない。パッケージ同士を依存させないためである。
+
+- **プロジェクトごとの値の schema:** 値を置くファイルの形を定める。`schemas/` に置く。どのパッケージがどのキーを読むかは、そのパッケージの Design Doc に書く。値そのものは持たない。
+- **マニフェストの例:** 利用者のマニフェストの例。`examples/` に置く。取得、配置、更新は行わない。
 
 ## ルールの持ち方
 
