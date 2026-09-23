@@ -56,7 +56,7 @@ agent-harness/
 ```
 
 - パッケージは、`packages/` の下に 1 つずつ置く。形は Claude Code の形式のプラグインである。
-  - [パッケージは、用途ごとのプラグインとして packages/ の下に置く](../adr/0009-package-layout.md)
+  - ADR-0009: [パッケージは、用途ごとのプラグインとして packages/ の下に置く](../adr/0009-package-layout.md)
 - ルートの一覧は、Claude Code と Codex CLI の標準の方法で導入する利用者が使う。
 - Git のフックの設定は `lefthook/` に、Git のフックが呼ぶスクリプトは `.lefthook/` に置く。lefthook の `remotes` は、配る側のリポジトリのルートにあるスクリプトだけを配れる。
 - パッケージ同士は依存させない。
@@ -64,9 +64,9 @@ agent-harness/
 ## 設計の前提
 
 - Codex CLI と Cursor は AGENTS.md を読む。Claude Code は v2.1.277 以降、CLAUDE.md がないリポジトリで AGENTS.md を直接読む。CLAUDE.md がある場合は CLAUDE.md だけを読む。
-  - [How Claude remembers your project](https://code.claude.com/docs/en/memory)
+  - 出典: [How Claude remembers your project](https://code.claude.com/docs/en/memory)
 - 規約ファイルの指示は助言にとどまる。フックは必ず実行される。
-  - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices)
+  - 出典: [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices)
 - マニフェストとロックファイルによる再現、差分の検出、複数のコーディングエージェントへの配置は、公開のパッケージマネージャーが提供している。
 
 ## 全体の構成
@@ -127,12 +127,12 @@ C4Context
 パッケージマネージャーには microsoft/apm を使う。  
 マニフェストはリポジトリのルートの `apm.yml`、ロックファイルは `apm.lock.yaml` である。どちらも Git で管理する。
 
-- [拡張機能のパッケージマネージャーに microsoft/apm を使う](../adr/0001-management-tool.md)
+- ADR-0001: [拡張機能のパッケージマネージャーに microsoft/apm を使う](../adr/0001-management-tool.md)
 
 サードパーティの拡張機能は、使うプロジェクトのマニフェストに書く。global には入れないことを既定にする。  
 配置された拡張機能のファイルは Git で管理しない。clone の後に、導入のコマンドを 1 度実行する。
 
-- [サードパーティの拡張機能はプロジェクトの単位で宣言し、global は最小に保つ](../adr/0004-third-party-extensions.md)
+- ADR-0004: [サードパーティの拡張機能はプロジェクトの単位で宣言し、global は最小に保つ](../adr/0004-third-party-extensions.md)
 
 パッケージマネージャーは 1 つだけ使う。  
 複数を併用すると、同じスキルの置き場所、同じフックの設定、同じ規約ファイルへ書き込み、ロックファイルも複数になる。どれが正しいか分からなくなる。
@@ -159,9 +159,9 @@ C4Context
 - 機械で判定できるルールは、自動チェックで持つ。文章のルールには textlint を使う。
   - 文書を編集した後のフックと、CI で実行する。
   - スキルや AGENTS.md には、同じルールを書かない。
-  - [自動でチェックできるルールは textlint などに任せ、できないルールは 1 つのスキルにまとめる](../adr/0005-rules-by-check-or-skill.md)
+  - ADR-0005: [自動でチェックできるルールは textlint などに任せ、できないルールは 1 つのスキルにまとめる](../adr/0005-rules-by-check-or-skill.md)
 - 機械で判定できないルールは、領域ごとに 1 つのスキルにまとめる。文章、コミット、コードのコメントが領域の例である。
-  - [意味の判定が要るルールには、任意の追加として Jev を使う](../adr/0006-semantic-check.md)
+  - ADR-0006: [意味の判定が要るルールには、任意の追加として Jev を使う](../adr/0006-semantic-check.md)
 - フックで毎回コンテキストを追加するパッケージは作らない。
   - 変わらないルールをフックで足すのは、公式の文書が勧める使い方ではない。関係のない作業でもコンテキストを使い、守られたかも確かめられない。
 - コードのコメントのルールは、ファイルの編集の後のフックで扱う。コメントが足されたときだけ、確かめるよう促す文をコンテキストに追加する。編集は拒否しない。
@@ -175,7 +175,7 @@ C4Context
 - **保護ブランチの保護:** 保護ブランチへの直接コミットと、保護ブランチを書き換える操作を拒否する。
   - 対象のブランチと、直接コミットを許すかどうかは、プロジェクトごとの値で宣言する。既定は拒否。許すときは理由を必須にする。
   - 立ち上げの時期や文書だけの変更のような、自動で検出する条件は持たない。宣言が有効な間は、コミットのたびに理由を表示する。
-    - [保護ブランチへの直接コミットは、プロジェクトごとの値での宣言だけで許す](../adr/0011-direct-commit-declaration.md)
+    - ADR-0011: [保護ブランチへの直接コミットは、プロジェクトごとの値での宣言だけで許す](../adr/0011-direct-commit-declaration.md)
   - コーディングエージェントのツール実行前のフックと、Git のフックの両方で判定する。
 - **秘密情報の混入の防止:** コミットと文書に、認証情報の形式に一致する文字列がないかを確認する。Git のフックで判定する。
 
@@ -204,8 +204,8 @@ C4Context
 パッケージは、Claude Code の形式のプラグインにする。中のスキルは、Agent Skills の形式で書く。  
 Agent Plugins の公式のスキーマは宣言しない。宣言すると、パッケージマネージャーが Claude Code と Codex CLI へ配置しなくなる。
 
-- [パッケージは、用途ごとのプラグインとして packages/ の下に置く](../adr/0009-package-layout.md)
-- [Agent Skills 仕様](https://agentskills.io/specification)
+- ADR-0009: [パッケージは、用途ごとのプラグインとして packages/ の下に置く](../adr/0009-package-layout.md)
+- 出典: [Agent Skills 仕様](https://agentskills.io/specification)
 
 利用者がパッケージを導入する方法は、3 つある。
 

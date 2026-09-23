@@ -38,18 +38,18 @@ agent-harness は、すべてを自作しない。
 
 OpenAI は GPT-6 Astra の公開に合わせ、スキル、AGENTS.md、タスクのプロンプトを見直すよう開発者に求めている。以前のモデルを導くために足した指示が積み上がっており、細かすぎる手順は今のモデルでは結果を悪くするため。
 
-- [Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
+- 出典: [Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
 
 リポジトリのスキルは他の貢献者のエージェントも導くため、どのモデルが読むかを考えて書くようにも勧めている。
 
 Anthropic も同じ見方を示している。
 
-- [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
+- 出典: [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
 ハーネスの各構成要素は「モデルが単独ではできないこと」の仮定を含み、その仮定はモデルの改善で古くなる。  
 用途ごとに専用のエージェントを作る設計も、同じ形で負債になると指摘されている。
 
-- [エージェント開発における悪魔の自転車というアンチパターン](https://x.com/voidwarriorchan/status/2100428460309311607)
+- 出典: [エージェント開発における悪魔の自転車というアンチパターン](https://x.com/voidwarriorchan/status/2100428460309311607)
 
 プロンプト、権限、引き継ぎが増え、管理の仕組みが本体より大きくなるためである。
 
@@ -58,24 +58,24 @@ Anthropic も同じ見方を示している。
 規約ファイルの効果を測った研究では、規約ファイルは一般にはタスクの成功率を上げず、推論コストを平均 20% 以上増やした。  
 具体的な指示はよく守られ、リポジトリの概要説明は役に立たなかった。
 
-- [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988)
+- 出典: [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988)
 
 Claude Code の公式ガイドも、規約ファイルの内容を、モデルが推測できないコマンドと標準と異なる規約に絞るよう勧める。  
 コードから読み取れる内容は除く。  
 同じガイドは、規約ファイルの指示は助言にとどまり、フックは必ず実行されると区別している。
 
-- [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices)
+- 出典: [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices)
 
 ### AI が書いた文書は、読み手に負担を移す
 
 見た目は整っているが、作業を前に進める中身を欠く AI の生成物は workslop と呼ばれる。BetterUp Labs と Stanford Social Media Lab が名づけた。  
 米国のフルタイム労働者 1,150 人の調査では、41% が直近 1 か月に workslop を受け取り、1 件の処理に平均 1 時間 56 分かかっていた。
 
-- [AI-Generated "Workslop" Is Destroying Productivity](https://hbr.org/2025/09/ai-generated-workslop-is-destroying-productivity)
+- 出典: [AI-Generated "Workslop" Is Destroying Productivity](https://hbr.org/2025/09/ai-generated-workslop-is-destroying-productivity)
 
 同じ媒体の後続の記事は、workslop が工程の中で連鎖すると、後の工程が確認をやめ、組織の知識の正確さが落ちると指摘している。
 
-- [Don't Let AI Slop Muck Up Your Company's Processes](https://hbr.org/2026/06/dont-let-ai-slop-muck-up-your-companys-processes)
+- 出典: [Don't Let AI Slop Muck Up Your Company's Processes](https://hbr.org/2026/06/dont-let-ai-slop-muck-up-your-companys-processes)
 
 エージェントに書かせた spec は、この形になりやすい。  
 agent-harness が Design Doc、context、ADR を短く保って唯一の参照先とし、spec を作業の後に削除するのは、この問題への対策である。

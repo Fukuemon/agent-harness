@@ -10,7 +10,7 @@ apm install
 - `pnpm install` は、Git のフックも有効にする。
 - `apm install` は、`apm.yml` に書いたスキルを配置する。配置先と直し方は [スキルの置き場所](context/skills.md) に書いてある。
 - microsoft/apm の導入の方法は、公式の案内に従う。
-  - [microsoft/apm](https://github.com/microsoft/apm)
+  - 出典: [microsoft/apm](https://github.com/microsoft/apm)
 - 常設せずに試す場合は、uv の一時実行が使える。
 
 ```sh
@@ -43,7 +43,7 @@ pnpm lint:text
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
 バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の変更の依頼を作る。
 
-- [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
+- ADR-0007: [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
 
 次の図は、実装に移った後のブランチの構成を示す。main は常にリリースできる状態に保つ。作業用のブランチは main から切り、変更の依頼で main へ戻す。タグは、release-please が main のコミットに付ける。
 

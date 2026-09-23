@@ -25,7 +25,7 @@ keywords: [Design Doc, context, ADR, spec, frontmatter, Open Knowledge Format, i
 - **spec:** issue ごとの要求、論点、受け入れ基準、決定の経緯。Git で管理し、issue を閉じる時点で削除する。シーケンス図は spec に描く。
   - 要求ごとの進め方の宣言を、YAML として同じ場所に置く。spec と一緒に削除する。
   - レビューを依頼する前に、1 本の HTML へ変換する。最終のセルフレビューが終わった後に行う。
-    - [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](../../../adr/0003-spec-review-html.md)
+    - ADR-0003: [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](../../../adr/0003-spec-review-html.md)
   - 変換した HTML をコミットし、CI が変更の依頼ごとに公開する。レビューする人は、公開された URL を開いて読む。
   - HTML の骨組みは、テンプレートとしてパッケージに持つ。
   - issue を閉じる時点で、HTML も spec と一緒に削除する。
@@ -44,8 +44,8 @@ Design Doc と context は frontmatter を持つ。
 この形式は Open Knowledge Format に適合する。  
 同仕様に依存するのは、必須の `type` と、予約されたファイル名の 2 点だけにする。`governs` と `verified_commit` は、同仕様が認める独自のキーである。
 
-- [context を Open Knowledge Format に適合させ、依存は 2 点に絞る](../../../adr/0002-context-format.md)
-- [Open Knowledge Format 仕様](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md)
+- ADR-0002: [context を Open Knowledge Format に適合させ、依存は 2 点に絞る](../../../adr/0002-context-format.md)
+- 出典: [Open Knowledge Format 仕様](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md)
 
 キーは次のとおり。
 
