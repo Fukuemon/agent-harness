@@ -36,12 +36,12 @@ dependencies:
     .agents/skills/docs-writing/SKILL.md: sha256:513a5095efb16178a0ae564cfd11c1ce4a193aad306d2fa86b783e1eee68edb3
     .agents/skills/docs-writing/references/adr.md: sha256:ccfef85d1c28eeb799727b9d932e7cb5c909c90f33d345940678e93b318cb7f0
     .agents/skills/docs-writing/references/context.md: sha256:6933fbdc030a17520278018bb10e2846395888ba7d2bd0d6b03225cbef2cc214
-    .agents/skills/docs-writing/references/design-doc.md: sha256:e91a181d504a2dfb4da60414662413352c0ea4c73d380f7b2642245ac16015d7
+    .agents/skills/docs-writing/references/design-doc.md: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
     .agents/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
     .claude/skills/docs-writing/SKILL.md: sha256:513a5095efb16178a0ae564cfd11c1ce4a193aad306d2fa86b783e1eee68edb3
     .claude/skills/docs-writing/references/adr.md: sha256:ccfef85d1c28eeb799727b9d932e7cb5c909c90f33d345940678e93b318cb7f0
     .claude/skills/docs-writing/references/context.md: sha256:6933fbdc030a17520278018bb10e2846395888ba7d2bd0d6b03225cbef2cc214
-    .claude/skills/docs-writing/references/design-doc.md: sha256:e91a181d504a2dfb4da60414662413352c0ea4c73d380f7b2642245ac16015d7
+    .claude/skills/docs-writing/references/design-doc.md: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
     .claude/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
   source: local
   local_path: ./skills/docs-writing
@@ -122,7 +122,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:e91a181d504a2dfb4da60414662413352c0ea4c73d380f7b2642245ac16015d7
+  content_hash: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing/references/prd.md
@@ -212,7 +212,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:e91a181d504a2dfb4da60414662413352c0ea4c73d380f7b2642245ac16015d7
+  content_hash: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing/references/prd.md
