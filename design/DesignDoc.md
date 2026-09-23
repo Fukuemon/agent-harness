@@ -15,7 +15,7 @@ keywords: [パッケージ, microsoft/apm, プラグイン, lefthook]
 ## 概要
 
 agent-harness は、AI エージェントにプロジェクト固有の知識とガードレールを与えるパッケージである。  
-進め方の標準も定める。具体のワークフローのハーネスは、利用者が必要に応じて選んで導入する。
+開発プロセスの標準も定める。具体のワークフローのハーネスは、利用者が必要に応じて選んで導入する。
 
 対象のコーディングエージェントは Claude Code と Codex CLI である。Cursor は可能な範囲で対応する。
 
@@ -145,8 +145,8 @@ C4Context
 
 - **文書の体系:** Design Doc、context、ADR、spec の構造と、どの情報をどの文書に書くかのルール、文書のチェックを持つ。利用者の知識の中身は持たない。内容の正しさは判定しない。
   - [文書の体系の Design Doc](features/documents/DesignDoc_documents.md)
-- **進め方の標準:** 開発のプロセスの定義、要求ごとに決める点と選択肢、宣言の schema を持つ。作業を次へ進める制御は持たない。
-  - [進め方の標準の Design Doc](features/process/DesignDoc_process.md)
+- **開発プロセス:** 開発のプロセスの定義、要求ごとに決める点と選択肢、宣言の schema を持つ。作業を次へ進める制御は持たない。
+  - [開発プロセスの Design Doc](features/process/DesignDoc_process.md)
 - **ガードレール:** 保護ブランチの保護と、秘密情報の混入の防止をフックとして持つ。コーディングエージェントの権限の仕組みそのものは実装しない。
 
 ## パッケージの外に置くもの
