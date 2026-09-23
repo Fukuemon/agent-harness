@@ -51,6 +51,7 @@ agent-harness/
 │           └── DesignDoc_<機能名>.md
 ├── context/                    このリポジトリの運用の取り決め
 ├── adr/
+├── CONTRIBUTING.md             開発の準備
 ├── PRD.md
 ├── apm.yml
 └── apm.lock.yaml
