@@ -37,7 +37,7 @@ pnpm lint:text
 
 ブランチは、main と、issue ごとの作業用のブランチだけにする。
 
-- 作業用のブランチの名前は `<issue 番号>-<短い主題>` にする。例は `12-link-check`。
+- 作業用のブランチの名前は `feature/<issue 番号>` にする。例は `feature/6`。不具合の issue は `fix/<issue 番号>` にする。
 - main へは、変更の依頼を通して取り込む。マージの方法はマージコミットだけで、取り込んだブランチは消す。
 - main へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
 
@@ -51,20 +51,20 @@ pnpm lint:text
 ```mermaid
 gitGraph
     commit id: "v0.1.0" tag: "v0.1.0"
-    branch "42-link-check"
-    checkout "42-link-check"
+    branch "feature/42"
+    checkout "feature/42"
     commit id: "42-1"
     checkout main
-    branch "43-index"
-    checkout "43-index"
+    branch "feature/43"
+    checkout "feature/43"
     commit id: "43-1"
     commit id: "43-2"
     checkout main
-    merge "42-link-check" id: "PR #42"
-    checkout "43-index"
+    merge "feature/42" id: "PR #42"
+    checkout "feature/43"
     commit id: "43-3"
     checkout main
-    merge "43-index" id: "PR #43"
+    merge "feature/43" id: "PR #43"
     commit id: "release-please" tag: "v0.2.0"
 ```
 
