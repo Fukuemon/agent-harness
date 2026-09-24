@@ -34,14 +34,14 @@ dependencies:
   - .claude/skills/docs-writing/references/prd.md
   deployed_file_hashes:
     .agents/skills/docs-writing/SKILL.md: sha256:513a5095efb16178a0ae564cfd11c1ce4a193aad306d2fa86b783e1eee68edb3
-    .agents/skills/docs-writing/references/adr.md: sha256:ccfef85d1c28eeb799727b9d932e7cb5c909c90f33d345940678e93b318cb7f0
+    .agents/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
     .agents/skills/docs-writing/references/context.md: sha256:56e07ce5010f335e70389924f7e8f3f45d5c0e8bda60973f86a69bf3a5c5e914
-    .agents/skills/docs-writing/references/design-doc.md: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
+    .agents/skills/docs-writing/references/design-doc.md: sha256:5dd0eb66443fedd2a1a1cb28c6013b237d30297c378efe1d6736b7c4b44cdf09
     .agents/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
     .claude/skills/docs-writing/SKILL.md: sha256:513a5095efb16178a0ae564cfd11c1ce4a193aad306d2fa86b783e1eee68edb3
-    .claude/skills/docs-writing/references/adr.md: sha256:ccfef85d1c28eeb799727b9d932e7cb5c909c90f33d345940678e93b318cb7f0
+    .claude/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
     .claude/skills/docs-writing/references/context.md: sha256:56e07ce5010f335e70389924f7e8f3f45d5c0e8bda60973f86a69bf3a5c5e914
-    .claude/skills/docs-writing/references/design-doc.md: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
+    .claude/skills/docs-writing/references/design-doc.md: sha256:5dd0eb66443fedd2a1a1cb28c6013b237d30297c378efe1d6736b7c4b44cdf09
     .claude/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
   source: local
   local_path: ./skills/docs-writing
@@ -55,8 +55,8 @@ dependencies:
   - .claude/skills/git-commit
   - .claude/skills/git-commit/SKILL.md
   deployed_file_hashes:
-    .agents/skills/git-commit/SKILL.md: sha256:82c20a6d274d4381eb46c92b0957fd7e6739c16016af3eee8941a12f8506edbe
-    .claude/skills/git-commit/SKILL.md: sha256:82c20a6d274d4381eb46c92b0957fd7e6739c16016af3eee8941a12f8506edbe
+    .agents/skills/git-commit/SKILL.md: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
+    .claude/skills/git-commit/SKILL.md: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
   source: local
   local_path: ./skills/git-commit
 deployments:
@@ -104,7 +104,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:ccfef85d1c28eeb799727b9d932e7cb5c909c90f33d345940678e93b318cb7f0
+  content_hash: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing/references/context.md
@@ -122,7 +122,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
+  content_hash: sha256:5dd0eb66443fedd2a1a1cb28c6013b237d30297c378efe1d6736b7c4b44cdf09
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing/references/prd.md
@@ -149,7 +149,7 @@ deployments:
   owners:
   - ./skills/git-commit
   active_owner: ./skills/git-commit
-  content_hash: sha256:82c20a6d274d4381eb46c92b0957fd7e6739c16016af3eee8941a12f8506edbe
+  content_hash: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -194,7 +194,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:ccfef85d1c28eeb799727b9d932e7cb5c909c90f33d345940678e93b318cb7f0
+  content_hash: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing/references/context.md
@@ -212,7 +212,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:88d0508384a0136b126c54ff1e58c59ec4432b91ebece355deac6c8e0d4e7f97
+  content_hash: sha256:5dd0eb66443fedd2a1a1cb28c6013b237d30297c378efe1d6736b7c4b44cdf09
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing/references/prd.md
@@ -239,4 +239,4 @@ deployments:
   owners:
   - ./skills/git-commit
   active_owner: ./skills/git-commit
-  content_hash: sha256:82c20a6d274d4381eb46c92b0957fd7e6739c16016af3eee8941a12f8506edbe
+  content_hash: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31

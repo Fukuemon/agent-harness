@@ -8,18 +8,18 @@ keywords: [保護ブランチ, 禁止するコマンド, 秘密情報, フック
 
 # ガードレール
 
-## 概要
+## Overview
 
 パッケージ「ガードレール」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
 取り返しのつかない操作を、モデルが指示を守るかどうかに関係なく止める。止める仕組みは 1 つで、何を止めるかはプロダクトごとの規則として `project.yml` で決める。
 
-## 範囲
+## Scope
 
 - 持つもの: 操作を止める仕組み。規則の一覧と、規則ごとの判定。値のファイルからの設定の読み取り。コーディングエージェントごとの対応表。
 - 分類: ガードレール。
 - 持たないもの: コーディングエージェントの権限の仕組み。ホスティングサービス側のブランチの保護の設定。結果を報告するだけのチェック。それらは文書の体系と開発プロセスが持つ。
 
-## 設計
+## Design
 
 ### 仕組み
 
@@ -62,14 +62,14 @@ guardrails:
 - `forbidden_commands` の `pattern` は、コマンドの文字列に対する部分の一致である。`reason` は必須で、拒否のときに表示する。
 - `secrets` の除外は、secretlint の設定で行う。
 
-## 利用者のリポジトリでの形
+## Interface
 
 - 置くファイル: なし。規則は `context/project.yml` の `guardrails` に書く。secretlint の設定は、テンプレートから写す。
 - 読む値: `guardrails.protected_branches`、`guardrails.forbidden_commands`、`guardrails.secrets`。
 - 動くフック: Claude Code と Codex CLI のツール実行前のフック。lefthook の `pre-commit` と `pre-push`。
 - 対応表: コーディングエージェントごとに、フックが発火する条件と、確認したバージョンを README に載せる。Codex CLI は、利用者がプロジェクトのフックを信頼するまで発火しない。信頼するまでは、Git のフックだけが働く。
 
-## 検証
+## Verification
 
 - コーディングエージェントに保護ブランチへの直接コミットを指示し、拒否されること。AGENTS.md を空にしても変わらないこと。
 - `direct_commit.allow` を `true` にした場合は通り、理由が表示されること。

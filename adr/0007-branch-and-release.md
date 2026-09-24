@@ -1,10 +1,10 @@
 # ADR-0007: main と作業用のブランチだけで運用し、release-please でタグを付ける
 
-## 状態
+## Status
 
 承認
 
-## 背景
+## Context
 
 利用者は、パッケージマネージャーのマニフェストに、このリポジトリのタグを書いてバージョンを固定する。  
 タグは、利用者との契約の一部である。付け方を運用の都合で変えると、利用者のマニフェストが影響を受ける。
@@ -12,7 +12,7 @@
 このリポジトリには、デプロイする環境がない。複数のバージョンを同時に保守する予定もない。  
 コミットメッセージは、Conventional Commits の形に自動チェックで固定している。
 
-## 決定
+## Decision
 
 次の 4 点を決めた。
 
@@ -27,7 +27,7 @@
   - 検証用や本番用の環境を持つ製品では、統合用のブランチや要件ごとのブランチが合う場合がある。
   - npm のパッケージを複数持つリポジトリでは、changesets が合う場合がある。
 
-## 検討した選択肢
+## Considered Options
 
 | 選択肢 | 強み | 弱み |
 | --- | --- | --- |
@@ -42,14 +42,14 @@
   - [Intro to using changesets](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)
   - [Versioning apps](https://github.com/changesets/changesets/blob/main/docs/versioning-apps.md)
 
-## 影響
+## Consequences
 
-### 良い影響
+### Positive
 
 - 利用者は、タグを見れば変更の大きさが分かる。
 - リリースの作業が、変更の依頼を 1 つ取り込むだけになる。
 
-### 悪い影響
+### Negative
 
 - バージョンの正しさが、コミットメッセージの type の正しさに依存する。
 - マニフェストの中のバージョンの項目を、release-please に更新させる設定が要る。できるかどうかは確かめていない。

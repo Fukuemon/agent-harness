@@ -1,10 +1,10 @@
 # ADR-0002: context を Open Knowledge Format に適合させ、依存は 2 点に絞る
 
-## 状態
+## Status
 
 承認
 
-## 背景
+## Context
 
 Design Doc と context は frontmatter 付きの Markdown で、キーは `type`、`title`、`description`、`keywords`、`governs`、`verified_commit` である。
 
@@ -25,7 +25,7 @@ Open Knowledge Format は、Google Cloud が公開した知識の形式の仕様
   - [互換性のない変更を指摘する issue](https://github.com/GoogleCloudPlatform/open-knowledge-format/issues/24)
 - Claude Code と Codex CLI の公式文書に同仕様の記載はなく、どのコーディングエージェントもこの形式のディレクトリを自動では見つけない。
 
-## 決定
+## Decision
 
 次の 3 点を決めた。
 
@@ -35,7 +35,7 @@ Open Knowledge Format は、Google Cloud が公開した知識の形式の仕様
 - 文書の状態を持たせるなら、キーは `status`、値は同仕様の 3 つに合わせる。
   - 日本語の独自の値は、同仕様に対応したツールが解釈できない。
 
-## 検討した選択肢
+## Considered Options
 
 
 | 選択肢                               | 強み                         | 弱み                             |
@@ -45,14 +45,14 @@ Open Knowledge Format は、Google Cloud が公開した知識の形式の仕様
 | 任意の項目も広く使う                        | 出所、確認の記録、失効日時を標準の形で持てる     | 任意の項目の名前が変わった前例があり、変更のたびに修正が要る |
 
 
-## 影響
+## Consequences
 
-### 良い影響
+### Positive
 
 - Design Doc と context を、同仕様に対応したツールでそのまま読める。
 - 同仕様が使われなくなっても、ただの Markdown として残る。
 
-### 悪い影響
+### Negative
 
 - 同仕様のバージョンが上がるたびに、必須の項目と予約されたファイル名の変更の有無を確認する必要がある。
 - 既存の文書が日本語の状態の値を使っている場合、移すときに値を置き換える必要がある。

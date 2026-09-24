@@ -8,18 +8,18 @@ keywords: [Design Doc, context, ADR, spec, frontmatter, Open Knowledge Format, i
 
 # 文書の体系
 
-## 概要
+## Overview
 
 パッケージ「文書の体系」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
 利用者のリポジトリに置く文書の種類と寿命、frontmatter、文書のチェックを定める。
 
-## 範囲
+## Scope
 
 - 持つもの: Design Doc、context、ADR、spec の構造。どの情報をどの文書に書くかのルール。文書のチェック。テンプレート。共通の基盤を写す導入のスキル。
 - 持たないもの: 利用者の知識の中身。内容の正しさの判定。作業を次へ進める制御。
 - 分類: プロジェクト固有の知識の入れ物と、自動チェック。
 
-## 設計
+## Design
 
 ### 文書の種類と寿命
 
@@ -130,7 +130,7 @@ context のテンプレートは、話題ごとに用意する。どれを置く
 - spec の消し忘れのチェックで、削除されていない spec を報告する。
 - issue の close をきっかけに、spec のディレクトリを削除する変更の依頼を CI が自動で作る。取り込むかどうかの判断が、移し終えたことの確認になる。自動では削除しない。作るのはチェックではなく CI のワークフローで、GitHub Actions の設定の例を `examples/ci/` に置く。
 
-## 利用者のリポジトリでの形
+## Interface
 
 - 置くファイル: Design Doc、context、ADR、spec と、context の目次 `index.md`。ルートに AGENTS.md と CONTRIBUTING.md。最初の一式は導入のスキルが写す。
 - 読む値: `docs` の各ディレクトリ名。
