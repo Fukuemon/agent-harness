@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "lint:text": "textlint \"*.md\" \"adr/*.md\" \"design/**/*.md\" \"context/*.md\" \"skills/**/*.md\" \".github/**/*.md\"",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "check:project": "node scripts/validate-project.mjs",
+    "test": "node --test \"scripts/**/*.test.mjs\""
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
@@ -15,5 +17,9 @@
     "textlint-rule-preset-ai-words-ja": "^1.2.1",
     "textlint-rule-prh": "^6.1.0",
     "textlint-rule-sentence-length": "^5.2.1"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "yaml": "^2.9.1"
   }
 }
