@@ -92,7 +92,7 @@ keywords: [プロセス, 宣言, YAML, schema, ワークフローのハーネス
 選んだ結果は、YAML で宣言する。
 
 - プロジェクトの既定は、プロジェクトごとの値のファイルの `process.defaults` に書く。
-  - [プロジェクトごとの値の Design Doc](../values/DesignDoc_values.md)
+  - [core の Design Doc](../core/DesignDoc_core.md)
 - 要求ごとの選択と、プロセスごとの進み具合は、要求ごとの YAML に書く。spec と同じ場所に置く。
 - 要求ごとの YAML と spec は、Git で管理する。issue を閉じる時点で、一緒に削除する。
 - spec を置かない要求は、プロジェクトの既定の選択のまま進める。進み具合は issue の状態で表し、`process.yml` は置かない。`process.yml` を持つのは、spec を置く要求だけである。

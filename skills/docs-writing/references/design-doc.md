@@ -40,7 +40,7 @@
 ## frontmatter
 
 Design Doc は frontmatter を持つ。`type` は、全体像が `design-doc`、機能ごとの設計が `feature-design`。  
-キーの一覧と意味は、`design/features/documents/DesignDoc_documents.md` の frontmatter の節にある。  
+基本のキーは `design/features/core/DesignDoc_core.md` の frontmatter の節にある。`governs` と `verified_commit` は `design/features/documents/DesignDoc_documents.md` のずれの検出の節にある。  
 見出しの下には Owner と Reviewers だけを置く。状態は frontmatter の `status` で持ち、本文に重ねて書かない。
 
 ## 図の段階
