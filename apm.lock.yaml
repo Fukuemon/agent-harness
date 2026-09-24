@@ -55,8 +55,8 @@ dependencies:
   - .claude/skills/git-commit
   - .claude/skills/git-commit/SKILL.md
   deployed_file_hashes:
-    .agents/skills/git-commit/SKILL.md: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
-    .claude/skills/git-commit/SKILL.md: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
+    .agents/skills/git-commit/SKILL.md: sha256:5577961aac9525f97667a4761bc4f09d11424654e4567116950739c5fb793862
+    .claude/skills/git-commit/SKILL.md: sha256:5577961aac9525f97667a4761bc4f09d11424654e4567116950739c5fb793862
   source: local
   local_path: ./skills/git-commit
 deployments:
@@ -149,7 +149,7 @@ deployments:
   owners:
   - ./skills/git-commit
   active_owner: ./skills/git-commit
-  content_hash: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
+  content_hash: sha256:5577961aac9525f97667a4761bc4f09d11424654e4567116950739c5fb793862
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -239,4 +239,4 @@ deployments:
   owners:
   - ./skills/git-commit
   active_owner: ./skills/git-commit
-  content_hash: sha256:2203bd7fddf710dd9067e65a8fed0e258e1e32f11eb52f58a5bc0abe2c93ea31
+  content_hash: sha256:5577961aac9525f97667a4761bc4f09d11424654e4567116950739c5fb793862
