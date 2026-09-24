@@ -50,10 +50,11 @@ protected_branches:
 # 開発プロセスが読む。要求ごとに決める 4 つの点の既定
 process:
   defaults:
-    processes: []       # 行うプロセス
-    reflect_at: ""      # Design Doc と ADR へ反映する時点
-    breakdown_at: ""    # タスクへの分解と起票の時点
-    review: []          # レビューする範囲
+    processes: [requirements, design, implementation, verification-design, verification, integration, release]
+    reflect_at: design      # Design Doc と ADR へ反映する時点。識別子か none
+    breakdown_at: design    # タスクへの分解と起票の時点。識別子か none
+    review: [requirements, design, integration]
+  additional: []            # 利用者が足すプロセス。id、name、purpose、deliverable、done_when を持つ
 ```
 
 - `version` は schema の版である。必須。

@@ -40,7 +40,21 @@ keywords: [プロセス, 宣言, YAML, schema, ワークフローのハーネス
 - それぞれに、目的、成果物、完了の条件を定める。
 - 順序は定めない。繰り返すことも、並行して行うことも、前のプロセスへ戻ることも認める。
 - レビューは、どのプロセスにも付けられる共通の仕組みとする。レビュー用の HTML への変換は、どのプロセスのレビューでも使える。
-- プロセスを足すかどうかは、利用者が決める。
+- プロセスを足すかどうかは、利用者が決める。足すプロセスは、値のファイルの `process.additional` に、同じ 4 つの項目で書く。
+
+識別子は英字の slug で、YAML の値と schema に使う。文書では日本語の名前で呼ぶ。
+
+| 識別子 | 名前 | 目的 | 成果物 | 完了の条件 |
+| --- | --- | --- | --- | --- |
+| `requirements` | 要件定義 | 何を、誰のために、どこまで作るかを決める | spec の要求と受け入れ基準 | 受け入れ基準が書かれている。レビューを選んだなら、承認されている |
+| `design` | 設計 | どう作るかを決め、比較した判断を残す | spec の設計。比較した判断の ADR | 設計が spec にある。反映する時点に選んだなら、Design Doc と ADR へ移されている |
+| `implementation` | 実装 | 設計をコードと文書にする | 作業用のブランチの変更 | 受け入れ基準の各項目に対応する変更がある |
+| `verification-design` | 検証の設計 | 何をどう確かめるかを決める | 確かめ方の一覧。自動のテストと、手動の手順 | 受け入れ基準の各項目に、確かめ方が対応づいている |
+| `verification` | 検証の実施 | 受け入れ基準を満たすことを確かめる | 実行の結果。CI の結果と、手動の記録 | すべての確かめ方が実行され、失敗が残っていない |
+| `integration` | 取り込み | 変更を基準のブランチへ入れる | 取り込まれた変更の依頼 | 変更の依頼が取り込まれ、issue が閉じられている |
+| `release` | リリース | 利用者が使える形にする | タグとリリースの記述 | タグが付き、リリースの記述が公開されている |
+
+レビューは、選んだプロセスの成果物を、人が確認して承認する。レビューを選んだプロセスは、承認をもって完了とする。
 
 ### 要求ごとに決める点
 
@@ -53,13 +67,24 @@ keywords: [プロセス, 宣言, YAML, schema, ワークフローのハーネス
 
 タスクの種類ごとの流れは用意しない。種類の違いは、この 4 つの組み合わせで表す。
 
+値の形は次のとおり。
+
+| キー | 値 | 意味 |
+| --- | --- | --- |
+| `processes` | 識別子の一覧 | 行うプロセス。順序は表さない |
+| `reflect_at` | 識別子か `none` | そのプロセスの完了の後に、Design Doc と ADR へ反映する。`none` は反映しない |
+| `breakdown_at` | 識別子か `none` | そのプロセスの完了の後に、タスクへ分解して issue を起票する。`none` は起票しない |
+| `review` | 識別子の一覧 | レビューして承認を得るプロセス。空なら、レビューしない |
+
+時点を「プロセスの完了の後」で表すのは、レビューを選んだプロセスが承認をもって完了するためである。「設計のレビューの後」は `design` と書く。
+
 次の表は、組み合わせの例である。
 
-| 要求の例 | 行うプロセス | Design Doc と ADR へ反映する時点 | タスクへの分解と起票の時点 | レビューの要否と範囲 |
+| 要求の例 | `processes` | `reflect_at` | `breakdown_at` | `review` |
 | --- | --- | --- | --- | --- |
-| 誤記の修正 | 実装、取り込み | 反映なし | 起票なし | 取り込みだけ |
-| 新しい機能の追加 | 7 つすべて | 設計のレビューの後 | 設計のレビューの後 | 要件定義、設計、取り込み |
-| 試さないと設計が決まらない性能の改善 | 7 つすべて | 検証の実施の後 | 要件定義の後 | 設計、検証の実施、取り込み |
+| 誤記の修正 | `[implementation, integration]` | `none` | `none` | `[integration]` |
+| 新しい機能の追加 | 7 つすべて | `design` | `design` | `[requirements, design, integration]` |
+| 試さないと設計が決まらない性能の改善 | 7 つすべて | `verification` | `requirements` | `[design, verification, integration]` |
 
 ### 宣言
 
@@ -71,6 +96,31 @@ keywords: [プロセス, 宣言, YAML, schema, ワークフローのハーネス
 - 要求ごとの YAML と spec は、Git で管理する。issue を閉じる時点で、一緒に削除する。
 - YAML の schema を提供する。schema に合わない宣言は、チェックが報告する。
 - 宣言は、現在の状況の記録である。一方向の状態遷移としては扱わない。前のプロセスへ戻った場合は、進み具合を書き直す。
+
+要求ごとの YAML の形は次のとおり。ファイル名は `process.yml` で、spec のディレクトリに置く。
+
+```yaml
+version: 1
+issue: 42
+processes: [requirements, design, implementation, verification-design, verification, integration, release]
+reflect_at: design
+breakdown_at: design
+review: [requirements, design, integration]
+progress:
+  requirements: done
+  design: in-progress
+  implementation: pending
+  verification-design: pending
+  verification: pending
+  integration: pending
+  release: pending
+```
+
+- `version` は schema の版。`issue` は対応する issue の番号。
+- 4 つの決める点は、プロジェクトの既定と同じキーで書く。要求ごとの値が、既定より優先する。
+- `progress` は、`processes` にあるプロセスごとに 1 つ持つ。値は `pending`、`in-progress`、`done`、`on-hold` の 4 つである。
+  - `pending` は着手前、`in-progress` は作業中、`done` は完了の条件を満たした状態、`on-hold` は判断待ちである。
+  - 前のプロセスへ戻ったときは、そのプロセスを `in-progress` に書き直す。`done` に戻す条件は、完了の条件と同じである。
 
 ### agent-harness と利用者のリポジトリの分担
 
@@ -105,7 +155,7 @@ flowchart TB
 
 ## 利用者のリポジトリでの形
 
-- 置くファイル: 要求ごとの YAML。spec と同じ場所に置く。
+- 置くファイル: 要求ごとの `process.yml`。spec のディレクトリに置く。
 - 読む値: `process.defaults`。要求ごとに決める 4 つの点の既定。
 - 動くチェック: 宣言の形式。プロジェクトの既定と要求ごとの YAML が schema に合うかを確認する。
 
