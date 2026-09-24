@@ -30,15 +30,16 @@ pnpm lint:text
 
 - コミットの前に、ステージした Markdown を textlint でチェックする。
 - コミットメッセージは commitlint でチェックする。Conventional Commits の形式に加えて、要約の末尾の句点と、AI の帰属表示を禁止している。
-- メッセージの書き方と変更の分け方は `skills/git-commit/SKILL.md` にある。
+- メッセージの書き方と変更の分け方は `skills/git-commit/SKILL.md` にある。issue と変更の依頼の書き方も同じスキルにある。
 - ブランチの切り方と main への取り込み方は、[ブランチとリリース](#ブランチとリリース)の節にある。
 
 ## ブランチとリリース
 
 ブランチは、main と、issue ごとの作業用のブランチだけにする。
 
-- 設計が固まり、タスクへの分解と実装に移るまでは、main へ直接コミットして push する。
-- 実装に移った後は、main へは変更の依頼を通して取り込む。
+- 作業用のブランチの名前は `<issue 番号>-<短い主題>` にする。例は `12-link-check`。
+- main へは、変更の依頼を通して取り込む。マージの方法はマージコミットだけで、取り込んだブランチは消す。
+- main へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
 
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
 バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の変更の依頼を作る。
@@ -50,21 +51,27 @@ pnpm lint:text
 ```mermaid
 gitGraph
     commit id: "v0.1.0" tag: "v0.1.0"
-    branch "issue-42"
-    checkout "issue-42"
+    branch "42-link-check"
+    checkout "42-link-check"
     commit id: "42-1"
     checkout main
-    branch "issue-43"
-    checkout "issue-43"
+    branch "43-index"
+    checkout "43-index"
     commit id: "43-1"
     commit id: "43-2"
     checkout main
-    merge "issue-42" id: "PR #42"
-    checkout "issue-43"
+    merge "42-link-check" id: "PR #42"
+    checkout "43-index"
     commit id: "43-3"
     checkout main
-    merge "issue-43" id: "PR #43"
+    merge "43-index" id: "PR #43"
     commit id: "release-please" tag: "v0.2.0"
 ```
 
 これは、このリポジトリ自身の選択である。利用者のブランチ運用と、バージョンの付け方は、利用者が決める。
+
+## issue と変更の依頼
+
+- 作業は issue から始める。`.github/ISSUE_TEMPLATE/` の form で起票する。form が種類のラベル `type:*`（`requirements`、`task`、`bug`）を付けるので、パッケージのラベル `pkg:*` と、PRD の Milestones に対応する milestone を足す。タスクは親の要求の sub-issue にする。
+- 設計が要る作業だけ、`specs/<issue 番号>-<短い主題>/` に spec と `process.yml` を置く。それ以外は `context/project.yml` の既定の選択のまま進め、進み具合は issue の状態で表す。
+- 変更の依頼は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。本文の先頭に `Closes #<番号>` を書き、題は issue の題と同じにする。本文の節は `.github/pull_request_template.md` にある。
