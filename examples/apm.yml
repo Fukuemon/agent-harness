@@ -1,12 +1,6 @@
-# 利用者のリポジトリのマニフェストの例。apm install が読む。
-# core は、ほかのパッケージが前提にする。core 以外は要るものだけを書く。
-# タグを付けて版を固定する。
 name: my-project
 version: 0.1.0
 targets: [claude, codex]
 dependencies:
   apm:
     - Fukuemon/agent-harness/packages/core#v0.1.0
-    # - Fukuemon/agent-harness/packages/docs#v0.1.0
-    # - Fukuemon/agent-harness/packages/guardrails#v0.1.0
-    # - Fukuemon/agent-harness/packages/process#v0.1.0
