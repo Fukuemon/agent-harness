@@ -31,11 +31,12 @@
 値の形は次のとおりである。
 
 ```yaml
-protected_branches:
-  names: [main]
-  direct_commit:
-    allow: false
-    reason: ""
+guardrails:
+  protected_branches:
+    names: [main]
+    direct_commit:
+      allow: false
+      reason: ""
 ```
 
 ## 検討した選択肢

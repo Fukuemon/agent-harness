@@ -11,7 +11,8 @@ keywords: [project.yml, schema, JSON Schema, 値, キー]
 ## 概要
 
 パッケージが共有する、プロジェクトごとの値のファイルの設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
-利用者のリポジトリごとに違う値を 1 つのファイルに集め、パッケージのスキルとチェックがそこから読む。
+利用者のリポジトリごとに違う値を 1 つのファイルに集め、パッケージのスキルとチェックがそこから読む。  
+このファイルと `context/` の文書が、すべてのパッケージに共通の基盤である。値は機械が読み、文書はモデルが読む。
 
 ## 範囲
 
@@ -40,14 +41,18 @@ docs:
   adr: adr
   spec: specs         # issue ごとに specs/<issue 番号>-<slug>/ を置く
 
-# ガードレールが読む
-protected_branches:
-  names: [main]
-  direct_commit:
-    allow: false
-    reason: ""
+# ガードレールが読む。規則ごとにキーを持ち、キーがない規則は無効
+guardrails:
+  protected_branches:
+    names: [main]
+    direct_commit:
+      allow: false
+      reason: ""
+  forbidden_commands: []
+  secrets:
+    enabled: true
 
-# 開発プロセスが読む。要求ごとに決める 4 つの点の既定
+# 開発プロセスが読む。要求ごとの選択の既定
 process:
   defaults:
     processes: [requirements, design, implementation, verification-design, verification, integration, release]
@@ -76,6 +81,6 @@ process:
 
 ## 利用者のリポジトリでの形
 
-- 置くファイル: `context/project.yml`。テンプレートは、文書の体系のスキルの `assets/` から写す。
-- 読むパッケージ: 文書の体系が `docs`、ガードレールが `protected_branches`、開発プロセスが `process` を読む。
+- 置くファイル: `context/project.yml`。`examples/project.yml` を写す。
+- 読むパッケージ: 文書の体系が `docs`、ガードレールが `guardrails`、開発プロセスが `process` を読む。
 - 動くチェック: schema による検証。値を読むすべてのチェックの先頭で動く。
