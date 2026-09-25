@@ -72,6 +72,15 @@ test("--diff は差分を表示して終了コード 1、--force は名指しし
   assert.equal(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), "mine too\n");
 });
 
+test("2 回目は引数を省いても、値のファイルと選んだ話題を引き継ぐ", () => {
+  const { repo, script } = setup();
+  run(repo, script, ["--branches", "main,develop", "--topics", "testing", "--docs", "d,a,s"]);
+  const d = run(repo, script, ["--diff"]);
+  assert.equal(d.status, 0, d.out);
+  assert.match(d.out, /context\/testing\.md: 差分なし/);
+  assert.match(d.out, /context\/project\.yml: 差分なし/);
+});
+
 test("知らない話題と、テンプレートにない --force は終了コード 2", () => {
   const { repo, script } = setup();
   assert.equal(run(repo, script, ["--topics", "nope"]).status, 2);

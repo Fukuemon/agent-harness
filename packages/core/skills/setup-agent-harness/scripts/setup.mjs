@@ -1,5 +1,6 @@
 // 導入のスキルが呼ぶ。このスキルと兄弟のスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--topics tech-stack,testing] [--docs design,adr,specs] [--diff] [--force <パス>]...
+// 省いた値は、既にある context/project.yml と context/ から引き継ぐ。それもなければ main、話題なし、design,adr,specs
 // 終了コード: 0 は完了、1 は --diff で差分あり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
@@ -9,7 +10,7 @@ import { tmpdir } from "node:os";
 
 const TOPICS = ["tech-stack", "codebase", "testing", "operations"];
 
-const opts = { branches: "main", topics: "", docs: "design,adr,specs", diff: false, force: [] };
+const opts = { branches: "", topics: "", docs: "", diff: false, force: [] };
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
@@ -18,6 +19,13 @@ for (let i = 0; i < argv.length; i++) {
   else if (a.startsWith("--") && a.slice(2) in opts) opts[a.slice(2)] = argv[++i];
   else fail(`知らない引数: ${a}`);
 }
+const root = process.cwd();
+// 省いた値は、既にある値のファイルと context から引き継ぐ。--diff と --force で利用者の値を差分にしないためである
+const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
+const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.*)$`, "m").exec(existing)?.[1] ?? fallback;
+opts.branches ||= pick("names", "[main]").replace(/[\[\]\s]/g, "");
+opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
+opts.topics ||= TOPICS.filter((t) => existsSync(join(root, `context/${t}.md`))).join(",");
 const topics = opts.topics ? opts.topics.split(",") : [];
 const docs = opts.docs.split(",");
 for (const t of topics) if (!TOPICS.includes(t)) fail(`知らない話題: ${t}。選べるのは ${TOPICS.join(", ")}`);
@@ -26,7 +34,6 @@ if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
 const skillDir = fileURLToPath(new URL("..", import.meta.url));
 const skillsRoot = dirname(skillDir);
-const root = process.cwd();
 
 // 候補: 写す先の相対パス → 内容
 const candidates = new Map();
