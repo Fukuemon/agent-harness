@@ -1,16 +1,16 @@
 ---
 type: context
 title: コードベースの構造
-description: モジュールの境界と、依存してよい向き。コードから読み取れる構造は書かない
+description: モジュールの境界、依存してよい向き、状態の置き場、新しいコードの置き場。コードから読み取れる構造は書かない
 status: draft
 ---
 
 # コードベースの構造
 
-## なぜこの境界で分けているか
+## Module Boundaries
 
-## 何に何を依存させないか
+## Dependency Rules
 
-## 状態をどこに持つか
+## State Ownership
 
-## 新しいコードをどこに置くか
+## Placement Rules

@@ -7,10 +7,10 @@ status: draft
 
 # コードの規約
 
-## 名前をどう付けるか
+## Naming
 
-## コメントに何を書き、何を書かないか
+## Comments
 
-## 共有の設定をどこに置き、どう参照するか
+## Shared Configuration
 
-## 自動チェックから何を除外し、なぜか
+## Check Exclusions

@@ -7,6 +7,6 @@ status: draft
 
 # 業務の知識
 
-## 用語は何を指すか
+## Glossary
 
-## 概念ごとの文書はどれか
+## Concepts

@@ -1,18 +1,18 @@
 ---
 type: context
 title: 基盤と運用
-description: 環境の種類、デプロイの条件、秘密情報の置き場の方針
+description: 環境の種類、デプロイと切り戻しの条件、監視、秘密情報の置き場の方針
 status: draft
 ---
 
 # 基盤と運用
 
-## どの環境で動かすか
+## Environments
 
-## いつ、何を満たせばデプロイしてよいか
+## Deployment Conditions
 
-## 何を見て正常と判断するか
+## Health and Monitoring
 
-## 戻すときはどうするか
+## Rollback
 
-## 秘密情報をどこに置き、どこに置かないか
+## Secrets

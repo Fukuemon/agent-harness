@@ -1,16 +1,16 @@
 ---
 type: context
 title: テスト
-description: テストの種類ごとの責務と、実行に要る環境の条件
+description: テストの種類ごとの責務、実行に要る環境の条件、置き換えの方針、変更に足すテスト
 status: draft
 ---
 
 # テスト
 
-## どの種類のテストが何を保証するか
+## Test Types and Guarantees
 
-## 実行に何が要るか
+## Runtime Requirements
 
-## 何を本物で動かし、何を置き換えるか
+## Mocking and Test Data
 
-## どの変更にどのテストを足すか
+## Required Tests

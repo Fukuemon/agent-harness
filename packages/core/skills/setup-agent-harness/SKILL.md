@@ -37,7 +37,7 @@ node <このスキルのディレクトリ>/scripts/setup.mjs --force CONTRIBUTI
 
 ## 写すもの
 
-- このスキルの `assets/` の全部。`context/project.yml`、AGENTS.md、CONTRIBUTING.md、選んだ話題の context。話題の節は、モデルがコードを読んでも答えられない問いで作ってある。
+- このスキルの `assets/` の全部。`context/project.yml`、AGENTS.md、CONTRIBUTING.md、選んだ話題の context。話題の節は、モデルがコードを読んでも分からない事柄だけにしてある。
 - `context/index.md`。写す context と、既にある context の frontmatter から作る。`context/domain/` のような下位のディレクトリも載せる。
-- 業務の知識は、`context/domain.md` が用語と概念の一覧を持ち、状態と遷移、不変条件、禁止事項は概念ごとに `context/domain/<概念>.md` に置く。概念の文書はテンプレートにない。利用者が概念を挙げたら、「どの状態があり、どう遷移するか」「何が常に成り立つか」「何をしてはいけないか」の 3 つの節で作る。
+- 業務の知識は、`context/domain.md` が用語と概念の一覧を持ち、状態と遷移、不変条件、禁止事項は概念ごとに `context/domain/<概念>.md` に置く。概念の文書はテンプレートにない。利用者が概念を挙げたら、「States and Transitions」「Invariants」「Prohibitions」の 3 つの節で作る。
 - 同じ置き場にあるほかのスキルの `assets/`。docs、process、guardrails のパッケージが配置されていれば、そのテンプレートも写る。
