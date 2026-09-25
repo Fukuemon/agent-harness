@@ -115,7 +115,8 @@ context と Design Doc は frontmatter を持つ。
 ### コーディングエージェントへの接続
 
 - リポジトリのルートに AGENTS.md を置き、context の目次を読む指示を 1 か所だけ書く。「作業を始める前に目次を読み、関係する文書を開く」のように、参照ではなく指示として書く。具体的な指示はよく守られ、説明は守られにくいためである。AGENTS.md はこの指示と禁止事項だけを持ち、ルールの本文は持たない。
-- CLAUDE.md は置かない。CLAUDE.md を置くプロジェクトでは、CLAUDE.md から AGENTS.md を取り込む。
+- CLAUDE.md は置かない。Claude Code は、作業ディレクトリとその上位に CLAUDE.md がないときだけ AGENTS.md を読むためである。CLAUDE.md を置くプロジェクトでは、CLAUDE.md から AGENTS.md を取り込む。
+  - 出典: [Claude Code の memory の文書](https://code.claude.com/docs/en/memory)
 - 目次への参照は、取り込みの記法ではなくパスとして書く。取り込みの記法は起動時に展開され、常に読み込まれる量が増える。
 
 ### 導入のスキル
