@@ -55,10 +55,24 @@ dependencies:
   - .claude/skills/git-commit
   - .claude/skills/git-commit/SKILL.md
   deployed_file_hashes:
-    .agents/skills/git-commit/SKILL.md: sha256:adbc73560470a1318ffb79dbd82d47aef5931563bf63f4281d9212f9878f8307
-    .claude/skills/git-commit/SKILL.md: sha256:adbc73560470a1318ffb79dbd82d47aef5931563bf63f4281d9212f9878f8307
+    .agents/skills/git-commit/SKILL.md: sha256:4cf740a134221f9152c114aec7bbf5872a06bb873d6472718e04142578b157fa
+    .claude/skills/git-commit/SKILL.md: sha256:4cf740a134221f9152c114aec7bbf5872a06bb873d6472718e04142578b157fa
   source: local
   local_path: ./skills/git-commit
+- repo_url: _local/issue-pr-writing
+  name: issue-pr-writing
+  version: unknown
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/issue-pr-writing
+  - .agents/skills/issue-pr-writing/SKILL.md
+  - .claude/skills/issue-pr-writing
+  - .claude/skills/issue-pr-writing/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/issue-pr-writing/SKILL.md: sha256:2c8151c14db905900f20c2e1cae60d3f36b0303d970c88422eaea859d8b32a58
+    .claude/skills/issue-pr-writing/SKILL.md: sha256:2c8151c14db905900f20c2e1cae60d3f36b0303d970c88422eaea859d8b32a58
+  source: local
+  local_path: ./skills/issue-pr-writing
 deployments:
 - kind: project-relative
   target: claude
@@ -149,7 +163,25 @@ deployments:
   owners:
   - ./skills/git-commit
   active_owner: ./skills/git-commit
-  content_hash: sha256:adbc73560470a1318ffb79dbd82d47aef5931563bf63f4281d9212f9878f8307
+  content_hash: sha256:4cf740a134221f9152c114aec7bbf5872a06bb873d6472718e04142578b157fa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/issue-pr-writing
+  active_owner: ./skills/issue-pr-writing
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/issue-pr-writing
+  active_owner: ./skills/issue-pr-writing
+  content_hash: sha256:2c8151c14db905900f20c2e1cae60d3f36b0303d970c88422eaea859d8b32a58
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -239,4 +271,22 @@ deployments:
   owners:
   - ./skills/git-commit
   active_owner: ./skills/git-commit
-  content_hash: sha256:adbc73560470a1318ffb79dbd82d47aef5931563bf63f4281d9212f9878f8307
+  content_hash: sha256:4cf740a134221f9152c114aec7bbf5872a06bb873d6472718e04142578b157fa
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/issue-pr-writing
+  active_owner: ./skills/issue-pr-writing
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./skills/issue-pr-writing
+  active_owner: ./skills/issue-pr-writing
+  content_hash: sha256:2c8151c14db905900f20c2e1cae60d3f36b0303d970c88422eaea859d8b32a58

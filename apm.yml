@@ -7,4 +7,5 @@ dependencies:
   apm:
     - ./skills/docs-writing
     - ./skills/git-commit
+    - ./skills/issue-pr-writing
     - ./skills/code-comments
