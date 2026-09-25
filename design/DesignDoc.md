@@ -145,7 +145,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 - ADR-0013: [共通の基盤はパッケージ core に置き、ほかのパッケージはそれを前提にする](../adr/0013-core-package.md)
 
 - **core:** 固有の知識の置き場を作る。値のファイルと schema、context のテンプレートと目次の生成、AGENTS.md と CONTRIBUTING.md のテンプレート、導入のスキルを持つ。
-  - [core の Design Doc](features/core/DesignDoc_core.md)
+  - [core の Design Doc](../packages/core/DesignDoc.md)
 
 - **文書の体系 `docs`:** Design Doc、ADR、spec の構造とテンプレート、実装とのずれの検出、spec の削除の保証、文書のチェックを持つ。利用者の知識の中身は持たない。内容の正しさは判定しない。
   - [文書の体系の Design Doc](features/documents/DesignDoc_documents.md)
@@ -198,7 +198,7 @@ core を入れない利用者は、`examples/project.yml` を `context/` へ手�
 ### 利用者のリポジトリに置く値のファイル
 
 プロジェクトごとの値は、利用者のリポジトリの `context/project.yml` に置く。  
-パッケージのスキルとチェックは、このファイルから値を読む。キーと schema は、[core の Design Doc](features/core/DesignDoc_core.md) にある。
+パッケージのスキルとチェックは、このファイルから値を読む。キーと schema は、[core の Design Doc](../packages/core/DesignDoc.md) にある。
 
 ツールの具体は扱わない。  
 リポジトリの管理や作業ツリーの管理に何を使うかは、利用者に委ねる。利用者が context に書いた内容は、モデルが解釈する。  

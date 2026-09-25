@@ -3,7 +3,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "lint:text": "textlint \"*.md\" \"adr/*.md\" \"design/**/*.md\" \"context/*.md\" \"skills/**/*.md\" \".github/**/*.md\"",
+    "lint:text": "textlint \"*.md\" \"adr/*.md\" \"design/**/*.md\" \"packages/**/*.md\" \"context/*.md\" \"skills/**/*.md\" \".github/**/*.md\"",
     "prepare": "lefthook install",
     "check:project": "node scripts/validate-project.mjs",
     "test": "node --test \"scripts/**/*.test.mjs\""
