@@ -88,12 +88,12 @@ function fillProject(yaml) {
     .replace(/^(\s*spec:) .*$/m, `$1 ${spec}`);
 }
 
-// 目次は、写す context と、利用者のリポジトリに既にある context の frontmatter から作る
+// 目次は、写す context と、利用者のリポジトリに既にある context の frontmatter から作る。下位のディレクトリも含める
 function buildIndex() {
   const entries = new Map();
-  const dir = join(root, "context");
-  if (existsSync(dir)) for (const f of readdirSync(dir)) if (f.endsWith(".md") && f !== "index.md") entries.set(f, readFileSync(join(dir, f), "utf8"));
-  for (const [p, body] of candidates) if (p.startsWith("context/") && p.endsWith(".md") && p !== "context/index.md") entries.set(p.slice("context/".length), body);
+  if (existsSync(join(root, "context"))) collect(join(root, "context"), entries);
+  for (const [p, body] of candidates) if (p.startsWith("context/")) entries.set(p.slice("context/".length), body);
+  for (const f of entries.keys()) if (!f.endsWith(".md") || f === "index.md") entries.delete(f);
   const lines = [...entries].map(([f, body]) => {
     const title = /^title: (.+)$/m.exec(body)?.[1] ?? f;
     const description = /^description: (.+)$/m.exec(body)?.[1] ?? "";

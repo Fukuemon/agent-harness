@@ -72,6 +72,16 @@ test("--diff は差分を表示して終了コード 1、--force は名指しし
   assert.equal(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), "mine too\n");
 });
 
+test("目次は下位のディレクトリの context も載せる", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context", "domain"), { recursive: true });
+  writeFileSync(join(repo, "context", "domain", "order.md"), "---\ntype: context\ntitle: 注文\ndescription: 注文の状態と不変条件\n---\n");
+  run(repo, script, ["--topics", "domain"]);
+  const index = readFileSync(join(repo, "context/index.md"), "utf8");
+  assert.match(index, /\[注文\]\(domain\/order\.md\) — 注文の状態と不変条件/);
+  assert.match(index, /\[業務の知識\]\(domain\.md\)/);
+});
+
 test("2 回目は引数を省いても、値のファイルと選んだ話題を引き継ぐ", () => {
   const { repo, script } = setup();
   run(repo, script, ["--branches", "main,develop", "--topics", "testing", "--docs", "d,a,s"]);
