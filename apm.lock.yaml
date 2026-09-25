@@ -69,8 +69,8 @@ dependencies:
   - .claude/skills/issue-pr-writing
   - .claude/skills/issue-pr-writing/SKILL.md
   deployed_file_hashes:
-    .agents/skills/issue-pr-writing/SKILL.md: sha256:b1a8022fbbfd78a06629d0614ae1fb5a1cc3563438088d7976c3d5c25a688ffd
-    .claude/skills/issue-pr-writing/SKILL.md: sha256:b1a8022fbbfd78a06629d0614ae1fb5a1cc3563438088d7976c3d5c25a688ffd
+    .agents/skills/issue-pr-writing/SKILL.md: sha256:15f7a4d2df49d46881b411e4fcbd643eb1e1a677baecb13df1010d46a98ec79c
+    .claude/skills/issue-pr-writing/SKILL.md: sha256:15f7a4d2df49d46881b411e4fcbd643eb1e1a677baecb13df1010d46a98ec79c
   source: local
   local_path: ./skills/issue-pr-writing
 deployments:
@@ -181,7 +181,7 @@ deployments:
   owners:
   - ./skills/issue-pr-writing
   active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:b1a8022fbbfd78a06629d0614ae1fb5a1cc3563438088d7976c3d5c25a688ffd
+  content_hash: sha256:15f7a4d2df49d46881b411e4fcbd643eb1e1a677baecb13df1010d46a98ec79c
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -289,4 +289,4 @@ deployments:
   owners:
   - ./skills/issue-pr-writing
   active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:b1a8022fbbfd78a06629d0614ae1fb5a1cc3563438088d7976c3d5c25a688ffd
+  content_hash: sha256:15f7a4d2df49d46881b411e4fcbd643eb1e1a677baecb13df1010d46a98ec79c
