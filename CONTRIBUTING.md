@@ -38,15 +38,15 @@ pnpm lint:text
 ブランチは、main と、issue ごとの作業用のブランチだけにする。
 
 - 作業用のブランチの名前は `feature/<issue 番号>` にする。例は `feature/6`。不具合の issue は `fix/<issue 番号>` にする。
-- main へは、変更の依頼を通して取り込む。マージの方法はマージコミットだけで、取り込んだブランチは消す。
+- main へは、pull request を通して取り込む。マージの方法はマージコミットだけで、取り込んだブランチは消す。
 - main へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
 
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
-バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の変更の依頼を作る。
+バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の pull request を作る。
 
 - ADR-0007: [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
 
-次の図は、実装に移った後のブランチの構成を示す。main は常にリリースできる状態に保つ。作業用のブランチは main から切り、変更の依頼で main へ戻す。タグは、release-please が main のコミットに付ける。
+次の図は、実装に移った後のブランチの構成を示す。main は常にリリースできる状態に保つ。作業用のブランチは main から切り、pull request で main へ戻す。タグは、release-please が main のコミットに付ける。
 
 ```mermaid
 gitGraph
@@ -70,9 +70,9 @@ gitGraph
 
 これは、このリポジトリ自身の選択である。利用者のブランチ運用と、バージョンの付け方は、利用者が決める。
 
-## issue と変更の依頼
+## issue と pull request 
 
 - 作業は issue から始める。`.github/ISSUE_TEMPLATE/` の form で起票する。form が種類のラベル `type:*`（`requirements`、`task`、`bug`）を付けるので、パッケージのラベル `pkg:*` を足す。GitHub の milestone は使わない。タスクは親の要求の sub-issue にする。
 - 設計が要る作業だけ、`specs/<issue 番号>-<短い主題>/` に spec と `process.yml` を置く。それ以外は `context/project.yml` の既定の選択のまま進め、進み具合は issue の状態で表す。
-- 変更の依頼は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。
-- issue と変更の依頼の題と本文の書き方は `skills/issue-pr-writing/SKILL.md` にある。
+- pull request は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。
+- issue と pull request の題と本文の書き方は `skills/issue-pr-writing/SKILL.md` にある。

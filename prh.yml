@@ -50,3 +50,9 @@ rules:
   - expected: 更新日を書かない
     pattern: /\bUpdated:/
     prh: 文書に更新日を書かない。履歴はコミットから読み取れる
+  - expected: pull request
+    patterns:
+      - 変更の依頼
+      - プルリクエスト
+      - プル要求
+    prh: GitHub の日本語の公式文書の見出しと同じ。表のセルと図の中だけ PR の略記を使う

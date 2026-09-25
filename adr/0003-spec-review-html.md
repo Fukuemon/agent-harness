@@ -26,7 +26,7 @@ Markdown のままレビューすると、レビューする人はファイル�
   - HTML は、ほかのファイルを読まない自己完結の形にする。
   - 図は、作図の拡張機能が出力した HTML や SVG を埋め込む。例は archify で、自己完結の HTML と SVG を出力する。
     - [archify](https://github.com/tt-a1i/archify)
-- 変換した HTML をコミットし、CI が変更の依頼ごとに公開する。レビューする人は、公開された URL を開いて読む。
+- 変換した HTML をコミットし、CI が pull request ごとに公開する。レビューする人は、公開された URL を開いて読む。
   - CI が行うのは公開だけである。変換の環境を CI に用意する必要はない。
 
 spec の Markdown は、Git で管理する。  
@@ -36,11 +36,11 @@ spec の Markdown は、Git で管理する。
 
 公開の手段は、リポジトリを置くサービスによって違う。サービスごとの設定の例を、パッケージに持つ。
 
-- **GitLab:** 変更の依頼ごとに Pages を公開する仕組みがある。変更の依頼を閉じると、自動で消える。Premium と Ultimate のプランに限られる。
+- **GitLab:** pull request ごとに Pages を公開する仕組みがある。pull request を閉じると、自動で消える。Premium と Ultimate のプランに限られる。
   - [GitLab Pages parallel deployments](https://docs.gitlab.com/user/project/pages/parallel_deployments/)
-- **GitLab の、プランを問わない方法:** ジョブの成果物へのリンクを、変更の依頼の画面に出せる。HTML をブラウザで開くには、GitLab 全体で Pages が有効になっている必要がある。非公開のプロジェクトでは、管理者が Pages のアクセス制御も有効にする必要がある。
+- **GitLab の、プランを問わない方法:** ジョブの成果物へのリンクを、pull request の画面に出せる。HTML をブラウザで開くには、GitLab 全体で Pages が有効になっている必要がある。非公開のプロジェクトでは、管理者が Pages のアクセス制御も有効にする必要がある。
   - [Job artifacts](https://docs.gitlab.com/ci/jobs/job_artifacts/)
-- **GitHub:** 変更の依頼ごとに Pages を公開する公式の仕組みは、公開されていない。コミュニティの Action で、Pages のサブディレクトリへ公開する方法がある。
+- **GitHub:** pull request ごとに Pages を公開する公式の仕組みは、公開されていない。コミュニティの Action で、Pages のサブディレクトリへ公開する方法がある。
   - [rossjrw/pr-preview-action](https://github.com/rossjrw/pr-preview-action)
 
 ## Considered Options
@@ -49,7 +49,7 @@ spec の Markdown は、Git で管理する。
 | --- | --- | --- |
 | **採用:** レビューを依頼する前に HTML へ変換してコミットし、CI は公開だけを行う | レビューする人は 1 つの画面で要点から読める。CI に変換の環境が要らない。図を手元で作って埋め込める | 生成物をコミットする。変換の後に Markdown を直すと、変換し直す必要がある |
 | CI が Markdown から HTML を生成して公開する | 生成物をコミットしない。Markdown と HTML が食い違わない | CI に変換と作図の環境が要る |
-| 変更の依頼の差分のまま Markdown をレビューする | 追加の仕組みが要らない | ファイルを行き来する負担が残る。図を同じ場所で読めない |
+| pull request の差分のまま Markdown をレビューする | 追加の仕組みが要らない | ファイルを行き来する負担が残る。図を同じ場所で読めない |
 
 ## Consequences
 
@@ -63,6 +63,6 @@ spec の Markdown は、Git で管理する。
 
 - 生成物である HTML をコミットする。HTML の差分は読みにくい。
 - レビューの指摘を反映するたびに、変換し直す必要がある。し忘れると、Markdown と HTML が食い違う。
-- レビューのコメントは HTML に書き込めない。issue か変更の依頼に書く。
+- レビューのコメントは HTML に書き込めない。issue か pull request に書く。
 - HTML の骨組みと、サービスごとの CI の設定の例を保守する必要がある。
 - 公開の手段が、サービスとプランによって使えない場合がある。

@@ -149,7 +149,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 
 - **文書の体系 `docs`:** Design Doc、ADR、spec の構造とテンプレート、実装とのずれの検出、spec の削除の保証、文書のチェックを持つ。利用者の知識の中身は持たない。内容の正しさは判定しない。
   - [文書の体系の Design Doc](features/documents/DesignDoc_documents.md)
-- **開発プロセス `process`:** 開発のプロセスの定義、要求ごとの選択（行うプロセス、反映する時点、分解する時点、レビューの範囲）の項目と選択肢、宣言の schema と、プロセスの中で使う手段を持つ。手段は、コミットとブランチ名の規約、issue と PR のテンプレート、コードのコメントの規約とフックである。作業を次へ進める制御は持たない。
+- **開発プロセス `process`:** 開発のプロセスの定義、要求ごとの選択（行うプロセス、反映する時点、分解する時点、レビューの範囲）の項目と選択肢、宣言の schema と、プロセスの中で使う手段を持つ。手段は、コミットとブランチ名の規約、issue と pull request のテンプレート、コードのコメントの規約とフックである。作業を次へ進める制御は持たない。
   - [開発プロセスの Design Doc](features/process/DesignDoc_process.md)
 - **ガードレール `guardrails`:** 取り返しのつかない操作を止める仕組みと、プロダクトごとに有効にする規則を持つ。規則は、保護ブランチ、禁止するコマンド、秘密情報である。コーディングエージェントの権限の仕組みそのものは実装しない。
   - [ガードレールの Design Doc](features/guardrails/DesignDoc_guardrails.md)
@@ -254,7 +254,7 @@ agent-harness/
 ├── examples/
 │   ├── apm.yml                 マニフェストの例
 │   ├── project.yml             値のファイルの例
-│   └── ci/                     spec の HTML の公開と、削除の変更の依頼を作る CI の設定の例
+│   └── ci/                     spec の HTML の公開と、削除の pull request を作る CI の設定の例
 ├── skills/                     このリポジトリの開発に使うスキル
 ├── design/
 │   ├── DesignDoc.md            全体像

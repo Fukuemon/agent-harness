@@ -35,7 +35,7 @@ keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint]
   - 要求ごとの開発プロセスの宣言を、YAML として同じ場所に置く。spec と一緒に削除する。
   - レビューを依頼する前に、1 本の HTML へ変換する。最終のセルフレビューが終わった後に行う。
     - ADR-0003: [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](../../../adr/0003-spec-review-html.md)
-  - 変換した HTML をコミットし、CI が変更の依頼ごとに公開する。レビューする人は、公開された URL を開いて読む。
+  - 変換した HTML をコミットし、CI が pull request ごとに公開する。レビューする人は、公開された URL を開いて読む。
   - HTML の骨組みは、テンプレートとしてパッケージに持つ。
   - issue を閉じる時点で、HTML も spec と一緒に削除する。
 
@@ -84,7 +84,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 
 - ルールを 1 つ置く。「spec を閉じる前に、残す設計を Design Doc と context へ、比較して決めた判断を ADR へ移す」
 - spec の消し忘れのチェックで、削除されていない spec を報告する。
-- issue の close をきっかけに、spec のディレクトリを削除する変更の依頼を CI が自動で作る。取り込むかどうかの判断が、移し終えたことの確認になる。自動では削除しない。作るのはチェックではなく CI のワークフローで、GitHub Actions の設定の例を `examples/ci/` に置く。
+- issue の close をきっかけに、spec のディレクトリを削除する pull request を CI が自動で作る。取り込むかどうかの判断が、移し終えたことの確認になる。自動では削除しない。作るのはチェックではなく CI のワークフローで、GitHub Actions の設定の例を `examples/ci/` に置く。
 
 ## Interface
 

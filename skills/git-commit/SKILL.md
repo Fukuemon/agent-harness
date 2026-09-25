@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: 変更をコミットするときに使う。変更の分け方、メッセージの書き方、してはいけない操作を定める。issue と変更の依頼の書き方は issue-pr-writing にある。
+description: 変更をコミットするときに使う。変更の分け方、メッセージの書き方、してはいけない操作を定める。issue と pull request の書き方は issue-pr-writing にある。
 ---
 
 # git-commit
