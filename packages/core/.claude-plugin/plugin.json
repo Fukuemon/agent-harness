@@ -1,0 +1,10 @@
+{
+  "name": "core",
+  "description": "利用者のリポジトリに固有の知識の置き場を作る。context/project.yml、context の文書と目次、AGENTS.md、CONTRIBUTING.md のテンプレートと、導入のスキル。",
+  "version": "0.1.0",
+  "author": {
+    "name": "Fukuemon"
+  },
+  "repository": "https://github.com/Fukuemon/agent-harness",
+  "license": "MIT"
+}

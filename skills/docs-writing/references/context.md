@@ -13,4 +13,4 @@
 
 `type` は `context`。`title` と `description` は必須。  
 説明している設定ファイルがあれば、`governs` にそのパスを、`verified_commit` に読んで確かめた commit を書く。片方だけは書かない。  
-キーの一覧と意味は、`design/features/core/DesignDoc_core.md` の frontmatter の節にある。
+キーの一覧と意味は、`packages/core/DesignDoc.md` の frontmatter の節にある。

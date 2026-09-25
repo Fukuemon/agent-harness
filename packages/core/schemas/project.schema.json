@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Fukuemon/agent-harness/main/packages/core/schemas/project.schema.json",
+  "title": "context/project.yml",
+  "description": "利用者のリポジトリに置く、プロジェクトごとの値。キーは読むパッケージごとにまとめる。知らないキーは拒否しない。",
+  "type": "object",
+  "required": ["version"],
+  "properties": {
+    "version": {
+      "description": "schema の版。キーの削除と名前の変更で上げる。",
+      "type": "integer",
+      "const": 1
+    },
+    "docs": {
+      "description": "文書の体系が読む。文書のディレクトリ名。",
+      "type": "object",
+      "properties": {
+        "design": { "type": "string", "minLength": 1 },
+        "adr": { "type": "string", "minLength": 1 },
+        "spec": { "type": "string", "minLength": 1 }
+      }
+    },
+    "guardrails": {
+      "description": "ガードレールが読む。規則ごとにキーを持ち、キーがない規則は無効。",
+      "type": "object",
+      "properties": {
+        "protected_branches": {
+          "type": "object",
+          "required": ["names"],
+          "properties": {
+            "names": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "minItems": 1
+            },
+            "direct_commit": {
+              "type": "object",
+              "required": ["allow"],
+              "properties": {
+                "allow": { "type": "boolean" },
+                "reason": { "type": "string" }
+              },
+              "if": { "properties": { "allow": { "const": true } } },
+              "then": { "required": ["reason"], "properties": { "reason": { "type": "string", "minLength": 1 } } }
+            }
+          }
+        },
+        "forbidden_commands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["pattern", "reason"],
+            "properties": {
+              "pattern": { "type": "string", "minLength": 1 },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "secrets": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "process": {
+      "description": "開発プロセスが読む。要求ごとの選択の既定と、利用者が足すプロセス。",
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "type": "object",
+          "properties": {
+            "processes": { "type": "array", "items": { "$ref": "#/$defs/processId" } },
+            "reflect_at": { "$ref": "#/$defs/processIdOrNone" },
+            "breakdown_at": { "$ref": "#/$defs/processIdOrNone" },
+            "review": { "type": "array", "items": { "$ref": "#/$defs/processId" } }
+          }
+        },
+        "additional": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "purpose", "deliverable", "done_when"],
+            "properties": {
+              "id": { "$ref": "#/$defs/processId" },
+              "name": { "type": "string", "minLength": 1 },
+              "purpose": { "type": "string", "minLength": 1 },
+              "deliverable": { "type": "string", "minLength": 1 },
+              "done_when": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "processId": {
+      "description": "英字の slug。標準の 7 つか、process.additional で足した識別子。",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "processIdOrNone": {
+      "type": "string",
+      "pattern": "^(none|[a-z][a-z0-9-]*)$"
+    }
+  }
+}

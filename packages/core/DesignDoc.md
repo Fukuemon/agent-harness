@@ -4,16 +4,18 @@ title: core
 description: 利用者のリポジトリに固有の知識の置き場を作るパッケージ。値のファイル、context、目次、AGENTS.md、導入のスキル
 status: draft
 keywords: [core, project.yml, context, index.md, AGENTS.md, setup-agent-harness, frontmatter]
+governs: packages/core
+verified_commit: unverified
 ---
 
 # core
 
 ## Overview
 
-パッケージ「core」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
+パッケージ「core」の設計。全体像は [agent-harness Design Doc](../../design/DesignDoc.md) にある。  
 利用者のリポジトリに、プロジェクト固有の知識の置き場を作る。機械が読む値は `context/project.yml` に、モデルが読む事実は `context/` の文書に置き、AGENTS.md の指示で目次からたどれるようにする。ほかのパッケージは、この置き場を前提にする。
 
-- ADR-0013: [共通の基盤はパッケージ core に置き、ほかのパッケージはそれを前提にする](../../../adr/0013-core-package.md)
+- ADR-0013: [共通の基盤はパッケージ core に置き、ほかのパッケージはそれを前提にする](../../adr/0013-core-package.md)
 
 ## Scope
 
@@ -65,12 +67,12 @@ process:
 - `version` は schema の版である。必須。
 - ほかのキーは、schema の上では任意である。読むパッケージが、自分のキーを必須として扱う。足りないキーがあれば、その値を使う処理は、足りないキーを表示して実行の前に止まる。
 - `process.defaults` の各キーに許される値は、開発プロセスの Design Doc が定める。
-  - [開発プロセスの Design Doc](../process/DesignDoc_process.md)
+  - [開発プロセスの Design Doc](../../design/features/process/DesignDoc_process.md)
 - 既定の値は、パッケージの中には持たない。テンプレートに埋めて配る。利用者はテンプレートを写した時点で、標準の値を持つ。
 
 ### schema と版
 
-- schema は JSON Schema で書き、`schemas/project.schema.json` に置く。YAML は JSON と同じ値の集合なので、YAML を読んでから JSON Schema で検証できる。
+- schema は JSON Schema で書き、`packages/core/schemas/project.schema.json` に置く。ここが原本で、ルートには置かない。YAML は JSON と同じ値の集合なので、YAML を読んでから JSON Schema で検証できる。
 - 各パッケージのチェックは、自分が読むキーを、パッケージに同梱した schema で検証してから読む。合わない箇所を報告して止まる。全体の schema は、core の導入のスキルと、このリポジトリの CI が使う。
 - schema は、知らないキーを拒否しない。利用者が自分のキーを足せるようにするためである。パッケージが読むキーだけを定める。
 - パッケージが読めない形に変えるときは、`version` を上げる。キーの削除と、名前の変更が当たる。キーの追加では上げない。パッケージは読める `version` を宣言し、読めない版のファイルには、版が違うことを表示して止まる。
@@ -97,7 +99,7 @@ context は、技術スタックの規約、コードベースの構造の取り
 context と Design Doc は frontmatter を持つ。  
 この形式は Open Knowledge Format に適合する。同仕様に依存するのは、必須の `type` と、予約されたファイル名の 2 点だけにする。
 
-- ADR-0002: [context を Open Knowledge Format に適合させ、依存は 2 点に絞る](../../../adr/0002-context-format.md)
+- ADR-0002: [context を Open Knowledge Format に適合させ、依存は 2 点に絞る](../../adr/0002-context-format.md)
 - 出典: [Open Knowledge Format 仕様](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md)
 
 基本のキーは次のとおり。ほかのパッケージは、同仕様が認める独自のキーを足せる。文書の体系が足す `governs` と `verified_commit` がその例である。

@@ -92,7 +92,7 @@ keywords: [プロセス, 宣言, YAML, schema, ワークフローのハーネス
 選んだ結果は、YAML で宣言する。
 
 - プロジェクトの既定は、プロジェクトごとの値のファイルの `process.defaults` に書く。
-  - [core の Design Doc](../core/DesignDoc_core.md)
+  - [core の Design Doc](../../../packages/core/DesignDoc.md)
 - 要求ごとの選択と、プロセスごとの進み具合は、要求ごとの YAML に書く。spec と同じ場所に置く。
 - 要求ごとの YAML と spec は、Git で管理する。issue を閉じる時点で、一緒に削除する。
 - spec を置かない要求は、プロジェクトの既定の選択のまま進める。進み具合は issue の状態で表し、`process.yml` は置かない。`process.yml` を持つのは、spec を置く要求だけである。
@@ -120,7 +120,7 @@ progress:
 
 - `version` は schema の版。`issue` は対応する issue の番号。
 - 4 つの選択は、プロジェクトの既定と同じキーで書く。要求ごとの値が、既定より優先する。
-- schema は `schemas/process.schema.json` に置く。`processes`、`reflect_at`、`breakdown_at`、`review` に書ける識別子は、7 つのプロセスと `process.additional` の識別子に限る。`progress` のキーは `processes` の中に限る。この検証は、`project.yml` を読んだ上で行う。
+- schema は `packages/process/schemas/process.schema.json` に置く。`processes`、`reflect_at`、`breakdown_at`、`review` に書ける識別子は、7 つのプロセスと `process.additional` の識別子に限る。`progress` のキーは `processes` の中に限る。この検証は、`project.yml` を読んだ上で行う。
 - `progress` は、`processes` にあるプロセスごとに 1 つ持つ。値は `pending`、`in-progress`、`done`、`on-hold` の 4 つである。
   - `pending` は着手前、`in-progress` は作業中、`done` は完了の条件を満たした状態、`on-hold` は判断待ちである。
   - 前のプロセスへ戻ったときは、そのプロセスを `in-progress` に書き直す。`done` に戻す条件は、完了の条件と同じである。
@@ -191,5 +191,5 @@ flowchart TD
 - 置くファイル: 要求ごとの `process.yml`。spec のディレクトリに置く。
 - 置くファイル: issue と pull request のテンプレート。ホスティングサービスの決まりの場所に写す。
 - 読む値: `process.defaults`。要求ごとの選択の既定。
-- 動くチェック: 宣言の形式。プロジェクトの既定と `process.yml` が `schemas/process.schema.json` に合うかを確認する。CI と、`process.yml` を編集した後のフックで動く。
+- 動くチェック: 宣言の形式。プロジェクトの既定と `process.yml` が `packages/process/schemas/process.schema.json` に合うかを確認する。CI と、`process.yml` を編集した後のフックで動く。
 - 動くフック: コードのコメントの編集後のフック。

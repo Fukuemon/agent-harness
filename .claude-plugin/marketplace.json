@@ -1,0 +1,13 @@
+{
+  "name": "agent-harness",
+  "owner": {
+    "name": "Fukuemon"
+  },
+  "description": "AI コーディングエージェントにプロジェクト固有の知識とガードレールを与えるパッケージ。",
+  "plugins": [
+    {
+      "name": "core",
+      "source": "./packages/core"
+    }
+  ]
+}
