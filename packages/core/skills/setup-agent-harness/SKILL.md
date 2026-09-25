@@ -12,7 +12,7 @@ description: agent-harness を利用者のリポジトリに導入するとき�
 
 1. 利用者に 3 点を尋ねる。答えがなければ既定を使う。
    - 保護するブランチの名前。既定は `main`。複数なら `,` で区切る。
-   - 置く context の話題。`tech-stack`（技術スタック）、`codebase`（コードベースの構造）、`testing`（テスト）、`operations`（基盤と運用）から選ぶ。既定はなし。
+   - 置く context の話題。`tech-stack`（技術スタック）、`codebase`（コードベースの構造）、`conventions`（コードの規約）、`testing`（テスト）、`operations`（基盤と運用）、`domain`（業務の知識）から選ぶ。既定はなし。
    - 文書のディレクトリ名。Design Doc、ADR、spec の順で、既定は `design,adr,specs`。
 2. リポジトリのルートで、このスキルの `scripts/setup.mjs` を実行する。
 
@@ -37,6 +37,6 @@ node <このスキルのディレクトリ>/scripts/setup.mjs --force CONTRIBUTI
 
 ## 写すもの
 
-- このスキルの `assets/` の全部。`context/project.yml`、AGENTS.md、CONTRIBUTING.md、選んだ話題の context。
+- このスキルの `assets/` の全部。`context/project.yml`、AGENTS.md、CONTRIBUTING.md、選んだ話題の context。話題の節は、モデルがコードを読んでも答えられない問いで作ってある。
 - `context/index.md`。写す context と、既にある context の frontmatter から作る。
 - 同じ置き場にあるほかのスキルの `assets/`。docs、process、guardrails のパッケージが配置されていれば、そのテンプレートも写る。

@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 
-const TOPICS = ["tech-stack", "codebase", "testing", "operations"];
+const TOPICS = ["tech-stack", "codebase", "conventions", "testing", "operations", "domain"];
 
 const opts = { branches: "", topics: "", docs: "", diff: false, force: [] };
 const argv = process.argv.slice(2);
