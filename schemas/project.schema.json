@@ -41,7 +41,7 @@
                 "reason": { "type": "string" }
               },
               "if": { "properties": { "allow": { "const": true } } },
-              "then": { "required": ["reason"], "properties": { "reason": { "minLength": 1 } } }
+              "then": { "required": ["reason"], "properties": { "reason": { "type": "string", "minLength": 1 } } }
             }
           }
         },

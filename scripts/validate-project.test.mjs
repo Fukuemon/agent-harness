@@ -7,7 +7,7 @@ import { parse } from "yaml";
 import Ajv2020 from "ajv/dist/2020.js";
 
 const schema = JSON.parse(readFileSync(new URL("../schemas/project.schema.json", import.meta.url), "utf8"));
-const validate = new Ajv2020({ allErrors: true, strict: false }).compile(schema);
+const validate = new Ajv2020({ allErrors: true }).compile(schema);
 const example = () => parse(readFileSync(new URL("../examples/project.yml", import.meta.url), "utf8"));
 
 test("examples/project.yml は schema に合う", () => {

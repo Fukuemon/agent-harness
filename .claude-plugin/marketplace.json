@@ -7,8 +7,7 @@
   "plugins": [
     {
       "name": "core",
-      "source": "./packages/core",
-      "description": "固有の知識の置き場。context/project.yml、context の文書と目次、AGENTS.md、CONTRIBUTING.md のテンプレートと、導入のスキル。ほかのパッケージはこれを前提にする。"
+      "source": "./packages/core"
     }
   ]
 }
