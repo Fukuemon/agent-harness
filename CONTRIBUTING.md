@@ -74,5 +74,5 @@ gitGraph
 
 - 作業は issue から始める。`.github/ISSUE_TEMPLATE/` の form で起票する。form が種類のラベル `type:*`（`requirements`、`task`、`bug`）を付けるので、パッケージのラベル `pkg:*` を足す。GitHub の milestone は使わない。タスクは親の要求の sub-issue にする。
 - 設計が要る作業だけ、`specs/<issue 番号>-<短い主題>/` に spec と `process.yml` を置く。それ以外は `context/project.yml` の既定の選択のまま進め、進み具合は issue の状態で表す。
-- issue の題には、扱うプロセスの接頭辞を付ける。【要求】【設計】【実装】【検証】【不具合】である。
-- 変更の依頼は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。本文の先頭に `Closes #<番号>` を書き、題は issue の題と同じにする。本文の節は `.github/pull_request_template.md` にあり、書き方は `skills/issue-pr-writing/SKILL.md` にある。
+- 変更の依頼は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。
+- issue と変更の依頼の題と本文の書き方は `skills/issue-pr-writing/SKILL.md` にある。
