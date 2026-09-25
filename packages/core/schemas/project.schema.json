@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Fukuemon/agent-harness/schemas/project.schema.json",
+  "$id": "https://raw.githubusercontent.com/Fukuemon/agent-harness/main/packages/core/schemas/project.schema.json",
   "title": "context/project.yml",
   "description": "利用者のリポジトリに置く、プロジェクトごとの値。キーは読むパッケージごとにまとめる。知らないキーは拒否しない。",
   "type": "object",

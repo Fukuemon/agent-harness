@@ -72,7 +72,7 @@ process:
 
 ### schema と版
 
-- schema は JSON Schema で書き、`schemas/project.schema.json` に置く。YAML は JSON と同じ値の集合なので、YAML を読んでから JSON Schema で検証できる。
+- schema は JSON Schema で書き、`packages/core/schemas/project.schema.json` に置く。ここが原本で、ルートには置かない。YAML は JSON と同じ値の集合なので、YAML を読んでから JSON Schema で検証できる。
 - 各パッケージのチェックは、自分が読むキーを、パッケージに同梱した schema で検証してから読む。合わない箇所を報告して止まる。全体の schema は、core の導入のスキルと、このリポジトリの CI が使う。
 - schema は、知らないキーを拒否しない。利用者が自分のキーを足せるようにするためである。パッケージが読むキーだけを定める。
 - パッケージが読めない形に変えるときは、`version` を上げる。キーの削除と、名前の変更が当たる。キーの追加では上げない。パッケージは読める `version` を宣言し、読めない版のファイルには、版が違うことを表示して止まる。

@@ -1,5 +1,5 @@
 // 値のファイルの schema が、例を通し、必須と条件つきの制約を検出することを確かめる。
-// 実行: node --test scripts/
+// 実行: node --test packages/core/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -8,7 +8,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 
 const schema = JSON.parse(readFileSync(new URL("../schemas/project.schema.json", import.meta.url), "utf8"));
 const validate = new Ajv2020({ allErrors: true }).compile(schema);
-const example = () => parse(readFileSync(new URL("../examples/project.yml", import.meta.url), "utf8"));
+const example = () => parse(readFileSync(new URL("../../../examples/project.yml", import.meta.url), "utf8"));
 
 test("examples/project.yml は schema に合う", () => {
   assert.equal(validate(example()), true, JSON.stringify(validate.errors));

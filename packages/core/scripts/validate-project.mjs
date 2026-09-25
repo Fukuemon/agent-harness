@@ -1,5 +1,5 @@
-// 値のファイルを schemas/project.schema.json で検証する。
-// 使い方: node scripts/validate-project.mjs [path/to/project.yml]
+// 値のファイルを packages/core/schemas/project.schema.json で検証する。
+// 使い方: node packages/core/scripts/validate-project.mjs [path/to/project.yml]
 // 終了コード: 0 は問題なし、1 は schema に合わない、2 はファイルが読めない
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";

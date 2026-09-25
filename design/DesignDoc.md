@@ -14,7 +14,7 @@ keywords: [パッケージ, microsoft/apm, プラグイン, lefthook]
 
 ## Overview
 
-agent-harness は、4 つのパッケージと、それらが共有する schema と例を配るリポジトリである。  
+agent-harness は、4 つのパッケージと、利用者が写して使う例を配るリポジトリである。  
 パッケージは、共通の基盤の core と、文書の体系、開発プロセス、ガードレールの 3 つで、利用者はマニフェストに書いて導入する。core 以外は 1 つずつ選べる。  
 利用者のリポジトリでは、パッケージのスキルとテンプレートとチェックが、Claude Code と Codex CLI の作業を支える。Cursor は可能な範囲で対応する。
 
@@ -158,9 +158,9 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 
 ### パッケージが共有するもの
 
-複数のパッケージが読むものと、利用者が写して使うものは、パッケージにしない。パッケージ同士を依存させないためである。
+利用者が写して使うものと、すべてのパッケージに共通する前提は、パッケージにしない。パッケージ同士を依存させないためである。  
+schema は共有しない。各パッケージが、自分が読むキーの schema を `packages/<名前>/schemas/` に持つ。
 
-- **schema:** プロジェクトごとの値のファイルと、要求ごとの宣言のファイルの形を定める。`schemas/` に置く。値そのものは持たない。値のファイルの形は core の Design Doc が、宣言の形は開発プロセスの Design Doc が定める。
 - **例:** 利用者が写して使うファイルの例。マニフェスト、値のファイル、CI の設定の例である。`examples/` に置く。取得、配置、更新は行わない。
 - **スクリプトの実行環境:** チェックとフックのスクリプトは Node.js で書き、利用者には Node.js の 22.12 以上を前提にする。
   - ADR-0012: [チェックとフックのスクリプトは Node.js で書く](../adr/0012-node-runtime.md)
@@ -240,6 +240,8 @@ agent-harness/
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── DesignDoc.md        機能ごとの Design Doc。パッケージを作った時点で design/features/ から移す
+│       ├── schemas/            このパッケージが読む値の schema
+│       ├── scripts/            チェックのスクリプトとテスト
 │       ├── skills/
 │       │   └── <スキルの名前>/
 │       │       ├── SKILL.md
@@ -248,9 +250,6 @@ agent-harness/
 ├── lefthook/
 │   └── <パッケージの名前>.yml  lefthook の remotes で配る設定
 ├── .lefthook/                  Git のフックが呼ぶスクリプト
-├── schemas/
-│   ├── project.schema.json     プロジェクトごとの値
-│   └── process.schema.json     要求ごとの宣言
 ├── examples/
 │   ├── apm.yml                 マニフェストの例
 │   ├── project.yml             値のファイルの例

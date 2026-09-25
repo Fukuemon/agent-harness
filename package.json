@@ -5,8 +5,8 @@
   "scripts": {
     "lint:text": "textlint \"*.md\" \"adr/*.md\" \"design/**/*.md\" \"packages/**/*.md\" \"context/*.md\" \"skills/**/*.md\" \".github/**/*.md\"",
     "prepare": "lefthook install",
-    "check:project": "node scripts/validate-project.mjs",
-    "test": "node --test \"scripts/**/*.test.mjs\""
+    "check:project": "node packages/core/scripts/validate-project.mjs",
+    "test": "node --test \"packages/**/*.test.mjs\""
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
