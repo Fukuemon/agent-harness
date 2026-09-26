@@ -9,7 +9,7 @@ status: draft
 
 ## Test Types and Guarantees
 
-<!-- テストの種類ごとに、何を保証し、どこに置くか -->
+<!-- テストの種類ごとに、何を保証し、どこに置くか。テストの基盤の構成は Design Doc へリンクする -->
 
 ## Runtime Requirements
 

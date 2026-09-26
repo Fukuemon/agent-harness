@@ -9,7 +9,7 @@ status: draft
 
 ## Environments
 
-<!-- 環境の種類と、それぞれの用途。どのイベントで次の環境へ進むか -->
+<!-- 環境の種類と、それぞれの用途。どのイベントで次の環境へ進むか。構成の詳細は書かず、基盤の Design Doc へリンクする -->
 
 ## Deployment Conditions
 
