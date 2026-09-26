@@ -22,9 +22,11 @@
 
 - `main` はリリース済みの状態を指す。`develop` は次のリリースに向けて変更を集める。
 - 作業用のブランチは `develop` から切る。名前は `feature/<issue 番号>` にし、不具合は `fix/<issue 番号>` にする。`develop` へは、pull request を通して取り込む。
-- リリースは、`develop` を `main` へ pull request で取り込み、`main` のコミットにタグを付ける。
+- リリースは、`develop` を `main` へ pull request で取り込み、`main` のコミットにタグを付ける。バージョンはセマンティック バージョニングに従う。
 - リリース後の緊急の修正は、`main` から `hotfix/<issue 番号>` を切り、`main` と `develop` の両方へ取り込む。
 - `main` と `develop` へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
+
+<!-- 次のバージョンを何から決めるかを書く。コミットメッセージから決めるなら release-please、変更ごとの記述から決めるなら changesets が使える。パッケージ process を入れていれば、リリースのプロセスがこの手順を持つ -->
 
 ```mermaid
 gitGraph
