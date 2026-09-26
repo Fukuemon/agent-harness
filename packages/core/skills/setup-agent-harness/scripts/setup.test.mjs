@@ -91,6 +91,24 @@ test("2 回目は引数を省いても、値のファイルと選んだ話題を
   assert.match(d.out, /context\/project\.yml: 差分なし/);
 });
 
+test("値のファイルの配列が行の形でも、保護ブランチを引き継ぐ", () => {
+  const { repo, script } = setup();
+  run(repo, script, ["--branches", "trunk"]);
+  const p = join(repo, "context/project.yml");
+  writeFileSync(p, readFileSync(p, "utf8").replace("names: [trunk]", "names:\n      - trunk\n      - release"));
+  const d = run(repo, script, ["--diff"]);
+  assert.match(d.out, /\+    names: \[trunk,release\]/, d.out);
+  assert.doesNotMatch(d.out, /main,develop/);
+  const f = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(f.status, 0, f.out);
+  assert.match(readFileSync(p, "utf8"), /names: \[trunk,release\]/);
+});
+
+test("--diff は、まだ写していないファイルがあれば終了コード 1", () => {
+  const { repo, script } = setup();
+  assert.equal(run(repo, script, ["--diff"]).status, 1);
+});
+
 test("知らない話題と、テンプレートにない --force は終了コード 2", () => {
   const { repo, script } = setup();
   assert.equal(run(repo, script, ["--topics", "nope"]).status, 2);

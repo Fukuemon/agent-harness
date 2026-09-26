@@ -1,7 +1,7 @@
 // 導入のスキルが呼ぶ。このスキルと兄弟のスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--topics tech-stack,testing] [--docs design,adr,specs] [--diff] [--force <パス>]...
 // 省いた値は、既にある context/project.yml と context/ から引き継ぐ。それもなければ main と develop、話題なし、design,adr,specs
-// 終了コード: 0 は完了、1 は --diff で差分あり、2 は引数の誤り
+// 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,8 +22,8 @@ for (let i = 0; i < argv.length; i++) {
 const root = process.cwd();
 // 省いた値は、既にある値のファイルと context から引き継ぐ。--diff と --force で利用者の値を差分にしないためである
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
-const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.*)$`, "m").exec(existing)?.[1] ?? fallback;
-opts.branches ||= pick("names", "[main, develop]").replace(/[\[\]\s]/g, "");
+const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
+opts.branches ||= pickList("names") ?? "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 opts.topics ||= TOPICS.filter((t) => existsSync(join(root, `context/${t}.md`))).join(",");
 const topics = opts.topics ? opts.topics.split(",") : [];
@@ -58,7 +58,7 @@ if (opts.force.length) {
 } else if (opts.diff) {
   let differs = 0;
   for (const p of candidates.keys()) {
-    if (!existsSync(join(root, p))) { console.log(`${p}: まだない。既定の実行で写される`); continue; }
+    if (!existsSync(join(root, p))) { differs++; console.log(`${p}: まだない。既定の実行で写される`); continue; }
     const d = showDiff(p);
     if (d) { differs++; console.log(d); } else console.log(`${p}: 差分なし`);
   }
@@ -69,6 +69,21 @@ if (opts.force.length) {
   for (const p of copied) write(p);
   if (copied.length) console.log(`写した:\n${copied.map((p) => `  ${p}`).join("\n")}`);
   if (skipped.length) console.log(`飛ばした（既にある。--diff で差分を見る）:\n${skipped.map((p) => `  ${p}`).join("\n")}`);
+}
+
+// YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む
+function pickList(key) {
+  const m = new RegExp(`^(\\s*)${key}:[ \\t]*(.*)$`, "m").exec(existing);
+  if (!m) return undefined;
+  if (m[2].startsWith("[")) return m[2].replace(/[\[\]\s"']/g, "");
+  const rest = existing.slice(m.index + m[0].length);
+  const items = [];
+  for (const line of rest.split("\n").slice(1)) {
+    const item = /^\s*-\s+(.+)$/.exec(line);
+    if (!item) break;
+    items.push(item[1].trim().replace(/^["']|["']$/g, ""));
+  }
+  return items.join(",");
 }
 
 function collect(dir, into, base = dir) {
