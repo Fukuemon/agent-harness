@@ -1,6 +1,6 @@
 // 導入のスキルが呼ぶ。このスキルと兄弟のスキルの assets/ を、利用者のリポジトリに写す。
-// 使い方: node setup.mjs [--branches main,develop] [--topics tech-stack,testing] [--docs design,adr,specs] [--diff] [--force <パス>]...
-// 省いた値は、既にある context/project.yml と context/ から引き継ぐ。それもなければ main と develop、話題なし、design,adr,specs
+// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
+// 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
@@ -8,9 +8,7 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 
-const TOPICS = ["tech-stack", "codebase", "conventions", "testing", "operations", "domain"];
-
-const opts = { branches: "", topics: "", docs: "", diff: false, force: [] };
+const opts = { branches: "", docs: "", diff: false, force: [] };
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
@@ -20,15 +18,12 @@ for (let i = 0; i < argv.length; i++) {
   else fail(`知らない引数: ${a}`);
 }
 const root = process.cwd();
-// 省いた値は、既にある値のファイルと context から引き継ぐ。--diff と --force で利用者の値を差分にしないためである
+// 省いた値は、既にある値のファイルから引き継ぐ。--diff と --force で利用者の値を差分にしないためである
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
 const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
 opts.branches ||= pickList("names") ?? "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
-opts.topics ||= TOPICS.filter((t) => existsSync(join(root, `context/${t}.md`))).join(",");
-const topics = opts.topics ? opts.topics.split(",") : [];
 const docs = opts.docs.split(",");
-for (const t of topics) if (!TOPICS.includes(t)) fail(`知らない話題: ${t}。選べるのは ${TOPICS.join(", ")}`);
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
 if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
@@ -43,7 +38,6 @@ for (const name of readdirSync(skillsRoot)) {
   const assets = join(skillsRoot, name, "assets");
   if (name !== basename(skillDir) && existsSync(assets)) collect(assets, candidates);
 }
-for (const t of TOPICS) if (!topics.includes(t)) candidates.delete(`context/${t}.md`);
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
 candidates.set("AGENTS.md", candidates.get("AGENTS.md").replace("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
@@ -103,7 +97,7 @@ function fillProject(yaml) {
     .replace(/^(\s*spec:) .*$/m, `$1 ${spec}`);
 }
 
-// 目次は、写す context と、利用者のリポジトリに既にある context の frontmatter から作る。下位のディレクトリも含める
+// 目次は、写す context と、利用者のリポジトリに既にある context の frontmatter から作る。下位のディレクトリも含め、draft には印を付ける
 function buildIndex() {
   const entries = new Map();
   if (existsSync(join(root, "context"))) collect(join(root, "context"), entries);
@@ -112,7 +106,8 @@ function buildIndex() {
   const lines = [...entries].map(([f, body]) => {
     const title = /^title: (.+)$/m.exec(body)?.[1] ?? f;
     const description = /^description: (.+)$/m.exec(body)?.[1] ?? "";
-    return `- [${title}](${f}) — ${description}`;
+    const draft = /^status: draft$/m.test(body) ? "（draft。まだ書かれていない）" : "";
+    return `- [${title}](${f}) — ${description}${draft}`;
   });
   return `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
 }

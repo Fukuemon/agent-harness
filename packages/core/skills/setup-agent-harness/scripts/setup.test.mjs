@@ -1,5 +1,5 @@
 // setup.mjs の 3 動作と、兄弟のスキルの assets/ の取り込みを、使い捨てのディレクトリで確かめる。
-// 実行: node --test packages/core/scripts/
+// 実行: node --test packages/core/skills/setup-agent-harness/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
@@ -8,6 +8,7 @@ import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
 const skillSrc = new URL("..", import.meta.url);
+const KINDS = ["tech-stack", "codebase", "conventions", "testing", "operations", "domain"];
 
 // スキルを使い捨ての skills/ に写し、assets/ を持つ兄弟のスキルを 1 つ足す
 function setup() {
@@ -31,19 +32,17 @@ function run(repo, script, args = []) {
 
 test("既定の実行で一式を写し、値と目次を埋める", () => {
   const { repo, script } = setup();
-  const r = run(repo, script, ["--branches", "main,develop", "--topics", "tech-stack,testing", "--docs", "docs/design,docs/adr,docs/specs"]);
+  const r = run(repo, script, ["--branches", "main,develop", "--docs", "docs/design,docs/adr,docs/specs"]);
   assert.equal(r.status, 0, r.out);
-  for (const p of ["AGENTS.md", "CONTRIBUTING.md", "context/project.yml", "context/index.md", "context/tech-stack.md", "context/testing.md", "docs/README.md"]) {
+  for (const p of ["AGENTS.md", "CONTRIBUTING.md", "context/project.yml", "context/index.md", "docs/README.md", ...KINDS.map((k) => `context/${k}.md`)]) {
     assert.ok(existsSync(join(repo, p)), `${p} がない`);
   }
-  assert.ok(!existsSync(join(repo, "context/codebase.md")), "選んでいない話題が写っている");
   const project = readFileSync(join(repo, "context/project.yml"), "utf8");
   assert.match(project, /names: \[main,develop\]/);
   assert.match(project, /design: docs\/design/);
   assert.match(readFileSync(join(repo, "AGENTS.md"), "utf8"), /^# my-repo/);
   const index = readFileSync(join(repo, "context/index.md"), "utf8");
-  assert.match(index, /\[技術スタック\]\(tech-stack\.md\)/);
-  assert.doesNotMatch(index, /codebase\.md/);
+  assert.match(index, /\[技術スタック\]\(tech-stack\.md\) — .*（draft。まだ書かれていない）/);
 });
 
 test("2 回目は何も上書きせず、飛ばしたファイルを表示する", () => {
@@ -72,22 +71,21 @@ test("--diff は差分を表示して終了コード 1、--force は名指しし
   assert.equal(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), "mine too\n");
 });
 
-test("目次は下位のディレクトリの context も載せる", () => {
+test("目次は下位のディレクトリの context も載せ、書き終えた文書には draft の印を付けない", () => {
   const { repo, script } = setup();
   mkdirSync(join(repo, "context", "domain"), { recursive: true });
-  writeFileSync(join(repo, "context", "domain", "order.md"), "---\ntype: context\ntitle: 注文\ndescription: 注文の状態と不変条件\n---\n");
-  run(repo, script, ["--topics", "domain"]);
+  writeFileSync(join(repo, "context", "domain", "order.md"), "---\ntype: context\ntitle: 注文\ndescription: 注文の状態と不変条件\nstatus: stable\n---\n");
+  run(repo, script);
   const index = readFileSync(join(repo, "context/index.md"), "utf8");
-  assert.match(index, /\[注文\]\(domain\/order\.md\) — 注文の状態と不変条件/);
+  assert.match(index, /\[注文\]\(domain\/order\.md\) — 注文の状態と不変条件\n/);
   assert.match(index, /\[業務の知識\]\(domain\.md\)/);
 });
 
-test("2 回目は引数を省いても、値のファイルと選んだ話題を引き継ぐ", () => {
+test("2 回目は引数を省いても、値のファイルの値を引き継ぐ", () => {
   const { repo, script } = setup();
-  run(repo, script, ["--branches", "main,develop", "--topics", "testing", "--docs", "d,a,s"]);
+  run(repo, script, ["--branches", "main,develop", "--docs", "d,a,s"]);
   const d = run(repo, script, ["--diff"]);
   assert.equal(d.status, 0, d.out);
-  assert.match(d.out, /context\/testing\.md: 差分なし/);
   assert.match(d.out, /context\/project\.yml: 差分なし/);
 });
 
@@ -109,7 +107,7 @@ test("--diff は、まだ写していないファイルがあれば終了コー�
   assert.equal(run(repo, script, ["--diff"]).status, 1);
 });
 
-test("知らない話題と、テンプレートにない --force は終了コード 2", () => {
+test("知らない引数と、テンプレートにない --force は終了コード 2", () => {
   const { repo, script } = setup();
   assert.equal(run(repo, script, ["--topics", "nope"]).status, 2);
   assert.equal(run(repo, script, ["--force", "nope.md"]).status, 2);
