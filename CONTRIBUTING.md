@@ -26,6 +26,14 @@ pnpm lint:text
 対象は、ルート、`adr/`、`design/`、`context/`、`skills/` の Markdown である。  
 書き方の規則は `skills/docs-writing/SKILL.md` にある。
 
+`context/` と `design/` の文書を足したり frontmatter を変えたりしたら、目次を生成し直す。
+
+```sh
+pnpm check:index --write
+```
+
+目次の `context/index.md` は手で編集しない。コミットの前のチェックと CI は、目次が frontmatter と合わないと失敗する。
+
 ## コミットするとき
 
 - コミットの前に、ステージした Markdown を textlint でチェックする。
