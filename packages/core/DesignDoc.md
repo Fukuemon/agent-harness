@@ -19,8 +19,9 @@ verified_commit: unverified
 
 ## Scope
 
-- 持つもの: 値のファイルの形と schema。context の種類とテンプレート。frontmatter の基本のキーと、目次の生成。AGENTS.md と CONTRIBUTING.md のテンプレート。導入のスキル。
-- 分類: プロジェクト固有の知識の入れ物。
+- 持つもの: 値のファイルの形と schema。context の種類とテンプレート。frontmatter の基本のキーと、目次の生成。AGENTS.md と CONTRIBUTING.md のテンプレート。導入のスキル。context と CONTRIBUTING.md の書き方のスキル。リポジトリの運用の取り決めとして、ブランチとリリースの既定、コミットの規約のスキル、issue と pull request の規則のスキルと form の雛形、コードのコメントの規約のスキルとフック。
+  - ADR-0014: [リポジトリの運用の取り決めはパッケージ core に置き、process はプロセスの定義と進み具合だけを持つ](../../adr/0014-operations-in-core.md)
+- 分類: プロジェクト固有の知識の入れ物と、リポジトリの運用の取り決め。
 - 持たないもの: Design Doc、ADR、spec の構造とチェック。ガードレールの規則。開発プロセスの定義。ほかのパッケージのスクリプトが読み込む共通の処理。
 
 ## Design
@@ -135,8 +136,26 @@ context と Design Doc は frontmatter を持つ。
 
 パッケージのスキルの名前は、他の拡張機能と重なりにくい語にする。パッケージマネージャーは、同じ名前のスキルを後から入れた側で警告なしに上書きするためである。
 
+### 書き方のスキル
+
+context、CONTRIBUTING.md、AGENTS.md を書くとき、直すときに読むスキルを持つ。テンプレートの見出しの下の 1 行の案内は「何を書くか」だけを持ち、次の規則はこのスキルが持つ。
+
+- 話題ごとの、書かないこと。コードから読み取れる事実、選んだ理由、機能ごとの仕様、値そのもの。
+- 1 ファイルに収まらない話題を、`context/<話題>/<項目>.md` に分ける規則。業務の知識の概念ごとの文書は、States and Transitions、Invariants、Prohibitions の 3 つの節で作る。
+- `status` の意味。`draft` は骨組みだけで、読む側は内容を当てにしない。
+- CONTRIBUTING.md の各節に何を書き、規約の本文を context へ寄せること。
+
+### 運用の取り決め
+
+- ブランチとリリースの既定は、CONTRIBUTING.md のテンプレートが持つ。`main` と `develop`、issue ごとの作業用のブランチ、`main` のタグでのバージョンである。運用が違う利用者は、本文と図を書き換える。
+- コミットの規約とブランチ名の形式は、スキルに書く。メッセージの形式は commitlint のような自動チェックに任せ、スキルには判断が要ることだけを書く。
+- issue と pull request の規則はスキルに書き、form と雛形はホスティングサービスの決まりの場所へ写す。
+- コードのコメントの規約は、スキルと、ファイルの編集の後のフックで持つ。フックは、コメントが足されたときだけ、残してよいかを確かめるよう促す文をコンテキストに追加する。編集は拒否しない。サブエージェントの中でも動く。
+- 次のバージョンを決める手段は、テンプレートに選択肢として示す。利用者が release-please か changesets を選ぶ。
+
 ## Interface
 
-- 置くファイル: `context/project.yml`、`context/` の文書と `index.md`、AGENTS.md、CONTRIBUTING.md。
+- 置くファイル: `context/project.yml`、`context/` の文書と `index.md`、AGENTS.md、CONTRIBUTING.md、issue と pull request の form と雛形。
 - 読む値: なし。値を置く側である。
 - 動くチェック: 目次の生成。`context/` と `design/` の frontmatter から生成し直し、差分が出たら失敗する。編集後のフックと CI で動く。
+- 動くフック: コードのコメントの編集後のフック。
