@@ -42,7 +42,7 @@ test("既定の実行で一式を写し、値と目次を埋める", () => {
   assert.match(project, /design: docs\/design/);
   assert.match(readFileSync(join(repo, "AGENTS.md"), "utf8"), /^# my-repo/);
   const index = readFileSync(join(repo, "context/index.md"), "utf8");
-  assert.match(index, /\[技術スタック\]\(tech-stack\.md\) — .*（draft。まだ書かれていない）/);
+  assert.match(index, /\[技術スタック\]\(tech-stack\.md\) — .*（draft）/);
 });
 
 test("2 回目は何も上書きせず、飛ばしたファイルを表示する", () => {

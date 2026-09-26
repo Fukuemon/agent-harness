@@ -1,0 +1,17 @@
+{
+  "description": "文書を編集した後に context/index.md を frontmatter から生成し直す",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/build-index.mjs\" --write",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
