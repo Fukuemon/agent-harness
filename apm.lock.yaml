@@ -1,5 +1,5 @@
 lockfile_version: '1'
-apm_version: 0.31.0
+apm_version: 0.32.0
 dependencies:
 - repo_url: _local/code-comments
   name: code-comments
@@ -69,8 +69,8 @@ dependencies:
   - .claude/skills/issue-pr-writing
   - .claude/skills/issue-pr-writing/SKILL.md
   deployed_file_hashes:
-    .agents/skills/issue-pr-writing/SKILL.md: sha256:0d9d6bc6590bdb7dd3b6230460b59ed53ab3953f1ad7c71fdb1ac4219efb1bf7
-    .claude/skills/issue-pr-writing/SKILL.md: sha256:0d9d6bc6590bdb7dd3b6230460b59ed53ab3953f1ad7c71fdb1ac4219efb1bf7
+    .agents/skills/issue-pr-writing/SKILL.md: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
+    .claude/skills/issue-pr-writing/SKILL.md: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
   source: local
   local_path: ./skills/issue-pr-writing
 deployments:
@@ -181,7 +181,7 @@ deployments:
   owners:
   - ./skills/issue-pr-writing
   active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:0d9d6bc6590bdb7dd3b6230460b59ed53ab3953f1ad7c71fdb1ac4219efb1bf7
+  content_hash: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -289,4 +289,4 @@ deployments:
   owners:
   - ./skills/issue-pr-writing
   active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:0d9d6bc6590bdb7dd3b6230460b59ed53ab3953f1ad7c71fdb1ac4219efb1bf7
+  content_hash: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
