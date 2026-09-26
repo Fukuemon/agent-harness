@@ -162,7 +162,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 利用者が写して使うものと、すべてのパッケージに共通する前提は、パッケージにしない。パッケージ同士を依存させないためである。  
 schema は共有しない。各パッケージが、自分が読むキーの schema を `packages/<名前>/schemas/` に持つ。
 
-- **例:** 利用者が写して使うファイルの例。マニフェスト、値のファイル、CI の設定の例である。`examples/` に置く。取得、配置、更新は行わない。
+- **例:** 利用者が写して使うファイルの例。マニフェストと CI の設定の例である。`examples/` に置く。取得、配置、更新は行わない。値のファイルのテンプレートは、core の導入のスキルの `assets/` にある。
 - **スクリプトの実行環境:** チェックとフックのスクリプトは Node.js で書き、利用者には Node.js の 22.12 以上を前提にする。
   - ADR-0012: [チェックとフックのスクリプトは Node.js で書く](../adr/0012-node-runtime.md)
 
@@ -190,11 +190,11 @@ Agent Plugins の公式のスキーマは宣言しない。宣言すると、パ
 パッケージマネージャーが入れるのは、コーディングエージェントが読むスキルとフックだけである。共通の基盤と、利用者が写して使うファイルは、別の手段で入れる。
 
 1. マニフェストにパッケージを書き、`apm install` を実行する。スキルとフックが配置される。Git で管理しない。
-2. core の導入のスキルを呼ぶ。スキルが保護ブランチの名前や置く context の話題を尋ね、付属のスクリプトが `context/project.yml`、AGENTS.md、CONTRIBUTING.md と、配置されているパッケージのテンプレートを写す。存在するファイルは上書きしない。
+2. core の導入のスキルを呼ぶ。スキルが保護ブランチの名前と文書のディレクトリ名を尋ね、付属のスクリプトが `context/project.yml`、AGENTS.md、CONTRIBUTING.md と、配置されているパッケージのテンプレートを写す。存在するファイルは上書きしない。
 3. 写されたファイルをコミットする。以後は利用者のものとして編集する。
 4. Git のフックを使うなら、`lefthook.yml` に remotes を書き、`lefthook install` を実行する。
 
-core を入れない利用者は、`examples/project.yml` を `context/` へ手で写す。
+core を入れない利用者は、`packages/core/skills/setup-agent-harness/assets/context/project.yml` を `context/` へ手で写す。
 
 ### 利用者のリポジトリに置く値のファイル
 
@@ -253,7 +253,6 @@ agent-harness/
 ├── .lefthook/                  Git のフックが呼ぶスクリプト
 ├── examples/
 │   ├── apm.yml                 マニフェストの例
-│   ├── project.yml             値のファイルの例
 │   └── ci/                     spec の HTML の公開と、削除の pull request を作る CI の設定の例
 ├── skills/                     このリポジトリの開発に使うスキル
 ├── design/
