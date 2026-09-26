@@ -1,4 +1,4 @@
-// 導入のスキルが呼ぶ。このスキルと兄弟のスキルの assets/ を、利用者のリポジトリに写す。
+// スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ にあるほかのスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
@@ -18,7 +18,6 @@ for (let i = 0; i < argv.length; i++) {
   else fail(`知らない引数: ${a}`);
 }
 const root = process.cwd();
-// 省いた値は、既にある値のファイルから引き継ぐ。--diff と --force で利用者の値を差分にしないためである
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
 const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
 opts.branches ||= pickList("names") ?? "main,develop";
@@ -30,10 +29,9 @@ if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 const skillDir = fileURLToPath(new URL("..", import.meta.url));
 const skillsRoot = dirname(skillDir);
 
-// 候補: 写す先の相対パス → 内容
 const candidates = new Map();
 collect(join(skillDir, "assets"), candidates);
-// ponytail: 兄弟のスキルだけを見る。別のプラグインのキャッシュにある assets/ は、置き場が決まってから足す
+// 同じ skills/ にあるスキルだけを見る。Claude Code のプラグインのキャッシュにある assets/ は、置き場が決まってから足す
 for (const name of readdirSync(skillsRoot)) {
   const assets = join(skillsRoot, name, "assets");
   if (name !== basename(skillDir) && existsSync(assets)) collect(assets, candidates);
@@ -97,19 +95,40 @@ function fillProject(yaml) {
     .replace(/^(\s*spec:) .*$/m, `$1 ${spec}`);
 }
 
-// 目次は、写す context と、利用者のリポジトリに既にある context の frontmatter から作る。下位のディレクトリも含め、draft には印を付ける
 function buildIndex() {
-  const entries = new Map();
-  if (existsSync(join(root, "context"))) collect(join(root, "context"), entries);
-  for (const [p, body] of candidates) if (p.startsWith("context/")) entries.set(p.slice("context/".length), body);
-  for (const f of entries.keys()) if (!f.endsWith(".md") || f === "index.md") entries.delete(f);
-  const lines = [...entries].map(([f, body]) => {
-    const title = /^title: (.+)$/m.exec(body)?.[1] ?? f;
-    const description = /^description: (.+)$/m.exec(body)?.[1] ?? "";
-    const draft = /^status: draft$/m.test(body) ? "（draft。まだ書かれていない）" : "";
-    return `- [${title}](${f}) — ${description}${draft}`;
-  });
-  return `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
+  const gather = (dir) => {
+    const entries = new Map();
+    if (existsSync(join(root, dir))) collect(join(root, dir), entries);
+    for (const [p, body] of candidates) if (p.startsWith(`${dir}/`)) entries.set(p.slice(dir.length + 1), body);
+    for (const f of entries.keys()) if (!f.endsWith(".md")) entries.delete(f);
+    return entries;
+  };
+  return renderIndex(gather("context"), gather(docs[0]), docs[0]).index;
+}
+
+function frontmatter(body) {
+  const block = /^---\n([\s\S]*?)\n---/.exec(body)?.[1] ?? "";
+  const pick = (key) => new RegExp(`^${key}: (.+)$`, "m").exec(block)?.[1].trim();
+  return {
+    title: pick("title"),
+    description: pick("description"),
+    status: pick("status"),
+    missing: ["type", "title", "description"].filter((key) => !pick(key)),
+  };
+}
+
+function renderIndex(context, design, designDir) {
+  const missing = [];
+  const line = (link, body) => {
+    const meta = frontmatter(body);
+    missing.push(...meta.missing.map((key) => `${link}: frontmatter に ${key} がない`));
+    return `- [${meta.title}](${link}) — ${meta.description}${meta.status === "draft" ? "（draft）" : ""}`;
+  };
+  const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
+  const lines = sorted(context).filter(([f]) => f !== "index.md").map(([f, body]) => line(f, body));
+  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([f, body]) => line(`../${designDir}/${f}`, body)));
+  const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
+  return { index, missing };
 }
 
 function showDiff(p) {
