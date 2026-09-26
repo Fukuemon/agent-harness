@@ -7,7 +7,7 @@ docs:
 
 guardrails:
   protected_branches:
-    names: [main]
+    names: [main, develop]
     direct_commit:
       allow: false
       reason: ""

@@ -1,6 +1,6 @@
 // 導入のスキルが呼ぶ。このスキルと兄弟のスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--topics tech-stack,testing] [--docs design,adr,specs] [--diff] [--force <パス>]...
-// 省いた値は、既にある context/project.yml と context/ から引き継ぐ。それもなければ main、話題なし、design,adr,specs
+// 省いた値は、既にある context/project.yml と context/ から引き継ぐ。それもなければ main と develop、話題なし、design,adr,specs
 // 終了コード: 0 は完了、1 は --diff で差分あり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
@@ -23,7 +23,7 @@ const root = process.cwd();
 // 省いた値は、既にある値のファイルと context から引き継ぐ。--diff と --force で利用者の値を差分にしないためである
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
 const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.*)$`, "m").exec(existing)?.[1] ?? fallback;
-opts.branches ||= pick("names", "[main]").replace(/[\[\]\s]/g, "");
+opts.branches ||= pick("names", "[main, develop]").replace(/[\[\]\s]/g, "");
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 opts.topics ||= TOPICS.filter((t) => existsSync(join(root, `context/${t}.md`))).join(",");
 const topics = opts.topics ? opts.topics.split(",") : [];

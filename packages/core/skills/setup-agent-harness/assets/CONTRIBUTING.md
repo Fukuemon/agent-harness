@@ -18,31 +18,35 @@
 
 <!-- 次は既定の運用である。運用が違えば、本文と図を書き換える。保護するブランチの名前は context/project.yml の guardrails.protected_branches と揃える -->
 
-ブランチは、`main` と、issue ごとの作業用のブランチだけにする。
+ブランチは、`main`、`develop`、issue ごとの作業用のブランチにする。
 
-- 作業用のブランチの名前は `feature/<issue 番号>` にする。不具合は `fix/<issue 番号>` にする。
-- `main` へは、pull request を通して取り込む。
-- `main` へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
-
-バージョンは、`main` のコミットにタグで付ける。`main` は常にリリースできる状態に保つ。
+- `main` はリリース済みの状態を指す。`develop` は次のリリースに向けて変更を集める。
+- 作業用のブランチは `develop` から切る。名前は `feature/<issue 番号>` にし、不具合は `fix/<issue 番号>` にする。`develop` へは、pull request を通して取り込む。
+- リリースは、`develop` を `main` へ pull request で取り込み、`main` のコミットにタグを付ける。
+- リリース後の緊急の修正は、`main` から `hotfix/<issue 番号>` を切り、`main` と `develop` の両方へ取り込む。
+- `main` と `develop` へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
 
 ```mermaid
 gitGraph
     commit id: "v1.0.0" tag: "v1.0.0"
+    branch develop
+    checkout develop
+    commit id: "dev-1"
     branch "feature/12"
     checkout "feature/12"
     commit id: "12-1"
-    checkout main
+    checkout develop
     branch "fix/13"
     checkout "fix/13"
     commit id: "13-1"
-    checkout main
+    checkout develop
     merge "fix/13" id: "PR #13"
     checkout "feature/12"
     commit id: "12-2"
-    checkout main
+    checkout develop
     merge "feature/12" id: "PR #12"
-    commit id: "release" tag: "v1.1.0"
+    checkout main
+    merge develop id: "release" tag: "v1.1.0"
 ```
 
 ## issue と pull request
