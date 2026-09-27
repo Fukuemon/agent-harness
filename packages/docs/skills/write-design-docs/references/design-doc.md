@@ -1,8 +1,8 @@
-# Design Doc の書き方
+# 全体像の Design Doc の書き方
 
 決定済みの設計だけを書く。過去にどうだったか、なぜ変えたか、どの issue で決めたかは書かない。
 
-## 全体像の 8 節
+## 8 節
 
 次の順で持つ。
 
@@ -19,51 +19,10 @@
 
 - 出典: [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
 
-## 機能ごとの 4 節
-
-次の順で持つ。何で確かめたかがあれば、5 節目に「Verification」を足す。
-
-1. Overview。何を担うか。全体像へのリンク。
-2. Scope。持つものと、持たないもの。
-3. Design。内部の構成と、処理の流れ。小見出しは内容ごとに決める。
-4. Interface。置くファイル、読む値のキー、動くフックとチェック。
-
-## 機能ごとの Design Doc の骨組み
-
-```markdown
----
-type: feature-design
-title: <機能の名前>
-description: <この文書に何が書いてあるか。1 行>
-status: draft
-governs: <対象のコードのディレクトリ。コードがなければ書かず、verified_commit も省く>
-verified_commit: unverified
----
-
-# <機能の名前>
-
-## Overview
-
-<!-- 何を担うか。全体像へのリンク -->
-
-## Scope
-
-<!-- 持つものと、持たないもの -->
-
-## Design
-
-<!-- 内部の構成と処理の流れ。小見出しは内容ごとに決める。図は C4 の L3 と処理の流れ -->
-
-## Interface
-
-<!-- 置くファイル、読む値のキー、動くフックとチェック -->
-```
-
 ## 図
 
-- 全体像は、C4 モデルの L1 の System Context と、L2 の Container だけを描く。誰が何のために使うかと、主要な実行の単位とデータの流れである。
-- 機能ごとの設計は、L3 の Component と、処理の流れを描く。
-- 現在の処理の流れのシーケンス図は、機能ごとの設計に描く。変更を議論するためのシーケンス図は、spec に描き、決まったら機能ごとの設計へ移す。
+- C4 モデルの L1 の System Context と、L2 の Container だけを描く。誰が何のために使うかと、主要な実行の単位とデータの流れである。
+- 内部の構成と処理の流れは、機能ごとの Design Doc に描く。
 - 図の直前に、図が示す内容を 1 文で書く。図だけに書かれた決定を作らない。
 - 出典: [C4 model](https://c4model.com/)
 

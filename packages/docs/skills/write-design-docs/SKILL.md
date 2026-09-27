@@ -9,7 +9,8 @@ description: PRD、Design Doc、ADR、spec を書くとき、直すとき、レ�
 種類ごとの節の構成と骨組みは `references/` にある。書く文書の 1 つだけを開く。
 
 - PRD を書くときは [references/prd.md](references/prd.md)
-- Design Doc を書くときは [references/design-doc.md](references/design-doc.md)
+- 全体像の Design Doc を書くときは [references/design-doc.md](references/design-doc.md)
+- 機能ごとの Design Doc を書くときは [references/feature-design-doc.md](references/feature-design-doc.md)
 - ADR を書くときは [references/adr.md](references/adr.md)
 - spec を書くときは [references/spec.md](references/spec.md)
 
