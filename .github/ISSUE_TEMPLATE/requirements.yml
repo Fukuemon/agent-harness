@@ -1,4 +1,4 @@
-name: 要求
+name: 要求の起票
 description: 実現したいことを起票する。要件定義から検証までは、この issue の中で進める
 labels: [type:requirements]
 body:
