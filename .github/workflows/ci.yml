@@ -17,3 +17,5 @@ jobs:
       - run: pnpm test
       - run: pnpm check:index
       - run: pnpm check:project
+      - run: apm install
+      - run: git diff --exit-code apm.lock.yaml

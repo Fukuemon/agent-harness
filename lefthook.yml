@@ -7,6 +7,9 @@ pre-commit:
   commands:
     index:
       run: node packages/core/scripts/build-index.mjs --write && git add context/index.md
+    lock:
+      glob: ["packages/**", "skills/**", "apm.yml"]
+      run: mise x pipx:apm-cli -- apm install >/dev/null && git add apm.lock.yaml
     textlint:
       glob: "*.md"
       run: pnpm exec textlint {staged_files}
