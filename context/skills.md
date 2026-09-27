@@ -7,7 +7,7 @@ keywords: [skills, apm.yml, .claude/skills, .agents/skills]
 governs:
   - apm.yml
   - .gitignore
-verified_commit: 79836caed43c41802352d29cc38210a858a7f66a
+verified_commit: d45aeafb7bb083783d5c2f77d1a2dfb2a2acbe94
 ---
 
 # スキルの置き場所
