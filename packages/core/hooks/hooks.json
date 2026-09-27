@@ -1,13 +1,24 @@
 {
-  "description": "ファイルの編集の後に、足されたコメントと lint の抑制を確かめるよう促す",
+  "description": "セッションの開始で、apm の配置先がなければ apm install --frozen で配置する。ファイルの編集の後に、足されたコメントと lint の抑制を確かめるよう促す",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && [ -f apm.lock.yaml ] && [ ! -d .claude/hooks/core ] && [ ! -d .codex/hooks/core ] && command -v apm >/dev/null && apm install --frozen >&2; exit 0",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/check-comments.mjs\"",
+            "command": "f=\"${CLAUDE_PLUGIN_ROOT}/hooks/check-comments.mjs\"; [ -f \"$f\" ] || exit 0; node \"$f\"",
             "timeout": 10
           }
         ]

@@ -195,6 +195,10 @@ Agent Plugins の公式のスキーマは宣言しない。宣言すると、パ
    導入のスキルは、ロックファイルにある配置先を `.gitignore` に足す。スキルとフックはディレクトリの単位で足し、利用者が同じ場所に置く自作のスキルは追跡に残す。
 4. Git のフックを使うなら、`lefthook.yml` に remotes を書き、`lefthook install` を実行する。
 
+clone した直後は、配置先がない。core のセッションの開始のフックが、配置先がなければ `apm install --frozen` を実行する。  
+フックの登録は、利用者の設定も持つ `.claude/settings.json` と `.codex/hooks.json` に入るので、追跡する。  
+登録の呼び出す先のスクリプトは追跡しないので、フックのコマンドはスクリプトがなければ何もせずに終わる形にする。
+
 core を入れない利用者は、`packages/core/skills/setup-agent-harness/assets/context/project.yml` を `context/` へ手で写す。
 
 ### 利用者のリポジトリに置く値のファイル

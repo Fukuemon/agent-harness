@@ -168,10 +168,11 @@ context を種類ごとに決めて書き、更新するときと、CONTRIBUTING
 - 次のバージョンを決める手段は、テンプレートに選択肢として示す。利用者が release-please か changesets を選ぶ。
 - 公開しない作業メモの置き場は `.ai-out/` に固定し、Git で追跡しない。issue と pull request の下書きもここに置く。AGENTS.md のテンプレートが置き場を指示し、導入のスキルが `.gitignore` に行を足す。ディレクトリ名は値のファイルに持たない。`context/` と同じく、探す順序を要らなくするためである。
 - apm の配置先は Git で追跡しない。導入のスキルが、`apm.lock.yaml` の `deployed_files` から、スキルとフックのディレクトリを 1 行ずつ `.gitignore` に足す。ディレクトリを丸ごと無視すると、利用者が `.claude/skills/` に置く自作のスキルまで追跡から外れるためである。
+- clone した直後は、セッションの開始のフックが `apm install --frozen` で配置する。コマンドはスクリプトを持たずに `hooks/hooks.json` の中で完結させる。スクリプトは配置先にあり、配置される前には存在しないためである。`apm.lock.yaml` がないとき、apm がないとき、core のフックのディレクトリが既にあるときは、何もしない。
 
 ## Interface
 
 - 置くファイル: `context/project.yml`、`context/` の文書と `index.md`、AGENTS.md、CONTRIBUTING.md、issue と pull request の form と雛形。
 - 読む値: なし。値を置く側である。
 - 動くチェック: 目次の生成。`context/` と `design/` の frontmatter から生成し直し、差分が出たら失敗する。lefthook の pre-commit と CI で動く。
-- 動くフック: コードのコメントの編集後のフック。
+- 動くフック: セッションの開始で配置をそろえるフックと、コードのコメントの編集後のフック。
