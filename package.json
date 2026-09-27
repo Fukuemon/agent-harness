@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "lint:text": "textlint \"*.md\" \"adr/*.md\" \"design/**/*.md\" \"packages/**/*.md\" \"context/*.md\" \"skills/**/*.md\" \".github/**/*.md\"",
+    "lint:packages": "textlint --config .textlintrc.packages.json \"packages/*/skills/**/*.md\"",
     "prepare": "lefthook install",
     "check:project": "node packages/core/scripts/validate-project.mjs",
     "test": "node --test \"packages/**/*.test.mjs\"",

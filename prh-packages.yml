@@ -1,0 +1,30 @@
+# パッケージの本文（packages/*/skills/**/*.md）だけに掛ける。利用者によって違う固有の名前を禁止する
+version: 1
+
+rules:
+  - expected: ホスティングサービス
+    patterns:
+      - GitHub
+      - GitLab
+      - Bitbucket
+    prh: パッケージの本文に、利用者によって違うホスティングサービスの名前を書かない
+  - expected: パッケージマネージャー
+    patterns:
+      - /\bpnpm\b/
+      - /\bnpm\b/
+      - /\byarn\b/
+    prh: パッケージの本文に、利用者によって違うパッケージマネージャーの名前を書かない
+  - expected: コーディングエージェント
+    patterns:
+      - /Claude( Code)?/
+      - /Codex( CLI)?/
+      - Cursor
+    prh: パッケージの本文に、コーディングエージェントの名前を書かない。対応は README の対応表が持つ
+  - expected: 利用者のツール
+    patterns:
+      - /\bghq\b/
+      - worktrunk
+    prh: パッケージの本文に、利用者によって違うツールの名前を書かない
+  - expected: 利用者の名前
+    pattern: Fukuemon
+    prh: パッケージの本文に、このリポジトリの所有者の名前を書かない
