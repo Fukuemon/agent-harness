@@ -1,25 +1,20 @@
 # 開発の準備
 
-必要なものは、mise と microsoft/apm の 2 つである。Node.js と pnpm は、mise が `mise.toml` の版で入れる。
+必要なものは mise だけである。Node.js、pnpm、microsoft/apm は、mise が `mise.toml` の版で入れる。
 
 ```sh
+mise trust
 mise install
 pnpm install
 apm install
 ```
 
+- `mise trust` は、clone した直後に 1 度だけ要る。設定ファイルを信頼させる。
 - `pnpm install` は、Git のフックも有効にする。
-- mise の導入の方法は、公式の案内に従う。clone した直後は `mise trust` で設定ファイルを信頼させる。
+- `apm install` は、`apm.yml` に書いたスキルとパッケージを配置する。配置先と直し方は [スキルの置き場所](context/skills.md) に書いてある。
+- mise の導入の方法は、公式の案内に従う。
   - 出典: [mise](https://mise.jdx.dev/)
   - ADR-0016: [ツールの版は mise で管理し、テンプレートの既定にする](adr/0016-mise-for-tool-versions.md)
-- `apm install` は、`apm.yml` に書いたスキルを配置する。配置先と直し方は [スキルの置き場所](context/skills.md) に書いてある。
-- microsoft/apm の導入の方法は、公式の案内に従う。
-  - 出典: [microsoft/apm](https://github.com/microsoft/apm)
-- 常設せずに試す場合は、uv の一時実行が使える。
-
-```sh
-uvx --from apm-cli apm install
-```
 
 ## 文書を直すとき
 

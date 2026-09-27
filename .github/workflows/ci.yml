@@ -17,3 +17,9 @@ jobs:
       - run: pnpm test
       - run: pnpm check:index
       - run: pnpm check:project
+      - run: apm install
+      - run: |
+          git status --porcelain -- apm.lock.yaml .claude/settings.json .codex/hooks.json .claude/apm-hooks.json .codex/apm-hooks.json > drift.txt
+          cat drift.txt
+          git diff -- apm.lock.yaml .claude/settings.json .codex/hooks.json .claude/apm-hooks.json .codex/apm-hooks.json
+          test ! -s drift.txt
