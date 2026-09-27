@@ -3,7 +3,9 @@ type: feature-design
 title: 文書の体系
 description: Design Doc、ADR、spec の種類と寿命、実装とのずれの検出、spec を削除する前の保証、文書のチェック
 status: draft
-keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint]
+keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint, write-design-docs]
+governs: packages/docs
+verified_commit: unverified
 ---
 
 # 文書の体系
@@ -15,7 +17,7 @@ keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint]
 
 ## Scope
 
-- 持つもの: Design Doc、ADR、spec の構造とテンプレート。どの情報をどの文書に書くかのルール。実装とのずれの検出。spec の削除の保証。文書のチェック。
+- 持つもの: PRD、Design Doc、ADR、spec の構造とテンプレート。画面ごとの UI の設計は持たず、別のスキルが扱う。どの情報をどの文書に書くかのルール。実装とのずれの検出。spec の削除の保証。文書のチェック。
 - 分類: 自動チェックと、プロジェクト固有の知識の入れ物。
 - 持たないもの: 利用者の知識の中身。内容の正しさの判定。作業を次へ進める制御。context と目次と値のファイル。それらは core が持つ。
 
@@ -25,13 +27,14 @@ keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint]
 
 利用者のリポジトリに次の文書を置く。ディレクトリ名は、値のファイルの `docs` で変更できる。
 
+- **PRD:** 誰のどの課題を、何で解決するかを書く。実現方法は書かない。ルートに 1 つ置く。目標、成功の指標、節目、未決事項の置き場である。
 - **Design Doc:** 現在の設計だけを書く。全体像と、機能ごとの設計に分ける。
   - 全体像は 1 つの文書に置く。構成要素の責務、要素の間の依存、横断する方針を書く。図は、C4 モデルの L1 の System Context と、L2 の Container だけを描く。
   - 機能ごとの設計は、構成要素 1 つにつき 1 つの文書に置く。内部の構成と処理の流れを書く。図は、L3 の Component と、処理の流れを描く。
   - 機能ごとの設計の置き場所は、設計文書のディレクトリの下か、対象のコードと同じディレクトリである。チェックは両方を見る。コードのディレクトリに `DesignDoc.md` があればそれを使い、なければ設計文書のディレクトリを見る。コードの隣に置くと、`governs` が同じディレクトリを指し、コードを消せば文書も一緒に消える。
   - 分ける基準は、読者、求める行動、更新の頻度、詳細度、食い違ったときの参照先のどれかが違うことである。
 - **ADR:** 選択肢を比較して決めた判断とその理由。追記だけを行う。
-- **spec:** issue ごとの要求、論点、受け入れ基準、決定の経緯。Git で管理し、issue を閉じる時点で削除する。シーケンス図は spec に描く。
+- **spec:** issue ごとの要求、論点、受け入れ基準、決定の経緯。Git で管理し、issue を閉じる時点で削除する。変更を議論するシーケンス図は spec に描き、決まったら機能ごとの Design Doc へ移す。
   - 要求ごとの開発プロセスの宣言を、YAML として同じ場所に置く。spec と一緒に削除する。
   - レビューを依頼する前に、1 本の HTML へ変換する。最終のセルフレビューが終わった後に行う。
     - ADR-0003: [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](../../adr/0003-spec-review-html.md)
@@ -65,18 +68,22 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 時間の経過だけで古いとみなす判定も入れない。  
 安定した領域に警告が出続け、警告の全体が読まれなくなる。
 
-### テンプレート
+### テンプレートと書き方のスキル
 
-利用者のリポジトリへ写すテンプレートは、次のとおりである。すべて文書の体系のスキルの `assets/` に置き、core の導入のスキルが写す。
+書き方のスキル `write-design-docs` が、4 つの文書に何を書き何を書かないか、全体像と機能ごとの分け方、spec を閉じる前に残す設計を移す規則を持つ。節の構成と骨組みは、文書の種類ごとに `references/` に分ける。  
+テンプレートは 2 つに分ける。導入のときに 1 度写すものはスキルの `assets/` に置き、core の導入のスキルが写す。文書ごとに新しく作るものは `references/` の骨組みとして持ち、書くときにスキルが写す。導入のときに写すと、使わないファイルが目次に載るためである。
 
-| テンプレート | 内容 |
-| --- | --- |
-| 全体像の Design Doc | 8 節の骨組みと frontmatter |
-| 機能ごとの Design Doc | 4 節の骨組みと frontmatter |
-| ADR | Status、Context、Decision、Considered Options、Consequences |
-| spec | `index.md` と、付属の Markdown の骨組み。`process.yml` は開発プロセスのテンプレートから写す |
-| レビュー用の HTML の骨組み | spec の Markdown を 1 本にまとめる枠 |
-| textlint と prh の設定 | 文章の規則 |
+| テンプレート | 置き場 | 内容 |
+| --- | --- | --- |
+| PRD | `assets/` | 10 節の骨組みと frontmatter |
+| 全体像の Design Doc | `assets/` | 8 節の骨組みと frontmatter |
+| ADR | `assets/` | `adr/template.md`。Status、Context、Decision、Considered Options、Consequences |
+| textlint と prh の設定 | `assets/` | 文章の規則。どのプロジェクトでも成り立つ規則だけを持ち、用語の規則は利用者が足す |
+| 機能ごとの Design Doc | `references/` | 4 節の骨組みと frontmatter |
+| spec | `references/` | `index.md` の骨組み。`process.yml` は開発プロセスのテンプレートから写す |
+| レビュー用の HTML の骨組み | `assets/` | spec の Markdown を 1 本にまとめる枠 |
+
+導入のスキルは、`assets/` の `design/`、`adr/`、`specs/` で始まるパスを、利用者が答えた文書のディレクトリ名に置き換えて写す。
 
 ### spec を削除する前の保証
 
@@ -88,7 +95,8 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 
 ## Interface
 
-- 置くファイル: Design Doc、ADR、spec、レビュー用の HTML。最初の一式は core の導入のスキルが写す。
+- 置くファイル: PRD、Design Doc、ADR、spec、レビュー用の HTML、textlint と prh の設定。最初の一式は core の導入のスキルが写す。
+- 読むスキル: `write-design-docs`。
 - 読む値: `docs` の各ディレクトリ名。
 - 動くチェック: 次の表のとおり。
 
