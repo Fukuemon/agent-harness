@@ -20,5 +20,5 @@ verified_commit: d45aeafb7bb083783d5c2f77d1a2dfb2a2acbe94
 - `.claude/skills/` と `.agents/skills/` は、`apm install` が作る写しである。Git で管理しない。
 - core のフックも `apm install` が配置する。フックの設定は `.claude/settings.json` と `.codex/hooks.json` に統合され、Git で管理する。スクリプトの写し `.claude/hooks/` と `.codex/hooks/` と、apm の記録 `apm-hooks.json` は管理しない。
 - 写しを直接は直さない。次の `apm install` で上書きされる。
-- `skills/` か `packages/` を直したら、`apm install` を実行して写しへ反映する。`apm.lock.yaml` が写しのハッシュを記録するため、ロックファイルの変更も同じコミットに含める。pre-commit が `packages/`、`skills/`、`apm.yml` の変更を含むコミットで `apm install` を実行し、ロックファイルをステージする。CI は、ロックファイルに差分がないことを確かめる。
+- `skills/` か `packages/` を直したら、`apm install` を実行して写しへ反映する。`apm.lock.yaml` が写しのハッシュを記録するため、ロックファイルの変更も同じコミットに含める。pre-commit は、`packages/`、`skills/`、`apm.yml`、`apm.lock.yaml` の変更を含むコミットで `apm install` を実行する。ロックファイルと、フックの設定 `.claude/settings.json` と `.codex/hooks.json` をステージする。CI は、この 3 ファイルに差分も未追跡もないことを確かめる。
 - apm の版は `mise.toml` にあり、`apm.lock.yaml` の `apm_version` と揃える。版を上げるときは、両方を同じコミットで変える。
