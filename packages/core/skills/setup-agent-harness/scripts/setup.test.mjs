@@ -1,8 +1,8 @@
-// setup.mjs の 3 動作と、兄弟のスキルの assets/ の取り込みを、使い捨てのディレクトリで確かめる。
+// setup.mjs の 3 動作と、ほかのスキルの assets/ の取り込みを、使い捨てのディレクトリで確かめる。
 // 実行: node --test packages/core/skills/setup-agent-harness/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, utimesSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
@@ -17,6 +17,10 @@ function setup() {
   cpSync(skillSrc, join(skills, "setup-agent-harness"), { recursive: true });
   mkdirSync(join(skills, "other", "assets", "docs"), { recursive: true });
   writeFileSync(join(skills, "other", "assets", "docs", "README.md"), "# other\n");
+  mkdirSync(join(skills, "other", "assets", "design"), { recursive: true });
+  writeFileSync(join(skills, "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: 全体像\ndescription: 全体の設計\nstatus: draft\n---\n");
+  mkdirSync(join(skills, "other", "assets", "adr"), { recursive: true });
+  writeFileSync(join(skills, "other", "assets", "adr", "template.md"), "# ADR\n");
   const repo = join(base, "my-repo");
   mkdirSync(repo);
   return { repo, script: join(skills, "setup-agent-harness", "scripts", "setup.mjs") };
@@ -107,10 +111,13 @@ test("--diff は、まだ写していないファイルがあれば終了コー�
   assert.equal(run(repo, script, ["--diff"]).status, 1);
 });
 
-test("知らない引数と、テンプレートにない --force は終了コード 2", () => {
+test("知らない引数と、テンプレートにない --force と、リポジトリの外を指す --docs は終了コード 2", () => {
   const { repo, script } = setup();
   assert.equal(run(repo, script, ["--topics", "nope"]).status, 2);
   assert.equal(run(repo, script, ["--force", "nope.md"]).status, 2);
+  assert.equal(run(repo, script, ["--docs", "../shared,adr,specs"]).status, 2);
+  assert.equal(run(repo, script, ["--docs", ".,adr,specs"]).status, 2);
+  assert.ok(!existsSync(join(repo, "..", "shared")), "リポジトリの外に写した");
 });
 
 test(".gitignore に .ai-out/ を足し、2 回目は重ねて足さない。--diff は行がなければ差分に数える", () => {
@@ -122,4 +129,39 @@ test(".gitignore に .ai-out/ を足し、2 回目は重ねて足さない。--d
   run(repo, script);
   assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), "node_modules/\n.ai-out/\n");
   assert.equal(run(repo, script, ["--diff"]).status, 0);
+});
+
+test("ほかのスキルの assets/ の design/ と adr/ は、答えた文書のディレクトリ名に写り、目次に載る", () => {
+  const { repo, script } = setup();
+  run(repo, script, ["--docs", "docs/design,docs/adr,docs/specs"]);
+  assert.ok(existsSync(join(repo, "docs/design/DesignDoc.md")), "docs/design/DesignDoc.md がない");
+  assert.ok(existsSync(join(repo, "docs/adr/template.md")), "docs/adr/template.md がない");
+  assert.ok(!existsSync(join(repo, "design")), "design/ が残っている");
+  assert.match(readFileSync(join(repo, "context/index.md"), "utf8"), /\[全体像\]\(\.\.\/docs\/design\/DesignDoc\.md\)/);
+});
+
+test("<リポジトリ名> は、写すすべてのファイルでリポジトリの名前に置き換わる", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "..", "skills", "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: <リポジトリ名> Design Doc\ndescription: 全体の設計\n---\n# <リポジトリ名> Design Doc\n");
+  run(repo, script);
+  const doc = readFileSync(join(repo, "design/DesignDoc.md"), "utf8");
+  assert.match(doc, /^title: my-repo Design Doc$/m);
+  assert.doesNotMatch(doc, /<リポジトリ名>/);
+});
+
+test("Claude Code のプラグインのキャッシュでは、同じ marketplace のほかのプラグインの最新の版の assets/ も写す", () => {
+  const base = mkdtempSync(join(tmpdir(), "harness-"));
+  const market = join(base, "plugins", "cache", "agent-harness");
+  const skills = join(market, "core", "0.1.0", "skills");
+  cpSync(skillSrc, join(skills, "setup-agent-harness"), { recursive: true });
+  for (const [v, body] of [["0.1.0", "# old\n"], ["0.2.0", "# new\n"]]) {
+    mkdirSync(join(market, "docs", v, "skills", "write-design-docs", "assets", "adr"), { recursive: true });
+    writeFileSync(join(market, "docs", v, "skills", "write-design-docs", "assets", "adr", "template.md"), body);
+  }
+  utimesSync(join(market, "docs", "0.1.0", "skills"), 0, 0);
+  const repo = join(base, "my-repo");
+  mkdirSync(repo);
+  const r = run(repo, join(skills, "setup-agent-harness", "scripts", "setup.mjs"), ["--docs", "d,a,s"]);
+  assert.equal(r.status, 0, r.out);
+  assert.equal(readFileSync(join(repo, "a/template.md"), "utf8"), "# new\n");
 });

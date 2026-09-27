@@ -1,9 +1,9 @@
-// スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ にあるほかのスキルの assets/ を、利用者のリポジトリに写す。
+// スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
 // .gitignore に .ai-out/ の行がなければ足す
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -25,6 +25,7 @@ opts.branches ||= pickList("names") ?? "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
+for (const d of docs) if (d.split("/").some((s) => s === "" || s === "." || s === "..")) fail(`文書のディレクトリはリポジトリの中の相対パスで書く。空、.、.. の区切りは使えない: ${d}`);
 if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
 const skillDir = fileURLToPath(new URL("..", import.meta.url));
@@ -32,13 +33,20 @@ const skillsRoot = dirname(skillDir);
 
 const candidates = new Map();
 collect(join(skillDir, "assets"), candidates);
-// 同じ skills/ にあるスキルだけを見る。Claude Code のプラグインのキャッシュにある assets/ は、置き場が決まってから足す
-for (const name of readdirSync(skillsRoot)) {
-  const assets = join(skillsRoot, name, "assets");
-  if (name !== basename(skillDir) && existsSync(assets)) collect(assets, candidates);
+// ほかのスキルの assets/ にある design/、adr/、specs/ は、利用者が答えた文書のディレクトリ名に置き換える
+const dirs = { design: docs[0], adr: docs[1], specs: docs[2] };
+for (const root of skillsRoots()) {
+  for (const name of readdirSync(root)) {
+    const assets = join(root, name, "assets");
+    if (name === basename(skillDir) || !existsSync(assets)) continue;
+    for (const [p, body] of collect(assets, new Map())) {
+      const [head, ...rest] = p.split("/");
+      candidates.set(head in dirs && rest.length ? [dirs[head], ...rest].join("/") : p, body);
+    }
+  }
 }
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
-candidates.set("AGENTS.md", candidates.get("AGENTS.md").replace("<リポジトリ名>", basename(root)));
+for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
 const ignorePath = join(root, ".gitignore");
 const ignored = existsSync(ignorePath) && readFileSync(ignorePath, "utf8").split(/\r?\n/).includes(".ai-out/");
@@ -72,6 +80,26 @@ if (opts.force.length) {
   }
 }
 
+// パッケージマネージャーはすべてのスキルを同じ skills/ に置く。
+// Claude Code は marketplace から入れたプラグインを plugins/cache/<marketplace>/<plugin>/<version>/skills/ に分けて置くので、同じ marketplace のほかのプラグインも見る
+function skillsRoots() {
+  const plugin = dirname(dirname(skillsRoot));
+  const market = dirname(plugin);
+  if (basename(dirname(market)) !== "cache" || basename(dirname(dirname(market))) !== "plugins") return [skillsRoot];
+  const roots = [skillsRoot];
+  for (const e of readdirSync(market, { withFileTypes: true })) {
+    const name = e.name;
+    if (!e.isDirectory() || join(market, name) === plugin) continue;
+    // 古い版の削除が済むまで版のディレクトリが並ぶので、最後に置かれたものを使う。版を選ぶ必要が出たら installed_plugins.json を読む
+    const latest = readdirSync(join(market, name))
+      .map((v) => join(market, name, v, "skills"))
+      .filter(existsSync)
+      .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs)[0];
+    if (latest) roots.push(latest);
+  }
+  return roots;
+}
+
 // YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む
 function pickList(key) {
   const m = new RegExp(`^(\\s*)${key}:[ \\t]*(.*)$`, "m").exec(existing);
@@ -93,6 +121,7 @@ function collect(dir, into, base = dir) {
     if (e.isDirectory()) collect(full, into, base);
     else into.set(relative(base, full).split(sep).join("/"), readFileSync(full, "utf8"));
   }
+  return into;
 }
 
 function fillProject(yaml) {
