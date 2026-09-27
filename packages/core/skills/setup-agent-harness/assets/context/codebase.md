@@ -13,7 +13,7 @@ status: draft
 
 ## Dependency Rules
 
-<!-- 依存してよい向きと、禁止する経路。循環依存の扱い -->
+<!-- 依存してよい向きと、禁止する依存。循環依存の扱い -->
 
 ## State Ownership
 
