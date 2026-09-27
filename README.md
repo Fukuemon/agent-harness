@@ -9,3 +9,12 @@ AI エージェントにプロジェクト固有の知識とガードレール�
 - 決定済みの設計は [Design Doc](design/DesignDoc.md) に書いてある。
 - 選択肢を比較して決めた判断は [adr/](adr/) に書いてある。
 - 開発の準備は [CONTRIBUTING.md](CONTRIBUTING.md) に、このリポジトリの運用の取り決めは [context/](context/index.md) に書いてある。
+
+## コーディングエージェントごとの対応
+
+| コーディングエージェント | スキルの配置先 | 編集後のフックの入力 | 確認した版 |
+| --- | --- | --- | --- |
+| Claude Code | `.claude/skills/` | `tool_input` の `file_path` と `new_string`、`content`、`edits` | 2.1.283 |
+| Codex CLI | `.agents/skills/` | `tool_input.command` のパッチの本文。フックは利用者が信頼するまで動かない | 0.154.0 |
+
+- フックは、ホスティングサービスとコーディングエージェントの名前を持たない。名前ごとの違いは、この表だけが持つ。
