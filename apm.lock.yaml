@@ -78,7 +78,7 @@ dependencies:
     .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
     .agents/skills/issue-pr-writing/assets/.github/pull_request_template.md: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
     .agents/skills/issue-pr-writing/references/issue.md: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
-    .agents/skills/issue-pr-writing/references/pull-request.md: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
+    .agents/skills/issue-pr-writing/references/pull-request.md: sha256:13332fdfc0c70ea145e6522a554b4440edfa37d6eb6759ebf17320664e5f1c99
     .agents/skills/setup-agent-harness/SKILL.md: sha256:cb84dd99612e40165c9464bce39fab97e3fcd26d2c4cf934aae7d01b90b5a883
     .agents/skills/setup-agent-harness/assets/AGENTS.md: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
     .agents/skills/setup-agent-harness/assets/CONTRIBUTING.md: sha256:6908eab85b3855efc18d228be64adb72436e6e951a7ab7042dd544be37e5ec53
@@ -104,7 +104,7 @@ dependencies:
     .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
     .claude/skills/issue-pr-writing/assets/.github/pull_request_template.md: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
     .claude/skills/issue-pr-writing/references/issue.md: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
-    .claude/skills/issue-pr-writing/references/pull-request.md: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
+    .claude/skills/issue-pr-writing/references/pull-request.md: sha256:13332fdfc0c70ea145e6522a554b4440edfa37d6eb6759ebf17320664e5f1c99
     .claude/skills/setup-agent-harness/SKILL.md: sha256:cb84dd99612e40165c9464bce39fab97e3fcd26d2c4cf934aae7d01b90b5a883
     .claude/skills/setup-agent-harness/assets/AGENTS.md: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
     .claude/skills/setup-agent-harness/assets/CONTRIBUTING.md: sha256:6908eab85b3855efc18d228be64adb72436e6e951a7ab7042dd544be37e5ec53
@@ -313,7 +313,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
+  content_hash: sha256:13332fdfc0c70ea145e6522a554b4440edfa37d6eb6759ebf17320664e5f1c99
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-agent-harness
@@ -592,7 +592,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
+  content_hash: sha256:13332fdfc0c70ea145e6522a554b4440edfa37d6eb6759ebf17320664e5f1c99
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-agent-harness
