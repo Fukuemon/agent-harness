@@ -78,3 +78,14 @@ test("CRLF の改行と引用符つきの値を読み、予約された log.md �
   assert.match(index, /- \[改行\]\(crlf\.md\) — CRLF の文書\n/);
   assert.doesNotMatch(index, /log\.md/);
 });
+
+test("docs.design は YAML として読み、行末のコメントに影響されない", () => {
+  const r = repo((r) => {
+    mkdirSync(join(r, "design"));
+    writeFileSync(join(r, "design/DesignDoc.md"), doc("全体像"));
+  });
+  const p = join(r, "context/project.yml");
+  writeFileSync(p, readFileSync(p, "utf8").replace("design: design", "design: design # 全体像と機能ごとの Design Doc"));
+  assert.equal(run(r).status, 0, run(r).out);
+  assert.match(readFileSync(join(r, "context/index.md"), "utf8"), /\.\.\/design\/DesignDoc\.md/);
+});

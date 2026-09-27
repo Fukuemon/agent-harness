@@ -1,18 +1,18 @@
 // context/ と Design Doc の frontmatter から context/index.md を生成する。lefthook と CI から呼ぶ。
 // 使い方: node build-index.mjs [--write]
 // 既定は生成し直した目次と context/index.md を比べ、差分を表示する。--write は context/index.md を書き換える
-// 終了コード: 0 は差分なし（--write では書き換え済み）、1 は差分あり、2 は context/ がないか frontmatter に必須のキーがない
+// 終了コード: 0 は差分なし（--write では書き換え済み）、1 は差分あり、2 は context/ か project.yml が読めないか frontmatter に必須のキーがない
 import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
+import { parse } from "yaml";
 
 const write = process.argv.includes("--write");
 const root = process.cwd();
 if (!existsSync(join(root, "context"))) fail("context/ がない。導入のスキル setup-agent-harness で置く");
 
-const project = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
-const designDir = /^\s*design: (.+)$/m.exec(project)?.[1].trim().replace(/^["']|["']$/g, "");
+const designDir = readProject()?.docs?.design;
 const design = designDir && existsSync(join(root, designDir)) ? collect(join(root, designDir)) : new Map();
 const { index, missing } = renderIndex(collect(join(root, "context")), design, designDir);
 if (missing.length) fail(missing.join("\n"));
@@ -28,6 +28,16 @@ if (write) {
 console.log(current ? showDiff(target, index) : "context/index.md がない");
 console.log("context/index.md が frontmatter と合わない。--write を付けて実行すると書き換える");
 process.exit(1);
+
+function readProject() {
+  const path = join(root, "context/project.yml");
+  if (!existsSync(path)) return undefined;
+  try {
+    return parse(readFileSync(path, "utf8"));
+  } catch (e) {
+    fail(`読めない: context/project.yml\n${e.message}`);
+  }
+}
 
 function collect(dir, into = new Map(), base = dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
