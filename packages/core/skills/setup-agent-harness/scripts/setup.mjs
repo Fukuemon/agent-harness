@@ -1,9 +1,9 @@
-// スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ にあるほかのスキルの assets/ を、利用者のリポジトリに写す。
+// スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
 // .gitignore に .ai-out/ の行がなければ足す
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -33,15 +33,16 @@ const skillsRoot = dirname(skillDir);
 
 const candidates = new Map();
 collect(join(skillDir, "assets"), candidates);
-// 同じ skills/ にあるスキルだけを見る。Claude Code のプラグインのキャッシュにある assets/ は、置き場が決まってから足す
 // ほかのスキルの assets/ にある design/、adr/、specs/ は、利用者が答えた文書のディレクトリ名に置き換える
 const dirs = { design: docs[0], adr: docs[1], specs: docs[2] };
-for (const name of readdirSync(skillsRoot)) {
-  const assets = join(skillsRoot, name, "assets");
-  if (name === basename(skillDir) || !existsSync(assets)) continue;
-  for (const [p, body] of collect(assets, new Map())) {
-    const [head, ...rest] = p.split("/");
-    candidates.set(head in dirs && rest.length ? [dirs[head], ...rest].join("/") : p, body);
+for (const root of skillsRoots()) {
+  for (const name of readdirSync(root)) {
+    const assets = join(root, name, "assets");
+    if (name === basename(skillDir) || !existsSync(assets)) continue;
+    for (const [p, body] of collect(assets, new Map())) {
+      const [head, ...rest] = p.split("/");
+      candidates.set(head in dirs && rest.length ? [dirs[head], ...rest].join("/") : p, body);
+    }
   }
 }
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
@@ -77,6 +78,26 @@ if (opts.force.length) {
     writeFileSync(ignorePath, `${current}${current && !current.endsWith("\n") ? "\n" : ""}.ai-out/\n`);
     console.log("足した: .gitignore に .ai-out/");
   }
+}
+
+// パッケージマネージャーはすべてのスキルを同じ skills/ に置く。
+// Claude Code は marketplace から入れたプラグインを plugins/cache/<marketplace>/<plugin>/<version>/skills/ に分けて置くので、同じ marketplace のほかのプラグインも見る
+function skillsRoots() {
+  const plugin = dirname(dirname(skillsRoot));
+  const market = dirname(plugin);
+  if (basename(dirname(market)) !== "cache" || basename(dirname(dirname(market))) !== "plugins") return [skillsRoot];
+  const roots = [skillsRoot];
+  for (const e of readdirSync(market, { withFileTypes: true })) {
+    const name = e.name;
+    if (!e.isDirectory() || join(market, name) === plugin) continue;
+    // 古い版の削除が済むまで版のディレクトリが並ぶので、最後に置かれたものを使う。版を選ぶ必要が出たら installed_plugins.json を読む
+    const latest = readdirSync(join(market, name))
+      .map((v) => join(market, name, v, "skills"))
+      .filter(existsSync)
+      .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs)[0];
+    if (latest) roots.push(latest);
+  }
+  return roots;
 }
 
 // YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む

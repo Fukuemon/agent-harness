@@ -1,8 +1,8 @@
-// setup.mjs の 3 動作と、兄弟のスキルの assets/ の取り込みを、使い捨てのディレクトリで確かめる。
+// setup.mjs の 3 動作と、ほかのスキルの assets/ の取り込みを、使い捨てのディレクトリで確かめる。
 // 実行: node --test packages/core/skills/setup-agent-harness/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, utimesSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
@@ -147,4 +147,21 @@ test("<リポジトリ名> は、写すすべてのファイルでリポジト�
   const doc = readFileSync(join(repo, "design/DesignDoc.md"), "utf8");
   assert.match(doc, /^title: my-repo Design Doc$/m);
   assert.doesNotMatch(doc, /<リポジトリ名>/);
+});
+
+test("Claude Code のプラグインのキャッシュでは、同じ marketplace のほかのプラグインの最新の版の assets/ も写す", () => {
+  const base = mkdtempSync(join(tmpdir(), "harness-"));
+  const market = join(base, "plugins", "cache", "agent-harness");
+  const skills = join(market, "core", "0.1.0", "skills");
+  cpSync(skillSrc, join(skills, "setup-agent-harness"), { recursive: true });
+  for (const [v, body] of [["0.1.0", "# old\n"], ["0.2.0", "# new\n"]]) {
+    mkdirSync(join(market, "docs", v, "skills", "write-design-docs", "assets", "adr"), { recursive: true });
+    writeFileSync(join(market, "docs", v, "skills", "write-design-docs", "assets", "adr", "template.md"), body);
+  }
+  utimesSync(join(market, "docs", "0.1.0", "skills"), 0, 0);
+  const repo = join(base, "my-repo");
+  mkdirSync(repo);
+  const r = run(repo, join(skills, "setup-agent-harness", "scripts", "setup.mjs"), ["--docs", "d,a,s"]);
+  assert.equal(r.status, 0, r.out);
+  assert.equal(readFileSync(join(repo, "a/template.md"), "utf8"), "# new\n");
 });
