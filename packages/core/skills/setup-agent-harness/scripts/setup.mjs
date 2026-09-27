@@ -1,7 +1,7 @@
 // スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
-// .gitignore に .ai-out/ の行がなければ足す
+// .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
@@ -49,7 +49,8 @@ candidates.set("context/project.yml", fillProject(candidates.get("context/projec
 for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
 const ignorePath = join(root, ".gitignore");
-const ignored = existsSync(ignorePath) && readFileSync(ignorePath, "utf8").split(/\r?\n/).includes(".ai-out/");
+const ignoreLines = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8").split(/\r?\n/) : [];
+const unignored = [".ai-out/", ...deployedDirs()].filter((l) => !ignoreLines.includes(l));
 
 if (opts.force.length) {
   for (const p of opts.force) {
@@ -65,7 +66,7 @@ if (opts.force.length) {
     const d = showDiff(p);
     if (d) { differs++; console.log(d); } else console.log(`${p}: 差分なし`);
   }
-  if (!ignored) { differs++; console.log(".gitignore: .ai-out/ がない。既定の実行で足される"); }
+  if (unignored.length) { differs++; console.log(`.gitignore: 次の行がない。既定の実行で足される\n${unignored.map((l) => `  ${l}`).join("\n")}`); }
   process.exit(differs ? 1 : 0);
 } else {
   const copied = [], skipped = [];
@@ -73,10 +74,10 @@ if (opts.force.length) {
   for (const p of copied) write(p);
   if (copied.length) console.log(`写した:\n${copied.map((p) => `  ${p}`).join("\n")}`);
   if (skipped.length) console.log(`飛ばした（既にある。--diff で差分を見る）:\n${skipped.map((p) => `  ${p}`).join("\n")}`);
-  if (!ignored) {
+  if (unignored.length) {
     const current = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8") : "";
-    writeFileSync(ignorePath, `${current}${current && !current.endsWith("\n") ? "\n" : ""}.ai-out/\n`);
-    console.log("足した: .gitignore に .ai-out/");
+    writeFileSync(ignorePath, `${current}${current && !current.endsWith("\n") ? "\n" : ""}${unignored.join("\n")}\n`);
+    console.log(`足した: .gitignore に\n${unignored.map((l) => `  ${l}`).join("\n")}`);
   }
 }
 
@@ -98,6 +99,19 @@ function skillsRoots() {
     if (latest) roots.push(latest);
   }
   return roots;
+}
+
+// apm.lock.yaml の deployed_files を、スキルとフックはディレクトリの単位にまとめて返す。
+// ディレクトリを丸ごと無視すると、利用者が .claude/skills/ に置く自作のスキルまで追跡から外れる
+function deployedDirs() {
+  const lock = join(root, "apm.lock.yaml");
+  if (!existsSync(lock)) return [];
+  const dirs = new Set();
+  for (const [, p] of readFileSync(lock, "utf8").matchAll(/^\s*- (\.[^\s:]+)\s*$/gm)) {
+    const parts = p.split("/");
+    dirs.add(["skills", "hooks"].includes(parts[1]) && parts.length >= 3 ? `/${parts.slice(0, 3).join("/")}/` : `/${p}`);
+  }
+  return [...dirs].sort();
 }
 
 // YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む

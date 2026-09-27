@@ -131,6 +131,30 @@ test(".gitignore に .ai-out/ を足し、2 回目は重ねて足さない。--d
   assert.equal(run(repo, script, ["--diff"]).status, 0);
 });
 
+test("apm.lock.yaml の配置先を、スキルとフックはディレクトリの単位で .gitignore に足し、2 回目は重ねて足さない", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "apm.lock.yaml"), [
+    "dependencies:",
+    "- repo_url: _local/core",
+    "  deployed_files:",
+    "  - .claude/skills/git-commit",
+    "  - .claude/skills/git-commit/SKILL.md",
+    "  - .agents/skills/git-commit",
+    "  - .claude/hooks/core/hooks/check-comments.mjs",
+    "  - .codex/hooks/core/hooks/check-comments.mjs",
+    "  deployed_file_hashes:",
+    "    .claude/skills/git-commit/SKILL.md: sha256:0",
+    "",
+  ].join("\n"));
+  assert.equal(run(repo, script, ["--diff"]).status, 1);
+  run(repo, script);
+  const expected = ".ai-out/\n/.agents/skills/git-commit/\n/.claude/hooks/core/\n/.claude/skills/git-commit/\n/.codex/hooks/core/\n";
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), expected);
+  run(repo, script);
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), expected);
+  assert.equal(run(repo, script, ["--diff"]).status, 0);
+});
+
 test("ほかのスキルの assets/ の design/ と adr/ は、答えた文書のディレクトリ名に写り、目次に載る", () => {
   const { repo, script } = setup();
   run(repo, script, ["--docs", "docs/design,docs/adr,docs/specs"]);
