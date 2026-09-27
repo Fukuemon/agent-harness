@@ -1,7 +1,7 @@
 ---
 type: context
 title: 基盤と運用
-description: 環境の種類、デプロイと切り戻しの条件、監視、秘密情報の置き場の方針
+description: このリポジトリが動く場所、配布の条件、正常の判断、切り戻し、秘密情報の方針。リリースの手段は未定
 status: draft
 ---
 
@@ -9,20 +9,23 @@ status: draft
 
 ## Environments
 
-<!-- 環境の種類と、それぞれの用途。どのイベントで次の環境へ進むか。構成の詳細は書かず、基盤の Design Doc へリンクする -->
+- デプロイする環境はない。動く場所は、GitHub Actions と、パッケージを入れた利用者のリポジトリの 2 つである。
+- 利用者のリポジトリでは、パッケージマネージャーが `packages/` の中身を配置する。配置の形は [全体像の Interfaces](../design/DesignDoc.md#interfaces) にある。
 
 ## Deployment Conditions
 
-<!-- いつ、何を満たせばデプロイしてよいか -->
+- 利用者への配布は、main のタグである。タグを付ける手段（release-please か changesets）は未定。
+- main へは pull request でだけ取り込む。CI が通り、レビューの指摘に対応していることが条件である。手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。
 
 ## Health and Monitoring
 
-<!-- 何を見て正常と判断するか。監視とログの一次の観測点 -->
+- 正常の判断は、CI の結果だけである。監視とログはない。
 
 ## Rollback
 
-<!-- 戻すときの手順と、戻せない変更の扱い -->
+- 未定。タグを付ける手段を決めてから書く。
 
 ## Secrets
 
-<!-- 秘密情報をどこに置き、どこに置かないか。値そのものは書かない -->
+- 秘密情報はない。CI は、リポジトリの読み取り以外の権限を使わない。
+- 公開しない作業メモは `.ai-out/` に置き、Git で追跡しない。
