@@ -111,10 +111,13 @@ test("--diff は、まだ写していないファイルがあれば終了コー�
   assert.equal(run(repo, script, ["--diff"]).status, 1);
 });
 
-test("知らない引数と、テンプレートにない --force は終了コード 2", () => {
+test("知らない引数と、テンプレートにない --force と、リポジトリの外を指す --docs は終了コード 2", () => {
   const { repo, script } = setup();
   assert.equal(run(repo, script, ["--topics", "nope"]).status, 2);
   assert.equal(run(repo, script, ["--force", "nope.md"]).status, 2);
+  assert.equal(run(repo, script, ["--docs", "../shared,adr,specs"]).status, 2);
+  assert.equal(run(repo, script, ["--docs", ".,adr,specs"]).status, 2);
+  assert.ok(!existsSync(join(repo, "..", "shared")), "リポジトリの外に写した");
 });
 
 test(".gitignore に .ai-out/ を足し、2 回目は重ねて足さない。--diff は行がなければ差分に数える", () => {

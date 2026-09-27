@@ -28,6 +28,16 @@ test("先頭か末尾に / のあるパスは合わない", () => {
   assert.equal(validate(doc), true, JSON.stringify(validate.errors));
 });
 
+test("空、.、.. の区切りを含むパスは合わない", () => {
+  const doc = example();
+  for (const bad of ["..", ".", "../shared", "docs/../x", "docs/.", "docs//x"]) {
+    doc.docs.design = bad;
+    assert.equal(validate(doc), false, bad);
+  }
+  doc.docs.design = ".docs/design..v2";
+  assert.equal(validate(doc), true, JSON.stringify(validate.errors));
+});
+
 test("ほかのパッケージのキーがなくても合う", () => {
   const doc = example();
   delete doc.guardrails;

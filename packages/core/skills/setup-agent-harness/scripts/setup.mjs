@@ -25,6 +25,7 @@ opts.branches ||= pickList("names") ?? "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
+for (const d of docs) if (d.split("/").some((s) => s === "" || s === "." || s === "..")) fail(`文書のディレクトリはリポジトリの中の相対パスで書く。空、.、.. の区切りは使えない: ${d}`);
 if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
 const skillDir = fileURLToPath(new URL("..", import.meta.url));
