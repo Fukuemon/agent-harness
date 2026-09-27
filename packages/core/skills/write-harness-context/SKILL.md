@@ -1,6 +1,6 @@
 ---
 name: write-harness-context
-description: context を種類ごとに決めて書くとき、書いた context を更新するとき、CONTRIBUTING.md と AGENTS.md を直すときに使う。導入のスキル setup-agent-harness が status: draft で置いた骨組みを、決まる時期に埋めて stable にする。
+description: context を種類ごとに決めて書くとき、書いた context を更新するとき、CONTRIBUTING.md と AGENTS.md を直すときに使う。導入のスキル setup-agent-harness が draft で置いた骨組みを、決まる時期に埋めて stable にする。
 ---
 # write-harness-context
 
