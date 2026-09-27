@@ -256,6 +256,7 @@ agent-harness/
 ├── examples/
 │   ├── apm.yml                 マニフェストの例
 │   └── ci/                     spec の HTML の公開と、削除の pull request を作る CI の設定の例
+├── scripts/                    このリポジトリ自身のチェック。パッケージの本文の固有の名前
 ├── skills/                     このリポジトリの開発に使うスキル
 ├── design/
 │   ├── DesignDoc.md            全体像
@@ -267,6 +268,7 @@ agent-harness/
 ├── CONTRIBUTING.md             開発の準備
 ├── README.md                   導入の方法と、コーディングエージェントごとの対応表
 ├── PRD.md
+├── mise.toml                   Node.js と pnpm の版
 ├── apm.yml
 └── apm.lock.yaml
 ```
