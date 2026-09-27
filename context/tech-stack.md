@@ -8,7 +8,7 @@ governs:
   - package.json
   - apm.yml
   - .github/workflows/ci.yml
-verified_commit: 931a10b71ffb95d310971b360d0c7aaf21410347
+verified_commit: f75d3803d873194fd9767a539486719f80768619
 ---
 
 # 技術スタック
