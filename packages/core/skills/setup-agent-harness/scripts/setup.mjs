@@ -33,12 +33,18 @@ const skillsRoot = dirname(skillDir);
 const candidates = new Map();
 collect(join(skillDir, "assets"), candidates);
 // 同じ skills/ にあるスキルだけを見る。Claude Code のプラグインのキャッシュにある assets/ は、置き場が決まってから足す
+// ほかのスキルの assets/ にある design/、adr/、specs/ は、利用者が答えた文書のディレクトリ名に置き換える
+const dirs = { design: docs[0], adr: docs[1], specs: docs[2] };
 for (const name of readdirSync(skillsRoot)) {
   const assets = join(skillsRoot, name, "assets");
-  if (name !== basename(skillDir) && existsSync(assets)) collect(assets, candidates);
+  if (name === basename(skillDir) || !existsSync(assets)) continue;
+  for (const [p, body] of collect(assets, new Map())) {
+    const [head, ...rest] = p.split("/");
+    candidates.set(head in dirs && rest.length ? [dirs[head], ...rest].join("/") : p, body);
+  }
 }
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
-candidates.set("AGENTS.md", candidates.get("AGENTS.md").replace("<リポジトリ名>", basename(root)));
+for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
 const ignorePath = join(root, ".gitignore");
 const ignored = existsSync(ignorePath) && readFileSync(ignorePath, "utf8").split(/\r?\n/).includes(".ai-out/");
@@ -93,6 +99,7 @@ function collect(dir, into, base = dir) {
     if (e.isDirectory()) collect(full, into, base);
     else into.set(relative(base, full).split(sep).join("/"), readFileSync(full, "utf8"));
   }
+  return into;
 }
 
 function fillProject(yaml) {

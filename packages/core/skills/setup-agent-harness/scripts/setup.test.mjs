@@ -17,6 +17,10 @@ function setup() {
   cpSync(skillSrc, join(skills, "setup-agent-harness"), { recursive: true });
   mkdirSync(join(skills, "other", "assets", "docs"), { recursive: true });
   writeFileSync(join(skills, "other", "assets", "docs", "README.md"), "# other\n");
+  mkdirSync(join(skills, "other", "assets", "design"), { recursive: true });
+  writeFileSync(join(skills, "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: 全体像\ndescription: 全体の設計\nstatus: draft\n---\n");
+  mkdirSync(join(skills, "other", "assets", "adr"), { recursive: true });
+  writeFileSync(join(skills, "other", "assets", "adr", "template.md"), "# ADR\n");
   const repo = join(base, "my-repo");
   mkdirSync(repo);
   return { repo, script: join(skills, "setup-agent-harness", "scripts", "setup.mjs") };
@@ -122,4 +126,22 @@ test(".gitignore に .ai-out/ を足し、2 回目は重ねて足さない。--d
   run(repo, script);
   assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), "node_modules/\n.ai-out/\n");
   assert.equal(run(repo, script, ["--diff"]).status, 0);
+});
+
+test("ほかのスキルの assets/ の design/ と adr/ は、答えた文書のディレクトリ名に写り、目次に載る", () => {
+  const { repo, script } = setup();
+  run(repo, script, ["--docs", "docs/design,docs/adr,docs/specs"]);
+  assert.ok(existsSync(join(repo, "docs/design/DesignDoc.md")), "docs/design/DesignDoc.md がない");
+  assert.ok(existsSync(join(repo, "docs/adr/template.md")), "docs/adr/template.md がない");
+  assert.ok(!existsSync(join(repo, "design")), "design/ が残っている");
+  assert.match(readFileSync(join(repo, "context/index.md"), "utf8"), /\[全体像\]\(\.\.\/docs\/design\/DesignDoc\.md\)/);
+});
+
+test("<リポジトリ名> は、写すすべてのファイルでリポジトリの名前に置き換わる", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "..", "skills", "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: <リポジトリ名> Design Doc\ndescription: 全体の設計\n---\n# <リポジトリ名> Design Doc\n");
+  run(repo, script);
+  const doc = readFileSync(join(repo, "design/DesignDoc.md"), "utf8");
+  assert.match(doc, /^title: my-repo Design Doc$/m);
+  assert.doesNotMatch(doc, /<リポジトリ名>/);
 });
