@@ -7,12 +7,13 @@ keywords: [skills, apm.yml, .claude/skills, .agents/skills]
 governs:
   - apm.yml
   - .gitignore
-verified_commit: 79836caed43c41802352d29cc38210a858a7f66a
+verified_commit: d45aeafb7bb083783d5c2f77d1a2dfb2a2acbe94
 ---
 
 # スキルの置き場所
 
-このリポジトリの開発に使うスキルの元は `skills/` にある。`apm.yml` が、このディレクトリのスキルを列挙している。
+このリポジトリの開発に使うスキルの元は `skills/` にある。`apm.yml` が、このディレクトリのスキルと、パッケージ `packages/core` を列挙している。  
+このリポジトリは core の利用者でもあり、core のスキル（setup-agent-harness、write-harness-context）も同じ写しの場所に配置される。
 
 - `.claude/skills/` と `.agents/skills/` は、`apm install` が作る写しである。Git で管理しない。
 - 写しを直接は直さない。次の `apm install` で上書きされる。

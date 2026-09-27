@@ -205,7 +205,7 @@ core を入れない利用者は、`packages/core/skills/setup-agent-harness/ass
 リポジトリの管理や作業ツリーの管理に何を使うかは、利用者に委ねる。利用者が context に書いた内容は、モデルが解釈する。  
 ツールごとのパッケージを作ると、パッケージの数が、利用者の使うツールの数に比例して増えるためである。
 
-- パッケージの本文に、製品名、リポジトリ名、コマンド、利用者によって違うツールの名前を直接書かない。このリポジトリの CI が、語の一覧と照らして確認する。語の一覧は `prh.yml` に持つ。
+- パッケージの本文に、製品名、リポジトリ名、コマンド、利用者によって違うツールの名前を直接書かない。このリポジトリの CI が、語の一覧と照らして確認する。語の一覧は `prh-packages.yml` に持ち、パッケージの本文だけに掛ける。このリポジトリ自身の文書では、それらの名前を使うためである。
 
 ## Cross-Cutting Concerns
 
@@ -256,6 +256,7 @@ agent-harness/
 ├── examples/
 │   ├── apm.yml                 マニフェストの例
 │   └── ci/                     spec の HTML の公開と、削除の pull request を作る CI の設定の例
+├── scripts/                    このリポジトリ自身のチェック。パッケージの本文の固有の名前
 ├── skills/                     このリポジトリの開発に使うスキル
 ├── design/
 │   ├── DesignDoc.md            全体像
@@ -267,6 +268,7 @@ agent-harness/
 ├── CONTRIBUTING.md             開発の準備
 ├── README.md                   導入の方法と、コーディングエージェントごとの対応表
 ├── PRD.md
+├── mise.toml                   Node.js と pnpm の版
 ├── apm.yml
 └── apm.lock.yaml
 ```
