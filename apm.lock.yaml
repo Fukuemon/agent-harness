@@ -89,8 +89,8 @@ dependencies:
     .agents/skills/setup-agent-harness/assets/context/project.yml: sha256:d37b47aabe93c496b1d1b897e9e0e8d5b676d573e5185cad65ddbafd0ccd1aaf
     .agents/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:8e5e59a62bedbfa98ac38a57bb10f895bc43848d08f181faee1ad24aeddba74e
     .agents/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
-    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
-    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:9bf2e4a8331e6ca01bcb2240fb95a216448edc8e76f2d52e6ea375e3e4ae3343
+    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f9300fb9e640751402d1398217b41bf46b03b8d38bbb562d628683951637aef9
     .agents/skills/write-harness-context/SKILL.md: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
     .claude/hooks/core/hooks/check-comments.mjs: sha256:0f8c8ed4d9a7af9a7172715110cd76cb95e08ef91547b5a911132dd1de428e87
     .claude/hooks/core/hooks/check-comments.test.mjs: sha256:b18a57da6afc99f58aa351616c7d1a6b9f29530325f7d0dd97071a737888bbd4
@@ -115,8 +115,8 @@ dependencies:
     .claude/skills/setup-agent-harness/assets/context/project.yml: sha256:d37b47aabe93c496b1d1b897e9e0e8d5b676d573e5185cad65ddbafd0ccd1aaf
     .claude/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:8e5e59a62bedbfa98ac38a57bb10f895bc43848d08f181faee1ad24aeddba74e
     .claude/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
-    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
-    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:9bf2e4a8331e6ca01bcb2240fb95a216448edc8e76f2d52e6ea375e3e4ae3343
+    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f9300fb9e640751402d1398217b41bf46b03b8d38bbb562d628683951637aef9
     .claude/skills/write-harness-context/SKILL.md: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
     .codex/hooks/core/hooks/check-comments.mjs: sha256:0f8c8ed4d9a7af9a7172715110cd76cb95e08ef91547b5a911132dd1de428e87
     .codex/hooks/core/hooks/check-comments.test.mjs: sha256:b18a57da6afc99f58aa351616c7d1a6b9f29530325f7d0dd97071a737888bbd4
@@ -131,27 +131,15 @@ dependencies:
   deployed_files:
   - .agents/skills/docs-writing
   - .agents/skills/docs-writing/SKILL.md
-  - .agents/skills/docs-writing/references/adr.md
   - .agents/skills/docs-writing/references/context.md
-  - .agents/skills/docs-writing/references/design-doc.md
-  - .agents/skills/docs-writing/references/prd.md
   - .claude/skills/docs-writing
   - .claude/skills/docs-writing/SKILL.md
-  - .claude/skills/docs-writing/references/adr.md
   - .claude/skills/docs-writing/references/context.md
-  - .claude/skills/docs-writing/references/design-doc.md
-  - .claude/skills/docs-writing/references/prd.md
   deployed_file_hashes:
-    .agents/skills/docs-writing/SKILL.md: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
-    .agents/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
+    .agents/skills/docs-writing/SKILL.md: sha256:eebc5c4f1f39df64da7fad1260052b12d487ece32fe679d890e83bb73d996095
     .agents/skills/docs-writing/references/context.md: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
-    .agents/skills/docs-writing/references/design-doc.md: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
-    .agents/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
-    .claude/skills/docs-writing/SKILL.md: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
-    .claude/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
+    .claude/skills/docs-writing/SKILL.md: sha256:eebc5c4f1f39df64da7fad1260052b12d487ece32fe679d890e83bb73d996095
     .claude/skills/docs-writing/references/context.md: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
-    .claude/skills/docs-writing/references/design-doc.md: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
-    .claude/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
   source: local
   local_path: ./skills/docs-writing
 deployments:
@@ -217,16 +205,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
-- kind: project-relative
-  target: claude
-  value: .claude/skills/docs-writing/references/adr.md
-  runtime: null
-  scope: project
-  owners:
-  - ./skills/docs-writing
-  active_owner: ./skills/docs-writing
-  content_hash: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
+  content_hash: sha256:eebc5c4f1f39df64da7fad1260052b12d487ece32fe679d890e83bb73d996095
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing/references/context.md
@@ -236,24 +215,6 @@ deployments:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
   content_hash: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
-- kind: project-relative
-  target: claude
-  value: .claude/skills/docs-writing/references/design-doc.md
-  runtime: null
-  scope: project
-  owners:
-  - ./skills/docs-writing
-  active_owner: ./skills/docs-writing
-  content_hash: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
-- kind: project-relative
-  target: claude
-  value: .claude/skills/docs-writing/references/prd.md
-  runtime: null
-  scope: project
-  owners:
-  - ./skills/docs-writing
-  active_owner: ./skills/docs-writing
-  content_hash: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
 - kind: project-relative
   target: claude
   value: .claude/skills/git-commit
@@ -460,7 +421,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
+  content_hash: sha256:9bf2e4a8331e6ca01bcb2240fb95a216448edc8e76f2d52e6ea375e3e4ae3343
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-agent-harness/scripts/setup.test.mjs
@@ -469,7 +430,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+  content_hash: sha256:f9300fb9e640751402d1398217b41bf46b03b8d38bbb562d628683951637aef9
 - kind: project-relative
   target: claude
   value: .claude/skills/write-harness-context
@@ -523,16 +484,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
-- kind: project-relative
-  target: codex
-  value: .agents/skills/docs-writing/references/adr.md
-  runtime: null
-  scope: project
-  owners:
-  - ./skills/docs-writing
-  active_owner: ./skills/docs-writing
-  content_hash: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
+  content_hash: sha256:eebc5c4f1f39df64da7fad1260052b12d487ece32fe679d890e83bb73d996095
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing/references/context.md
@@ -542,24 +494,6 @@ deployments:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
   content_hash: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
-- kind: project-relative
-  target: codex
-  value: .agents/skills/docs-writing/references/design-doc.md
-  runtime: null
-  scope: project
-  owners:
-  - ./skills/docs-writing
-  active_owner: ./skills/docs-writing
-  content_hash: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
-- kind: project-relative
-  target: codex
-  value: .agents/skills/docs-writing/references/prd.md
-  runtime: null
-  scope: project
-  owners:
-  - ./skills/docs-writing
-  active_owner: ./skills/docs-writing
-  content_hash: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
 - kind: project-relative
   target: codex
   value: .agents/skills/git-commit
@@ -766,7 +700,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
+  content_hash: sha256:9bf2e4a8331e6ca01bcb2240fb95a216448edc8e76f2d52e6ea375e3e4ae3343
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-agent-harness/scripts/setup.test.mjs
@@ -775,7 +709,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+  content_hash: sha256:f9300fb9e640751402d1398217b41bf46b03b8d38bbb562d628683951637aef9
 - kind: project-relative
   target: codex
   value: .agents/skills/write-harness-context

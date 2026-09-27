@@ -149,7 +149,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
   - [core の Design Doc](../packages/core/DesignDoc.md)
 
 - **文書の体系 `docs`:** Design Doc、ADR、spec の構造とテンプレート、実装とのずれの検出、spec の削除の保証、文書のチェックを持つ。利用者の知識の中身は持たない。内容の正しさは判定しない。
-  - [文書の体系の Design Doc](features/documents/DesignDoc_documents.md)
+  - [文書の体系の Design Doc](../packages/docs/DesignDoc.md)
 - **開発プロセス `process`:** 開発のプロセスの定義、要求ごとの選択（行うプロセス、反映する時点、分解する時点、レビューの範囲）の項目と選択肢、宣言の schema と、進み具合のチェックを持つ。作業を次へ進める制御は持たない。
   - [開発プロセスの Design Doc](features/process/DesignDoc_process.md)
 - **ガードレール `guardrails`:** 取り返しのつかない操作を止める仕組みと、プロダクトごとに有効にする規則を持つ。規則は、保護ブランチ、禁止するコマンド、秘密情報である。コーディングエージェントの権限の仕組みそのものは実装しない。

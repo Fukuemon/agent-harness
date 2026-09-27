@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fukuemon/agent-harness/packages/docs/schemas/docs.schema.json",
+  "title": "context/project.yml のうち、文書の体系が読むキー",
+  "type": "object",
+  "required": ["version", "docs"],
+  "properties": {
+    "version": { "const": 1 },
+    "docs": {
+      "type": "object",
+      "required": ["design", "adr", "spec"],
+      "properties": {
+        "design": { "$ref": "#/$defs/dir" },
+        "adr": { "$ref": "#/$defs/dir" },
+        "spec": { "$ref": "#/$defs/dir" }
+      }
+    }
+  },
+  "$defs": {
+    "dir": {
+      "type": "string",
+      "description": "リポジトリのルートからの相対パス。先頭と末尾の / は付けない",
+      "pattern": "^[^/].*[^/]$|^[^/]$"
+    }
+  }
+}

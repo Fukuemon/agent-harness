@@ -8,6 +8,10 @@
     {
       "name": "core",
       "source": "./packages/core"
+    },
+    {
+      "name": "docs",
+      "source": "./packages/docs"
     }
   ]
 }

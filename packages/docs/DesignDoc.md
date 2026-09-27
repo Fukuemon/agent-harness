@@ -10,7 +10,7 @@ keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint]
 
 ## Overview
 
-パッケージ「文書の体系」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
+パッケージ「文書の体系」の設計。全体像は [agent-harness Design Doc](../../design/DesignDoc.md) にある。  
 設計文書が現在の内容だけを持ち、実装とのずれに気づけ、spec が作業の後に残らないようにする。固有の知識の置き場は core が作り、このパッケージはその上に Design Doc、ADR、spec の形とチェックを足す。
 
 ## Scope
@@ -34,7 +34,7 @@ keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint]
 - **spec:** issue ごとの要求、論点、受け入れ基準、決定の経緯。Git で管理し、issue を閉じる時点で削除する。シーケンス図は spec に描く。
   - 要求ごとの開発プロセスの宣言を、YAML として同じ場所に置く。spec と一緒に削除する。
   - レビューを依頼する前に、1 本の HTML へ変換する。最終のセルフレビューが終わった後に行う。
-    - ADR-0003: [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](../../../adr/0003-spec-review-html.md)
+    - ADR-0003: [spec はレビューを依頼する前に 1 本の HTML へ変換し、CI で公開してレビューする](../../adr/0003-spec-review-html.md)
   - 変換した HTML をコミットし、CI が pull request ごとに公開する。レビューする人は、公開された URL を開いて読む。
   - HTML の骨組みは、テンプレートとしてパッケージに持つ。
   - issue を閉じる時点で、HTML も spec と一緒に削除する。
