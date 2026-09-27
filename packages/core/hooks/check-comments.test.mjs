@@ -15,9 +15,16 @@ function run(input) {
 
 test("Edit で足したコメントだけを挙げ、元からある行は挙げない", () => {
   const out = run({ tool_name: "Edit", tool_input: { file_path: "src/a.mjs", old_string: "// 元から\nconst a = 1;", new_string: "// 元から\nconst a = 1; // 足した\nconst b = 2;" } });
-  assert.match(out, /^コメントを足した/);
+  assert.match(out, /^実装のコメントを足した/);
   assert.match(out, /- src\/a\.mjs: const a = 1; \/\/ 足した/);
   assert.doesNotMatch(out, /元から/);
+});
+
+test("文書コメントの記法は、契約を確かめる文で挙げる", () => {
+  const out = run({ tool_name: "Write", tool_input: { file_path: "lib.ts", content: "/**\n * 合計を返す。\n */\nexport const sum = (a: number[]) => a.reduce((x, y) => x + y, 0);\n" } });
+  assert.match(out, /^文書コメントを足した/);
+  assert.match(out, /- lib\.ts: \* 合計を返す。/);
+  assert.doesNotMatch(out, /実装のコメント/);
 });
 
 test("Write の Python では # のコメントを挙げ、shebang は挙げない", () => {

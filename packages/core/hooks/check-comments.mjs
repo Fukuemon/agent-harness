@@ -1,4 +1,5 @@
 // ファイルの編集の後に、追加された行にコメントか lint の抑制があれば、確かめるよう促す文をコンテキストに追加する。編集は拒否しない。
+// 文書コメント（/**、///、//!、"""）と実装のコメントで、促す文を分ける
 // 使い方: PostToolUse のフックから呼ぶ。標準入力に tool_name と tool_input の JSON を受け取る
 // 終了コード: 常に 0。コメントが足されていれば、hookSpecificOutput.additionalContext を標準出力に書く
 import { readFileSync } from "node:fs";
@@ -9,6 +10,7 @@ const HASH = new Set([".py", ".sh", ".bash", ".zsh", ".rb", ".yml", ".yaml", ".t
 const DASH = new Set([".sql", ".lua", ".hs"]);
 const ANGLE = new Set([".html", ".vue", ".svelte", ".xml"]);
 const SUPPRESS = /eslint-disable|@ts-ignore|@ts-expect-error|biome-ignore|noqa|nolint|prettier-ignore|textlint-disable|type: ?ignore|pylint: ?disable/;
+const DOC = /^(\/\*\*|\/\/\/|\/\/!|"""|'''|\*\s|\*\/)/;
 
 let input;
 try {
@@ -19,10 +21,11 @@ try {
 
 const hits = addedLines(input).filter(({ file, line }) => isComment(file, line));
 if (hits.length) {
-  const text = [
-    "コメントを足した。スキル code-comments の「残してよいコメント」の 4 つに当たるかを確かめ、当たらなければ消す。",
-    ...hits.map((h) => `- ${h.file}: ${h.line.trim()}`),
-  ];
+  const doc = hits.filter((h) => DOC.test(h.line.trim()));
+  const impl = hits.filter((h) => !DOC.test(h.line.trim()));
+  const text = [];
+  if (doc.length) text.push("文書コメントを足した。スキル code-comments に従い、要約の 1 文と契約があり、名前と型の言い換えになっていないかを確かめる。", ...doc.map((h) => `- ${h.file}: ${h.line.trim()}`));
+  if (impl.length) text.push("実装のコメントを足した。スキル code-comments の「残してよい実装のコメント」の 3 つに当たるかを確かめ、当たらなければ消す。", ...impl.map((h) => `- ${h.file}: ${h.line.trim()}`));
   if (hits.some((h) => SUPPRESS.test(h.line))) text.push("lint か型のチェックの抑制がある。抑制の前に、指摘の原因を直す。");
   console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: text.join("\n") } }));
 }
