@@ -53,3 +53,15 @@ test("コメントがない編集、Markdown、JSON、壊れた入力では何�
   assert.equal(run({ tool_name: "Write", tool_input: { file_path: "a.json", content: "// x" } }), "");
   assert.equal(run("not json"), "");
 });
+
+test("Python の docstring は文書コメントとして挙げる", () => {
+  const out = run({ tool_name: "Write", tool_input: { file_path: "api.py", content: 'def get(x):\n    """Return the item."""\n    return x\n' } });
+  assert.match(out, /^文書コメントを足した/);
+  assert.match(out, /- api\.py: """Return the item\."""/);
+});
+
+test("元からある行と同じコメントを 2 つ目に足しても挙げる", () => {
+  const out = run({ tool_name: "Edit", tool_input: { file_path: "a.mjs", old_string: "// TODO\nconst a = 1;", new_string: "// TODO\nconst a = 1;\n// TODO\nconst b = 2;" } });
+  assert.match(out, /- a\.mjs: \/\/ TODO/);
+  assert.equal((out.match(/\/\/ TODO/g) || []).length, 1);
+});

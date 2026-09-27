@@ -39,8 +39,14 @@ function addedLines({ tool_input: t = {} } = {}) {
   if (typeof t.content === "string") return t.content.split("\n").map((line) => ({ file, line }));
   const edits = Array.isArray(t.edits) ? t.edits : [t];
   return edits.flatMap((e) => {
-    const before = new Set((e.old_string ?? "").split("\n"));
-    return (e.new_string ?? "").split("\n").filter((line) => !before.has(line)).map((line) => ({ file, line }));
+    const remaining = new Map();
+    for (const line of (e.old_string ?? "").split("\n")) remaining.set(line, (remaining.get(line) ?? 0) + 1);
+    return (e.new_string ?? "").split("\n").filter((line) => {
+      const n = remaining.get(line);
+      if (!n) return true;
+      remaining.set(line, n - 1);
+      return false;
+    }).map((line) => ({ file, line }));
   });
 }
 
@@ -61,6 +67,7 @@ function isComment(file, line) {
   const s = line.trim();
   if (!s) return false;
   if (SLASH.has(ext)) return /^(\/\/|\/\*|\*\s|\*\/)/.test(s) || /\s\/\/\s/.test(line);
+  if (ext === ".py" && /^("""|''')/.test(s)) return true;
   if (HASH.has(ext) || basename(file) === "Dockerfile") return (s.startsWith("#") && !s.startsWith("#!")) || /\s#\s/.test(line);
   if (DASH.has(ext)) return s.startsWith("--");
   if (ANGLE.has(ext)) return s.startsWith("<!--");
