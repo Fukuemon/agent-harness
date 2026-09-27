@@ -19,9 +19,7 @@ pnpm lint:text
 
 ## 文書ごとの役割
 
-- **PRD:** 誰のどの課題を、何で解決するか。ツールの名前、書式、配置先などの実現方法は書かない。書き方は `references/prd.md`。
-- **Design Doc:** 決定済みの設計だけ。全体像と、機能ごとの設計に分ける。書き方は `references/design-doc.md`。
-- **ADR:** 選択肢を比較して決める判断。未決のものは「提案」の状態で置く。書き方は `references/adr.md`。
+- **PRD、Design Doc、ADR:** 書き方は利用者にも届けるスキル `write-design-docs` にある。`packages/docs/skills/write-design-docs/SKILL.md` を開く。このリポジトリでは、パッケージを作ったら機能ごとの Design Doc を `packages/<名前>/DesignDoc.md` へ移す。
 - **context:** 作業の中で繰り返し参照する規約と事実。技術スタック、コードベースの構造、ツールの扱い。コードから読み取れる構造の説明は書かない。書き方は `references/context.md`。
 - **`.ai-out/`:** 公開しない作業メモ。Git で追跡しない。
 - **CONTRIBUTING.md:** 変更をリポジトリへ取り込むまでの手順。準備、ブランチ、コミット、pull request、チェック、リリース。規約の本文は書かず、context へリンクする。
@@ -78,7 +76,7 @@ pnpm lint:text
 - 流れのように、文と表では関係が読み取りにくい内容だけを、図にする。表や箇条書きで足りる内容は、図にしない。
 - 図は Mermaid で、文書の中に書く。差分が読め、GitHub がそのまま描画する。
 - 図の直前に、図が示す内容を 1 文で書く。図だけに書かれた決定を作らない。
-- 図の粒度は、文書の層で決める。C4 モデルの段階に合わせる。段階ごとの割り当ては `references/design-doc.md` にある。
+- 図の粒度は、文書の層で決める。C4 モデルの段階に合わせる。段階ごとの割り当ては、スキル write-design-docs の references にある。
   - 出典: [C4 model](https://c4model.com/)
 - GitHub が描画できない記法は使わない。C4 の記法が崩れる場合は、同じ段階の内容を flowchart で描く。
 - gitGraph のブランチ名は、引用符で囲む。ハイフンや数字で始まる名前は、囲まないと描画に失敗する。
