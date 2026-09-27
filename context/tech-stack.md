@@ -17,10 +17,11 @@ verified_commit: 931a10b71ffb95d310971b360d0c7aaf21410347
 
 | ツール | 役割 | 版が書いてあるファイル |
 | --- | --- | --- |
-| mise | Node.js と pnpm の版の管理。clone した直後は `mise trust` が要る | 固定しない。公式の導入の方法に従う |
+| mise | Node.js、pnpm、uv、microsoft/apm の版の管理。clone した直後は `mise trust` が要る | 固定しない。公式の導入の方法に従う |
 | Node.js | チェックとフックのスクリプトの実行環境 | `mise.toml` |
 | pnpm | 依存の管理。`pnpm install` が Git のフックも有効にする | `mise.toml` |
-| microsoft/apm | スキルとパッケージの配置。常設せず uvx で動かす | `apm.lock.yaml` の `apm_version` |
+| microsoft/apm | スキルとパッケージの配置。mise の pipx のバックエンドで入れる | `mise.toml`。`apm.lock.yaml` の `apm_version` と揃える |
+| uv | mise が apm を入れるときに使う | `mise.toml` |
 | textlint と prh | 文書の表現のチェック | `package.json` |
 | lefthook | Git のフック | `package.json` |
 | commitlint | コミットメッセージのチェック | `package.json` |
