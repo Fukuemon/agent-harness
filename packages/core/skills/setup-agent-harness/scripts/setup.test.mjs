@@ -112,3 +112,14 @@ test("知らない引数と、テンプレートにない --force は終了コ�
   assert.equal(run(repo, script, ["--topics", "nope"]).status, 2);
   assert.equal(run(repo, script, ["--force", "nope.md"]).status, 2);
 });
+
+test(".gitignore に .ai-out/ を足し、2 回目は重ねて足さない。--diff は行がなければ差分に数える", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, ".gitignore"), "node_modules/");
+  assert.equal(run(repo, script, ["--diff"]).status, 1);
+  run(repo, script);
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), "node_modules/\n.ai-out/\n");
+  run(repo, script);
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), "node_modules/\n.ai-out/\n");
+  assert.equal(run(repo, script, ["--diff"]).status, 0);
+});

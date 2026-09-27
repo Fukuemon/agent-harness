@@ -1,6 +1,7 @@
 // スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ にあるほかのスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
+// .gitignore に .ai-out/ の行がなければ足す
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
@@ -39,6 +40,8 @@ for (const name of readdirSync(skillsRoot)) {
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
 candidates.set("AGENTS.md", candidates.get("AGENTS.md").replace("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
+const ignorePath = join(root, ".gitignore");
+const ignored = existsSync(ignorePath) && readFileSync(ignorePath, "utf8").split(/\r?\n/).includes(".ai-out/");
 
 if (opts.force.length) {
   for (const p of opts.force) {
@@ -54,6 +57,7 @@ if (opts.force.length) {
     const d = showDiff(p);
     if (d) { differs++; console.log(d); } else console.log(`${p}: 差分なし`);
   }
+  if (!ignored) { differs++; console.log(".gitignore: .ai-out/ がない。既定の実行で足される"); }
   process.exit(differs ? 1 : 0);
 } else {
   const copied = [], skipped = [];
@@ -61,6 +65,11 @@ if (opts.force.length) {
   for (const p of copied) write(p);
   if (copied.length) console.log(`写した:\n${copied.map((p) => `  ${p}`).join("\n")}`);
   if (skipped.length) console.log(`飛ばした（既にある。--diff で差分を見る）:\n${skipped.map((p) => `  ${p}`).join("\n")}`);
+  if (!ignored) {
+    const current = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8") : "";
+    writeFileSync(ignorePath, `${current}${current && !current.endsWith("\n") ? "\n" : ""}.ai-out/\n`);
+    console.log("足した: .gitignore に .ai-out/");
+  }
 }
 
 // YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む
