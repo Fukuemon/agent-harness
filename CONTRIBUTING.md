@@ -32,7 +32,7 @@ pnpm lint:text
 pnpm check:index --write
 ```
 
-目次の `context/index.md` は手で編集しない。コミットの前のチェックと CI は、目次が frontmatter と合わないと失敗する。
+目次の `context/index.md` は手で編集しない。コミットの前のフックが目次を生成し直してステージする。CI は、目次が frontmatter と合わないと失敗する。
 
 ## コミットするとき
 
