@@ -1,25 +1,24 @@
 lockfile_version: '1'
 apm_version: 0.32.0
 dependencies:
-- repo_url: _local/code-comments
-  name: code-comments
-  version: unknown
-  package_type: claude_skill
-  deployed_files:
-  - .agents/skills/code-comments
-  - .agents/skills/code-comments/SKILL.md
-  - .claude/skills/code-comments
-  - .claude/skills/code-comments/SKILL.md
-  deployed_file_hashes:
-    .agents/skills/code-comments/SKILL.md: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
-    .claude/skills/code-comments/SKILL.md: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
-  source: local
-  local_path: ./skills/code-comments
 - repo_url: _local/core
   name: core
   version: 0.1.0
   package_type: marketplace_plugin
   deployed_files:
+  - .agents/skills/code-comments
+  - .agents/skills/code-comments/SKILL.md
+  - .agents/skills/git-commit
+  - .agents/skills/git-commit/SKILL.md
+  - .agents/skills/issue-pr-writing
+  - .agents/skills/issue-pr-writing/SKILL.md
+  - .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/bug.yml
+  - .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/config.yml
+  - .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/requirements.yml
+  - .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml
+  - .agents/skills/issue-pr-writing/assets/.github/pull_request_template.md
+  - .agents/skills/issue-pr-writing/references/issue.md
+  - .agents/skills/issue-pr-writing/references/pull-request.md
   - .agents/skills/setup-agent-harness
   - .agents/skills/setup-agent-harness/SKILL.md
   - .agents/skills/setup-agent-harness/assets/AGENTS.md
@@ -35,6 +34,22 @@ dependencies:
   - .agents/skills/setup-agent-harness/scripts/setup.test.mjs
   - .agents/skills/write-harness-context
   - .agents/skills/write-harness-context/SKILL.md
+  - .claude/hooks/core/hooks/check-comments.mjs
+  - .claude/hooks/core/hooks/check-comments.test.mjs
+  - .claude/hooks/core/hooks/package.json
+  - .claude/skills/code-comments
+  - .claude/skills/code-comments/SKILL.md
+  - .claude/skills/git-commit
+  - .claude/skills/git-commit/SKILL.md
+  - .claude/skills/issue-pr-writing
+  - .claude/skills/issue-pr-writing/SKILL.md
+  - .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/bug.yml
+  - .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/config.yml
+  - .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/requirements.yml
+  - .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml
+  - .claude/skills/issue-pr-writing/assets/.github/pull_request_template.md
+  - .claude/skills/issue-pr-writing/references/issue.md
+  - .claude/skills/issue-pr-writing/references/pull-request.md
   - .claude/skills/setup-agent-harness
   - .claude/skills/setup-agent-harness/SKILL.md
   - .claude/skills/setup-agent-harness/assets/AGENTS.md
@@ -50,7 +65,20 @@ dependencies:
   - .claude/skills/setup-agent-harness/scripts/setup.test.mjs
   - .claude/skills/write-harness-context
   - .claude/skills/write-harness-context/SKILL.md
+  - .codex/hooks/core/hooks/check-comments.mjs
+  - .codex/hooks/core/hooks/check-comments.test.mjs
+  - .codex/hooks/core/hooks/package.json
   deployed_file_hashes:
+    .agents/skills/code-comments/SKILL.md: sha256:a062a8ed741923ad592cbc452930b8709681b6094553810fcfa8cb57c12ff0a3
+    .agents/skills/git-commit/SKILL.md: sha256:e982b5f6cc0e0d47e3863a7dce5416e30f2fff9a31ea8be56f3047e098547fc4
+    .agents/skills/issue-pr-writing/SKILL.md: sha256:b74408cf15e87d56550f2d9bafb18fe4827a18d50d8246b698aaeea5913f3e47
+    .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+    .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/config.yml: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
+    .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
+    .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
+    .agents/skills/issue-pr-writing/assets/.github/pull_request_template.md: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
+    .agents/skills/issue-pr-writing/references/issue.md: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+    .agents/skills/issue-pr-writing/references/pull-request.md: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
     .agents/skills/setup-agent-harness/SKILL.md: sha256:325f952a5a355df67e60054fb708be2466ce82757ae1a0d65698035589d5ef3b
     .agents/skills/setup-agent-harness/assets/AGENTS.md: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
     .agents/skills/setup-agent-harness/assets/CONTRIBUTING.md: sha256:6908eab85b3855efc18d228be64adb72436e6e951a7ab7042dd544be37e5ec53
@@ -64,6 +92,19 @@ dependencies:
     .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
     .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
     .agents/skills/write-harness-context/SKILL.md: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
+    .claude/hooks/core/hooks/check-comments.mjs: sha256:8163b0a2acf4c593a29577da9d5bf4109f40f70322ffd9cf6b122009d91ac4fd
+    .claude/hooks/core/hooks/check-comments.test.mjs: sha256:78d9a8c5784bc8d6d436e741cc5b3bed7b66ba8ec580a859e3c08781a9a5369b
+    .claude/hooks/core/hooks/package.json: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
+    .claude/skills/code-comments/SKILL.md: sha256:a062a8ed741923ad592cbc452930b8709681b6094553810fcfa8cb57c12ff0a3
+    .claude/skills/git-commit/SKILL.md: sha256:e982b5f6cc0e0d47e3863a7dce5416e30f2fff9a31ea8be56f3047e098547fc4
+    .claude/skills/issue-pr-writing/SKILL.md: sha256:b74408cf15e87d56550f2d9bafb18fe4827a18d50d8246b698aaeea5913f3e47
+    .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+    .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/config.yml: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
+    .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
+    .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
+    .claude/skills/issue-pr-writing/assets/.github/pull_request_template.md: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
+    .claude/skills/issue-pr-writing/references/issue.md: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+    .claude/skills/issue-pr-writing/references/pull-request.md: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
     .claude/skills/setup-agent-harness/SKILL.md: sha256:325f952a5a355df67e60054fb708be2466ce82757ae1a0d65698035589d5ef3b
     .claude/skills/setup-agent-harness/assets/AGENTS.md: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
     .claude/skills/setup-agent-harness/assets/CONTRIBUTING.md: sha256:6908eab85b3855efc18d228be64adb72436e6e951a7ab7042dd544be37e5ec53
@@ -77,6 +118,9 @@ dependencies:
     .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
     .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
     .claude/skills/write-harness-context/SKILL.md: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
+    .codex/hooks/core/hooks/check-comments.mjs: sha256:8163b0a2acf4c593a29577da9d5bf4109f40f70322ffd9cf6b122009d91ac4fd
+    .codex/hooks/core/hooks/check-comments.test.mjs: sha256:78d9a8c5784bc8d6d436e741cc5b3bed7b66ba8ec580a859e3c08781a9a5369b
+    .codex/hooks/core/hooks/package.json: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
   source: local
   local_path: ./packages/core
   declared_license: MIT
@@ -98,55 +142,54 @@ dependencies:
   - .claude/skills/docs-writing/references/design-doc.md
   - .claude/skills/docs-writing/references/prd.md
   deployed_file_hashes:
-    .agents/skills/docs-writing/SKILL.md: sha256:28be85ac4a62715a69de1f7ba444e6bf722065108aea70815f4d121f5436a8d7
+    .agents/skills/docs-writing/SKILL.md: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
     .agents/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
     .agents/skills/docs-writing/references/context.md: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
     .agents/skills/docs-writing/references/design-doc.md: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
     .agents/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
-    .claude/skills/docs-writing/SKILL.md: sha256:28be85ac4a62715a69de1f7ba444e6bf722065108aea70815f4d121f5436a8d7
+    .claude/skills/docs-writing/SKILL.md: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
     .claude/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
     .claude/skills/docs-writing/references/context.md: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
     .claude/skills/docs-writing/references/design-doc.md: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
     .claude/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
   source: local
   local_path: ./skills/docs-writing
-- repo_url: _local/git-commit
-  name: git-commit
-  version: unknown
-  package_type: claude_skill
-  deployed_files:
-  - .agents/skills/git-commit
-  - .agents/skills/git-commit/SKILL.md
-  - .claude/skills/git-commit
-  - .claude/skills/git-commit/SKILL.md
-  deployed_file_hashes:
-    .agents/skills/git-commit/SKILL.md: sha256:b104bb360240d03d68b533d56cfc40eccf434714c1d539618f8d56fa5e265fbe
-    .claude/skills/git-commit/SKILL.md: sha256:b104bb360240d03d68b533d56cfc40eccf434714c1d539618f8d56fa5e265fbe
-  source: local
-  local_path: ./skills/git-commit
-- repo_url: _local/issue-pr-writing
-  name: issue-pr-writing
-  version: unknown
-  package_type: claude_skill
-  deployed_files:
-  - .agents/skills/issue-pr-writing
-  - .agents/skills/issue-pr-writing/SKILL.md
-  - .claude/skills/issue-pr-writing
-  - .claude/skills/issue-pr-writing/SKILL.md
-  deployed_file_hashes:
-    .agents/skills/issue-pr-writing/SKILL.md: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
-    .claude/skills/issue-pr-writing/SKILL.md: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
-  source: local
-  local_path: ./skills/issue-pr-writing
 deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/hooks/core/hooks/check-comments.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:8163b0a2acf4c593a29577da9d5bf4109f40f70322ffd9cf6b122009d91ac4fd
+- kind: project-relative
+  target: claude
+  value: .claude/hooks/core/hooks/check-comments.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:78d9a8c5784bc8d6d436e741cc5b3bed7b66ba8ec580a859e3c08781a9a5369b
+- kind: project-relative
+  target: claude
+  value: .claude/hooks/core/hooks/package.json
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
 - kind: project-relative
   target: claude
   value: .claude/skills/code-comments
   runtime: null
   scope: project
   owners:
-  - ./skills/code-comments
-  active_owner: ./skills/code-comments
+  - ./packages/core
+  active_owner: ./packages/core
   content_hash: null
 - kind: project-relative
   target: claude
@@ -154,9 +197,9 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/code-comments
-  active_owner: ./skills/code-comments
-  content_hash: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:a062a8ed741923ad592cbc452930b8709681b6094553810fcfa8cb57c12ff0a3
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing
@@ -174,7 +217,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:28be85ac4a62715a69de1f7ba444e6bf722065108aea70815f4d121f5436a8d7
+  content_hash: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing/references/adr.md
@@ -217,8 +260,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/git-commit
-  active_owner: ./skills/git-commit
+  - ./packages/core
+  active_owner: ./packages/core
   content_hash: null
 - kind: project-relative
   target: claude
@@ -226,17 +269,17 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/git-commit
-  active_owner: ./skills/git-commit
-  content_hash: sha256:b104bb360240d03d68b533d56cfc40eccf434714c1d539618f8d56fa5e265fbe
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:e982b5f6cc0e0d47e3863a7dce5416e30f2fff9a31ea8be56f3047e098547fc4
 - kind: project-relative
   target: claude
   value: .claude/skills/issue-pr-writing
   runtime: null
   scope: project
   owners:
-  - ./skills/issue-pr-writing
-  active_owner: ./skills/issue-pr-writing
+  - ./packages/core
+  active_owner: ./packages/core
   content_hash: null
 - kind: project-relative
   target: claude
@@ -244,9 +287,72 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/issue-pr-writing
-  active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:b74408cf15e87d56550f2d9bafb18fe4827a18d50d8246b698aaeea5913f3e47
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/bug.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/config.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/requirements.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/assets/.github/pull_request_template.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/references/issue.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+- kind: project-relative
+  target: claude
+  value: .claude/skills/issue-pr-writing/references/pull-request.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-agent-harness
@@ -388,8 +494,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/code-comments
-  active_owner: ./skills/code-comments
+  - ./packages/core
+  active_owner: ./packages/core
   content_hash: null
 - kind: project-relative
   target: codex
@@ -397,9 +503,9 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/code-comments
-  active_owner: ./skills/code-comments
-  content_hash: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:a062a8ed741923ad592cbc452930b8709681b6094553810fcfa8cb57c12ff0a3
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing
@@ -417,7 +523,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:28be85ac4a62715a69de1f7ba444e6bf722065108aea70815f4d121f5436a8d7
+  content_hash: sha256:22b2bc9baf0228f5dc3031f0887ef6a97f96ee75b2ef0bf2c2a361dbe7be0704
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing/references/adr.md
@@ -460,8 +566,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/git-commit
-  active_owner: ./skills/git-commit
+  - ./packages/core
+  active_owner: ./packages/core
   content_hash: null
 - kind: project-relative
   target: codex
@@ -469,17 +575,17 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/git-commit
-  active_owner: ./skills/git-commit
-  content_hash: sha256:b104bb360240d03d68b533d56cfc40eccf434714c1d539618f8d56fa5e265fbe
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:e982b5f6cc0e0d47e3863a7dce5416e30f2fff9a31ea8be56f3047e098547fc4
 - kind: project-relative
   target: codex
   value: .agents/skills/issue-pr-writing
   runtime: null
   scope: project
   owners:
-  - ./skills/issue-pr-writing
-  active_owner: ./skills/issue-pr-writing
+  - ./packages/core
+  active_owner: ./packages/core
   content_hash: null
 - kind: project-relative
   target: codex
@@ -487,9 +593,72 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - ./skills/issue-pr-writing
-  active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:b74408cf15e87d56550f2d9bafb18fe4827a18d50d8246b698aaeea5913f3e47
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/bug.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/config.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/requirements.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/assets/.github/ISSUE_TEMPLATE/task.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/assets/.github/pull_request_template.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/references/issue.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+- kind: project-relative
+  target: codex
+  value: .agents/skills/issue-pr-writing/references/pull-request.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:5d310111e0f1057e0514bbbd9cea37fff8248d596c03d181c1dac50b48b0273a
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-agent-harness
@@ -625,3 +794,30 @@ deployments:
   - ./packages/core
   active_owner: ./packages/core
   content_hash: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
+- kind: project-relative
+  target: codex
+  value: .codex/hooks/core/hooks/check-comments.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:8163b0a2acf4c593a29577da9d5bf4109f40f70322ffd9cf6b122009d91ac4fd
+- kind: project-relative
+  target: codex
+  value: .codex/hooks/core/hooks/check-comments.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:78d9a8c5784bc8d6d436e741cc5b3bed7b66ba8ec580a859e3c08781a9a5369b
+- kind: project-relative
+  target: codex
+  value: .codex/hooks/core/hooks/package.json
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a

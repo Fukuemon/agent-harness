@@ -1,9 +1,4 @@
 {
-  "attribution": {
-    "commit": "",
-    "pr": "",
-    "sessionUrl": false
-  },
   "hooks": {
     "PostToolUse": [
       {
@@ -11,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/core/hooks/check-comments.mjs\"",
+            "command": "node \".codex/hooks/core/hooks/check-comments.mjs\"",
             "timeout": 10
           }
         ]

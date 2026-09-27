@@ -1,9 +1,5 @@
 {
-  "attribution": {
-    "commit": "",
-    "pr": "",
-    "sessionUrl": false
-  },
+  "description": "ファイルの編集の後に、足されたコメントと lint の抑制を確かめるよう促す",
   "hooks": {
     "PostToolUse": [
       {
@@ -11,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/core/hooks/check-comments.mjs\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/check-comments.mjs\"",
             "timeout": 10
           }
         ]

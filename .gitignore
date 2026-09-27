@@ -5,3 +5,7 @@ apm_modules/
 
 .claude/skills/
 .agents/skills/
+.claude/hooks/
+.codex/hooks/
+.claude/apm-hooks.json
+.codex/apm-hooks.json
