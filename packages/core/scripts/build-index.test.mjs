@@ -1,5 +1,5 @@
 // build-index.mjs の 3 つの終了コードと、導入のスキルが作る目次との一致を、使い捨てのディレクトリで確かめる。
-// 実行: node --test packages/core/hooks/
+// 実行: node --test packages/core/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";

@@ -1,4 +1,4 @@
-// context/ と Design Doc の frontmatter から context/index.md を生成する。編集後のフック、lefthook、CI から呼ぶ。
+// context/ と Design Doc の frontmatter から context/index.md を生成する。lefthook と CI から呼ぶ。
 // 使い方: node build-index.mjs [--write]
 // 既定は生成し直した目次と context/index.md を比べ、差分を表示する。--write は context/index.md を書き換える
 // 終了コード: 0 は差分なし（--write では書き換え済み）、1 は差分あり、2 は context/ がないか frontmatter に必須のキーがない

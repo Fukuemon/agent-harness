@@ -6,7 +6,7 @@ commit-msg:
 pre-commit:
   commands:
     index:
-      run: node packages/core/hooks/build-index.mjs
+      run: node packages/core/scripts/build-index.mjs
     textlint:
       glob: "*.md"
       run: pnpm exec textlint {staged_files}
