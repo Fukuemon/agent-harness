@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && [ -f apm.lock.yaml ] && [ ! -d .claude/hooks/core ] && [ ! -d .codex/hooks/core ] && command -v apm >/dev/null && apm install --frozen >&2; exit 0",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && [ -f apm.lock.yaml ] && grep -q 'hooks/core/' apm.lock.yaml && [ ! -d .claude/hooks/core ] && [ ! -d .codex/hooks/core ] && command -v apm >/dev/null && apm install --frozen >&2; exit 0",
             "timeout": 120
           }
         ]
