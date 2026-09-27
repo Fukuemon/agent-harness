@@ -1,0 +1,15 @@
+{
+  "PostToolUse": [
+    {
+      "matcher": "Edit|Write|MultiEdit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/core/hooks/check-comments.mjs\"",
+          "timeout": 10
+        }
+      ],
+      "_apm_source": "_local/core"
+    }
+  ]
+}
