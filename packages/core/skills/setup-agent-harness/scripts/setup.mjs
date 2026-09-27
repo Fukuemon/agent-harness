@@ -107,8 +107,8 @@ function buildIndex() {
 }
 
 function frontmatter(body) {
-  const block = /^---\n([\s\S]*?)\n---/.exec(body)?.[1] ?? "";
-  const pick = (key) => new RegExp(`^${key}: (.+)$`, "m").exec(block)?.[1].trim();
+  const block = /^---\r?\n([\s\S]*?)\r?\n---/.exec(body)?.[1] ?? "";
+  const pick = (key) => new RegExp(`^${key}:[ \\t]*(.+?)\\r?$`, "m").exec(block)?.[1].trim().replace(/^(["'])(.*)\1$/, "$2");
   return {
     title: pick("title"),
     description: pick("description"),
@@ -125,7 +125,7 @@ function renderIndex(context, design, designDir) {
     return `- [${meta.title}](${link}) — ${meta.description}${meta.status === "draft" ? "（draft）" : ""}`;
   };
   const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
-  const lines = sorted(context).filter(([f]) => f !== "index.md").map(([f, body]) => line(f, body));
+  const lines = sorted(context).filter(([f]) => f !== "index.md" && f !== "log.md").map(([f, body]) => line(f, body));
   if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([f, body]) => line(`../${designDir}/${f}`, body)));
   const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
   return { index, missing };

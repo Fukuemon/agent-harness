@@ -68,3 +68,13 @@ test("Design Doc は値のファイルの docs.design の下から載り、導�
 test("context/ がなければ終了コード 2", () => {
   assert.equal(run(mkdtempSync(join(tmpdir(), "index-"))).status, 2);
 });
+
+test("CRLF の改行と引用符つきの値を読み、予約された log.md は載せない", () => {
+  const r = repo();
+  writeFileSync(join(r, "context/crlf.md"), "---\r\ntype: context\r\ntitle: \"改行\"\r\ndescription: 'CRLF の文書'\r\n---\r\n");
+  writeFileSync(join(r, "context/log.md"), "# 更新履歴\n");
+  assert.equal(run(r, ["--write"]).status, 0);
+  const index = readFileSync(join(r, "context/index.md"), "utf8");
+  assert.match(index, /- \[改行\]\(crlf\.md\) — CRLF の文書\n/);
+  assert.doesNotMatch(index, /log\.md/);
+});
