@@ -5,7 +5,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "f=\"${CLAUDE_PROJECT_DIR}/.claude/hooks/core/hooks/check-comments.mjs\"; [ -f \"$f\" ] || exit 0; node \"$f\"",
+          "command": "f=\"${CLAUDE_PROJECT_DIR}/.claude/hooks/core/hooks/check-comments.mjs\"; [ -f \"$f\" ] || f=\"$(git rev-parse --show-toplevel 2>/dev/null)/$f\"; [ -f \"$f\" ] || exit 0; node \"$f\"",
           "timeout": 10
         }
       ],
