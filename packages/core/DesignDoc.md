@@ -119,7 +119,13 @@ context と Design Doc は frontmatter を持つ。
 | `status` | 任意 | `draft`、`stable`、`deprecated` のいずれか。省略したら `stable` |
 | `keywords` | 任意 | 検索の手掛かり |
 
+値は 1 行で書く。目次の生成は frontmatter を YAML として読まず、行の形で読むためである。引用符は付けてもよい。
+
 目次は `context/index.md` で、`context/` の下位のディレクトリを含む全部と、文書の体系を入れていれば `design/` の frontmatter から生成する。手で編集しない。手書きの更新日も持たない。日付は更新し忘れを検出できないが、commit と履歴の差分は検出できる。
+
+- 生成するのは `scripts/build-index.mjs` である。既定は生成し直した目次と `context/index.md` を比べ、差分があれば終了コード 1、必須のキーが欠けていれば終了コード 2 で報告する。`--write` は目次を書き換える。
+- lefthook の pre-commit は `--write` で目次を書き換え、書き換えた目次をステージする。CI は `--write` を付けずに動かし、ずれを失敗として報告する。文書を編集した後のコーディングエージェントのフックには置かない。目次を読むのは次のセッションの開始時なので、コミットの前に揃っていれば足りるためである。
+- 導入のスキルの `setup.mjs` も、写す文書から同じ形の目次を作る。生成の関数は 2 つのスクリプトに同じものを持つ。パッケージマネージャーはスキルだけを利用者のリポジトリへ写し、`scripts/` は写さないので、実行時に共有できないためである。2 つの出力が一致することは、テストで確かめる。
 
 ### コーディングエージェントへの接続
 
@@ -164,5 +170,5 @@ context を種類ごとに決めて書き、更新するときと、CONTRIBUTING
 
 - 置くファイル: `context/project.yml`、`context/` の文書と `index.md`、AGENTS.md、CONTRIBUTING.md、issue と pull request の form と雛形。
 - 読む値: なし。値を置く側である。
-- 動くチェック: 目次の生成。`context/` と `design/` の frontmatter から生成し直し、差分が出たら失敗する。編集後のフックと CI で動く。
+- 動くチェック: 目次の生成。`context/` と `design/` の frontmatter から生成し直し、差分が出たら失敗する。lefthook の pre-commit と CI で動く。
 - 動くフック: コードのコメントの編集後のフック。
