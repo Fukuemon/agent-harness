@@ -11,10 +11,75 @@ dependencies:
   - .claude/skills/code-comments
   - .claude/skills/code-comments/SKILL.md
   deployed_file_hashes:
-    .agents/skills/code-comments/SKILL.md: sha256:eba6b1bae535b113fd21632f414a621d85a2fc001ceb06f41ae940d50e9c24c9
-    .claude/skills/code-comments/SKILL.md: sha256:eba6b1bae535b113fd21632f414a621d85a2fc001ceb06f41ae940d50e9c24c9
+    .agents/skills/code-comments/SKILL.md: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
+    .claude/skills/code-comments/SKILL.md: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
   source: local
   local_path: ./skills/code-comments
+- repo_url: _local/core
+  name: core
+  version: 0.1.0
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/setup-agent-harness
+  - .agents/skills/setup-agent-harness/SKILL.md
+  - .agents/skills/setup-agent-harness/assets/AGENTS.md
+  - .agents/skills/setup-agent-harness/assets/CONTRIBUTING.md
+  - .agents/skills/setup-agent-harness/assets/context/codebase.md
+  - .agents/skills/setup-agent-harness/assets/context/conventions.md
+  - .agents/skills/setup-agent-harness/assets/context/domain.md
+  - .agents/skills/setup-agent-harness/assets/context/operations.md
+  - .agents/skills/setup-agent-harness/assets/context/project.yml
+  - .agents/skills/setup-agent-harness/assets/context/tech-stack.md
+  - .agents/skills/setup-agent-harness/assets/context/testing.md
+  - .agents/skills/setup-agent-harness/scripts/setup.mjs
+  - .agents/skills/setup-agent-harness/scripts/setup.test.mjs
+  - .agents/skills/write-harness-context
+  - .agents/skills/write-harness-context/SKILL.md
+  - .claude/skills/setup-agent-harness
+  - .claude/skills/setup-agent-harness/SKILL.md
+  - .claude/skills/setup-agent-harness/assets/AGENTS.md
+  - .claude/skills/setup-agent-harness/assets/CONTRIBUTING.md
+  - .claude/skills/setup-agent-harness/assets/context/codebase.md
+  - .claude/skills/setup-agent-harness/assets/context/conventions.md
+  - .claude/skills/setup-agent-harness/assets/context/domain.md
+  - .claude/skills/setup-agent-harness/assets/context/operations.md
+  - .claude/skills/setup-agent-harness/assets/context/project.yml
+  - .claude/skills/setup-agent-harness/assets/context/tech-stack.md
+  - .claude/skills/setup-agent-harness/assets/context/testing.md
+  - .claude/skills/setup-agent-harness/scripts/setup.mjs
+  - .claude/skills/setup-agent-harness/scripts/setup.test.mjs
+  - .claude/skills/write-harness-context
+  - .claude/skills/write-harness-context/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/setup-agent-harness/SKILL.md: sha256:325f952a5a355df67e60054fb708be2466ce82757ae1a0d65698035589d5ef3b
+    .agents/skills/setup-agent-harness/assets/AGENTS.md: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
+    .agents/skills/setup-agent-harness/assets/CONTRIBUTING.md: sha256:58409c751396bac4ecc2cb65353ebfae42b18bd9174b2ee7774e14a446c25268
+    .agents/skills/setup-agent-harness/assets/context/codebase.md: sha256:002c738e60e74b20fb51bab9b7246a561cec6413e368ac87a196f1ad8501167e
+    .agents/skills/setup-agent-harness/assets/context/conventions.md: sha256:730bfc935df872950148671621c8d32636d6ecae67f17d7a07e6d26736a96eb7
+    .agents/skills/setup-agent-harness/assets/context/domain.md: sha256:f9021a60775223384cf166789551a3d780aae7bf66082abce6e902a9767d1b08
+    .agents/skills/setup-agent-harness/assets/context/operations.md: sha256:fd4cca55f09f737e32577d6b8d596c1937d99c8b558224253913fb54af6438ed
+    .agents/skills/setup-agent-harness/assets/context/project.yml: sha256:d37b47aabe93c496b1d1b897e9e0e8d5b676d573e5185cad65ddbafd0ccd1aaf
+    .agents/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:8e5e59a62bedbfa98ac38a57bb10f895bc43848d08f181faee1ad24aeddba74e
+    .agents/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
+    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
+    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+    .agents/skills/write-harness-context/SKILL.md: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
+    .claude/skills/setup-agent-harness/SKILL.md: sha256:325f952a5a355df67e60054fb708be2466ce82757ae1a0d65698035589d5ef3b
+    .claude/skills/setup-agent-harness/assets/AGENTS.md: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
+    .claude/skills/setup-agent-harness/assets/CONTRIBUTING.md: sha256:58409c751396bac4ecc2cb65353ebfae42b18bd9174b2ee7774e14a446c25268
+    .claude/skills/setup-agent-harness/assets/context/codebase.md: sha256:002c738e60e74b20fb51bab9b7246a561cec6413e368ac87a196f1ad8501167e
+    .claude/skills/setup-agent-harness/assets/context/conventions.md: sha256:730bfc935df872950148671621c8d32636d6ecae67f17d7a07e6d26736a96eb7
+    .claude/skills/setup-agent-harness/assets/context/domain.md: sha256:f9021a60775223384cf166789551a3d780aae7bf66082abce6e902a9767d1b08
+    .claude/skills/setup-agent-harness/assets/context/operations.md: sha256:fd4cca55f09f737e32577d6b8d596c1937d99c8b558224253913fb54af6438ed
+    .claude/skills/setup-agent-harness/assets/context/project.yml: sha256:d37b47aabe93c496b1d1b897e9e0e8d5b676d573e5185cad65ddbafd0ccd1aaf
+    .claude/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:8e5e59a62bedbfa98ac38a57bb10f895bc43848d08f181faee1ad24aeddba74e
+    .claude/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
+    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
+    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+    .claude/skills/write-harness-context/SKILL.md: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
+  source: local
+  local_path: ./packages/core
+  declared_license: MIT
 - repo_url: _local/docs-writing
   name: docs-writing
   version: unknown
@@ -35,12 +100,12 @@ dependencies:
   deployed_file_hashes:
     .agents/skills/docs-writing/SKILL.md: sha256:28be85ac4a62715a69de1f7ba444e6bf722065108aea70815f4d121f5436a8d7
     .agents/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
-    .agents/skills/docs-writing/references/context.md: sha256:6b9c936a6f28eeca38af8996671db52145cbdc47cb702d2cc4f349ff34f384b7
+    .agents/skills/docs-writing/references/context.md: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
     .agents/skills/docs-writing/references/design-doc.md: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
     .agents/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
     .claude/skills/docs-writing/SKILL.md: sha256:28be85ac4a62715a69de1f7ba444e6bf722065108aea70815f4d121f5436a8d7
     .claude/skills/docs-writing/references/adr.md: sha256:7addb0ba95822ca08abc82c127205b2c127695921cc2c4b7287737c690cda810
-    .claude/skills/docs-writing/references/context.md: sha256:6b9c936a6f28eeca38af8996671db52145cbdc47cb702d2cc4f349ff34f384b7
+    .claude/skills/docs-writing/references/context.md: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
     .claude/skills/docs-writing/references/design-doc.md: sha256:4975891711996a53b8c98e4e50332691a7cc10c441772eff3058a98e01486635
     .claude/skills/docs-writing/references/prd.md: sha256:a9e1a08d0d5a3ee7aee3d3c6b2fa5a4aa5e193169c662838fc09817198647952
   source: local
@@ -69,8 +134,8 @@ dependencies:
   - .claude/skills/issue-pr-writing
   - .claude/skills/issue-pr-writing/SKILL.md
   deployed_file_hashes:
-    .agents/skills/issue-pr-writing/SKILL.md: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
-    .claude/skills/issue-pr-writing/SKILL.md: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
+    .agents/skills/issue-pr-writing/SKILL.md: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
+    .claude/skills/issue-pr-writing/SKILL.md: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
   source: local
   local_path: ./skills/issue-pr-writing
 deployments:
@@ -91,7 +156,7 @@ deployments:
   owners:
   - ./skills/code-comments
   active_owner: ./skills/code-comments
-  content_hash: sha256:eba6b1bae535b113fd21632f414a621d85a2fc001ceb06f41ae940d50e9c24c9
+  content_hash: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing
@@ -127,7 +192,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:6b9c936a6f28eeca38af8996671db52145cbdc47cb702d2cc4f349ff34f384b7
+  content_hash: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
 - kind: project-relative
   target: claude
   value: .claude/skills/docs-writing/references/design-doc.md
@@ -181,7 +246,142 @@ deployments:
   owners:
   - ./skills/issue-pr-writing
   active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
+  content_hash: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:325f952a5a355df67e60054fb708be2466ce82757ae1a0d65698035589d5ef3b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/AGENTS.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/CONTRIBUTING.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:58409c751396bac4ecc2cb65353ebfae42b18bd9174b2ee7774e14a446c25268
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/codebase.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:002c738e60e74b20fb51bab9b7246a561cec6413e368ac87a196f1ad8501167e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/conventions.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:730bfc935df872950148671621c8d32636d6ecae67f17d7a07e6d26736a96eb7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/domain.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:f9021a60775223384cf166789551a3d780aae7bf66082abce6e902a9767d1b08
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/operations.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:fd4cca55f09f737e32577d6b8d596c1937d99c8b558224253913fb54af6438ed
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/project.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:d37b47aabe93c496b1d1b897e9e0e8d5b676d573e5185cad65ddbafd0ccd1aaf
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/tech-stack.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:8e5e59a62bedbfa98ac38a57bb10f895bc43848d08f181faee1ad24aeddba74e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/assets/context/testing.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/scripts/setup.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-agent-harness/scripts/setup.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+- kind: project-relative
+  target: claude
+  value: .claude/skills/write-harness-context
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/write-harness-context/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -199,7 +399,7 @@ deployments:
   owners:
   - ./skills/code-comments
   active_owner: ./skills/code-comments
-  content_hash: sha256:eba6b1bae535b113fd21632f414a621d85a2fc001ceb06f41ae940d50e9c24c9
+  content_hash: sha256:406a559b976d95ed172b70be8126fc35efa4912536b72c1bc656b345da1dcdcb
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing
@@ -235,7 +435,7 @@ deployments:
   owners:
   - ./skills/docs-writing
   active_owner: ./skills/docs-writing
-  content_hash: sha256:6b9c936a6f28eeca38af8996671db52145cbdc47cb702d2cc4f349ff34f384b7
+  content_hash: sha256:af20ab636b29ee9197d57e6d5cb026642231e1ed9eaada38315b295fdd986901
 - kind: project-relative
   target: codex
   value: .agents/skills/docs-writing/references/design-doc.md
@@ -289,4 +489,139 @@ deployments:
   owners:
   - ./skills/issue-pr-writing
   active_owner: ./skills/issue-pr-writing
-  content_hash: sha256:fd099a365dfd8f1d635e9914877d07700055388d925cb89b660a5273cd22ac69
+  content_hash: sha256:071e823b5058e4cd60c0ffc457eb85a9e2c74533c24686138c694a87a9145974
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:325f952a5a355df67e60054fb708be2466ce82757ae1a0d65698035589d5ef3b
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/AGENTS.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:9d0c06c89223df70e112cefe23a17ff38ba2614ef709586741b3588d7391b110
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/CONTRIBUTING.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:58409c751396bac4ecc2cb65353ebfae42b18bd9174b2ee7774e14a446c25268
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/codebase.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:002c738e60e74b20fb51bab9b7246a561cec6413e368ac87a196f1ad8501167e
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/conventions.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:730bfc935df872950148671621c8d32636d6ecae67f17d7a07e6d26736a96eb7
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/domain.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:f9021a60775223384cf166789551a3d780aae7bf66082abce6e902a9767d1b08
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/operations.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:fd4cca55f09f737e32577d6b8d596c1937d99c8b558224253913fb54af6438ed
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/project.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:d37b47aabe93c496b1d1b897e9e0e8d5b676d573e5185cad65ddbafd0ccd1aaf
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/tech-stack.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:8e5e59a62bedbfa98ac38a57bb10f895bc43848d08f181faee1ad24aeddba74e
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/assets/context/testing.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/scripts/setup.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:02c36b4f2b7e8fb2e67c9774f1a1b6cee1ba20a997d968bc11f4e1c3ccb1f99b
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-agent-harness/scripts/setup.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:f2f1527eb9540f2e33f7a2a3325d8bce8838c3c714c8cdc9b68d7bd166ca26c0
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-harness-context
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-harness-context/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/core
+  active_owner: ./packages/core
+  content_hash: sha256:aa8dd19ba980aa8f9218535803e26cd6563d93aa0fc40e85ed19af3fd26ec28b
