@@ -1,6 +1,6 @@
 ---
 name: setup-agent-harness
-description: agent-harness を利用者のリポジトリに導入するとき、パッケージの更新をテンプレートから取り込むときに使う。context/project.yml、context の 6 種類の骨組みと目次、AGENTS.md、CONTRIBUTING.md を置く。
+description: agent-harness を利用者のリポジトリに導入するとき、パッケージの更新をテンプレートから取り込むときに使う。context/project.yml、context の 6 種類の骨組みと目次、AGENTS.md、CONTRIBUTING.md、commitlint の設定を置き、コミットのチェックを組み込むかを尋ねる。
 ---
 
 # setup-agent-harness
@@ -22,9 +22,25 @@ node <このスキルのディレクトリ>/scripts/setup.mjs --branches main,de
 3. スクリプトが表示した「写した」と「飛ばした」の一覧を、利用者にそのまま見せる。既にあるファイルは写されない。`.gitignore` には、`.ai-out/` と、`apm.lock.yaml` にある apm の配置先の行が足される。`.ai-out/` は公開しない作業メモの置き場である。  
    `apm.yml` には、`apm install` の後に配置先の行を足す post-install が足される。利用者に、マシンごとに 1 度 `apm lifecycle trust` を実行するよう伝える。信頼していないと、パッケージを足しても行は足されない。  
    パッケージから消えたスキルとフックの写しは、post-install とセッションの開始のフックが配置先から消し、`.gitignore` の行も消す。
-4. 写されたファイルをコミットするよう促す。以後は利用者のファイルであり、パッケージの更新で上書きされない。
+4. 下の「コミットのチェックを動かせるようにする」を行う。
+5. 写されたファイルをコミットするよう促す。以後は利用者のファイルであり、パッケージの更新で上書きされない。
 
 context の 6 種類は、すべて `status: draft` の骨組みとして置かれる。中身は、このスキルでは書かない。種類ごとに決まる時期が違うので、決めて書き、更新するのは context を書くスキルの役割である。
+
+## コミットのチェックを動かせるようにする
+
+スクリプトは、コミットのメッセージの形式を持つ `commitlint.config.mjs` を写す。確かめる仕組みは写さないので、入れるかを利用者に尋ねる。  
+既にあるファイルを書き換えるときは、差分を利用者に見せてから書く。
+
+1. commitlint を入れるかを尋ねる。入れないなら、写した `commitlint.config.mjs` を消すかを尋ねて、ここで終える。
+2. commitlint を入れる。パッケージマネージャーは、リポジトリのロックファイルから決める。`package.json` がなければ、作るかを利用者に尋ねる。devDependencies に入れるのは次の 3 つ。
+   - @commitlint/cli
+   - @commitlint/config-conventional
+   - lefthook
+3. `lefthook.yml` の `commit-msg` に、`commitlint --edit {1}` を足す。`lefthook.yml` がなければ作る。lefthook のフックが clone した後にも入るよう、`package.json` の `prepare` に `lefthook install` を足す。
+4. CI のワークフローがあれば、pull request のコミットを commitlint で確かめる手順を足す。checkout で Git の履歴を全部取り、基点のブランチから HEAD までを `--from` と `--to` で渡す。
+5. CONTRIBUTING.md の「コミットするとき」の節に、commit-msg のフックがメッセージの形式を確かめることを 1 行で書く。
+6. 形式に合わないメッセージを commitlint の標準入力に渡し、失敗することを利用者に見せる。
 
 ## パッケージを更新したとき
 
