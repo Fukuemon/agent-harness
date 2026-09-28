@@ -15,7 +15,7 @@ verified_commit: d45aeafb7bb083783d5c2f77d1a2dfb2a2acbe94
 このリポジトリの開発に使うスキルの元は 2 か所にある。  
 このリポジトリだけのスキルを作るときは、`skills/` に置く。  
 利用者にも届けるスキルは `packages/core/skills/` と `packages/docs/skills/` にある。  
-core のスキルは、setup-agent-harness、write-harness-context、git-commit、issue-pr-writing、code-comments の 5 つである。  
+core のスキルは 6 つある。setup-agent-harness、write-context、write-skill、write-commit、write-issue-pr、write-comments である。  
 docs のスキルは、write-design-docs、write-prose、setup-design-docs の 3 つ。  
 `apm.yml` が両方を列挙している。
 

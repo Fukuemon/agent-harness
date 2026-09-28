@@ -1,8 +1,8 @@
 ---
-name: write-harness-context
+name: write-context
 description: context を種類ごとに決めて書くとき、書いた context を更新するとき、CONTRIBUTING.md と AGENTS.md を直すときに使う。導入のスキル setup-agent-harness が draft で置いた骨組みを、決まる時期に埋めて stable にする。
 ---
-# write-harness-context
+# write-context
 
 対象は、`context/` の 6 種類の文書、`context/domain/<概念>.md`、CONTRIBUTING.md、AGENTS.md である。  
 テンプレートの見出しの下の案内は「何を書くか」だけを持つ。決めるときに確かめること、書かないこと、分け方、`status` の意味は、このスキルが持つ。
@@ -76,9 +76,9 @@ CONTRIBUTING.md は、変更をリポジトリへ取り込むまでの手順を�
 | -------------------- | ----------------------------------------------------------------------------- |
 | 開発の準備                | 必要なランタイムとツールの名前、最初に実行するコマンド。版は、版が書いてあるファイルを示す                                 |
 | 文書を直すとき              | 文書のチェックの実行方法                                                                  |
-| コミットするとき             | コミットの前に動くチェックと、その直し方。分け方とメッセージは、スキル git-commit に委ねる                           |
+| コミットするとき             | コミットの前に動くチェックと、その直し方。分け方とメッセージは、スキル write-commit に委ねる                           |
 | ブランチとリリース            | ブランチの構成と取り込み方、バージョンの付け方、次のバージョンを決める手段。保護するブランチの名前は `context/project.yml` と揃える |
-| issue と pull request | issue の種類とラベル、pull request との対応。書き方は、スキル issue-pr-writing に委ねる                |
+| issue と pull request | issue の種類とラベル、pull request との対応。書き方は、スキル write-issue-pr に委ねる                |
 
 
 AGENTS.md は、常に読み込まれる。目次を読む指示と、禁止事項だけを持つ。次の 3 つをすべて満たす内容だけを足す。

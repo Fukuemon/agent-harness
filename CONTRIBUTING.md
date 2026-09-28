@@ -55,7 +55,7 @@ pnpm check:links
 
 - コミットの前に、ステージした Markdown を textlint でチェックする。
 - コミットメッセージは commitlint でチェックする。Conventional Commits の形式に加えて、要約の末尾の句点と、AI の帰属表示を禁止している。
-- メッセージの書き方と変更の分け方は、スキル git-commit にある。
+- メッセージの書き方と変更の分け方は、スキル write-commit にある。
 - ブランチの切り方と main への取り込み方は、[ブランチとリリース](#ブランチとリリース)の節にある。
 
 ## ブランチとリリース
@@ -100,5 +100,5 @@ gitGraph
 - 作業は issue から始める。`.github/ISSUE_TEMPLATE/` の form で起票する。form が種類のラベル `type:*`（`requirements`、`task`、`bug`）を付けるので、パッケージのラベル `pkg:*` を足す。GitHub の milestone は使わない。タスクは親の要求の sub-issue にする。
 - 設計が要る作業だけ、`specs/<issue 番号>-<短い主題>/` に spec と `process.yml` を置く。それ以外は `context/project.yml` の既定の選択のまま進め、進み具合は issue の状態で表す。
 - pull request は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。
-- issue と pull request の題と本文の書き方は、スキル issue-pr-writing にある。
-- pull request のレビューには Codex が付く。指摘は対応して返信する。返信の書き方は、スキル issue-pr-writing の共通の節に従う。
+- issue と pull request の題と本文の書き方は、スキル write-issue-pr にある。
+- pull request のレビューには Codex が付く。指摘は対応して返信する。返信の書き方は、スキル write-issue-pr の共通の節に従う。
