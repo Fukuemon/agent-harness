@@ -217,3 +217,53 @@ test("--gitignore は .gitignore の行だけをそろえ、テンプレート�
   assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), ".ai-out/\n/.claude/skills/grilling/\n");
   assert.ok(!existsSync(join(repo, "AGENTS.md")), "テンプレートを写した");
 });
+
+// Git のリポジトリにして、ロックファイルに載せたスキルの写しを置く
+function deployRepo(skills) {
+  const { repo, script } = setup();
+  execFileSync("git", ["init", "-q"], { cwd: repo });
+  writeLock(repo, skills);
+  for (const s of skills) {
+    mkdirSync(join(repo, ".claude", "skills", s), { recursive: true });
+    writeFileSync(join(repo, ".claude", "skills", s, "SKILL.md"), `# ${s}\n`);
+  }
+  return { repo, script };
+}
+
+function writeLock(repo, skills) {
+  writeFileSync(join(repo, "apm.lock.yaml"), ["dependencies:", "- repo_url: x", "  deployed_files:", ...skills.map((s) => `  - .claude/skills/${s}`), ""].join("\n"));
+}
+
+test("前回の記録にあってロックファイルにない写しを消す。.gitignore の行が先に消えていても消す", () => {
+  const { repo, script } = deployRepo(["a", "b"]);
+  run(repo, script, ["--gitignore"]);
+  writeLock(repo, ["a"]);
+  writeFileSync(join(repo, ".gitignore"), ".ai-out/\n/.claude/skills/a/\n");
+  const r = run(repo, script, ["--gitignore"]);
+  assert.equal(r.status, 0, r.out);
+  assert.ok(!existsSync(join(repo, ".claude/skills/b")), "b が残っている");
+  assert.ok(existsSync(join(repo, ".claude/skills/a/SKILL.md")), "a が消えた");
+  assert.match(r.out, /消した: パッケージから消えた写し\n  \/\.claude\/skills\/b\//);
+});
+
+test("記録にない写しは、.gitignore に行があっても消さない", () => {
+  const { repo, script } = deployRepo(["a", "private"]);
+  writeLock(repo, ["a"]);
+  writeFileSync(join(repo, ".gitignore"), ".ai-out/\n/.claude/skills/a/\n/.claude/skills/private/\n");
+  run(repo, script, ["--gitignore"]);
+  run(repo, script, ["--gitignore"]);
+  assert.ok(existsSync(join(repo, ".claude/skills/private/SKILL.md")), "自作のスキルが消えた");
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), ".ai-out/\n/.claude/skills/a/\n/.claude/skills/private/\n");
+});
+
+test("利用者の自作のスキルと、Git が追跡しているディレクトリは消さない", () => {
+  const { repo, script } = deployRepo(["a", "tracked"]);
+  mkdirSync(join(repo, ".claude/skills/mine"), { recursive: true });
+  writeFileSync(join(repo, ".claude/skills/mine/SKILL.md"), "# mine\n");
+  execFileSync("git", ["add", "-f", ".claude/skills/tracked/SKILL.md"], { cwd: repo });
+  run(repo, script, ["--gitignore"]);
+  writeLock(repo, ["a"]);
+  run(repo, script, ["--gitignore"]);
+  assert.ok(existsSync(join(repo, ".claude/skills/mine/SKILL.md")), "自作のスキルが消えた");
+  assert.ok(existsSync(join(repo, ".claude/skills/tracked/SKILL.md")), "追跡しているディレクトリが消えた");
+});
