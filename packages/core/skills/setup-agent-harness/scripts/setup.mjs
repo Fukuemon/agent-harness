@@ -3,9 +3,10 @@
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
 // .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す。apm.yml には、apm install の後にそれを行う post-install を足す
 // --gitignore は .gitignore の行だけをそろえる。apm の post-install から呼ばれる
+// どちらも、パッケージから消えたスキルとフックの写しを配置先から消し、.gitignore の行も消す
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
-import { basename, dirname, join, relative, sep } from "node:path";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
@@ -21,6 +22,7 @@ for (let i = 0; i < argv.length; i++) {
   else fail(`知らない引数: ${a}`);
 }
 const root = process.cwd();
+const DEPLOYED_DIR = /^\/\.(claude|agents|codex)\/(skills|hooks)\/[^/]+\/$/;
 // apm の lifecycle は利用者の apm.yml にしか書けず、パッケージからは渡せない
 const LIFECYCLE = `lifecycle:
   post-install:
@@ -32,6 +34,7 @@ const ignorePath = join(root, ".gitignore");
 const ignoreLines = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8").split(/\r?\n/) : [];
 const unignored = [".ai-out/", ...deployedDirs()].filter((l) => !ignoreLines.includes(l));
 if (opts.gitignore) {
+  syncDeployed();
   addIgnored();
   process.exit(0);
 }
@@ -91,11 +94,57 @@ if (opts.force.length) {
   for (const p of copied) write(p);
   if (copied.length) console.log(`写した:\n${copied.map((p) => `  ${p}`).join("\n")}`);
   if (skipped.length) console.log(`飛ばした（既にある。--diff で差分を見る）:\n${skipped.map((p) => `  ${p}`).join("\n")}`);
+  syncDeployed();
   addIgnored();
   if (lifecycle === "missing") {
     writeFileSync(apmPath, `${apmYml}${apmYml.endsWith("\n") ? "" : "\n"}${LIFECYCLE}\n`);
     console.log("足した: apm.yml に、.gitignore をそろえる post-install。マシンごとに 1 度 apm lifecycle trust を実行する");
   } else if (lifecycle === "manual") console.log(`apm.yml に lifecycle: があるので、次を手で足す\n${LIFECYCLE}`);
+}
+
+// 消えた写しは、前回の post-install の記録と、.gitignore の配置先の行から探す。
+// pull でロックファイルと .gitignore が先に変わると、どちらか一方では見つからないためである
+function syncDeployed() {
+  const current = new Set(deployedDirs());
+  const record = gitPath("agent-harness/deployed");
+  const recorded = record && existsSync(record) ? readFileSync(record, "utf8").split("\n") : [];
+  const stale = [...new Set([...recorded, ...ignoreLines])].filter((d) => DEPLOYED_DIR.test(d) && !current.has(d));
+  const removed = [];
+  for (const d of stale) {
+    const dir = join(root, d.slice(1, -1));
+    if (!existsSync(dir) || isTracked(d.slice(1, -1))) continue;
+    rmSync(dir, { recursive: true, force: true });
+    removed.push(d);
+  }
+  if (removed.length) console.log(`消した: パッケージから消えた写し\n${removed.map((d) => `  ${d}`).join("\n")}`);
+  const dropped = new Set(stale.filter((d) => !existsSync(join(root, d.slice(1, -1)))));
+  if (dropped.size && existsSync(ignorePath)) {
+    const lines = readFileSync(ignorePath, "utf8").split(/\r?\n/);
+    writeFileSync(ignorePath, lines.filter((l) => !dropped.has(l)).join("\n"));
+    const gone = ignoreLines.filter((l) => dropped.has(l));
+    if (gone.length) console.log(`消した: .gitignore から\n${gone.map((l) => `  ${l}`).join("\n")}`);
+  }
+  if (record) {
+    mkdirSync(dirname(record), { recursive: true });
+    writeFileSync(record, `${[...current].join("\n")}\n`);
+  }
+}
+
+function gitPath(name) {
+  try {
+    return resolve(root, execFileSync("git", ["rev-parse", "--git-path", name], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim());
+  } catch {
+    return undefined;
+  }
+}
+
+// Git を読めないときは、追跡しているとみなして消さない
+function isTracked(path) {
+  try {
+    return execFileSync("git", ["ls-files", "--", path], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() !== "";
+  } catch {
+    return true;
+  }
 }
 
 function addIgnored() {
