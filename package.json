@@ -8,7 +8,10 @@
     "prepare": "lefthook install",
     "check:project": "node packages/core/scripts/validate-project.mjs",
     "test": "node --test \"packages/**/*.test.mjs\" \"scripts/*.test.mjs\"",
-    "check:index": "node packages/core/scripts/build-index.mjs"
+    "check:index": "node packages/core/scripts/build-index.mjs",
+    "check:history": "node packages/docs/hooks/check-history.mjs",
+    "check:links": "node packages/docs/hooks/check-links.mjs",
+    "list:drift": "node packages/docs/hooks/list-drift.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
