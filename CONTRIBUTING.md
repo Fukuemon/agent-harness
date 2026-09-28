@@ -6,11 +6,13 @@
 mise trust
 mise install
 pnpm install
+apm lifecycle trust
 apm install
 ```
 
 - `mise trust` は、clone した直後に 1 度だけ要る。設定ファイルを信頼させる。
 - `pnpm install` は、Git のフックも有効にする。
+- `apm lifecycle trust` は、マシンごとに 1 度だけ要る。`apm.yml` の post-install を信頼させ、`apm install` の後に配置先を `.gitignore` に足させる。
 - `apm install` は、`apm.yml` に書いたスキルとパッケージを配置する。配置先と直し方は [スキルの置き場所](context/skills.md) に書いてある。
 - mise の導入の方法は、公式の案内に従う。
   - 出典: [mise](https://mise.jdx.dev/)

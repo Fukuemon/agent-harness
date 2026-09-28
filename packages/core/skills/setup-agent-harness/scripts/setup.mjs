@@ -1,7 +1,8 @@
 // スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
-// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]...
+// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]... | --gitignore
 // 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
-// .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す
+// .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す。apm.yml には、apm install の後にそれを行う post-install を足す
+// --gitignore は .gitignore の行だけをそろえる。apm の post-install から呼ばれる
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
@@ -9,16 +10,34 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 
-const opts = { branches: "", docs: "", diff: false, force: [] };
+const opts = { branches: "", docs: "", diff: false, gitignore: false, force: [] };
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
   if (a === "--diff") opts.diff = true;
+  else if (a === "--gitignore") opts.gitignore = true;
   else if (a === "--force") opts.force.push(argv[++i]);
   else if (a.startsWith("--") && a.slice(2) in opts) opts[a.slice(2)] = argv[++i];
   else fail(`知らない引数: ${a}`);
 }
 const root = process.cwd();
+// apm の lifecycle は利用者の apm.yml にしか書けず、パッケージからは渡せない
+const LIFECYCLE = `lifecycle:
+  post-install:
+  - type: command
+    description: apm の配置先を .gitignore に足す（agent-harness）
+    command: 'd=$(ls -d .claude/skills/setup-agent-harness .agents/skills/setup-agent-harness 2>/dev/null | head -1); [ -n "$d" ] || d=$(find \"$HOME/.claude/plugins/cache\" -maxdepth 5 -type d -path \"*/core/*/skills/setup-agent-harness\" 2>/dev/null | head -1); [ -z "$d" ] || node "$d/scripts/setup.mjs" --gitignore'
+    timeoutSec: 30`;
+const ignorePath = join(root, ".gitignore");
+const ignoreLines = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8").split(/\r?\n/) : [];
+const unignored = [".ai-out/", ...deployedDirs()].filter((l) => !ignoreLines.includes(l));
+if (opts.gitignore) {
+  addIgnored();
+  process.exit(0);
+}
+const apmPath = join(root, "apm.yml");
+const apmYml = existsSync(apmPath) ? readFileSync(apmPath, "utf8") : "";
+const lifecycle = !apmYml || apmYml.includes("setup.mjs\" --gitignore") ? "ok" : /^lifecycle:/m.test(apmYml) ? "manual" : "missing";
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
 const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
 opts.branches ||= pickList("names") ?? "main,develop";
@@ -48,9 +67,6 @@ for (const root of skillsRoots()) {
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
 for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
-const ignorePath = join(root, ".gitignore");
-const ignoreLines = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8").split(/\r?\n/) : [];
-const unignored = [".ai-out/", ...deployedDirs()].filter((l) => !ignoreLines.includes(l));
 
 if (opts.force.length) {
   for (const p of opts.force) {
@@ -67,6 +83,7 @@ if (opts.force.length) {
     if (d) { differs++; console.log(d); } else console.log(`${p}: 差分なし`);
   }
   if (unignored.length) { differs++; console.log(`.gitignore: 次の行がない。既定の実行で足される\n${unignored.map((l) => `  ${l}`).join("\n")}`); }
+  if (lifecycle !== "ok") { differs++; console.log(`apm.yml: .gitignore をそろえる post-install がない。${lifecycle === "missing" ? "既定の実行で足される" : "lifecycle: があるので、次を手で足す"}\n${LIFECYCLE}`); }
   process.exit(differs ? 1 : 0);
 } else {
   const copied = [], skipped = [];
@@ -74,11 +91,18 @@ if (opts.force.length) {
   for (const p of copied) write(p);
   if (copied.length) console.log(`写した:\n${copied.map((p) => `  ${p}`).join("\n")}`);
   if (skipped.length) console.log(`飛ばした（既にある。--diff で差分を見る）:\n${skipped.map((p) => `  ${p}`).join("\n")}`);
-  if (unignored.length) {
-    const current = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8") : "";
-    writeFileSync(ignorePath, `${current}${current && !current.endsWith("\n") ? "\n" : ""}${unignored.join("\n")}\n`);
-    console.log(`足した: .gitignore に\n${unignored.map((l) => `  ${l}`).join("\n")}`);
-  }
+  addIgnored();
+  if (lifecycle === "missing") {
+    writeFileSync(apmPath, `${apmYml}${apmYml.endsWith("\n") ? "" : "\n"}${LIFECYCLE}\n`);
+    console.log("足した: apm.yml に、.gitignore をそろえる post-install。マシンごとに 1 度 apm lifecycle trust を実行する");
+  } else if (lifecycle === "manual") console.log(`apm.yml に lifecycle: があるので、次を手で足す\n${LIFECYCLE}`);
+}
+
+function addIgnored() {
+  if (!unignored.length) return;
+  const current = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8") : "";
+  writeFileSync(ignorePath, `${current}${current && !current.endsWith("\n") ? "\n" : ""}${unignored.join("\n")}\n`);
+  console.log(`足した: .gitignore に\n${unignored.map((l) => `  ${l}`).join("\n")}`);
 }
 
 // パッケージマネージャーはすべてのスキルを同じ skills/ に置く。
@@ -107,9 +131,13 @@ function deployedDirs() {
   const lock = join(root, "apm.lock.yaml");
   if (!existsSync(lock)) return [];
   const dirs = new Set();
-  for (const [, p] of readFileSync(lock, "utf8").matchAll(/^\s*- (\.[^\s:]+)\s*$/gm)) {
-    const parts = p.split("/");
-    dirs.add(["skills", "hooks"].includes(parts[1]) && parts.length >= 3 ? `/${parts.slice(0, 3).join("/")}/` : `/${p}`);
+  let inList = false;
+  for (const line of readFileSync(lock, "utf8").split(/\r?\n/)) {
+    if (/^\s*deployed_files:\s*$/.test(line)) { inList = true; continue; }
+    const item = /^\s*- (\S+)\s*$/.exec(line);
+    if (!inList || !item) { inList = false; continue; }
+    const parts = item[1].split("/");
+    dirs.add(["skills", "hooks"].includes(parts[1]) && parts.length >= 3 ? `/${parts.slice(0, 3).join("/")}/` : `/${item[1]}`);
   }
   return [...dirs].sort();
 }
