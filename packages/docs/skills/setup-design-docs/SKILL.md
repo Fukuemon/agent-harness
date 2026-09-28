@@ -13,7 +13,7 @@ core の導入のスキル setup-agent-harness を先に実行しておく。`.t
 1. docs のフックのディレクトリを探す。パッケージマネージャーが `.claude/hooks/docs/hooks/` か `.codex/hooks/docs/hooks/` に配置する。
    - 両方あれば `.claude/` を使う。以後の手順では、見つけたディレクトリを `<docs>` と書く。
    - どちらもなければ、docs はコーディングエージェントの標準の方法で入っている。lefthook と CI からは呼べないので、パッケージマネージャーで入れるよう伝え、用語の規則の手順だけを行う。
-2. textlint を入れる。パッケージマネージャーは、リポジトリのロックファイルから決める。`package.json` がなければ、作るかを利用者に尋ねる。devDependencies に入れるのは次の 5 つである。
+2. textlint を入れる。パッケージマネージャーは、リポジトリのロックファイルから決める。`package.json` がなければ、作るかを利用者に尋ねる。devDependencies に入れるのは次の 5 つ。
    - textlint
    - textlint-rule-preset-ai-words-ja
    - textlint-rule-prh

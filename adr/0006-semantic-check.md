@@ -9,7 +9,7 @@
 ルールには、機械で判定できるものと、判断が要るものがある。前者は自動チェックで持ち、後者はスキルに書いている。  
 スキルに書いたルールは、守られたかを確かめられない。サブエージェントにも引き継がれない。
 
-判断が要るルールの一部は、意味を判定できれば自動チェックへ移せる。次の 2 つが例である。
+判断が要るルールの一部は、意味を判定できれば自動チェックへ移せる。例は次の 2 つ。
 
 - 足されたコメントが、コードの言い換えにすぎないかどうか。
 - 文書が、水増しや曖昧な記述を含んでいないかどうか。エージェントに書かせた文書は、この形の workslop になりやすい。
@@ -20,7 +20,7 @@ jev-lint は、Jev をコードと文書のチェックに使うツールであ�
 - `README.md:9-11` / [github](https://github.com/uehaj/jev-semgrep/blob/8c78ac7ecb4081cdb2ca40d198d6003aa0e1a506/README.md#L9-L11)
 - `README.md:144` / [github](https://github.com/mizchi/jev-lint/blob/4fdca89eb395757047103410bf32bd1bb79b8cb0/README.md#L144)
 
-確かめた制約は、次のとおりである。
+確かめた制約は、次のとおり。
 
 - 決定的ではない。jev-lint の README は、自身のリポジトリで測った結果として、指摘の約 5 件に 1 件が誤りだったと書いている。
   - `README.md:96-99` / [github](https://github.com/mizchi/jev-lint/blob/4fdca89eb395757047103410bf32bd1bb79b8cb0/README.md#L96-L99)
