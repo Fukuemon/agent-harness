@@ -51,14 +51,17 @@ description: PRD、Design Doc、ADR、spec を書くとき、直すとき、レ�
 - 状態は `status` で持つ。本文に状態や更新日を書かない。
 - キーの一覧は、context の目次の生成が読む基本のキーと同じである。
 
+## 文書のチェック
+
+- 編集後のフックが、Markdown を編集するたびに、変更履歴の見出し、issue の番号、リンク切れを知らせる。変更履歴の見出しは消して、経緯を ADR とコミットへ移す。issue の番号は、未解決の論点を指すものだけを残す。
+- コミットの前と CI では、パッケージマネージャーが配置した docs のフックのディレクトリ（`.claude/hooks/docs/hooks/` か `.codex/hooks/docs/hooks/`）にある 3 つのスクリプトを呼ぶ。引数を省くと、Git が追跡する Markdown の全部を見る。
+  - `check-history.mjs`: Design Doc と context の変更履歴の見出しを、終了コード 1 で報告する。issue の番号は一覧を出すだけにする。
+  - `check-links.mjs`: 相対リンクの先のファイルと見出しのアンカーがないリンクを、終了コード 1 で報告する。
+  - `list-drift.mjs`: `verified_commit` の後に `governs` の範囲が変わった文書を一覧する。一覧は失敗にしない。`governs` と `verified_commit` の片方だけを持つ文書と、履歴にない `verified_commit` は、終了コード 1 にする。
+- 一覧に出た文書は、実装と読み比べ、正しければ `verified_commit` を今のコミットに進める。読まずに進めない。
+- textlint、CONTRIBUTING.md の手順、lefthook と CI への組み込み、プロジェクトの用語の規則は、導入のスキル setup-design-docs が用意する。
+
 ## 文章のチェック
 
 - 導入のスキルが写した `.textlintrc.json` と `prh.yml` で、textlint を動かす。指摘された語は言い換える。`--fix` は使わない。
-- 必要なパッケージは 5 つで、リポジトリの devDependencies に入れる。
-  - textlint
-  - textlint-rule-preset-ai-words-ja
-  - textlint-rule-prh
-  - textlint-rule-no-mix-dearu-desumasu
-  - textlint-rule-sentence-length
-- `prh.yml` の規則は、どのプロジェクトでも成り立つものだけである。プロジェクトの用語の規則は、利用者が `prh.yml` に足す。
 - 丁寧語で書くプロジェクトは、`.textlintrc.json` の `preferInBody` と `preferInList` を `ですます` にする。

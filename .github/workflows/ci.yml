@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: jdx/mise-action@v4
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint:text
@@ -17,6 +19,9 @@ jobs:
       - run: pnpm test
       - run: pnpm check:index
       - run: pnpm check:project
+      - run: pnpm check:history
+      - run: pnpm check:links
+      - run: pnpm list:drift
       - run: apm install
       - run: |
           git status --porcelain -- apm.lock.yaml .claude/settings.json .codex/hooks.json .claude/apm-hooks.json .codex/apm-hooks.json > drift.txt

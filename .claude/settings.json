@@ -15,6 +15,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PROJECT_DIR}/.claude/hooks/docs/hooks/check-docs.mjs\"; [ -f \"$f\" ] || f=\"$(git rev-parse --show-toplevel 2>/dev/null)/$f\"; [ -f \"$f\" ] || exit 0; node \"$f\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "SessionStart": [

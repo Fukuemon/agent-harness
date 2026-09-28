@@ -10,6 +10,17 @@
         }
       ],
       "_apm_source": "_local/core"
+    },
+    {
+      "matcher": "Edit|Write|MultiEdit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "f=\".codex/hooks/docs/hooks/check-docs.mjs\"; [ -f \"$f\" ] || f=\"$(git rev-parse --show-toplevel 2>/dev/null)/$f\"; [ -f \"$f\" ] || exit 0; node \"$f\"",
+          "timeout": 10
+        }
+      ],
+      "_apm_source": "_local/docs"
     }
   ],
   "SessionStart": [

@@ -1,0 +1,17 @@
+{
+  "description": "Markdown の編集の後に、経緯の混入とリンク切れを確かめるよう促す",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"${CLAUDE_PLUGIN_ROOT}/hooks/check-docs.mjs\"; [ -f \"$f\" ] || f=\"$(git rev-parse --show-toplevel 2>/dev/null)/$f\"; [ -f \"$f\" ] || exit 0; node \"$f\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

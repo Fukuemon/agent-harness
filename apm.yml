@@ -7,3 +7,4 @@ dependencies:
   apm:
     - ./skills/docs-writing
     - ./packages/core
+    - ./packages/docs
