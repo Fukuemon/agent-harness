@@ -246,13 +246,14 @@ test("前回の記録にあってロックファイルにない写しを消す�
   assert.match(r.out, /消した: パッケージから消えた写し\n  \/\.claude\/skills\/b\//);
 });
 
-test("記録がなくても、.gitignore にあってロックファイルにない写しと行を消す", () => {
-  const { repo, script } = deployRepo(["a", "b"]);
+test("記録にない写しは、.gitignore に行があっても消さない", () => {
+  const { repo, script } = deployRepo(["a", "private"]);
   writeLock(repo, ["a"]);
-  writeFileSync(join(repo, ".gitignore"), ".ai-out/\n/.claude/skills/a/\n/.claude/skills/b/\n");
+  writeFileSync(join(repo, ".gitignore"), ".ai-out/\n/.claude/skills/a/\n/.claude/skills/private/\n");
   run(repo, script, ["--gitignore"]);
-  assert.ok(!existsSync(join(repo, ".claude/skills/b")), "b が残っている");
-  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), ".ai-out/\n/.claude/skills/a/\n");
+  run(repo, script, ["--gitignore"]);
+  assert.ok(existsSync(join(repo, ".claude/skills/private/SKILL.md")), "自作のスキルが消えた");
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), ".ai-out/\n/.claude/skills/a/\n/.claude/skills/private/\n");
 });
 
 test("利用者の自作のスキルと、Git が追跡しているディレクトリは消さない", () => {

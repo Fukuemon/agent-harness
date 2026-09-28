@@ -102,13 +102,12 @@ if (opts.force.length) {
   } else if (lifecycle === "manual") console.log(`apm.yml に lifecycle: があるので、次を手で足す\n${LIFECYCLE}`);
 }
 
-// 消えた写しは、前回の post-install の記録と、.gitignore の配置先の行から探す。
-// pull でロックファイルと .gitignore が先に変わると、どちらか一方では見つからないためである
+// 消えた写しは、前回の実行の記録だけから探す。.gitignore の行は、利用者が自作のスキルのために書いたものと区別できないためである
 function syncDeployed() {
   const current = new Set(deployedDirs());
   const record = gitPath("agent-harness/deployed");
   const recorded = record && existsSync(record) ? readFileSync(record, "utf8").split("\n") : [];
-  const stale = [...new Set([...recorded, ...ignoreLines])].filter((d) => DEPLOYED_DIR.test(d) && !current.has(d));
+  const stale = recorded.filter((d) => DEPLOYED_DIR.test(d) && !current.has(d));
   const removed = [];
   for (const d of stale) {
     const dir = join(root, d.slice(1, -1));
