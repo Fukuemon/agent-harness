@@ -43,7 +43,7 @@ dependencies:
     - Fukuemon/agent-harness/packages/docs#<ref>
 ```
 
-`<ref>` にはタグかコミットの SHA を書く。最初のリリースまでは、main のコミットの SHA を書く。
+`<ref>` には、`v0.1.0` の形のタグを書く。タグと版ごとの変更は [Releases](https://github.com/Fukuemon/agent-harness/releases) にある。
 
 ```sh
 apm install
