@@ -131,9 +131,13 @@ function deployedDirs() {
   const lock = join(root, "apm.lock.yaml");
   if (!existsSync(lock)) return [];
   const dirs = new Set();
-  for (const [, p] of readFileSync(lock, "utf8").matchAll(/^\s*- (\.[^\s:]+)\s*$/gm)) {
-    const parts = p.split("/");
-    dirs.add(["skills", "hooks"].includes(parts[1]) && parts.length >= 3 ? `/${parts.slice(0, 3).join("/")}/` : `/${p}`);
+  let inList = false;
+  for (const line of readFileSync(lock, "utf8").split(/\r?\n/)) {
+    if (/^\s*deployed_files:\s*$/.test(line)) { inList = true; continue; }
+    const item = /^\s*- (\S+)\s*$/.exec(line);
+    if (!inList || !item) { inList = false; continue; }
+    const parts = item[1].split("/");
+    dirs.add(["skills", "hooks"].includes(parts[1]) && parts.length >= 3 ? `/${parts.slice(0, 3).join("/")}/` : `/${item[1]}`);
   }
   return [...dirs].sort();
 }

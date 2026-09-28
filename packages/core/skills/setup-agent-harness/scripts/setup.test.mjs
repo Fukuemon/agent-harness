@@ -144,6 +144,9 @@ test("apm.lock.yaml の配置先を、スキルとフックはディレクトリ
     "  - .codex/hooks/core/hooks/check-comments.mjs",
     "  deployed_file_hashes:",
     "    .claude/skills/git-commit/SKILL.md: sha256:0",
+    "- repo_url: _local/docs",
+    "  owners:",
+    "  - ./packages/core",
     "",
   ].join("\n"));
   assert.equal(run(repo, script, ["--diff"]).status, 1);
