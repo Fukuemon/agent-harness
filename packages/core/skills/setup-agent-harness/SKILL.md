@@ -32,13 +32,13 @@ context の 6 種類は、すべて `status: draft` の骨組みとして置か�
 スクリプトは、コミットのメッセージの形式を持つ `commitlint.config.mjs` を写す。確かめる仕組みは写さないので、入れるかを利用者に尋ねる。  
 既にあるファイルを書き換えるときは、差分を利用者に見せてから書く。
 
-1. commitlint を入れるかを尋ねる。入れないなら、写した `commitlint.config.mjs` を消すかを尋ねて、ここで終える。
+1. commitlint を入れるかを尋ねる。入れないなら、ここで終える。写した `commitlint.config.mjs` は消さない。スキル write-commit が形式の規則として読み、導入のスクリプトも次の実行で写し直すためである。
 2. commitlint を入れる。パッケージマネージャーは、リポジトリのロックファイルから決める。`package.json` がなければ、作るかを利用者に尋ねる。devDependencies に入れるのは次の 3 つ。
    - @commitlint/cli
    - @commitlint/config-conventional
    - lefthook
-3. `lefthook.yml` の `commit-msg` に、`commitlint --edit {1}` を足す。`lefthook.yml` がなければ作る。lefthook のフックが clone した後にも入るよう、`package.json` の `prepare` に `lefthook install` を足す。
-4. CI のワークフローがあれば、pull request のコミットを commitlint で確かめる手順を足す。checkout で Git の履歴を全部取り、基点のブランチから HEAD までを `--from` と `--to` で渡す。
+3. `lefthook.yml` の `commit-msg` に、`<実行コマンド> commitlint --edit {1}` を足す。`<実行コマンド>` は、手順 2 で決めたパッケージマネージャーで、インストールしたコマンドを実行するものにする。フックの中では、インストールしたコマンドにパスが通っていない。`lefthook.yml` がなければ作る。lefthook のフックが clone した後にも入るよう、`package.json` の `prepare` に `lefthook install` を足す。
+4. CI のワークフローがあれば、pull request のコミットを `<実行コマンド> commitlint` で確かめる手順を足す。checkout で Git の履歴を全部取り、基点のブランチから HEAD までを `--from` と `--to` で渡す。
 5. CONTRIBUTING.md の「コミットするとき」の節に、commit-msg のフックがメッセージの形式を確かめることを 1 行で書く。
 6. 形式に合わないメッセージを commitlint の標準入力に渡し、失敗することを利用者に見せる。
 
