@@ -190,7 +190,7 @@ dependencies:
     .agents/skills/write-design-docs/references/feature-design-doc.md: sha256:ccef84d3fe85e2a45d52767c632bd8eee11b16f67bae1f4ebf5b35fc9b4f9487
     .agents/skills/write-design-docs/references/prd.md: sha256:d76752014fa06ba74f85917ba969c36ab946266aca3bbd334b766579a8af48db
     .agents/skills/write-design-docs/references/spec.md: sha256:0d6ef5ddbc90caf1ac5fe2f36bf0435e7f62ae81dec9a9f178c778d94ec71882
-    .agents/skills/write-prose/SKILL.md: sha256:4d5cdb334965aa8befb24eb0f15ea21e7c3545994677c0a9700448c0b484a9a6
+    .agents/skills/write-prose/SKILL.md: sha256:f8a6ef336707538a89fe9487aa1980f623d6658b8811f64eec6bc42e04a6fad6
     .claude/hooks/docs/hooks/check-docs.mjs: sha256:c4e2ba1a27aa9b5c385acdb32a2e28cbe3f009fe1bafe316bee0b6e1ccdda38a
     .claude/hooks/docs/hooks/check-docs.test.mjs: sha256:bf5d17d02838d07e85d2820133df9d18ebfb90e50074a4c96ff867518c3a1e35
     .claude/hooks/docs/hooks/check-history.mjs: sha256:0698cd5bd42036a7a0cfa32a4e6c0adae43bf27bcbbcabc299c47f8a196926e1
@@ -211,7 +211,7 @@ dependencies:
     .claude/skills/write-design-docs/references/feature-design-doc.md: sha256:ccef84d3fe85e2a45d52767c632bd8eee11b16f67bae1f4ebf5b35fc9b4f9487
     .claude/skills/write-design-docs/references/prd.md: sha256:d76752014fa06ba74f85917ba969c36ab946266aca3bbd334b766579a8af48db
     .claude/skills/write-design-docs/references/spec.md: sha256:0d6ef5ddbc90caf1ac5fe2f36bf0435e7f62ae81dec9a9f178c778d94ec71882
-    .claude/skills/write-prose/SKILL.md: sha256:4d5cdb334965aa8befb24eb0f15ea21e7c3545994677c0a9700448c0b484a9a6
+    .claude/skills/write-prose/SKILL.md: sha256:f8a6ef336707538a89fe9487aa1980f623d6658b8811f64eec6bc42e04a6fad6
     .codex/hooks/docs/hooks/check-docs.mjs: sha256:c4e2ba1a27aa9b5c385acdb32a2e28cbe3f009fe1bafe316bee0b6e1ccdda38a
     .codex/hooks/docs/hooks/check-docs.test.mjs: sha256:bf5d17d02838d07e85d2820133df9d18ebfb90e50074a4c96ff867518c3a1e35
     .codex/hooks/docs/hooks/check-history.mjs: sha256:0698cd5bd42036a7a0cfa32a4e6c0adae43bf27bcbbcabc299c47f8a196926e1
@@ -718,7 +718,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:4d5cdb334965aa8befb24eb0f15ea21e7c3545994677c0a9700448c0b484a9a6
+  content_hash: sha256:f8a6ef336707538a89fe9487aa1980f623d6658b8811f64eec6bc42e04a6fad6
 - kind: project-relative
   target: codex
   value: .agents/skills/code-comments
@@ -1114,7 +1114,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:4d5cdb334965aa8befb24eb0f15ea21e7c3545994677c0a9700448c0b484a9a6
+  content_hash: sha256:f8a6ef336707538a89fe9487aa1980f623d6658b8811f64eec6bc42e04a6fad6
 - kind: project-relative
   target: codex
   value: .codex/hooks/core/hooks/check-comments.mjs

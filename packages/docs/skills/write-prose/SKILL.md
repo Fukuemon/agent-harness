@@ -1,6 +1,6 @@
 ---
 name: write-prose
-description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Design Doc、ADR、spec、スキルの本文）を書くとき、直すとき、レビューするときに使う。文書の分け方、文と段落、表、図、見出しと用語、スキルの本文の長さと分け方の規則を定める。
+description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Design Doc、ADR、spec、スキルの本文）を書くとき、直すとき、レビューするときに使う。文書の分け方、文と段落、表、図、見出しと用語の規則を定める。
 ---
 
 # write-prose
@@ -84,10 +84,3 @@ description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Des
   - 誰のどれを指すか分からない言い回しを避ける。
 - 用語の一覧は、本当に要る語だけにする。一般的でない語を作らない。
 - 用語は、公式の文書の表現に揃える。新しい語を使う前に、公式の文書での使われ方を調べる。
-
-## スキルの本文
-
-- 本文は 150 行以内に保つ。本文は呼ばれるたびに全部が読み込まれる。
-- `references/` に分けるのは、呼び出しごとに読む部分が違うときと、150 行に近づいたときに限る。同じ作業で全部を読む規則は 1 ファイルに置く。
-- 参照は `SKILL.md` から 1 段だけにする。`references/` のファイルから、さらに別のファイルを指さない。
-- 出典: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
