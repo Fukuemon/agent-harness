@@ -3,7 +3,7 @@
 コーディングエージェントに、プロジェクト固有の知識と文書の規則を与えるパッケージ。  
 Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える。
 
-## パッケージ
+## Packages
 
 | パッケージ | 役割 | スキル |
 | --- | --- | --- |
@@ -12,11 +12,11 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 
 どちらもフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 
-## 導入
+## Installation
 
-### 1. apm を入れる
+### 1. apm をインストールする
 
-パッケージは [microsoft/apm](https://github.com/microsoft/apm) で入れる。apm がなければ、[mise](https://mise.jdx.dev/) で Node.js と一緒に入れる。
+パッケージは [microsoft/apm](https://github.com/microsoft/apm) でインストールする。apm がなければ、[mise](https://mise.jdx.dev/) で Node.js と一緒にインストールする。
 
 ```toml
 # mise.toml
@@ -30,7 +30,7 @@ uv = "0.12"
 mise install
 ```
 
-### 2. パッケージを入れる
+### 2. パッケージをインストールする
 
 ```yaml
 # apm.yml
@@ -49,26 +49,26 @@ dependencies:
 apm install
 ```
 
-### 3. リポジトリに置く
+### 3. セットアップする
 
-コーディングエージェントに頼む。
+コーディングエージェントで、次の 2 つのスキルを順に呼ぶ。
 
-1. 「agent-harness を導入して」: 保護するブランチと文書のディレクトリ名を尋ね、`context/`、AGENTS.md、CONTRIBUTING.md、文書のテンプレートを写す。
-2. 「文書のチェックを動かせるようにして」: textlint を入れ、CONTRIBUTING.md、lefthook、CI にチェックを組み込み、用語の規則を利用者と決める。
+1. `/setup-agent-harness`: 保護するブランチと文書のディレクトリ名を尋ね、`context/`、AGENTS.md、CONTRIBUTING.md、文書のテンプレートを写す。`.gitignore` に apm の配置先を、`apm.yml` に同じ行を足す post-install を足す。
+2. `/setup-design-docs`: textlint をインストールし、CONTRIBUTING.md、lefthook、CI にチェックを組み込み、用語の規則を利用者と決める。
 
 写されたファイルをコミットする。以後は利用者のファイルとして編集する。
 
-### 4. apm の配置先を追跡しない
+### 4. post-install を信頼する
 
-1 の手順で、apm の配置先が `.gitignore` に入り、`apm.yml` に同じ行を足す post-install が入る。マシンごとに 1 度、post-install を信頼させる。
+マシンごとに 1 度実行する。以後は、パッケージを足して `apm install` すると、配置先が `.gitignore` に足される。
 
 ```sh
 apm lifecycle trust
 ```
 
-以後は、パッケージを足して `apm install` すると、配置先が `.gitignore` に足される。clone した後の最初のセッションでは、core のフックが `apm install --frozen` で配置をそろえる。
+clone した後の最初のセッションでは、core のフックが `apm install --frozen` で配置をそろえる。
 
-### Claude Code のプラグインで入れる場合
+### Claude Code のプラグインでインストールする場合
 
 ```text
 /plugin marketplace add Fukuemon/agent-harness
@@ -78,7 +78,7 @@ apm lifecycle trust
 
 この方法では、docs のチェックを lefthook と CI から呼べない。
 
-## 更新
+## Update
 
 `apm.yml` の `<ref>` を変えて `apm install` を実行し、テンプレートとの差分を見る。既にあるファイルは上書きされないので、取り込む変更を手で反映する。
 
@@ -86,17 +86,20 @@ apm lifecycle trust
 node .claude/skills/setup-agent-harness/scripts/setup.mjs --diff
 ```
 
-## 対応するコーディングエージェント
+## Supported Agents
 
 - **Claude Code:** リポジトリのルートで起動する。
 - **Codex CLI:** プロジェクトのフックは、利用者が承認するまで動かない。
 
-## ドキュメント
+## Documentation
 
 - [PRD](PRD.md): 誰のどの課題を、何で解決するか。
 - [Design Doc](design/DesignDoc.md): パッケージの構成、配布の形、共通の方針。
-- [CONTRIBUTING.md](CONTRIBUTING.md): 開発の準備と、変更を取り込むまでの手順。
 
-## ライセンス
+## Contributing
+
+開発の準備と、変更を取り込むまでの手順は [CONTRIBUTING.md](CONTRIBUTING.md) にある。
+
+## License
 
 [MIT](LICENSE)
