@@ -94,7 +94,7 @@ dependencies:
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
     .agents/skills/write-issue-pr/assets/.github/pull_request_template.md: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
-    .agents/skills/write-issue-pr/references/issue.md: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+    .agents/skills/write-issue-pr/references/issue.md: sha256:66bbdbd06eccfb3f59c6767b2d3dd0385cb1135b5e05920a52b35f1fd9ba1e34
     .agents/skills/write-issue-pr/references/pull-request.md: sha256:13332fdfc0c70ea145e6522a554b4440edfa37d6eb6759ebf17320664e5f1c99
     .agents/skills/write-skill/SKILL.md: sha256:a36e8429a124698d3b5a59f753934b76b394c912f2338645305eb37e2369e1c8
     .claude/hooks/core/hooks/check-comments.mjs: sha256:d137a844fa5654a2db7fde0e507b6f3af1a1a86665ccd3be6087fa11a242551a
@@ -121,7 +121,7 @@ dependencies:
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
     .claude/skills/write-issue-pr/assets/.github/pull_request_template.md: sha256:704834117b7349ecf00060c1119a30a6ce8b1b24ff5e6ad850dfeb65a6ffa7df
-    .claude/skills/write-issue-pr/references/issue.md: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+    .claude/skills/write-issue-pr/references/issue.md: sha256:66bbdbd06eccfb3f59c6767b2d3dd0385cb1135b5e05920a52b35f1fd9ba1e34
     .claude/skills/write-issue-pr/references/pull-request.md: sha256:13332fdfc0c70ea145e6522a554b4440edfa37d6eb6759ebf17320664e5f1c99
     .claude/skills/write-skill/SKILL.md: sha256:a36e8429a124698d3b5a59f753934b76b394c912f2338645305eb37e2369e1c8
     .codex/hooks/core/hooks/check-comments.mjs: sha256:d137a844fa5654a2db7fde0e507b6f3af1a1a86665ccd3be6087fa11a242551a
@@ -697,7 +697,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+  content_hash: sha256:66bbdbd06eccfb3f59c6767b2d3dd0385cb1135b5e05920a52b35f1fd9ba1e34
 - kind: project-relative
   target: claude
   value: .claude/skills/write-issue-pr/references/pull-request.md
@@ -1111,7 +1111,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:34ffc906634241421c44f562c27e0fd42908c16957a34983861dc8a3f8ac8944
+  content_hash: sha256:66bbdbd06eccfb3f59c6767b2d3dd0385cb1135b5e05920a52b35f1fd9ba1e34
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr/references/pull-request.md
