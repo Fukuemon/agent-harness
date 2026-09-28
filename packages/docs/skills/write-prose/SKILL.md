@@ -1,6 +1,6 @@
 ---
 name: write-prose
-description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Design Doc、ADR、spec、スキルの本文）を書くとき、直すとき、レビューするときに使う。文書の分け方、文と段落、表、図、見出しと用語の規則を定める。
+description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Design Doc、ADR、spec、スキルの本文）を書くとき、直すとき、レビューするときに使う。文書の分け方、文と段落、表、図、見出しと用語、スキルの本文の長さと分け方の規則を定める。
 ---
 
 # write-prose
@@ -9,7 +9,8 @@ description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Des
 書く前に、`context/conventions.md` の文書の節を読む。そのリポジトリだけの規則があり、この本文と食い違うときはそちらに従う。
 
 - 文書の種類ごとの節の構成は、スキル write-design-docs が持つ。
-- textlint の指摘は言い換える。`--fix` は使わない。置き換えの候補は機械的で、文が崩れる。
+- 書き終えたら textlint を実行する。指摘は言い換え、`--fix` は使わない。置き換えの候補は機械的で、文が崩れる。
+- 使わない語と言い換えの一覧は `prh.yml` だけに持つ。文書やスキルへ写さない。
 
 ## 文書の分割
 
@@ -31,7 +32,8 @@ description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Des
 
 ## 文と段落
 
-- 地の文は短く書く。
+- 文は短く書く。
+  - 「〜し、〜で、〜」と続けない。従属する内容は、入れ子の箇条書きにする。
 - 箇条書きと表のセルは、体言止めか終止形。
   - 条件や否定を含む文は、述語を省かない。
   - 助詞は省かない。
@@ -82,3 +84,10 @@ description: Markdown の文書（README、CONTRIBUTING.md、context、PRD、Des
   - 誰のどれを指すか分からない言い回しを避ける。
 - 用語の一覧は、本当に要る語だけにする。一般的でない語を作らない。
 - 用語は、公式の文書の表現に揃える。新しい語を使う前に、公式の文書での使われ方を調べる。
+
+## スキルの本文
+
+- 本文は 150 行以内に保つ。本文は呼ばれるたびに全部が読み込まれる。
+- `references/` に分けるのは、呼び出しごとに読む部分が違うときと、150 行に近づいたときに限る。同じ作業で全部を読む規則は 1 ファイルに置く。
+- 参照は `SKILL.md` から 1 段だけにする。`references/` のファイルから、さらに別のファイルを指さない。
+- 出典: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)

@@ -24,14 +24,9 @@ status: stable
 
 どの文書にも当てはまる規則は、スキル write-prose にある。ここには、このリポジトリだけの規則を書く。
 
-- 書く前に `pnpm lint:text` を実行する。使わない語と言い換えの一覧は `prh.yml` だけに持ち、文書へ写さない。
+- textlint は `pnpm lint:text` で実行する。
 - 1 文ごとに行を分ける。続きの文は、行末の半角スペース 2 つで改行する。差分を文の単位で読むためである。
-- 「〜し、〜で、〜」と続けない。従属する内容は、入れ子の箇条書きにする。
-- パッケージを作ったら、機能ごとの Design Doc を `packages/<名前>/DesignDoc.md` へ移す。
-- CONTRIBUTING.md には、変更を取り込むまでの手順だけを書く。規約の本文は書かず、context へリンクする。
 - context の目次 `context/index.md` は `pnpm check:index --write` が生成する。手で編集しない。AGENTS.md からは、目次への参照だけを置く。
-- スキルの本文は 150 行以内に保つ。`references/` に分けるのは、呼び出しごとに読む部分が違うときと、150 行に近づいたときに限る。同じ作業で全部を読む規則は 1 ファイルに置き、参照は SKILL.md から 1 段だけにする。
-  - 出典: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 - 日本語の表記は、Claude Code の日本語の公式文書を基準にする。
   - Claude Code などのツールはコーディングエージェント、拡張機能を取得して配置するツールはパッケージマネージャー、そのツールが読むファイルはマニフェストとロックファイルと書く。
   - フックがモデルへ渡す文章は「コンテキストを追加する」、スキルの本文は「オンデマンドで読み込まれる」と書く。
