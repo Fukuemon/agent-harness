@@ -14,6 +14,12 @@ mise install
 apm install --frozen
 ```
 
+`apm install` の後に配置先を `.gitignore` に足す post-install は、マシンごとに 1 度信頼させる。
+
+```sh
+apm lifecycle trust
+```
+
 ## 文書を直すとき
 
 <!-- 文書のチェックの実行方法 -->

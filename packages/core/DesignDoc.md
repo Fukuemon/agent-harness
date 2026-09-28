@@ -169,6 +169,8 @@ context を種類ごとに決めて書き、更新するときと、CONTRIBUTING
 - 次のバージョンを決める手段は、テンプレートに選択肢として示す。利用者が release-please か changesets を選ぶ。
 - 公開しない作業メモの置き場は `.ai-out/` に固定し、Git で追跡しない。issue と pull request の下書きもここに置く。AGENTS.md のテンプレートが置き場を指示し、導入のスキルが `.gitignore` に行を足す。ディレクトリ名は値のファイルに持たない。`context/` と同じく、探す順序を要らなくするためである。
 - apm の配置先は Git で追跡しない。導入のスキルが、`apm.lock.yaml` の `deployed_files` から、スキルとフックのディレクトリを 1 行ずつ `.gitignore` に足す。ディレクトリを丸ごと無視すると、利用者が `.claude/skills/` に置く自作のスキルまで追跡から外れるためである。
+  - パッケージを足したときも行が足されるよう、導入のスキルは利用者の `apm.yml` に `lifecycle:` の post-install を足す。post-install は `setup.mjs --gitignore` を呼び、`.gitignore` の行だけをそろえる。apm の lifecycle は利用者の `apm.yml` にしか書けず、パッケージからは渡せない。
+  - apm は、利用者が `apm lifecycle trust` で信頼した `lifecycle:` だけを動かす。信頼はマシンごとで、`lifecycle:` の中身が変わらない限り、依存を足しても続く。
 - clone した直後は、セッションの開始のフックが `apm install --frozen` で配置する。コマンドはスクリプトを持たずに `hooks/hooks.json` の中で完結させる。スクリプトは配置先にあり、配置される前には存在しないためである。
   - `apm.lock.yaml` の `deployed_files` が 1 つでも欠けていれば install する。途中で失敗した install も、次のセッションで直る。欠けていなければ何もしない。core をコーディングエージェントの標準の方法で入れ、ほかのパッケージだけを apm で入れたリポジトリでも、install を繰り返さない。
   - install の失敗は終了コードで返し、コーディングエージェントが利用者に示す。`apm.lock.yaml` がないときと、apm がないときは、何もしない。

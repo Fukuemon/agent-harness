@@ -189,3 +189,28 @@ test("Claude Code のプラグインのキャッシュでは、同じ marketplac
   assert.equal(r.status, 0, r.out);
   assert.equal(readFileSync(join(repo, "a/template.md"), "utf8"), "# new\n");
 });
+
+test("apm.yml に post-install を足し、2 回目は重ねない。lifecycle: が既にあれば手で足すよう表示する", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "apm.yml"), "name: my-repo\nversion: 0.1.0\n");
+  assert.equal(run(repo, script, ["--diff"]).status, 1);
+  run(repo, script);
+  const once = readFileSync(join(repo, "apm.yml"), "utf8");
+  assert.match(once, /^lifecycle:\n  post-install:\n/m);
+  assert.match(once, /setup\.mjs" --gitignore'$/m);
+  run(repo, script);
+  assert.equal(readFileSync(join(repo, "apm.yml"), "utf8"), once);
+  writeFileSync(join(repo, "apm.yml"), "name: my-repo\nlifecycle:\n  pre-install: []\n");
+  const r = run(repo, script);
+  assert.match(r.out, /lifecycle: があるので、次を手で足す/);
+  assert.doesNotMatch(readFileSync(join(repo, "apm.yml"), "utf8"), /--gitignore/);
+});
+
+test("--gitignore は .gitignore の行だけをそろえ、テンプレートを写さない", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "apm.lock.yaml"), "dependencies:\n- repo_url: x\n  deployed_files:\n  - .claude/skills/grilling\n");
+  const r = run(repo, script, ["--gitignore"]);
+  assert.equal(r.status, 0, r.out);
+  assert.equal(readFileSync(join(repo, ".gitignore"), "utf8"), ".ai-out/\n/.claude/skills/grilling/\n");
+  assert.ok(!existsSync(join(repo, "AGENTS.md")), "テンプレートを写した");
+});
