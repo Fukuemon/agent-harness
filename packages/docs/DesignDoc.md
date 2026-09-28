@@ -73,6 +73,9 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 書き方のスキル `write-design-docs` が、4 つの文書に何を書き何を書かないか、全体像と機能ごとの分け方、spec を閉じる前に残す設計を移す規則を持つ。節の構成と骨組みは、文書の種類ごとに `references/` に分ける。  
 テンプレートは 2 つに分ける。導入のときに 1 度写すものはスキルの `assets/` に置き、core の導入のスキルが写す。文書ごとに新しく作るものは `references/` の骨組みとして持ち、書くときにスキルが写す。導入のときに写すと、使わないファイルが目次に載るためである。
 
+導入のスキル `setup-design-docs` は、テンプレートが写された後に、プロジェクトごとに違う設定を利用者と決める。textlint のパッケージを入れ、CONTRIBUTING.md の「文書を直すとき」の節と、lefthook と CI にチェックの呼び方を書く。CONTRIBUTING.md のテンプレートは core が持つので、docs は節の中身だけを埋める。core から docs への依存を作らないためである。  
+プロジェクトの用語の規則は、コードベース、issue、pull request から候補を集め、利用者と決めて `prh.yml` に足す。issue と pull request の本文は、語を集めるためだけに読み、リポジトリに写さない。
+
 | テンプレート | 置き場 | 内容 |
 | --- | --- | --- |
 | PRD | `assets/` | 10 節の骨組みと frontmatter |
@@ -96,7 +99,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 ## Interface
 
 - 置くファイル: PRD、Design Doc、ADR、spec、レビュー用の HTML、textlint と prh の設定。最初の一式は core の導入のスキルが写す。
-- 読むスキル: `write-design-docs`。
+- 読むスキル: 書くときの `write-design-docs` と、導入のときと用語を足すときの `setup-design-docs`。
 - 読む値: `docs` の各ディレクトリ名。
 - 動くチェック: 次の表のとおり。
 - 動くフック: Markdown の編集の後に、経緯の混入とリンクを確かめるよう促すフック `hooks/check-docs.mjs`。編集は拒否しない。
@@ -115,6 +118,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 | リンク | 文書の中のリンク切れを確認する | 編集後、CI | 失敗 |
 
 チェックのスクリプトは、編集後のフックと一緒に `hooks/` に置き、依存するライブラリを持たない。パッケージマネージャーは `hooks/` だけを利用者のリポジトリへ写し、`scripts/` は写さないためである。経緯の混入とリンクの処理は `hooks/doc-checks.mjs` に 1 つだけ持つ。  
+利用者の lefthook と CI は、パッケージマネージャーの配置先にあるスクリプトを呼ぶ。組み込みは導入のスキル `setup-design-docs` が行う。
 - ADR-0017: [文書のチェックのスクリプトは hooks/ に置き、利用者の lefthook と CI はパッケージマネージャーの配置先から呼ぶ](../../adr/0017-docs-checks-from-deployed-hooks.md)
 
 issue が閉じているかはネットワークが要るので、番号の一覧だけを出し、閉じているかの判定は CI のタスクで足す。
