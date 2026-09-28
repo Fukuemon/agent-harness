@@ -26,7 +26,7 @@ const LIFECYCLE = `lifecycle:
   post-install:
   - type: command
     description: apm の配置先を .gitignore に足す（agent-harness）
-    command: 'd=$(ls -d .claude/skills/setup-agent-harness .agents/skills/setup-agent-harness 2>/dev/null | head -1); [ -z "$d" ] || node "$d/scripts/setup.mjs" --gitignore'
+    command: 'd=$(ls -d .claude/skills/setup-agent-harness .agents/skills/setup-agent-harness 2>/dev/null | head -1); [ -n "$d" ] || d=$(find \"$HOME/.claude/plugins/cache\" -maxdepth 5 -type d -path \"*/core/*/skills/setup-agent-harness\" 2>/dev/null | head -1); [ -z "$d" ] || node "$d/scripts/setup.mjs" --gitignore'
     timeoutSec: 30`;
 const ignorePath = join(root, ".gitignore");
 const ignoreLines = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8").split(/\r?\n/) : [];
