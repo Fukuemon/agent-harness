@@ -1,6 +1,6 @@
 // governs と verified_commit を持つ文書のうち、verified_commit より後に governs の範囲が変わったものを一覧する。
 // 使い方: node packages/docs/hooks/list-drift.mjs。Git が追跡する Markdown の全部を見る
-// 終了コード: 0 は完了（一覧があっても 0）、1 は governs と verified_commit の片方だけを持つ文書がある、2 は Git の履歴を読めない
+// 終了コード: 0 は完了（一覧があっても 0）、1 は governs と verified_commit の片方だけを持つ文書か、履歴にない verified_commit がある、2 は Git の履歴を読めない
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 
@@ -32,7 +32,8 @@ for (const file of files) {
   try {
     git("rev-parse", "--verify", `${commit}^{commit}`);
   } catch {
-    console.log(`${file}: verified_commit ${commit} が履歴にない。浅い clone なら履歴を全部取る`);
+    invalid++;
+    console.log(`${file}: verified_commit ${commit} が履歴にない。誤記か、書き換えられた履歴を指している。浅い clone なら履歴を全部取る`);
     continue;
   }
   const changed = git("log", "--format=%h", `${commit}..HEAD`, "--", ...governs).split("\n").filter(Boolean);
@@ -43,9 +44,11 @@ process.exit(invalid ? 1 : 0);
 function yamlList(block, key) {
   const m = new RegExp(`^${key}:[ \\t]*(.*)$`, "m").exec(block);
   if (!m) return [];
-  const unquote = (v) => v.trim().replace(/^["']|["']$/g, "");
-  if (m[1].trim().startsWith("[")) return m[1].replace(/[[\]]/g, "").split(",").map(unquote).filter(Boolean);
-  if (m[1].trim()) return [unquote(m[1])];
+  const uncomment = (v) => v.replace(/(^|\s)#.*$/, "").trim();
+  const unquote = (v) => uncomment(v).replace(/^["']|["']$/g, "");
+  const value = uncomment(m[1]);
+  if (value.startsWith("[")) return value.replace(/[[\]]/g, "").split(",").map(unquote).filter(Boolean);
+  if (value) return [unquote(value)];
   const items = [];
   for (const line of block.slice(m.index + m[0].length).split(/\r?\n/).slice(1)) {
     const item = /^\s*-\s+(.+)$/.exec(line);

@@ -35,8 +35,10 @@ export function historyFindings(text) {
 export function brokenLinks(file, text) {
   const out = [];
   for (const { no, line } of proseLines(text)) {
-    for (const m of line.replace(/`[^`]*`/g, "").matchAll(/!?\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)) {
-      const target = m[1];
+    const prose = line.replace(/`[^`]*`/g, "");
+    const inline = [...prose.matchAll(/!?\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)].map((m) => m[1]);
+    const reference = /^ {0,3}\[[^\]]+\]:\s*(\S+)/.exec(prose)?.[1];
+    for (const target of reference ? [...inline, reference] : inline) {
       if (/^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith("<")) continue;
       const [path, anchor] = target.split("#");
       const dest = path ? resolve(dirname(file), decodeURIComponent(path)) : file;

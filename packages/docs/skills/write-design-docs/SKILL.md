@@ -57,7 +57,7 @@ description: PRD、Design Doc、ADR、spec を書くとき、直すとき、レ�
 - コミットの前と CI では、パッケージマネージャーが配置した docs のフックのディレクトリ（`.claude/hooks/docs/hooks/` か `.codex/hooks/docs/hooks/`）にある 3 つのスクリプトを呼ぶ。引数を省くと、Git が追跡する Markdown の全部を見る。
   - `check-history.mjs`: Design Doc と context の変更履歴の見出しを、終了コード 1 で報告する。issue の番号は一覧を出すだけにする。
   - `check-links.mjs`: 相対リンクの先のファイルと見出しのアンカーがないリンクを、終了コード 1 で報告する。
-  - `list-drift.mjs`: `verified_commit` の後に `governs` の範囲が変わった文書を一覧する。一覧は失敗にしない。`governs` と `verified_commit` の片方だけを持つ文書は、終了コード 1 にする。
+  - `list-drift.mjs`: `verified_commit` の後に `governs` の範囲が変わった文書を一覧する。一覧は失敗にしない。`governs` と `verified_commit` の片方だけを持つ文書と、履歴にない `verified_commit` は、終了コード 1 にする。
 - 一覧に出た文書は、実装と読み比べ、正しければ `verified_commit` を今のコミットに進める。読まずに進めない。
 - textlint、CONTRIBUTING.md の手順、lefthook と CI への組み込み、プロジェクトの用語の規則は、導入のスキル setup-design-docs が用意する。
 

@@ -53,13 +53,14 @@ test("check-history は issue の番号だけなら終了コード 0", () => {
 
 test("check-links は存在しないファイルと見出しへのリンクを終了コード 1 で報告する", () => {
   const { dir } = repo({
-    "a.md": "# A\n\n## 文書の種類と寿命\n\n[ある](b.md#使い方) [ない](missing.md) [自分](#文書の種類と寿命) [見出しなし](#nope) [外](https://example.com) `[コード](x.md)`\n\n```md\n[ブロック](y.md)\n```\n",
+    "a.md": "# A\n\n## 文書の種類と寿命\n\n[ある](b.md#使い方) [ない](missing.md) [自分](#文書の種類と寿命) [見出しなし](#nope) [外](https://example.com) `[コード](x.md)`\n\n```md\n[ブロック](y.md)\n```\n\n[参照][r] [参照あり][s]\n\n[r]: gone.md\n[s]: b.md\n",
     "b.md": "# B\n\n## 使い方\n",
   });
   const r = run(dir, "check-links.mjs");
   assert.equal(r.status, 1, r.out);
   assert.match(r.out, /a\.md:5: missing\.md（ファイルがない）/);
   assert.match(r.out, /a\.md:5: #nope（見出しがない）/);
+  assert.match(r.out, /a\.md:13: gone\.md（ファイルがない）/);
   assert.doesNotMatch(r.out, /b\.md#使い方|#文書の種類と寿命|x\.md|y\.md|example/);
 });
 
@@ -69,6 +70,7 @@ test("list-drift は governs の範囲の変更だけを一覧し、片方だけ
     "design/in.md": `---\ntype: feature-design\ntitle: in\ndescription: d\ngoverns: src\nverified_commit: ${head}\n---\n`,
     "design/out.md": `---\ntype: feature-design\ntitle: out\ndescription: d\ngoverns:\n  - lib\nverified_commit: ${head}\n---\n`,
     "design/inline.md": `---\ntype: feature-design\ntitle: inline\ndescription: d\ngoverns: [lib, "src"]\nverified_commit: ${head}\n---\n`,
+    "design/comment.md": `---\ntype: feature-design\ntitle: comment\ndescription: d\ngoverns: src # 実装\nverified_commit: ${head} # 確認済み\n---\n`,
   });
   write(dir, { "src/a.js": "2\n" });
   git("add", "-A");
@@ -78,10 +80,18 @@ test("list-drift は governs の範囲の変更だけを一覧し、片方だけ
   assert.match(r.out, /design\/in\.md: .* 1 件のコミットで変わった（src）/);
   assert.doesNotMatch(r.out, /design\/out\.md/);
   assert.match(r.out, /design\/inline\.md: .*（lib、src）/);
+  assert.match(r.out, /design\/comment\.md: .*（src）/);
   write(dir, { "design/half.md": "---\ntype: feature-design\ntitle: half\ndescription: d\ngoverns: src\n---\n" });
   git("add", "-A");
   git("commit", "-qm", "half");
   r = run(dir, "list-drift.mjs");
   assert.equal(r.status, 1, r.out);
   assert.match(r.out, /design\/half\.md: governs と verified_commit の片方だけがある/);
+});
+
+test("list-drift は履歴にない verified_commit を終了コード 1 で報告する", () => {
+  const { dir } = repo({ "src/a.js": "1\n", "design/typo.md": "---\ntype: feature-design\ntitle: typo\ndescription: d\ngoverns: src\nverified_commit: deadbeef\n---\n" });
+  const r = run(dir, "list-drift.mjs");
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.out, /design\/typo\.md: verified_commit deadbeef が履歴にない/);
 });
