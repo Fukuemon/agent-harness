@@ -44,4 +44,4 @@ verified_commit: f75d3803d873194fd9767a539486719f80768619
 
 - 新しいパッケージは、`packages/core` の構成を写して作る。構成は [全体像の Repository Layout](../design/DesignDoc.md#repository-layout) にある。
 - 新しいスキルは、`skills/` か `packages/<名前>/skills/` に `SKILL.md` を置き、`apm.yml` に足して `apm install` する。手順は [スキルの置き場所](skills.md) にある。
-- 新しいチェックのスクリプトは、`.mjs` で書き、隣に同じ名前の `.test.mjs` を置く。規則は [コードの規約](conventions.md) と [テスト](testing.md) にある。
+- 新しいチェックのスクリプトは、`.mjs` で書き、隣に同じ名前の `.test.mjs` を置く。規則は [コードと文書の規約](conventions.md) と [テスト](testing.md) にある。

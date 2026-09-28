@@ -8,7 +8,7 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 | パッケージ | 役割 | スキル |
 | --- | --- | --- |
 | core | 固有の知識の置き場と、リポジトリの運用の取り決め | setup-agent-harness、write-harness-context、git-commit、issue-pr-writing、code-comments |
-| docs | PRD、Design Doc、ADR、spec の形とチェック | setup-design-docs、write-design-docs |
+| docs | PRD、Design Doc、ADR、spec の形と、文章の規則とチェック | setup-design-docs、write-design-docs、write-prose |
 
 どちらもフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 

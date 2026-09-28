@@ -13,10 +13,10 @@ verified_commit: d45aeafb7bb083783d5c2f77d1a2dfb2a2acbe94
 # スキルの置き場所
 
 このリポジトリの開発に使うスキルの元は 2 か所にある。  
-このリポジトリだけのスキル（docs-writing）は `skills/` にある。  
+このリポジトリだけのスキルを作るときは、`skills/` に置く。  
 利用者にも届けるスキルは `packages/core/skills/` と `packages/docs/skills/` にある。  
 core のスキルは、setup-agent-harness、write-harness-context、git-commit、issue-pr-writing、code-comments の 5 つである。  
-docs のスキルは、write-design-docs と setup-design-docs の 2 つである。  
+docs のスキルは、write-design-docs、write-prose、setup-design-docs の 3 つ。  
 `apm.yml` が両方を列挙している。
 
 - `.claude/skills/` と `.agents/skills/` は、`apm install` が作る写しである。Git で管理しない。無視する行は、`apm.yml` の post-install が、配置したスキルとフックごとに `.gitignore` へ足す。利用者のリポジトリと同じ仕組みを使うためである。

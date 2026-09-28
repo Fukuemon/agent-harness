@@ -48,7 +48,7 @@ Claude Code には、ルールをモデルに守らせる手段が 5 つある�
 
 ### 例に挙げる拡張機能
 
-この文書で名前を出す拡張機能は、次のとおりである。
+この文書で名前を出す拡張機能は、次のとおり。
 
 - **genshijin:** モデルの返答を短い日本語にして、トークンを減らすプラグイン。セッションの開始とプロンプトの送信のフックを持つ。プロンプトのたびに、口調の指示をコンテキストに追加する。
   - `.claude-plugin/plugin.json:13-38` / [github](https://github.com/InterfaceX-co-jp/genshijin/blob/968d3c449499fdefc00aff9f1fe9c52c4dfdc7ae/.claude-plugin/plugin.json#L13-L38)

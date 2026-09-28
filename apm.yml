@@ -5,7 +5,6 @@ license: MIT
 targets: [claude, codex]
 dependencies:
   apm:
-    - ./skills/docs-writing
     - ./packages/core
     - ./packages/docs
 lifecycle:
