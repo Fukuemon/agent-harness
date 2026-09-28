@@ -3,7 +3,7 @@ type: feature-design
 title: 文書の体系
 description: Design Doc、ADR、spec の種類と寿命、実装とのずれの検出、spec を削除する前の保証、文書のチェック
 status: draft
-keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint, write-design-docs]
+keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint, write-design-docs, write-prose]
 governs: packages/docs
 verified_commit: unverified
 ---
@@ -70,6 +70,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 
 ### テンプレートと書き方のスキル
 
+文章の規則のスキル `write-prose` が、どの文書にも当てはまる規則（文書の分け方、文と段落、表、図、見出しと用語）を持つ。そのリポジトリだけの文章の規則は、利用者の `context/conventions.md` の Documents の節に置き、`write-prose` が書く前に読む。一般の規則はパッケージが、そのリポジトリだけの規則は context が持つ。  
 書き方のスキル `write-design-docs` が、4 つの文書に何を書き何を書かないか、全体像と機能ごとの分け方、spec を閉じる前に残す設計を移す規則を持つ。節の構成と骨組みは、文書の種類ごとに `references/` に分ける。  
 テンプレートは 2 つに分ける。導入のときに 1 度写すものはスキルの `assets/` に置き、core の導入のスキルが写す。文書ごとに新しく作るものは `references/` の骨組みとして持ち、書くときにスキルが写す。導入のときに写すと、使わないファイルが目次に載るためである。
 
@@ -99,7 +100,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 ## Interface
 
 - 置くファイル: PRD、Design Doc、ADR、spec、レビュー用の HTML、textlint と prh の設定。最初の一式は core の導入のスキルが写す。
-- 読むスキル: 書くときの `write-design-docs` と、導入のときと用語を足すときの `setup-design-docs`。
+- 読むスキル: どの文書を書くときも読む `write-prose`、PRD と Design Doc と ADR と spec を書くときの `write-design-docs`、導入のときと用語を足すときの `setup-design-docs`。
 - 読む値: `docs` の各ディレクトリ名。
 - 動くチェック: 次の表のとおり。
 - 動くフック: Markdown の編集の後に、経緯の混入とリンクを確かめるよう促すフック `hooks/check-docs.mjs`。編集は拒否しない。

@@ -10,7 +10,7 @@ status: stable
 ## Glossary
 
 - 用語は [PRD の Ubiquitous Language](../PRD.md#ubiquitous-language) が持つ。ここには写さない。
-- 用語は、コーディングエージェントの日本語の公式文書の表現に揃える。規則は `skills/docs-writing/SKILL.md` にある。
+- 用語は、コーディングエージェントの日本語の公式文書の表現に揃える。規則は [コードと文書の規約](conventions.md) の Documents の節にある。
 
 ## Concepts
 

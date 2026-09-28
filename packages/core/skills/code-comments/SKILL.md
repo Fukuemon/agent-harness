@@ -25,7 +25,7 @@ description: コード、スクリプト、設定ファイルを書くとき、�
 - 型で分かる `@param` と `@returns`。型に加える情報があるときだけ書く。
 - 実装の詳細。アルゴリズムは、本体の中の実装のコメントに書く。
 
-有無は lint が確かめる。有効にする lint は、context の「コードの規約」に書く。言語ごとの lint は次のとおり。
+有無は lint が確かめる。有効にする lint は、context の「コードと文書の規約」に書く。言語ごとの lint は次のとおり。
 
 - Go は revive の exported。Python は pylint の missing-function-docstring。
 - TypeScript は eslint-plugin-jsdoc の require-jsdoc。Rust は rustc の missing_docs。Java は Checkstyle の MissingJavadocMethod。

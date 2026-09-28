@@ -32,7 +32,7 @@ pnpm lint:text
 ```
 
 対象は、ルート、`adr/`、`design/`、`context/`、`skills/` の Markdown である。  
-書き方の規則は `skills/docs-writing/SKILL.md` にある。
+書き方の規則は、スキル write-prose と、[コードと文書の規約](context/conventions.md) の Documents の節にある。
 
 `context/` と `design/` の文書を足したり frontmatter を変えたりしたら、目次を生成し直す。
 

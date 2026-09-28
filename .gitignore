@@ -3,7 +3,6 @@ node_modules/
 
 apm_modules/
 /.agents/skills/code-comments/
-/.agents/skills/docs-writing/
 /.agents/skills/git-commit/
 /.agents/skills/issue-pr-writing/
 /.agents/skills/setup-agent-harness/
@@ -13,7 +12,6 @@ apm_modules/
 /.claude/hooks/core/
 /.claude/hooks/docs/
 /.claude/skills/code-comments/
-/.claude/skills/docs-writing/
 /.claude/skills/git-commit/
 /.claude/skills/issue-pr-writing/
 /.claude/skills/setup-agent-harness/
@@ -22,3 +20,5 @@ apm_modules/
 /.claude/skills/write-harness-context/
 /.codex/hooks/core/
 /.codex/hooks/docs/
+/.agents/skills/write-prose/
+/.claude/skills/write-prose/
