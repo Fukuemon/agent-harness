@@ -67,9 +67,21 @@ pnpm check:links
 - main へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
 
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
-バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の pull request を作る。
+バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の pull request を作る。  
+リリース用の pull request をマージすると、タグとリリースができる。
 
 - ADR-0007: [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
+- ADR-0019: [packages/ を変えたコミットだけで版を上げ、切り戻しは新しい版で行う](adr/0019-release-scope-and-rollback.md)
+
+版が上がるのは、`packages/` の下を変えたコミットだけ。1.0 より前は、破壊的な変更で minor を、それ以外で patch を上げる。  
+次の変更は、利用者のリポジトリで手直しが要るので破壊的な変更とする。type の後に `!` を付け、本文に `BREAKING CHANGE:` を書く。
+
+- スキルの改名と削除
+- `context/project.yml` の schema と互換のない変更
+- テンプレートを写す先と、フックの登録の形の変更
+
+取り込んだ変更を取り消すときは、取り消すコミットの type と scope を引き継ぎ、`revert(<scope>): <要約>` の形で書く。  
+`git revert` の既定のメッセージ `Revert "..."` は commitlint を通るが、release-please が解析できず、取り消しが新しい版に入らない。
 
 次の図は、実装に移った後のブランチの構成を示す。main は常にリリースできる状態に保つ。作業用のブランチは main から切り、pull request で main へ戻す。タグは、release-please が main のコミットに付ける。
 
