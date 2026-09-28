@@ -1,9 +1,9 @@
 ---
-name: issue-pr-writing
-description: issue を起票するとき、pull request を書くとき、レビューのコメントに返信するときに使う。題と本文の書き方、リンクの示し方、起票前の確認を定める。コミットの作法は git-commit にある。
+name: write-issue-pr
+description: issue を起票するとき、pull request を書くとき、レビューのコメントに返信するときに使う。題と本文の書き方、リンクの示し方、起票前の確認を定める。コミットの作法は write-commit にある。
 ---
 
-# issue-pr-writing
+# write-issue-pr
 
 form と雛形は、このスキルの `assets/.github/` にあり、導入のスキルが利用者のリポジトリへ写す。ここには、節に何を書くかの判断だけを書く。  
 共通の規則はこの本文にある。作業に応じて、次の 1 つだけを開く。

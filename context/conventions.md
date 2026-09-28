@@ -10,13 +10,13 @@ status: stable
 ## Naming
 
 - スクリプトは `<動詞>-<対象>.mjs` にする。`validate-project`、`build-index`、`check-package-names` が例である。テストは同じ名前に `.test.mjs` を付ける。
-- パッケージのスキルの名前は、他の拡張機能と重なりにくい語を含める。`setup-agent-harness`、`write-harness-context` が例である。
+- スキルの名前と本文の規則は、core のスキル write-skill にある。
 - ブランチは `feature/<issue 番号>` と `fix/<issue 番号>` にする。規則は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。
 - Design Doc と context の節の見出しは、英語の名詞で書く。
 
 ## Comments
 
-- スキル code-comments に従う。文書コメントは、スクリプトの先頭の使い方と終了コードである。スクリプトは関数を export しないので、文書コメントの有無を確かめる lint は入れていない。
+- スキル write-comments に従う。文書コメントは、スクリプトの先頭の使い方と終了コードである。スクリプトは関数を export しないので、文書コメントの有無を確かめる lint は入れていない。
 - 実装のコメントで残すのは、自分たちで変えられない外部の制約と、意図して選んだ簡略化の限界の 2 つである。ライセンスの表記は `LICENSE` が持ち、ファイルには書かない。足したコメントは、編集後のフックが確かめるよう促す。
 - コメントは日本語で書き、指すものはスキル、ファイル、関数の実際の名前で書く。
 
@@ -26,8 +26,6 @@ status: stable
 
 - textlint は `pnpm lint:text` で実行する。
 - 1 文ごとに行を分ける。続きの文は、行末の半角スペース 2 つで改行する。差分を文の単位で読むためである。
-- スキルの本文は 150 行以内に保つ。`references/` に分けるのは、呼び出しごとに読む部分が違うときと、150 行に近づいたときに限る。同じ作業で全部を読む規則は 1 ファイルに置き、参照は SKILL.md から 1 段だけにする。
-  - 出典: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 - context の目次 `context/index.md` は `pnpm check:index --write` が生成する。手で編集しない。AGENTS.md からは、目次への参照だけを置く。
 - 日本語の表記は、Claude Code の日本語の公式文書を基準にする。
   - Claude Code などのツールはコーディングエージェント、拡張機能を取得して配置するツールはパッケージマネージャー、そのツールが読むファイルはマニフェストとロックファイルと書く。

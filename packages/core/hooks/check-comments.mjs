@@ -24,8 +24,8 @@ if (hits.length) {
   const doc = hits.filter((h) => DOC.test(h.line.trim()));
   const impl = hits.filter((h) => !DOC.test(h.line.trim()));
   const text = [];
-  if (doc.length) text.push("文書コメントを足した。スキル code-comments に従い、要約の 1 文と契約があり、名前と型の言い換えになっていないかを確かめる。", ...doc.map((h) => `- ${h.file}: ${h.line.trim()}`));
-  if (impl.length) text.push("実装のコメントを足した。スキル code-comments の「残してよい実装のコメント」の 3 つに当たるかを確かめ、当たらなければ消す。", ...impl.map((h) => `- ${h.file}: ${h.line.trim()}`));
+  if (doc.length) text.push("文書コメントを足した。スキル write-comments に従い、要約の 1 文と契約があり、名前と型の言い換えになっていないかを確かめる。", ...doc.map((h) => `- ${h.file}: ${h.line.trim()}`));
+  if (impl.length) text.push("実装のコメントを足した。スキル write-comments の「残してよい実装のコメント」の 3 つに当たるかを確かめ、当たらなければ消す。", ...impl.map((h) => `- ${h.file}: ${h.line.trim()}`));
   if (hits.some((h) => SUPPRESS.test(h.line))) text.push("lint か型のチェックの抑制がある。抑制の前に、指摘の原因を直す。");
   console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: text.join("\n") } }));
 }

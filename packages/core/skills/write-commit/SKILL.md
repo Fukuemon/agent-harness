@@ -1,9 +1,9 @@
 ---
-name: git-commit
-description: 変更をコミットするときに使う。変更の分け方、メッセージの書き方、してはいけない操作を定める。issue と pull request の書き方は issue-pr-writing にある。
+name: write-commit
+description: 変更をコミットするときに使う。変更の分け方、メッセージの書き方、してはいけない操作を定める。issue と pull request の書き方は write-issue-pr にある。
 ---
 
-# git-commit
+# write-commit
 
 メッセージの形式は自動チェックが見る。ここには、判断が要ることだけを書く。
 

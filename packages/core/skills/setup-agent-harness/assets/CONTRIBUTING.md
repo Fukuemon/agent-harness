@@ -28,7 +28,7 @@ apm lifecycle trust
 
 <!-- コミットの前に動くチェックと、その直し方 -->
 
-- 変更の分け方とメッセージの書き方は、スキル git-commit に従う。
+- 変更の分け方とメッセージの書き方は、スキル write-commit に従う。
 
 ## ブランチとリリース
 
@@ -72,4 +72,4 @@ gitGraph
 <!-- issue の種類とラベル、pull request との対応 -->
 
 - 作業は issue から始める。pull request は 1 つの issue に対応させる。
-- 題と本文の書き方は、スキル issue-pr-writing に従う。
+- 題と本文の書き方は、スキル write-issue-pr に従う。
