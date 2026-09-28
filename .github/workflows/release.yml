@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      # GITHUB_TOKEN で作った PR と push では CI が動かないため、GitHub App のトークンを使う
+      - uses: actions/create-github-app-token@v3
+        id: app
+        with:
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          token: ${{ steps.app.outputs.token }}
+      # release-please の yaml の updater はファイル全体を書き直すため、apm.lock.yaml は apm install で作り直す
+      - if: steps.release.outputs.prs_created == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+          token: ${{ steps.app.outputs.token }}
+      - if: steps.release.outputs.prs_created == 'true'
+        uses: jdx/mise-action@v4
+      - if: steps.release.outputs.prs_created == 'true'
+        run: apm install
+      - if: steps.release.outputs.prs_created == 'true'
+        env:
+          APP_SLUG: ${{ steps.app.outputs.app-slug }}
+        run: |
+          git diff --quiet -- apm.lock.yaml && exit 0
+          git config user.name "$APP_SLUG[bot]"
+          git config user.email "$APP_SLUG[bot]@users.noreply.github.com"
+          git add apm.lock.yaml
+          git commit -m "chore: apm.lock.yaml の版を更新する"
+          git push
