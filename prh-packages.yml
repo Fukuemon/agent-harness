@@ -19,7 +19,7 @@ rules:
       - /Claude( Code)?/
       - /Codex( CLI)?/
       - Cursor
-    prh: パッケージの本文に、コーディングエージェントの名前を書かない。対応は README の対応表が持つ
+    prh: パッケージの本文に、コーディングエージェントの名前を書かない。対応は context/coding-agents.md が持つ
   - expected: 利用者のツール
     patterns:
       - /\bghq\b/

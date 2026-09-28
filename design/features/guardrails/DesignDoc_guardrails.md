@@ -67,7 +67,7 @@ guardrails:
 - 置くファイル: なし。規則は `context/project.yml` の `guardrails` に書く。secretlint の設定は、テンプレートから写す。
 - 読む値: `guardrails.protected_branches`、`guardrails.forbidden_commands`、`guardrails.secrets`。
 - 動くフック: Claude Code と Codex CLI のツール実行前のフック。lefthook の `pre-commit` と `pre-push`。
-- 対応表: コーディングエージェントごとに、フックが発火する条件と、確認したバージョンを README に載せる。Codex CLI は、利用者がプロジェクトのフックを信頼するまで発火しない。信頼するまでは、Git のフックだけが働く。
+- 対応表: コーディングエージェントごとに、フックが発火する条件と、確認したバージョンを [コーディングエージェントごとの対応](../../../context/coding-agents.md) に載せる。Codex CLI は、利用者がプロジェクトのフックを信頼するまで発火しない。信頼するまでは、Git のフックだけが働く。
 
 ## Verification
 
