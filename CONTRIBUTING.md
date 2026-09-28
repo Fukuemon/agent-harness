@@ -16,6 +16,13 @@ apm install
   - 出典: [mise](https://mise.jdx.dev/)
   - ADR-0016: [ツールの版は mise で管理し、テンプレートの既定にする](adr/0016-mise-for-tool-versions.md)
 
+## 設計と取り決めの置き場
+
+- [PRD](PRD.md): 誰のどの課題を、何で解決するか。
+- [Design Doc](design/DesignDoc.md): 全体の構成と、パッケージに共通する方針。パッケージごとの設計は `packages/<名前>/DesignDoc.md` にある。
+- [adr/](adr/): 選択肢を比較して決めた判断。
+- [context/](context/index.md): 作業の中で参照する規約と事実。コーディングエージェントごとの違いは [コーディングエージェントごとの対応](context/coding-agents.md) にある。
+
 ## 文書を直すとき
 
 ```sh
@@ -32,6 +39,15 @@ pnpm check:index --write
 ```
 
 目次の `context/index.md` は手で編集しない。コミットの前のフックが目次を生成し直してステージする。CI は、目次が frontmatter と合わないと失敗する。
+
+経緯の混入とリンク切れは、次のコマンドで確かめる。CI も同じチェックを動かす。
+
+```sh
+pnpm check:history
+pnpm check:links
+```
+
+`verified_commit` の後に実装が変わった文書は、`pnpm list:drift` で一覧する。実装と読み比べてから `verified_commit` を進める。
 
 ## コミットするとき
 
