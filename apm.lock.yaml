@@ -92,7 +92,7 @@ dependencies:
     .agents/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
     .agents/skills/write-context/SKILL.md: sha256:bed80603476acd26f21956a377b45bdde1123021d6818a3280c9fe72d476eca9
     .agents/skills/write-issue-pr/SKILL.md: sha256:714eb64cf18e4a8d33e69c3be526a37612927acb85bb980e6f3c0edb006a4075
-    .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+    .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:ed29ce834c8ebb7d6aea5ac3df7bf8242a0597d14a37573575027b14aac75af5
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/config.yml: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
@@ -120,7 +120,7 @@ dependencies:
     .claude/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
     .claude/skills/write-context/SKILL.md: sha256:bed80603476acd26f21956a377b45bdde1123021d6818a3280c9fe72d476eca9
     .claude/skills/write-issue-pr/SKILL.md: sha256:714eb64cf18e4a8d33e69c3be526a37612927acb85bb980e6f3c0edb006a4075
-    .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+    .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:ed29ce834c8ebb7d6aea5ac3df7bf8242a0597d14a37573575027b14aac75af5
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/config.yml: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:c66fa5ffea342703a39f9d175b380c7163745affd67921fb6ab2009fc77ed5b7
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:3218c2e357d9a5729898c079183193b0a4b2fdf5717e37226ca251186005f2f3
@@ -665,7 +665,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+  content_hash: sha256:ed29ce834c8ebb7d6aea5ac3df7bf8242a0597d14a37573575027b14aac75af5
 - kind: project-relative
   target: claude
   value: .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/config.yml
@@ -1088,7 +1088,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:5f6be818ffeae5db737db8f6ea8ba03d6beeacc27d1e9639ce01060132a5b353
+  content_hash: sha256:ed29ce834c8ebb7d6aea5ac3df7bf8242a0597d14a37573575027b14aac75af5
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/config.yml
