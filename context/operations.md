@@ -14,11 +14,11 @@ status: stable
 
 ## Deployment Conditions
 
-- 利用者への配布は、main に付けたタグ `v<版>` と、GitHub のリリースである。
+- 利用者への配布は、main に付けたタグ `v<バージョン>` と、GitHub のリリースである。
 - タグとリリースは release-please が作る。main へ push するたびに `.github/workflows/release.yml` がリリース用の pull request を作るか更新し、その pull request をマージするとタグとリリースができる。
-  - ADR-0019: [packages/ を変えたコミットだけで版を上げ、切り戻しは新しい版で行う](../adr/0019-release-scope-and-rollback.md)
-- 版が上がるのは、`packages/` の下を変えたコミットを取り込んだときだけ。どの変更で minor を上げるかは [CONTRIBUTING.md](../CONTRIBUTING.md#ブランチとリリース) にある。
-- リリース用の pull request は、`plugin.json`、`examples/apm.yml`、`apm.lock.yaml` の版と、`CHANGELOG.md` を書き換える。マージの条件は、ほかの pull request と同じく CI が通ることである。
+  - ADR-0019: [packages/ を変えたコミットだけでバージョンを上げ、切り戻しは新しいバージョンで行う](../adr/0019-release-scope-and-rollback.md)
+- バージョンが上がるのは、`packages/` の下を変えたコミットを取り込んだときだけ。どの変更で minor を上げるかは [CONTRIBUTING.md](../CONTRIBUTING.md#ブランチとリリース) にある。
+- リリース用の pull request は、`plugin.json`、`examples/apm.yml`、`apm.lock.yaml` のバージョンと、`CHANGELOG.md` を書き換える。マージの条件は、ほかの pull request と同じく CI が通ることである。
 - main へは pull request でだけ取り込む。CI が通り、レビューの指摘に対応していることが条件である。手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。
 
 ## Health and Monitoring
@@ -27,9 +27,9 @@ status: stable
 
 ## Rollback
 
-- 切り戻しは、取り消すコミットを main へ取り込み、新しい版として出す。タグとリリースは消さず、別のコミットへ付け替えもしない。
-- 取り消すコミットは `revert(<scope>): <要約>` の形で書く。`git revert` の既定のメッセージ `Revert "..."` は release-please が解析できず、版が上がらない。
-- 利用者のリポジトリに写したテンプレートは、版を戻しても戻らない。利用者が `setup.mjs --diff` で差分を見て、手で直す。
+- 切り戻しは、取り消すコミットを main へ取り込み、新しいバージョンとして出す。タグとリリースは消さず、別のコミットへ付け替えもしない。
+- 取り消すコミットは `revert(<scope>): <要約>` の形で書く。`git revert` の既定のメッセージ `Revert "..."` は release-please が解析できず、バージョンが上がらない。
+- 利用者のリポジトリに写したテンプレートは、バージョンを戻しても戻らない。利用者が `setup.mjs --diff` で差分を見て、手で直す。
 
 ## Secrets
 

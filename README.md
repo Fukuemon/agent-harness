@@ -43,7 +43,7 @@ dependencies:
     - Fukuemon/agent-harness/packages/docs#<ref>
 ```
 
-`<ref>` には、`v0.1.0` の形のタグを書く。タグと版ごとの変更は [Releases](https://github.com/Fukuemon/agent-harness/releases) にある。
+`<ref>` には、`v0.1.0` の形のタグを書く。タグとバージョンごとの変更は [Releases](https://github.com/Fukuemon/agent-harness/releases) にある。
 
 ```sh
 apm install

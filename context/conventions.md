@@ -35,7 +35,7 @@ status: stable
 ## Shared Configuration
 
 - 文書のチェックは `.textlintrc.json` と `prh.yml`。パッケージの本文の固有の名前は `prh-packages.yml`。
-- コミットメッセージは `commitlint.config.mjs`。Git のフックは `lefthook.yml`。CI は `.github/workflows/ci.yml`。ツールの版は `mise.toml`。
+- コミットメッセージは `commitlint.config.mjs`。Git のフックは `lefthook.yml`。CI は `.github/workflows/ci.yml`。ツールのバージョンは `mise.toml`。
 - 文書の書き方で判断が要る規則は、docs のスキル write-prose と、この文書の Documents の節にある。
 
 ## Check Exclusions

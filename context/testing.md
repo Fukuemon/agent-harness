@@ -16,7 +16,7 @@ status: stable
 
 ## Runtime Requirements
 
-- Node.js（版は `mise.toml`）と git が要る。ネットワークと環境変数は要らない。
+- Node.js（バージョンは `mise.toml`）と git が要る。ネットワークと環境変数は要らない。
 - 使い捨てのディレクトリは `os.tmpdir()` に作る。テストは消さない。
 
 ## Mocking and Test Data
