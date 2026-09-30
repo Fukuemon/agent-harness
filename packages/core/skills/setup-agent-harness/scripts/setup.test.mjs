@@ -176,7 +176,7 @@ test("<リポジトリ名> は、写すすべてのファイルでリポジト�
   assert.doesNotMatch(doc, /<リポジトリ名>/);
 });
 
-test("Claude Code のプラグインのキャッシュでは、同じ marketplace のほかのプラグインの最新の版の assets/ も写す", () => {
+test("Claude Code のプラグインのキャッシュでは、同じ marketplace のほかのプラグインの最新のバージョンの assets/ も写す", () => {
   const base = mkdtempSync(join(tmpdir(), "harness-"));
   const market = join(base, "plugins", "cache", "agent-harness");
   const skills = join(market, "core", "0.1.0", "skills");

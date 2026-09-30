@@ -7,7 +7,7 @@
   "required": ["version"],
   "properties": {
     "version": {
-      "description": "schema の版。キーの削除と名前の変更で上げる。",
+      "description": "schema のバージョン。キーの削除と名前の変更で上げる。",
       "type": "integer",
       "const": 1
     },
