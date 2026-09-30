@@ -276,7 +276,7 @@ agent-harness/
 ├── CONTRIBUTING.md             開発の準備
 ├── README.md                   パッケージの一覧、導入の方法、使い方
 ├── PRD.md
-├── mise.toml                   Node.js と pnpm の版
+├── mise.toml                   Node.js と pnpm のバージョン
 ├── apm.yml
 └── apm.lock.yaml
 ```

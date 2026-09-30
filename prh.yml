@@ -35,6 +35,9 @@ rules:
   - expected: スキル
     pattern: /(?<!Agent )\bSkill\b/
     prh: Claude Code の日本語の公式文書はカタカナで書く。仕様の名前の Agent Skills は英字のまま
+  - expected: バージョン
+    pattern: 版
+    prh: Claude Code の日本語の公式文書と同じく、ソフトウェアの version はカタカナで書く
   - expected: プラグイン
     pattern: /(?<!Agent )\bPlugin\b/
     prh: Claude Code の日本語の公式文書はカタカナで書く。仕様の名前の Agent Plugins は英字のまま

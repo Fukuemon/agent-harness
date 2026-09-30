@@ -1,7 +1,7 @@
 ---
 type: context
 title: 技術スタック
-description: このリポジトリの開発に使うツールの役割と版の所在、版を上げるときの確認、新しいパッケージとスキルの作り始め。版そのものと選んだ理由は書かない
+description: このリポジトリの開発に使うツールの役割とバージョンの所在、バージョンを上げるときの確認、新しいパッケージとスキルの作り始め。バージョンそのものと選んだ理由は書かない
 status: stable
 governs:
   - mise.toml
@@ -15,9 +15,9 @@ verified_commit: f75d3803d873194fd9767a539486719f80768619
 
 ## Toolchain
 
-| ツール | 役割 | 版が書いてあるファイル |
+| ツール | 役割 | バージョンが書いてあるファイル |
 | --- | --- | --- |
-| mise | Node.js、pnpm、uv、microsoft/apm の版の管理。clone した直後は `mise trust` が要る | 固定しない。公式の導入の方法に従う |
+| mise | Node.js、pnpm、uv、microsoft/apm のバージョンの管理。clone した直後は `mise trust` が要る | 固定しない。公式の導入の方法に従う |
 | Node.js | チェックとフックのスクリプトの実行環境 | `mise.toml` |
 | pnpm | 依存の管理。`pnpm install` が Git のフックも有効にする | `mise.toml` |
 | microsoft/apm | スキルとパッケージの配置。mise の pipx のバックエンドで入れる | `mise.toml`。`apm.lock.yaml` の `apm_version` と揃える |
@@ -26,17 +26,17 @@ verified_commit: f75d3803d873194fd9767a539486719f80768619
 | lefthook | Git のフック | `package.json` |
 | commitlint | コミットメッセージのチェック | `package.json` |
 | yaml と ajv | 値のファイルの読み取りと schema の検証。チェックのスクリプトが使う | `package.json` |
-| GitHub Actions | CI。mise で同じ版を入れる | `.github/workflows/ci.yml` |
+| GitHub Actions | CI。mise で同じバージョンを入れる | `.github/workflows/ci.yml` |
 
-- 利用者に前提とする Node.js の版は、このリポジトリが開発に使う版とは別である。
+- 利用者に前提とする Node.js のバージョンは、このリポジトリが開発に使うバージョンとは別である。
   - ADR-0012: [チェックとフックのスクリプトは Node.js で書く](../adr/0012-node-runtime.md)
-  - ADR-0016: [ツールの版は mise で管理し、テンプレートの既定にする](../adr/0016-mise-for-tool-versions.md)
+  - ADR-0016: [ツールのバージョンは mise で管理し、テンプレートの既定にする](../adr/0016-mise-for-tool-versions.md)
 - チェックのスクリプトが依存してよいライブラリは、yaml と ajv だけである。
 
 ## Upgrade Checks
 
-- 版を上げたら、`pnpm test`、`pnpm lint:text`、`pnpm lint:packages` を通す。
-- textlint の規則（preset-ai-words-ja、prh）は、版で指摘する語が変わる。上げたら全文書に lint を掛け、新しい指摘を言い換える。`--fix` は使わない。
+- バージョンを上げたら、`pnpm test`、`pnpm lint:text`、`pnpm lint:packages` を通す。
+- textlint の規則（preset-ai-words-ja、prh）は、バージョンで指摘する語が変わる。上げたら全文書に lint を掛け、新しい指摘を言い換える。`--fix` は使わない。
 - microsoft/apm は 1.0 より前で、配置の形が変わりうる。上げたら `apm install` の配置先を確かめる。配置先は [スキルの置き場所](skills.md) にある。
 - Node.js を上げたら、`mise.toml` の 1 行を変え、CI が通ることを確かめる。
 

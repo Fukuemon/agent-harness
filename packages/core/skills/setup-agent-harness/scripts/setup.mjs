@@ -163,7 +163,7 @@ function skillsRoots() {
   for (const e of readdirSync(market, { withFileTypes: true })) {
     const name = e.name;
     if (!e.isDirectory() || join(market, name) === plugin) continue;
-    // 古い版の削除が済むまで版のディレクトリが並ぶので、最後に置かれたものを使う。版を選ぶ必要が出たら installed_plugins.json を読む
+    // 古いバージョンの削除が済むまでバージョンのディレクトリが並ぶので、最後に置かれたものを使う。バージョンを選ぶ必要が出たら installed_plugins.json を読む
     const latest = readdirSync(join(market, name))
       .map((v) => join(market, name, v, "skills"))
       .filter(existsSync)

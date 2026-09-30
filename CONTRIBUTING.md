@@ -1,6 +1,6 @@
 # 開発の準備
 
-必要なものは mise だけである。Node.js、pnpm、microsoft/apm は、mise が `mise.toml` の版で入れる。
+必要なものは mise だけである。Node.js、pnpm、microsoft/apm は、mise が `mise.toml` のバージョンで入れる。
 
 ```sh
 mise trust
@@ -16,7 +16,7 @@ apm install
 - `apm install` は、`apm.yml` に書いたスキルとパッケージを配置する。配置先と直し方は [スキルの置き場所](context/skills.md) に書いてある。
 - mise の導入の方法は、公式の案内に従う。
   - 出典: [mise](https://mise.jdx.dev/)
-  - ADR-0016: [ツールの版は mise で管理し、テンプレートの既定にする](adr/0016-mise-for-tool-versions.md)
+  - ADR-0016: [ツールのバージョンは mise で管理し、テンプレートの既定にする](adr/0016-mise-for-tool-versions.md)
 
 ## 設計と取り決めの置き場
 
@@ -67,9 +67,38 @@ pnpm check:links
 - main へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
 
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
-バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の pull request を作る。
+`<major>.<minor>.<patch>` の 3 つの数のうち、利用者のリポジトリで手直しが要る変更は major を、機能の追加は minor を、不具合の修正は patch を上げる。  
+1.0 より前は、セマンティック バージョニングが何でも変わりうる初期の開発の期間と定めているので、1 つずつ下の桁で上げる。
+
+- 出典: [Semantic Versioning 2.0.0](https://semver.org/lang/ja/)
+
+バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の pull request を作る。  
+リリース用の pull request をマージすると、タグとリリースができる。
 
 - ADR-0007: [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
+- ADR-0019: [packages/ を変えたコミットだけでバージョンを上げ、切り戻しは新しいバージョンで行う](adr/0019-release-scope-and-rollback.md)
+
+バージョンが上がるのは、`packages/` の下を変えたコミットだけ。コミットの type と、上がるバージョンの桁の対応は次のとおり。
+
+| コミットの type | 1.0 より前 | 1.0 以降 | 変更履歴の節 |
+| --- | --- | --- | --- |
+| type の後に `!`、または本文に `BREAKING CHANGE:` | minor | major | BREAKING CHANGES |
+| `feat` | patch | minor | Features |
+| `fix` | patch | patch | Bug Fixes |
+| `perf`、`revert`、`docs` | patch | patch | 各 type の節 |
+| `chore`、`refactor`、`test`、`build`、`ci`、`style` | patch | patch | 載らない |
+
+- 変更履歴に載るコミットが 1 つもないと、リリース用の pull request は作られない。`chore` や `refactor` だけでは、バージョンは上がらない。
+- 1.0 より前の上げ方は、`release-please-config.json` の `bump-minor-pre-major` と `bump-patch-for-minor-pre-major` で決まる。
+
+次の変更は、利用者のリポジトリで手直しが要るので破壊的な変更とする。type の後に `!` を付け、本文に `BREAKING CHANGE:` を書く。
+
+- スキルの改名と削除
+- `context/project.yml` の schema と互換のない変更
+- テンプレートを写す先と、フックの登録の形の変更
+
+取り込んだ変更を取り消すときは、取り消すコミットの type と scope を引き継ぎ、`revert(<scope>): <要約>` の形で書く。  
+`git revert` の既定のメッセージ `Revert "..."` は commitlint を通るが、release-please が解析できず、取り消しが新しいバージョンに入らない。
 
 次の図は、実装に移った後のブランチの構成を示す。main は常にリリースできる状態に保つ。作業用のブランチは main から切り、pull request で main へ戻す。タグは、release-please が main のコミットに付ける。
 
@@ -94,6 +123,43 @@ gitGraph
 ```
 
 これは、このリポジトリ自身の選択である。利用者のブランチ運用と、バージョンの付け方は、利用者が決める。
+
+### リリースの流れ
+
+main へ push するたびに、`.github/workflows/release.yml` がリリース用の pull request を作るか更新する。作業用のブランチのマージも、main への直接のコミットも同じ扱いになる。  
+リリース用の pull request は常に 1 つで、マージするまで変更がたまる。タグとリリースができるのは、この pull request をマージしたときだけ。
+
+- `packages/` の外だけを変えた push では、リリース用の pull request は変わらない。
+- 次のバージョンは、前のリリースより後のコミットのうち、最も大きい変更で決まる。`feat` と `fix` が何件あっても、1 回のリリースで上がるのは 1 段だけ。例は `0.1.0` から `0.1.1`。
+- main へ直接コミットしたコミットも、作業用のブランチの中のコミットと同じく 1 つずつ読まれる。Conventional Commits の形でないメッセージは読まれず、バージョンにも変更履歴にも入らない。
+- バージョンを書き換えるコミットの後に、workflow が `apm.lock.yaml` を作り直してコミットする。その前のコミットの CI は、lock のずれで失敗する。
+
+次の図は、main への push から、タグとリリースができるまでの流れを示す。
+
+```mermaid
+sequenceDiagram
+    actor Dev as 開発者
+    participant Main as main
+    participant WF as release workflow
+    participant PR as リリース用の pull request
+    Dev->>Main: 作業用のブランチをマージ、または直接コミット
+    Main->>WF: push で起動
+    WF->>PR: バージョンと CHANGELOG.md を書き換えて作成か更新
+    WF->>PR: apm.lock.yaml を作り直してコミット
+    Note over Main,PR: マージするまで、push のたびに同じ pull request へ変更がたまる
+    Dev->>PR: バージョンと変更履歴を確かめてマージ
+    PR->>Main: マージコミット
+    Main->>WF: push で起動
+    WF->>Main: タグ v<バージョン> と GitHub のリリースを作成
+```
+
+リリースするときは、次の順に進める。
+
+1. リリース用の pull request（題は `chore(main): release <バージョン>`）を開き、バージョンと `CHANGELOG.md` の変更を確かめる。
+2. `apm.lock.yaml` のバージョンが `plugin.json` と合っていて、最新のコミットの CI が通っていることを確かめる。
+3. マージコミットでマージする。
+4. release workflow が終わったら、`gh release view v<バージョン>` でタグとリリースができたことを確かめる。
+5. release workflow が失敗したときは、GitHub の Actions の画面で失敗した実行を再実行する。
 
 ## issue と pull request 
 

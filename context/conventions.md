@@ -35,12 +35,13 @@ status: stable
 ## Shared Configuration
 
 - 文書のチェックは `.textlintrc.json` と `prh.yml`。パッケージの本文の固有の名前は `prh-packages.yml`。
-- コミットメッセージは `commitlint.config.mjs`。Git のフックは `lefthook.yml`。CI は `.github/workflows/ci.yml`。ツールの版は `mise.toml`。
+- コミットメッセージは `commitlint.config.mjs`。Git のフックは `lefthook.yml`。CI は `.github/workflows/ci.yml`。ツールのバージョンは `mise.toml`。
 - 文書の書き方で判断が要る規則は、docs のスキル write-prose と、この文書の Documents の節にある。
 
 ## Check Exclusions
 
 - textlint の対象は、ルート、`adr/`、`design/`、`packages/`、`context/`、`skills/`、`.github/` の Markdown である。`.ai-out/` は Git で追跡せず、チェックもしない。
+- ルートの `CHANGELOG.md` は `.textlintignore` で textlint の対象から外す。release-please がコミットの要約から生成し、文の長さや語の規則に合わせられない。
 - 固有の名前のチェックは、`packages/*/skills/` の Markdown だけに掛ける。パッケージの `DesignDoc.md` はこのリポジトリの開発者が読むので、コーディングエージェントの名前を書いてよい。
 - release-please と changesets は、テンプレートに選択肢として示すと決めたので、禁止する語に含めない。
   - ADR-0014: [リポジトリの運用の取り決めはパッケージ core に置き、process はプロセスの定義と進み具合だけを持つ](../adr/0014-operations-in-core.md)
