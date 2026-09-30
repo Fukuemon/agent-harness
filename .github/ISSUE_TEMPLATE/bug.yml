@@ -33,4 +33,4 @@ body:
     id: environment
     attributes:
       label: 環境
-      description: agent-harness の版、コーディングエージェントとその版、OS
+      description: agent-harness のバージョン、コーディングエージェントとそのバージョン、OS
