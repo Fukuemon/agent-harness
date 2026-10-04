@@ -194,7 +194,7 @@ dependencies:
     .agents/skills/write-design-docs/assets/PRD.md: sha256:638256879cc15a8cedaa0e794a6d7495819ce703acae99b12cf378ec4cb77ed4
     .agents/skills/write-design-docs/assets/adr/template.md: sha256:aa451d658e0fa6f7b02248ce182d830487e0cd74a70218e9ad94bcedb2474c2a
     .agents/skills/write-design-docs/assets/design/DesignDoc.md: sha256:0bdb03246a3f233f696242f250d318f4dab7e788b3bef17761b7fdad08bf7fbe
-    .agents/skills/write-design-docs/assets/prh.yml: sha256:ad38df67c6f811956c2b870edb8081c21689f62e392384c0e6feff6a3a606b69
+    .agents/skills/write-design-docs/assets/prh.yml: sha256:41937cebe84721fa0d9b78adf380fbbe9c8c930bb9e8d65b17c283077b58d5f5
     .agents/skills/write-design-docs/references/adr.md: sha256:5d1fad322ef2452eb4667e4fea58f0e465f9addbe8d549e084e5fecacd3f555f
     .agents/skills/write-design-docs/references/design-doc.md: sha256:1867d00e25c17b63fbc9d00b389d867d35b37144f3cfc2a526ad157b64fae4de
     .agents/skills/write-design-docs/references/feature-design-doc.md: sha256:ccef84d3fe85e2a45d52767c632bd8eee11b16f67bae1f4ebf5b35fc9b4f9487
@@ -215,7 +215,7 @@ dependencies:
     .claude/skills/write-design-docs/assets/PRD.md: sha256:638256879cc15a8cedaa0e794a6d7495819ce703acae99b12cf378ec4cb77ed4
     .claude/skills/write-design-docs/assets/adr/template.md: sha256:aa451d658e0fa6f7b02248ce182d830487e0cd74a70218e9ad94bcedb2474c2a
     .claude/skills/write-design-docs/assets/design/DesignDoc.md: sha256:0bdb03246a3f233f696242f250d318f4dab7e788b3bef17761b7fdad08bf7fbe
-    .claude/skills/write-design-docs/assets/prh.yml: sha256:ad38df67c6f811956c2b870edb8081c21689f62e392384c0e6feff6a3a606b69
+    .claude/skills/write-design-docs/assets/prh.yml: sha256:41937cebe84721fa0d9b78adf380fbbe9c8c930bb9e8d65b17c283077b58d5f5
     .claude/skills/write-design-docs/references/adr.md: sha256:5d1fad322ef2452eb4667e4fea58f0e465f9addbe8d549e084e5fecacd3f555f
     .claude/skills/write-design-docs/references/design-doc.md: sha256:1867d00e25c17b63fbc9d00b389d867d35b37144f3cfc2a526ad157b64fae4de
     .claude/skills/write-design-docs/references/feature-design-doc.md: sha256:ccef84d3fe85e2a45d52767c632bd8eee11b16f67bae1f4ebf5b35fc9b4f9487
@@ -593,7 +593,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:ad38df67c6f811956c2b870edb8081c21689f62e392384c0e6feff6a3a606b69
+  content_hash: sha256:41937cebe84721fa0d9b78adf380fbbe9c8c930bb9e8d65b17c283077b58d5f5
 - kind: project-relative
   target: claude
   value: .claude/skills/write-design-docs/references/adr.md
@@ -1016,7 +1016,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:ad38df67c6f811956c2b870edb8081c21689f62e392384c0e6feff6a3a606b69
+  content_hash: sha256:41937cebe84721fa0d9b78adf380fbbe9c8c930bb9e8d65b17c283077b58d5f5
 - kind: project-relative
   target: codex
   value: .agents/skills/write-design-docs/references/adr.md
