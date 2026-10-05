@@ -13,7 +13,7 @@ status: draft
 
 ## Background
 
-<!-- なぜ今これが要るか。主張ごとの節 -->
+<!-- なぜ今これが要るか。主張ごとの節。今の業務の全体の流れの図 -->
 
 ## Goals
 
@@ -33,15 +33,19 @@ status: draft
 
 ## Proposed Solution / Feature Description
 
-<!-- 提供する体験と機能。画面と機能の一覧はここに置く -->
+### Landscape
 
-## Success Metrics
+<!-- 作るものが全体として何をするか。利用者、作るもの、関わる外部のシステムの図 -->
 
-<!-- 満たす条件と、確認の方法 -->
+<!-- 機能ごとの節。User Stories と同じ粒度で分ける。画面と機能の一覧はここに置く -->
 
-## Milestones
+### Milestones
 
-<!-- Success Metrics の節の名前で、完了の条件を定める -->
+<!-- 段階ごとに、提供する機能と、その段階で確かめる問い -->
+
+### Success Metrics
+
+<!-- 中心の評価項目と必須の条件、確認の方法 -->
 
 ## Open Questions / Risks
 
