@@ -1,9 +1,11 @@
 // Markdown の編集の後に、経緯の混入とリンク切れがあれば、確かめるよう促す文をコンテキストに追加する。編集は拒否しない。
-// 使い方: PostToolUse のフックから呼ぶ。標準入力に tool_name と tool_input の JSON を受け取る
+// 使い方: PostToolUse のフックから呼ぶ。標準入力に tool_name と tool_input の JSON を受け取る。context/project.yml がないリポジトリでは何もしない
 // 終了コード: 常に 0。報告があれば、hookSpecificOutput.additionalContext を標準出力に書く
 import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { brokenLinks, historyFindings, isHistoryTarget } from "./doc-checks.mjs";
+
+if (!installed()) process.exit(0);
 
 let input;
 try {
@@ -32,4 +34,12 @@ function editedFiles({ tool_input: t = {} } = {}) {
     return [...t.command.matchAll(/^\*\*\* (?:Add|Update) File: (.+)$/gm)].map((m) => m[1].trim());
   }
   return typeof t.file_path === "string" ? [t.file_path] : [];
+}
+
+// agent-harness を導入したリポジトリか。コーディングエージェントによっては、プラグインを入れたすべてのリポジトリでフックを動かす
+function installed(dir = process.env.CLAUDE_PROJECT_DIR || process.cwd()) {
+  for (let d = resolve(dir); ; d = dirname(d)) {
+    if (existsSync(join(d, "context", "project.yml"))) return true;
+    if (d === dirname(d)) return false;
+  }
 }
