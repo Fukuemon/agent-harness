@@ -12,7 +12,7 @@
 5. Non-Goals。意図して範囲の外にするもの。別の文書が担う話題は Non-Goal ではない。
 6. User Stories。場面ごとの節に、困りごとと How Might We を置く。
 7. Proposed Solution / Feature Description。提供する体験と機能を、要求の粒度で書く。画面と機能の一覧はここに置き、Design Doc には重ねない。次の小見出しを持つ。
-   1. Landscape。冒頭に置き、作るものが全体として何をするかを示す。利用者、作るもの、関わる外部のシステムと、その間で何を頼むかを図にする。実行の単位は描かず、Design Doc に任せる。
+   1. Landscape。冒頭に置き、作るものが全体として何をするかを示す。利用者、作るもの、関わる外部のシステムと、その間で何を頼むかを、C4 モデルの L1 の System Context の図にする。全体像の Design Doc は L1 の図を描かず、この節へリンクする。
    2. 機能ごとの節。User Stories と同じ粒度で分ける。
    3. Milestones。段階ごとに、提供する機能と、その段階で確かめる問いを書く。
    4. Success Metrics。満たす条件と、確認の方法の組。Milestones の流れを並べ直さず、中心の評価項目と必須の条件だけを書く。

@@ -9,7 +9,7 @@
 1. Overview。何を作り、誰が使うか。要求の文書へのリンク。
 2. Goals and Non-Goals。この設計が提供するものと、意図して作らないもの。利用者の体験の粒度ではなく、設計の粒度で書く。
 3. Assumptions and Constraints。依拠する事実と、動かせない条件。
-4. Architecture。C4 の L1 の図と、要素の間の関係。
+4. Architecture。C4 の L2 の図と、要素の間の関係。L1 の図は描かず、PRD の Landscape へリンクする。
 5. Components。要素ごとの責務と、持たないもの。機能ごとの Design Doc へのリンク。複数の要素が共有するものもここに置く。
 6. Interfaces。導入の方法と、利用者に見えるファイルや API。
 7. Cross-Cutting Concerns。すべての要素に共通する決め事。
@@ -21,7 +21,8 @@
 
 ## 図
 
-- C4 モデルの L1 の System Context と、L2 の Container だけを描く。誰が何のために使うかと、主要な実行の単位とデータの流れである。
+- C4 モデルの L2 の Container だけを描く。主要な実行の単位とデータの流れである。
+- 誰が何のために使うかを示す L1 の System Context は、PRD の Landscape が持つ。PRD は Design Doc より先に書かれ、同じ図を両方に置くと食い違う。
 - 内部の構成と処理の流れは、機能ごとの Design Doc に描く。
 - 図の直前に、図が示す内容を 1 文で書く。図だけに書かれた決定を作らない。
 - 出典: [C4 model](https://c4model.com/)
