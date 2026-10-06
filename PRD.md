@@ -1,10 +1,11 @@
+---
+type: prd
+title: AI エージェントにプロジェクト固有の知識とガードレールを与える agent-harness PRD
+description: 複数のリポジトリとコーディングエージェントを使う開発者が、固有の知識、ガードレール、自動チェック、開発プロセスの標準を、共通の内容を複製せずに使えるようにする
+status: draft
+---
+
 # AI エージェントにプロジェクト固有の知識とガードレールを与える agent-harness PRD
-
-**Status:** Draft
-
-**Owner:** Fukuemon
-
-**Reviewers:** 未定
 
 ## Overview / Problem Statement
 
@@ -415,13 +416,3 @@ spec は、作業中はその作業の決定を書く場所である。
   agent-harness 自身は、作業を次へ進める制御を持たないためである。spec の削除で、残すべき設計を失う。削除を自動では行わず、人が自動で作られた pull request を取り込むときに確かめる形で防ぐ。
 - **コーディングエージェントの仕様変更で、ガードレールが働かなくなる。**  
   止めたい操作が通る。対応表に確認したコーディングエージェントのバージョンを記録し、ガードレールの確認をいつでも再実行できる形で残す。
-
-## References
-
-- [Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) — 新しいモデルに合わせたスキルと AGENTS.md の見直し
-- [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) — ハーネスの構成要素が含む仮定と、その陳腐化
-- [エージェント開発における悪魔の自転車というアンチパターン](https://x.com/voidwarriorchan/status/2100428460309311607) — 用途別の専用エージェントを増やす設計の問題
-- [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988) — 規約ファイルの効果の評価
-- [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — 規約ファイルに書く内容と、フックとの違い
-- [AI-Generated "Workslop" Is Destroying Productivity](https://hbr.org/2025/09/ai-generated-workslop-is-destroying-productivity) — workslop の定義と調査の結果
-- [Don't Let AI Slop Muck Up Your Company's Processes](https://hbr.org/2026/06/dont-let-ai-slop-muck-up-your-companys-processes) — workslop の連鎖による組織の知識の劣化
