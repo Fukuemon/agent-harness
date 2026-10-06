@@ -40,7 +40,6 @@ test("空、.、.. の区切りを含むパスは合わない", () => {
 
 test("ほかのパッケージのキーがなくても合う", () => {
   const doc = example();
-  delete doc.guardrails;
   delete doc.process;
   assert.equal(validate(doc), true, JSON.stringify(validate.errors));
 });

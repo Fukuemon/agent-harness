@@ -20,12 +20,10 @@ test("version がないと合わない", () => {
   assert.equal(validate(doc), false);
 });
 
-test("direct_commit.allow が true なら reason が要る", () => {
+test("version が 1 のファイルは合わない", () => {
   const doc = example();
-  doc.guardrails.protected_branches.direct_commit = { allow: true, reason: "" };
+  doc.version = 1;
   assert.equal(validate(doc), false);
-  doc.guardrails.protected_branches.direct_commit = { allow: true, reason: "立ち上げの時期" };
-  assert.equal(validate(doc), true, JSON.stringify(validate.errors));
 });
 
 test("知らないキーは拒否しない", () => {

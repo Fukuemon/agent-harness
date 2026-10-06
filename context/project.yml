@@ -1,21 +1,10 @@
-version: 1
+version: 2
 
 # 文書の体系が読む
 docs:
   design: design
   adr: adr
   spec: specs
-
-# core のガードレールが読む
-guardrails:
-  protected_branches:
-    names: [main]
-    direct_commit:
-      allow: false
-      reason: ""
-  forbidden_commands: []
-  secrets:
-    enabled: true
 
 # 開発プロセスが読む。設計は済んでいるので、既定は実装と取り込みだけ
 process:
