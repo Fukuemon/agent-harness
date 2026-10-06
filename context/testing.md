@@ -18,6 +18,7 @@ status: stable
 
 - Node.js（バージョンは `mise.toml`）と git が要る。ネットワークと環境変数は要らない。
 - パッケージ global の Python のスクリプトのテストには、python3 も要る。テストは Node.js で書き、スクリプトを python3 の子プロセスで実行する。
+- 動画を変換するスクリプトのテストは、ffmpeg が無い環境では変換の確認だけを飛ばす。CI の実行環境に ffmpeg があるとは限らないためである。
 - 使い捨てのディレクトリは `os.tmpdir()` に作る。テストは消さない。
 
 ## Mocking and Test Data
