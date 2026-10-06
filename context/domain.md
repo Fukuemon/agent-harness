@@ -15,5 +15,5 @@ status: stable
 ## Concepts
 
 - 状態と遷移を持つ概念は、spec と開発プロセスの 2 つである。どちらも構成と流れを機能ごとの Design Doc が持つので、概念ごとの文書は作らない。
-  - spec は、issue ごとに作られ、issue を閉じるときに削除される。寿命は [文書の体系](../packages/docs/DesignDoc.md) にある。
+  - spec は、issue ごとに作られ、issue を閉じるときに削除される。ライフサイクルは [文書の体系](../packages/docs/DesignDoc.md) にある。
   - 開発プロセスは、要求ごとに選んだ段階を順に進む。段階は [開発プロセス](../design/features/process/DesignDoc_process.md) にある。

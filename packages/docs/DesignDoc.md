@@ -1,7 +1,7 @@
 ---
 type: feature-design
 title: 文書の体系
-description: Design Doc、ADR、spec の種類と寿命、実装とのずれの検出、spec を削除する前の保証、文書のチェック
+description: Design Doc、ADR、spec の種類とライフサイクル、実装とのずれの検出、spec を削除する前の保証、文書のチェック
 status: draft
 keywords: [Design Doc, ADR, spec, governs, verified_commit, textlint, write-design-docs, write-prose]
 governs: packages/docs
@@ -23,7 +23,7 @@ verified_commit: unverified
 
 ## Design
 
-### 文書の種類と寿命
+### 文書の種類とライフサイクル
 
 利用者のリポジトリに次の文書を置く。ディレクトリ名は、値のファイルの `docs` で変更できる。
 
