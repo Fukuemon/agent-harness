@@ -21,7 +21,7 @@ status: draft
 
 ## Architecture
 
-<!-- C4 の L1 の図と、要素の間の関係。図の直前に、図が示す内容を 1 文で書く -->
+<!-- C4 の L2 の図と、要素の間の関係。L1 は PRD の Landscape へリンクする。図の直前に、図が示す内容を 1 文で書く -->
 
 ## Components
 
