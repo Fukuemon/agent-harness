@@ -1,0 +1,20 @@
+name: global
+version: 0.1.0
+description: どのリポジトリのセッションでも使う、個人の規約、スキル、output style と、global に入れるサードパーティの拡張機能
+author: Fukuemon
+targets: [claude, codex]
+dependencies:
+  apm:
+    # このリポジトリのほかのパッケージにあるスキル
+    - Fukuemon/agent-harness/packages/docs/skills/write-prose
+    - Fukuemon/agent-harness/packages/core/skills/write-skill
+    - vercel-labs/skills/skills/find-skills
+    - vercel-labs/agent-browser/skills/agent-browser
+    - anthropics/skills/skills/skill-creator
+    - tt-a1i/archify/archify
+    - stablyai/orca/skills/orca-cli
+    - stablyai/orca/skills/orchestration
+    - stablyai/orca/skills/computer-use
+    # Claude Code のプラグイン
+    - DietrichGebert/ponytail
+    - cathrynlavery/diagram-design
