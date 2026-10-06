@@ -2,16 +2,19 @@
 // 実行: node --test packages/docs/hooks/check-docs.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
 const hook = new URL("check-docs.mjs", import.meta.url).pathname;
-const run = (cwd, input) => execFileSync("node", [hook], { cwd, input: JSON.stringify(input), encoding: "utf8" });
+const env = { ...process.env, CLAUDE_PROJECT_DIR: "" };
+const run = (cwd, input) => execFileSync("node", [hook], { cwd, env, input: JSON.stringify(input), encoding: "utf8" });
 
 function dir() {
   const d = mkdtempSync(join(tmpdir(), "check-docs-"));
+  mkdirSync(join(d, "context"));
+  writeFileSync(join(d, "context", "project.yml"), "");
   writeFileSync(join(d, "DesignDoc.md"), "---\ntype: design-doc\ntitle: t\ndescription: d\n---\n\n# t\n\n## 変更履歴\n\n[切れ](gone.md)\n");
   writeFileSync(join(d, "ok.md"), "# ok\n\n[自分](#ok)\n");
   return d;
@@ -38,5 +41,18 @@ test("報告がないときと、Markdown でないときは何も返さない",
   const d = dir();
   assert.equal(run(d, { tool_name: "Edit", tool_input: { file_path: join(d, "ok.md") } }), "");
   assert.equal(run(d, { tool_name: "Edit", tool_input: { file_path: join(d, "a.js") } }), "");
-  assert.equal(execFileSync("node", [hook], { cwd: d, input: "not json", encoding: "utf8" }), "");
+  assert.equal(execFileSync("node", [hook], { cwd: d, env, input: "not json", encoding: "utf8" }), "");
+});
+
+test("context/project.yml がないリポジトリでは、報告があっても何も返さない", () => {
+  const d = mkdtempSync(join(tmpdir(), "check-docs-"));
+  writeFileSync(join(d, "DesignDoc.md"), "---\ntype: design-doc\ntitle: t\ndescription: d\n---\n\n# t\n\n## 変更履歴\n");
+  assert.equal(run(d, { tool_name: "Write", tool_input: { file_path: join(d, "DesignDoc.md"), content: "" } }), "");
+});
+
+test("サブディレクトリで起動しても、上のディレクトリの context/project.yml を見つける", () => {
+  const d = dir();
+  mkdirSync(join(d, "sub"));
+  const out = run(join(d, "sub"), { tool_name: "Write", tool_input: { file_path: join(d, "DesignDoc.md"), content: "" } });
+  assert.match(out, /変更履歴の見出しがある/);
 });

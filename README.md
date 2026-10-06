@@ -14,6 +14,16 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 
 ## Installation
 
+導入の方法は 3 つある。apm を推奨する。バージョンを固定でき、docs のチェックを lefthook と CI から呼べるのは apm だけである。
+
+| 方法 | 届くもの |
+| --- | --- |
+| apm | スキル、フック、lefthook と CI から呼ぶ docs のチェック |
+| プラグイン | スキルとフック |
+| スキルだけを配る CLI | スキル |
+
+- ADR-0020: [パッケージマネージャーを推奨の導入の方法とし、プラグインはコーディングエージェントのスキルとフックだけを届ける](adr/0020-distribution-channels.md)
+
 ### 1. apm をインストールする
 
 パッケージは [microsoft/apm](https://github.com/microsoft/apm) でインストールする。apm がなければ、[mise](https://mise.jdx.dev/) で Node.js と一緒にインストールする。
@@ -68,15 +78,39 @@ apm lifecycle trust
 
 clone した後の最初のセッションでは、core のフックが `apm install --frozen` で配置をそろえる。
 
-### Claude Code のプラグインでインストールする場合
+### プラグインでインストールする場合
 
-```text
-/plugin marketplace add Fukuemon/agent-harness
-/plugin install core@agent-harness
-/plugin install docs@agent-harness
+Claude Code では、プロジェクトの単位で、タグを固定して入れる。`.claude/settings.json` に、マーケットプレイスのタグと有効なプラグインが書かれる。
+
+```sh
+claude plugin marketplace add --scope project "Fukuemon/agent-harness#<ref>"
+claude plugin install --scope project core@agent-harness
+claude plugin install --scope project docs@agent-harness
 ```
 
-この方法では、docs のチェックを lefthook と CI から呼べない。
+Codex CLI では、同じマーケットプレイスから入れる。
+
+```sh
+codex plugin marketplace add Fukuemon/agent-harness@<ref>
+codex plugin add core@agent-harness
+codex plugin add docs@agent-harness
+```
+
+Codex CLI のプラグインには、次の制約がある。
+
+- 利用者の単位で入り、入れたすべてのリポジトリで有効になる。プロジェクトの単位では有効と無効を切り替えられず、バージョンの固定も共有できない。
+- フックは、利用者が承認するまで動かない。
+- フックは、`context/project.yml` がないリポジトリでは何もしない。
+
+どちらのプラグインも、docs のチェックを lefthook と CI から呼べない。
+
+### スキルだけをインストールする場合
+
+```sh
+npx skills add Fukuemon/agent-harness
+```
+
+フックは入らない。
 
 ## Update
 

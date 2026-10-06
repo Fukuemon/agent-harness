@@ -149,10 +149,14 @@ Agent Plugins の公式のスキーマは宣言しない。宣言すると、パ
 - ADR-0009: [パッケージは、用途ごとのプラグインとして packages/ の下に置く](../adr/0009-package-layout.md)
 - 出典: [Agent Skills 仕様](https://agentskills.io/specification)
 
-利用者がパッケージを導入する方法は、3 つある。
+利用者がパッケージを導入する方法は、3 つある。推奨はパッケージマネージャーである。
 
-- **パッケージマネージャー:** マニフェストに `Fukuemon/agent-harness/packages/<名前>` とタグを書く。バージョンの固定と再現ができる。
-- **コーディングエージェントの標準の方法:** ルートの一覧から、プラグインを選んで導入する。Claude Code はプロジェクトの単位で、Codex CLI は利用者の単位で導入する。Codex CLI では global への導入になるため、構成の再現には向かない。
+- ADR-0020: [パッケージマネージャーを推奨の導入の方法とし、プラグインはコーディングエージェントのスキルとフックだけを届ける](../adr/0020-distribution-channels.md)
+
+- **パッケージマネージャー:** マニフェストに `Fukuemon/agent-harness/packages/<名前>` とタグを書く。バージョンの固定と再現ができる。スキル、フック、lefthook と CI から呼ぶ docs のチェックが届く。
+- **コーディングエージェントの標準の方法:** ルートの一覧から、プラグインを選んで導入する。届くのはスキルとフックだけである。Claude Code はプロジェクトの単位で、Codex CLI は利用者の単位で導入する。Codex CLI では global への導入になるため、構成の再現には向かない。
+  - Codex CLI のプラグインは、導入していないリポジトリでもフックを動かす。フックは、`context/project.yml` がなければ何もせずに終わる。
+  - スキルだけを配る CLI でも、`packages/*/skills/` のスキルを導入できる。フックは届かない。
 - **lefthook の `remotes`:** Git のフックを使うパッケージで、利用者が自分の `lefthook.yml` に、このリポジトリの URL とタグを書く。
   - docs の文書のチェックは、lefthook の `remotes` を使わず、パッケージマネージャーの配置先から呼ぶ。
   - ADR-0017: [文書のチェックのスクリプトは hooks/ に置き、利用者の lefthook と CI はパッケージマネージャーの配置先から呼ぶ](../adr/0017-docs-checks-from-deployed-hooks.md)

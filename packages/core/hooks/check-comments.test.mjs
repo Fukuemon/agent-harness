@@ -4,11 +4,17 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const script = fileURLToPath(new URL("./check-comments.mjs", import.meta.url));
 
-function run(input) {
-  const r = spawnSync("node", [script], { input: typeof input === "string" ? input : JSON.stringify(input), encoding: "utf8" });
+const root = fileURLToPath(new URL("../../..", import.meta.url));
+const env = { ...process.env, CLAUDE_PROJECT_DIR: "" };
+
+function run(input, cwd = root) {
+  const r = spawnSync("node", [script], { cwd, env, input: typeof input === "string" ? input : JSON.stringify(input), encoding: "utf8" });
   assert.equal(r.status, 0, r.stderr);
   return r.stdout ? JSON.parse(r.stdout).hookSpecificOutput.additionalContext : "";
 }
@@ -64,4 +70,9 @@ test("元からある行と同じコメントを 2 つ目に足しても挙げ�
   const out = run({ tool_name: "Edit", tool_input: { file_path: "a.mjs", old_string: "// TODO\nconst a = 1;", new_string: "// TODO\nconst a = 1;\n// TODO\nconst b = 2;" } });
   assert.match(out, /- a\.mjs: \/\/ TODO/);
   assert.equal((out.match(/\/\/ TODO/g) || []).length, 1);
+});
+
+test("context/project.yml がないリポジトリでは、コメントを足しても何も返さない", () => {
+  const out = run({ tool_name: "Write", tool_input: { file_path: "a.mjs", content: "// 足した\n" } }, mkdtempSync(join(tmpdir(), "check-comments-")));
+  assert.equal(out, "");
 });
