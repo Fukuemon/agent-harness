@@ -14,8 +14,8 @@ keywords: [パッケージ, microsoft/apm, プラグイン, lefthook]
 
 ## Overview
 
-agent-harness は、4 つのパッケージと、利用者が写して使う例を配るリポジトリである。  
-パッケージは、共通の基盤の core と、文書の体系、開発プロセス、ガードレールの 3 つで、利用者はマニフェストに書いて導入する。core 以外は 1 つずつ選べる。  
+agent-harness は、3 つのパッケージと、利用者が写して使う例を配るリポジトリである。  
+パッケージは、共通の基盤の core と、文書の体系、開発プロセスの 2 つで、利用者はマニフェストに書いて導入する。core 以外は 1 つずつ選べる。  
 利用者のリポジトリでは、パッケージのスキルとテンプレートとチェックが、Claude Code と Codex CLI の作業を支える。Cursor は可能な範囲で対応する。
 
 - [PRD](../PRD.md) — 課題、目標、受け入れの条件
@@ -62,10 +62,9 @@ agent-harness のチェックは、利用者の環境を読み取るだけで変
 flowchart TB
     subgraph AH["agent-harness"]
         direction LR
-        core["core<br/>共通の基盤と、リポジトリの運用の取り決め"]
+        core["core<br/>共通の基盤と、リポジトリの運用の取り決めとガードレール"]
         docs["docs<br/>文書の体系と、文書のチェック"]
         process["process<br/>開発のプロセスの定義と、進み具合のチェック"]
-        guardrails["guardrails<br/>取り返しのつかない操作を止める規則"]
     end
     third["サードパーティの配布元<br/>スキルとプラグイン"]
     apm["microsoft/apm<br/>取得、バージョンの固定、配置、差分の検出"]
@@ -122,14 +121,15 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 
 - **core:** 固有の知識の置き場と、リポジトリの運用の取り決めを作る。値のファイルと schema、context のテンプレートと目次の生成、AGENTS.md と CONTRIBUTING.md のテンプレート、導入のスキル、context と CONTRIBUTING.md の書き方のスキルを持つ。運用の取り決めは、ブランチとリリースの既定、コミットの規約、issue と pull request の規則と雛形、コードのコメントの規約とフックである。
   - ADR-0014: [リポジトリの運用の取り決めはパッケージ core に置き、process はプロセスの定義と進み具合だけを持つ](../adr/0014-operations-in-core.md)
+  - core は、運用の取り決めを守るガードレールも持つ。保護ブランチ、禁止するコマンド、秘密情報の規則である。ガードレールは独立したパッケージにせず、規則が守る関心事を持つパッケージに置く。
+  - ADR-0021: [ガードレールは独立したパッケージにせず、規則に関わるパッケージが持つ](../adr/0021-guardrails-in-owning-packages.md)
+  - [ガードレールの Design Doc](features/guardrails/DesignDoc_guardrails.md)
   - [core の Design Doc](../packages/core/DesignDoc.md)
 
 - **文書の体系 `docs`:** Design Doc、ADR、spec の構造とテンプレート、実装とのずれの検出、spec の削除の保証、文書のチェックを持つ。利用者の知識の中身は持たない。内容の正しさは判定しない。
   - [文書の体系の Design Doc](../packages/docs/DesignDoc.md)
 - **開発プロセス `process`:** 開発のプロセスの定義、要求ごとの選択（行うプロセス、反映する時点、分解する時点、レビューの範囲）の項目と選択肢、宣言の schema と、進み具合のチェックを持つ。作業を次へ進める制御は持たない。
   - [開発プロセスの Design Doc](features/process/DesignDoc_process.md)
-- **ガードレール `guardrails`:** 取り返しのつかない操作を止める仕組みと、プロダクトごとに有効にする規則を持つ。規則は、保護ブランチ、禁止するコマンド、秘密情報である。コーディングエージェントの権限の仕組みそのものは実装しない。
-  - [ガードレールの Design Doc](features/guardrails/DesignDoc_guardrails.md)
 
 パッケージのスキルの名前は、他の拡張機能と重なりにくい語にする。パッケージマネージャーは、同じ名前のスキルを後から入れた側で警告なしに上書きするためである。
 
@@ -223,7 +223,7 @@ agent-harness/
 ├── .claude-plugin/
 │   └── marketplace.json        パッケージの一覧
 ├── packages/
-│   └── <パッケージの名前>/    core、docs、process、guardrails
+│   └── <パッケージの名前>/    core、docs、process
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── DesignDoc.md        機能ごとの Design Doc。パッケージを作った時点で design/features/ から移す

@@ -10,8 +10,10 @@ keywords: [保護ブランチ, 禁止するコマンド, 秘密情報, フック
 
 ## Overview
 
-パッケージ「ガードレール」の設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
+パッケージ core が持つガードレールの設計。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。  
 取り返しのつかない操作を、モデルが指示を守るかどうかに関係なく止める。止める仕組みは 1 つで、何を止めるかはプロダクトごとの規則として `project.yml` で決める。
+
+- ADR-0021: [ガードレールは独立したパッケージにせず、規則に関わるパッケージが持つ](../../../adr/0021-guardrails-in-owning-packages.md)
 
 ## Scope
 
