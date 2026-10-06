@@ -11,7 +11,7 @@ description: agent-harness を利用者のリポジトリに導入するとき�
 ## 初めて導入するとき
 
 1. 利用者に 2 点を尋ねる。答えがなければ既定を使う。
-   - 保護するブランチの名前。既定は `main,develop`。`,` で区切る。
+   - 保護するブランチの名前。既定は `main,develop`。`,` で区切る。CONTRIBUTING.md に書かれる。
    - 文書のディレクトリ名。Design Doc、ADR、spec の順で、既定は `design,adr,specs`。
 2. リポジトリのルートで、このスキルの `scripts/setup.mjs` を実行する。
 

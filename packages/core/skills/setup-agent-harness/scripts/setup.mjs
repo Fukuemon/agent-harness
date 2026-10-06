@@ -1,6 +1,7 @@
 // スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
 // 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]... | --gitignore
-// 省いた値は、既にある context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
+// 省いた値は、既にある CONTRIBUTING.md と context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
+// 保護するブランチは CONTRIBUTING.md の <保護するブランチ> に、文書のディレクトリ名は context/project.yml に書く
 // .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す。apm.yml には、apm install の後にそれを行う post-install を足す
 // --gitignore は .gitignore の行だけをそろえる。apm の post-install から呼ばれる
 // どちらも、パッケージから消えたスキルとフックの写しを配置先から消し、.gitignore の行も消す
@@ -43,7 +44,7 @@ const apmYml = existsSync(apmPath) ? readFileSync(apmPath, "utf8") : "";
 const lifecycle = !apmYml || apmYml.includes("setup.mjs\" --gitignore") ? "ok" : /^lifecycle:/m.test(apmYml) ? "manual" : "missing";
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
 const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
-opts.branches ||= pickList("names") ?? "main,develop";
+opts.branches ||= pickBranches() || "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
@@ -68,6 +69,7 @@ for (const root of skillsRoots()) {
   }
 }
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
+candidates.set("CONTRIBUTING.md", candidates.get("CONTRIBUTING.md").replace("<保護するブランチ>", opts.branches.split(",").map((b) => `\`${b}\``).join("、")));
 for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
 
@@ -190,19 +192,11 @@ function deployedDirs() {
   return [...dirs].sort();
 }
 
-// YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む
-function pickList(key) {
-  const m = new RegExp(`^(\\s*)${key}:[ \\t]*(.*)$`, "m").exec(existing);
-  if (!m) return undefined;
-  if (m[2].startsWith("[")) return m[2].replace(/[\[\]\s"']/g, "");
-  const rest = existing.slice(m.index + m[0].length);
-  const items = [];
-  for (const line of rest.split("\n").slice(1)) {
-    const item = /^\s*-\s+(.+)$/.exec(line);
-    if (!item) break;
-    items.push(item[1].trim().replace(/^["']|["']$/g, ""));
-  }
-  return items.join(",");
+// CONTRIBUTING.md の「保護するブランチは `a`、`b` である。」の行から読む
+function pickBranches() {
+  const p = join(root, "CONTRIBUTING.md");
+  const line = existsSync(p) ? /^- 保護するブランチは (.+?) である。/m.exec(readFileSync(p, "utf8"))?.[1] : undefined;
+  return line && [...line.matchAll(/`([^`]+)`/g)].map((m) => m[1]).join(",");
 }
 
 function collect(dir, into, base = dir) {
@@ -217,7 +211,6 @@ function collect(dir, into, base = dir) {
 function fillProject(yaml) {
   const [design, adr, spec] = docs;
   return yaml
-    .replace(/^(\s*names:) .*$/m, `$1 [${opts.branches}]`)
     .replace(/^(\s*design:) .*$/m, `$1 ${design}`)
     .replace(/^(\s*adr:) .*$/m, `$1 ${adr}`)
     .replace(/^(\s*spec:) .*$/m, `$1 ${spec}`);
