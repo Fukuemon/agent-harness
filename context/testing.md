@@ -17,6 +17,7 @@ status: stable
 ## Runtime Requirements
 
 - Node.js（バージョンは `mise.toml`）と git が要る。ネットワークと環境変数は要らない。
+- パッケージ global の Python のスクリプトのテストには、python3 も要る。テストは Node.js で書き、スクリプトを python3 の子プロセスで実行する。
 - 使い捨てのディレクトリは `os.tmpdir()` に作る。テストは消さない。
 
 ## Mocking and Test Data

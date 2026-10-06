@@ -11,7 +11,7 @@ Exit codes:
   0  printed the URL
   1  git failed (not a repository, unknown remote or ref, path outside the repository)
   2  bad arguments
-  3  printed the URL, but the commit is not on any remote-tracking branch, so the link may 404
+  3  printed the URL, but the commit is not on a tracking branch of the chosen remote, so the link may 404
 """
 
 from __future__ import annotations
@@ -86,7 +86,7 @@ def main() -> int:
         rel = target.relative_to(root).as_posix()
         sha = git("rev-parse", "--verify", f"{args.ref}^{{commit}}", cwd=root)
         base, host = web_base(git("remote", "get-url", args.remote, cwd=root))
-        pushed = git("branch", "-r", "--contains", sha, cwd=root)
+        pushed = git("branch", "-r", "--contains", sha, "--list", f"{args.remote}/*", cwd=root)
     except (subprocess.CalledProcessError, ValueError, OSError) as e:
         detail = e.stderr.strip() if isinstance(e, subprocess.CalledProcessError) else str(e)
         print(f"blob_link: {detail}", file=sys.stderr)
@@ -94,7 +94,7 @@ def main() -> int:
 
     print(build_url(base, host, sha, rel, start, end))
     if not pushed:
-        print(f"blob_link: {sha} is not on any remote-tracking branch", file=sys.stderr)
+        print(f"blob_link: {sha} is not on any tracking branch of {args.remote}", file=sys.stderr)
         return 3
     return 0
 
