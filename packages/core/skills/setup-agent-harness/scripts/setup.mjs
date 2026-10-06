@@ -44,7 +44,7 @@ const apmYml = existsSync(apmPath) ? readFileSync(apmPath, "utf8") : "";
 const lifecycle = !apmYml || apmYml.includes("setup.mjs\" --gitignore") ? "ok" : /^lifecycle:/m.test(apmYml) ? "manual" : "missing";
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
 const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
-opts.branches ||= pickBranches() || "main,develop";
+opts.branches ||= pickBranches() || pickList("names") || "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
@@ -190,6 +190,22 @@ function deployedDirs() {
     dirs.add(["skills", "hooks"].includes(parts[1]) && parts.length >= 3 ? `/${parts.slice(0, 3).join("/")}/` : `/${item[1]}`);
   }
   return [...dirs].sort();
+}
+
+// version 1 の context/project.yml の guardrails.protected_branches.names を読む。CONTRIBUTING.md に行がない利用者の移行のため
+// YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む
+function pickList(key) {
+  const m = new RegExp(`^(\\s*)${key}:[ \\t]*(.*)$`, "m").exec(existing);
+  if (!m) return undefined;
+  if (m[2].startsWith("[")) return m[2].replace(/[\[\]\s"']/g, "");
+  const rest = existing.slice(m.index + m[0].length);
+  const items = [];
+  for (const line of rest.split("\n").slice(1)) {
+    const item = /^\s*-\s+(.+)$/.exec(line);
+    if (!item) break;
+    items.push(item[1].trim().replace(/^["']|["']$/g, ""));
+  }
+  return items.join(",");
 }
 
 // CONTRIBUTING.md の「保護するブランチは `a`、`b` である。」の行から読む

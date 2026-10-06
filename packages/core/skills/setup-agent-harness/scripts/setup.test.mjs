@@ -106,6 +106,15 @@ test("2 回目は引数を省いても、CONTRIBUTING.md の保護するブラ�
   assert.match(readFileSync(p, "utf8"), /^- 保護するブランチは `trunk`、`release` である。/m);
 });
 
+test("version 1 の値のファイルの保護ブランチを、CONTRIBUTING.md へ引き継ぐ", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"), { recursive: true });
+  writeFileSync(join(repo, "context/project.yml"), "version: 1\nguardrails:\n  protected_branches:\n    names:\n      - trunk\n      - release\n");
+  writeFileSync(join(repo, "CONTRIBUTING.md"), "# 古い形\n");
+  const d = run(repo, script, ["--diff"]);
+  assert.match(d.out, /\+- 保護するブランチは `trunk`、`release` である。/, d.out);
+});
+
 test("--diff は、まだ写していないファイルがあれば終了コード 1", () => {
   const { repo, script } = setup();
   assert.equal(run(repo, script, ["--diff"]).status, 1);
