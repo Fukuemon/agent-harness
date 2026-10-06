@@ -28,7 +28,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "cd \"${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}\" || exit 0; [ -f apm.lock.yaml ] || exit 0; if ! (sed -n 's/^ *- \\(\\.[^ :]*\\)$/\\1/p' apm.lock.yaml | while read -r p; do [ -e \"$p\" ] || exit 1; done); then if command -v apm >/dev/null; then apm install --frozen >&2 || exit 1; fi; fi; d=$(ls -d .claude/skills/setup-agent-harness .agents/skills/setup-agent-harness ${CLAUDE_PLUGIN_ROOT:+\"$CLAUDE_PLUGIN_ROOT/skills/setup-agent-harness\"} 2>/dev/null | head -1); [ -z \"$d\" ] || node \"$d/scripts/setup.mjs\" --gitignore >&2",
+          "command": "cd \"${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}\" || exit 0; [ -f context/project.yml ] && [ -f apm.lock.yaml ] || exit 0; if ! (sed -n 's/^ *- \\(\\.[^ :]*\\)$/\\1/p' apm.lock.yaml | while read -r p; do [ -e \"$p\" ] || exit 1; done); then if command -v apm >/dev/null; then apm install --frozen >&2 || exit 1; fi; fi; d=$(ls -d .claude/skills/setup-agent-harness .agents/skills/setup-agent-harness ${CLAUDE_PLUGIN_ROOT:+\"$CLAUDE_PLUGIN_ROOT/skills/setup-agent-harness\"} 2>/dev/null | head -1); [ -z \"$d\" ] || node \"$d/scripts/setup.mjs\" --gitignore >&2",
           "timeout": 120
         }
       ],
