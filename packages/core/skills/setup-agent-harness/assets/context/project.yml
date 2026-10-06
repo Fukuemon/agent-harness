@@ -1,19 +1,9 @@
-version: 1
+version: 2
 
 docs:
   design: design
   adr: adr
   spec: specs
-
-guardrails:
-  protected_branches:
-    names: [main, develop]
-    direct_commit:
-      allow: false
-      reason: ""
-  forbidden_commands: []
-  secrets:
-    enabled: true
 
 process:
   defaults:

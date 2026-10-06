@@ -22,7 +22,8 @@ verified_commit: unverified
 - 持つもの: 値のファイルの形と schema。context の種類とテンプレート。frontmatter の基本のキーと、目次の生成。AGENTS.md と CONTRIBUTING.md のテンプレート。導入のスキル。context と CONTRIBUTING.md の書き方のスキル。リポジトリの運用の取り決めとして、ブランチとリリースの既定、コミットの規約のスキル、issue と pull request の規則のスキルと form の雛形、コードのコメントの規約のスキルとフック。
   - ADR-0014: [リポジトリの運用の取り決めはパッケージ core に置き、process はプロセスの定義と進み具合だけを持つ](../../adr/0014-operations-in-core.md)
 - 分類: プロジェクト固有の知識の入れ物と、リポジトリの運用の取り決め。
-- 持たないもの: Design Doc、ADR、spec の構造とチェック。ガードレールの規則。開発プロセスの定義。ほかのパッケージのスクリプトが読み込む共通の処理。
+- 持たないもの: Design Doc、ADR、spec の構造とチェック。開発プロセスの定義。ほかのパッケージのスクリプトが読み込む共通の処理。取り返しのつかない操作を止める仕組みと、その値。
+  - ADR-0021: [ガードレールは考え方として持ち、止める仕組みと値は配らない](../../adr/0021-guardrails-as-principle.md)
 
 ## Design
 
@@ -36,24 +37,13 @@ verified_commit: unverified
 キーは、読むパッケージごとにまとめる。パッケージを外したら、そのキーは要らなくなる。
 
 ```yaml
-version: 1
+version: 2
 
 # 文書の体系が読む
 docs:
   design: design      # 全体像と機能ごとの Design Doc
   adr: adr
   spec: specs         # issue ごとに specs/<issue 番号>-<slug>/ を置く
-
-# ガードレールが読む。規則ごとにキーを持ち、キーがない規則は無効
-guardrails:
-  protected_branches:
-    names: [main]
-    direct_commit:
-      allow: false
-      reason: ""
-  forbidden_commands: []
-  secrets:
-    enabled: true
 
 # 開発プロセスが読む。要求ごとの選択の既定
 process:
@@ -138,7 +128,7 @@ context と Design Doc は frontmatter を持つ。
 
 導入のスキル `setup-agent-harness` が、固有の知識の置き場と、配置されているパッケージのテンプレートを利用者のリポジトリに置く。
 
-- スキルは、保護ブランチの名前と、文書のディレクトリ名を尋ねる。答えを付属のスクリプトに渡す。
+- スキルは、保護ブランチの名前と、文書のディレクトリ名を尋ねる。答えを付属のスクリプトに渡す。保護ブランチの名前は CONTRIBUTING.md に、文書のディレクトリ名は `context/project.yml` に書かれる。
 - スクリプトが、スキルの `assets/` のテンプレートを写す。値のファイルのテンプレートもここにある。写したファイルの一覧を表示する。
 - 写すのは、`context/project.yml`、context の 6 種類の骨組み、`context/index.md`、AGENTS.md、CONTRIBUTING.md である。目次は、`status: draft` の文書に印を付け、まだ書かれていない種類が分かるようにする。ほかのパッケージが配置されていれば、そのテンプレート（文書の骨組み、設定のファイル、issue と pull request のテンプレート）も写す。配置されていないパッケージの分は飛ばす。
 - 写したファイルは利用者のものになり、パッケージの更新で上書きしない。スクリプトの動作は 3 つである。

@@ -1,6 +1,6 @@
 name: agent-harness
 version: 0.1.0
-description: AI エージェントにプロジェクト固有の知識とガードレールを与えるパッケージ
+description: AI エージェントにプロジェクト固有の知識と自動チェックを与えるパッケージ
 license: MIT
 targets: [claude, codex]
 dependencies:

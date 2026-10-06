@@ -32,7 +32,7 @@ apm lifecycle trust
 
 ## ブランチとリリース
 
-<!-- 次は既定の運用。運用が違えば本文と図を書き換え、保護するブランチの名前を context/project.yml と揃える -->
+<!-- 次は既定の運用。運用が違えば本文と図を書き換える -->
 
 ブランチは、`main`、`develop`、issue ごとの作業用のブランチにする。
 
@@ -40,7 +40,7 @@ apm lifecycle trust
 - 作業用のブランチは `develop` から切る。名前は `feature/<issue 番号>` にし、不具合は `fix/<issue 番号>` にする。`develop` へは、pull request を通して取り込む。
 - リリースは、`develop` を `main` へ pull request で取り込み、`main` のコミットにタグを付ける。バージョンはセマンティック バージョニングに従う。
 - リリース後の緊急の修正は、`main` から `hotfix/<issue 番号>` を切り、`main` と `develop` の両方へ取り込む。
-- `main` と `develop` へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
+- 保護するブランチは <保護するブランチ> である。直接はコミットせず、pull request を通して取り込む。直接コミットを許す場面があれば、この行の下に場面と理由を書く。
 
 <!-- 次のバージョンを何から決めるか。コミットメッセージからなら release-please、変更ごとの記述からなら changesets -->
 

@@ -9,8 +9,9 @@ status: stable
 
 ## Module Boundaries
 
-- 境界はパッケージ（`packages/<名前>`）である。core は共通の基盤で、docs、process、guardrails は 1 つずつ外せる。
+- 境界はパッケージ（`packages/<名前>`）である。core は共通の基盤で、docs と process は 1 つずつ外せる。
   - ADR-0013: [共通の基盤はパッケージ core に置き、ほかのパッケージはそれを前提にする](../adr/0013-core-package.md)
+  - ADR-0021: [ガードレールは考え方として持ち、止める仕組みと値は配らない](../adr/0021-guardrails-as-principle.md)
 - パッケージの中には、利用者に届くものだけを置く。このリポジトリ自身の開発に使うもの（`skills/`、`scripts/`、`design/`、`adr/`、`context/`）は、パッケージの外に置く。
 - 全体の構成は [全体像の Repository Layout](../design/DesignDoc.md#repository-layout) にある。
 

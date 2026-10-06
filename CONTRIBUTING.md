@@ -64,7 +64,7 @@ pnpm check:links
 
 - 作業用のブランチの名前は `feature/<issue 番号>` にする。例は `feature/6`。不具合の issue は `fix/<issue 番号>` にする。
 - main へは、pull request を通して取り込む。マージの方法はマージコミットだけで、取り込んだブランチは消す。
-- main へ直接コミットしてよいかは、`context/project.yml` の `guardrails.protected_branches.direct_commit` で宣言する。
+- 保護するブランチは `main` である。直接コミットを許す場面があれば、この行の下に場面と理由を書く。
 
 バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
 `<major>.<minor>.<patch>` の 3 つの数のうち、利用者のリポジトリで手直しが要る変更は major を、機能の追加は minor を、不具合の修正は patch を上げる。  

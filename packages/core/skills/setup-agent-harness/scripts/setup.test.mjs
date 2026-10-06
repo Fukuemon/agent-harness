@@ -42,7 +42,8 @@ test("既定の実行で一式を写し、値と目次を埋める", () => {
     assert.ok(existsSync(join(repo, p)), `${p} がない`);
   }
   const project = readFileSync(join(repo, "context/project.yml"), "utf8");
-  assert.match(project, /names: \[main,develop\]/);
+  assert.doesNotMatch(project, /names:/);
+  assert.match(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), /^- 保護するブランチは `main`、`develop` である。/m);
   assert.match(project, /design: docs\/design/);
   assert.match(readFileSync(join(repo, "AGENTS.md"), "utf8"), /^# my-repo/);
   const index = readFileSync(join(repo, "context/index.md"), "utf8");
@@ -93,17 +94,25 @@ test("2 回目は引数を省いても、値のファイルの値を引き継ぐ
   assert.match(d.out, /context\/project\.yml: 差分なし/);
 });
 
-test("値のファイルの配列が行の形でも、保護ブランチを引き継ぐ", () => {
+test("2 回目は引数を省いても、CONTRIBUTING.md の保護するブランチを引き継ぐ", () => {
   const { repo, script } = setup();
-  run(repo, script, ["--branches", "trunk"]);
-  const p = join(repo, "context/project.yml");
-  writeFileSync(p, readFileSync(p, "utf8").replace("names: [trunk]", "names:\n      - trunk\n      - release"));
+  run(repo, script, ["--branches", "trunk,release"]);
+  const p = join(repo, "CONTRIBUTING.md");
+  assert.match(readFileSync(p, "utf8"), /^- 保護するブランチは `trunk`、`release` である。/m);
   const d = run(repo, script, ["--diff"]);
-  assert.match(d.out, /\+    names: \[trunk,release\]/, d.out);
-  assert.doesNotMatch(d.out, /main,develop/);
-  const f = run(repo, script, ["--force", "context/project.yml"]);
+  assert.match(d.out, /CONTRIBUTING\.md: 差分なし/, d.out);
+  const f = run(repo, script, ["--force", "CONTRIBUTING.md"]);
   assert.equal(f.status, 0, f.out);
-  assert.match(readFileSync(p, "utf8"), /names: \[trunk,release\]/);
+  assert.match(readFileSync(p, "utf8"), /^- 保護するブランチは `trunk`、`release` である。/m);
+});
+
+test("version 1 の値のファイルの保護ブランチを、CONTRIBUTING.md へ引き継ぐ", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"), { recursive: true });
+  writeFileSync(join(repo, "context/project.yml"), "version: 1\nguardrails:\n  protected_branches:\n    names:\n      - trunk\n      - release\n");
+  writeFileSync(join(repo, "CONTRIBUTING.md"), "# 古い形\n");
+  const d = run(repo, script, ["--diff"]);
+  assert.match(d.out, /\+- 保護するブランチは `trunk`、`release` である。/, d.out);
 });
 
 test("--diff は、まだ写していないファイルがあれば終了コード 1", () => {
