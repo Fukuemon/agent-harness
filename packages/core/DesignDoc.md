@@ -19,10 +19,12 @@ verified_commit: unverified
 
 ## Scope
 
-- 持つもの: 値のファイルの形と schema。context の種類とテンプレート。frontmatter の基本のキーと、目次の生成。AGENTS.md と CONTRIBUTING.md のテンプレート。導入のスキル。context と CONTRIBUTING.md の書き方のスキル。リポジトリの運用の取り決めとして、ブランチとリリースの既定、コミットの規約のスキル、issue と pull request の規則のスキルと form の雛形、コードのコメントの規約のスキルとフック。
+- 持つもの: 値のファイルの形と schema。context の種類とテンプレート。frontmatter の基本のキーと、目次の生成。AGENTS.md と CONTRIBUTING.md のテンプレート。導入のスキル。context と CONTRIBUTING.md の書き方のスキル。リポジトリの運用の取り決めとして、ブランチとリリースの既定、コミットの規約のスキル、issue と pull request の規則のスキルと form の雛形、コードのコメントの規約のスキルとフック。運用の取り決めを守るガードレールとして、保護ブランチ、禁止するコマンド、秘密情報の規則と、止める仕組み。
   - ADR-0014: [リポジトリの運用の取り決めはパッケージ core に置き、process はプロセスの定義と進み具合だけを持つ](../../adr/0014-operations-in-core.md)
-- 分類: プロジェクト固有の知識の入れ物と、リポジトリの運用の取り決め。
-- 持たないもの: Design Doc、ADR、spec の構造とチェック。ガードレールの規則。開発プロセスの定義。ほかのパッケージのスクリプトが読み込む共通の処理。
+  - ADR-0021: [ガードレールは独立したパッケージにせず、規則に関わるパッケージが持つ](../../adr/0021-guardrails-in-owning-packages.md)
+  - [ガードレールの Design Doc](../../design/features/guardrails/DesignDoc_guardrails.md)
+- 分類: プロジェクト固有の知識の入れ物と、リポジトリの運用の取り決め。運用の取り決めを守るガードレール。
+- 持たないもの: Design Doc、ADR、spec の構造とチェック。開発プロセスの定義。ほかのパッケージのスクリプトが読み込む共通の処理。
 
 ## Design
 
@@ -44,7 +46,7 @@ docs:
   adr: adr
   spec: specs         # issue ごとに specs/<issue 番号>-<slug>/ を置く
 
-# ガードレールが読む。規則ごとにキーを持ち、キーがない規則は無効
+# core のガードレールが読む。規則ごとにキーを持ち、キーがない規則は無効
 guardrails:
   protected_branches:
     names: [main]

@@ -6,7 +6,7 @@ docs:
   adr: adr
   spec: specs
 
-# ガードレールが読む
+# core のガードレールが読む
 guardrails:
   protected_branches:
     names: [main]
