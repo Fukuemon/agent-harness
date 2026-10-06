@@ -1,9 +1,9 @@
 // ファイルの編集の後に、追加された行にコメントか lint の抑制があれば、確かめるよう促す文をコンテキストに追加する。編集は拒否しない。
 // 文書コメント（/**、///、//!、"""）と実装のコメントで、促す文を分ける
-// 使い方: PostToolUse のフックから呼ぶ。標準入力に tool_name と tool_input の JSON を受け取る
+// 使い方: PostToolUse のフックから呼ぶ。標準入力に tool_name と tool_input の JSON を受け取る。context/project.yml がないリポジトリでは何もしない
 // 終了コード: 常に 0。コメントが足されていれば、hookSpecificOutput.additionalContext を標準出力に書く
-import { readFileSync } from "node:fs";
-import { basename, extname } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { basename, dirname, extname, join, resolve } from "node:path";
 
 const SLASH = new Set([".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".go", ".rs", ".java", ".kt", ".swift", ".c", ".h", ".cpp", ".cs", ".php", ".css", ".scss", ".dart"]);
 const HASH = new Set([".py", ".sh", ".bash", ".zsh", ".rb", ".yml", ".yaml", ".toml", ".pl", ".r", ".mk"]);
@@ -11,6 +11,8 @@ const DASH = new Set([".sql", ".lua", ".hs"]);
 const ANGLE = new Set([".html", ".vue", ".svelte", ".xml"]);
 const SUPPRESS = /eslint-disable|@ts-ignore|@ts-expect-error|biome-ignore|noqa|nolint|prettier-ignore|textlint-disable|type: ?ignore|pylint: ?disable/;
 const DOC = /^(\/\*\*|\/\/\/|\/\/!|"""|'''|\*\s|\*\/)/;
+
+if (!installed()) process.exit(0);
 
 let input;
 try {
@@ -72,4 +74,12 @@ function isComment(file, line) {
   if (DASH.has(ext)) return s.startsWith("--");
   if (ANGLE.has(ext)) return s.startsWith("<!--");
   return false;
+}
+
+// agent-harness を導入したリポジトリか。コーディングエージェントによっては、プラグインを入れたすべてのリポジトリでフックを動かす
+function installed(dir = process.env.CLAUDE_PROJECT_DIR || process.cwd()) {
+  for (let d = resolve(dir); ; d = dirname(d)) {
+    if (existsSync(join(d, "context", "project.yml"))) return true;
+    if (d === dirname(d)) return false;
+  }
 }
