@@ -10,10 +10,10 @@ import { execFileSync } from "node:child_process";
 
 const script = fileURLToPath(new URL("./check-package-names.mjs", import.meta.url));
 
-function run(body) {
+function run(body, pkg = "x") {
   const dir = mkdtempSync(join(tmpdir(), "names-"));
-  mkdirSync(join(dir, "packages/x/skills/s"), { recursive: true });
-  writeFileSync(join(dir, "packages/x/skills/s/SKILL.md"), body);
+  mkdirSync(join(dir, `packages/${pkg}/skills/s`), { recursive: true });
+  writeFileSync(join(dir, `packages/${pkg}/skills/s/SKILL.md`), body);
   try {
     return { status: 0, out: execFileSync("node", [script, "packages"], { cwd: dir, encoding: "utf8" }) };
   } catch (e) {
@@ -31,5 +31,10 @@ test("本文とコードブロックの両方で語を検出する", () => {
 
 test("許す語と、語を含む別の語は通す", () => {
   const r = run("release-please か changesets を選ぶ。スキル setup-agent-harness を呼ぶ。\n");
+  assert.equal(r.status, 0, r.out);
+});
+
+test("パッケージ global は対象にしない", () => {
+  const r = run("GitHub で進める。\n", "global");
   assert.equal(r.status, 0, r.out);
 });
