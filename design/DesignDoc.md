@@ -54,50 +54,26 @@ agent-harness のリポジトリは配布元である。
 agent-harness のチェックは、利用者の環境を読み取るだけで変更しない。  
 パッケージマネージャーで確認できないことのチェックは、実機で不足を確かめたものだけを、その時点で足す。
 
-次の図は、パッケージマネージャーで導入する場合の、開発者、コーディングエージェント、agent-harness の関係を示す。  
+開発者、コーディングエージェント、パッケージマネージャーとの関係の全体像は、[PRD の Landscape](../PRD.md#landscape) にある。  
+次の図は、パッケージマネージャーで導入する場合の、agent-harness のパッケージと、取得から配置までの関係を示す。  
 コーディングエージェントの標準の方法と lefthook の remotes で導入する場合は、[Interfaces](#interfaces)の節に書いてある。
 
 ```mermaid
----
-config:
-  c4:
-    c4ShapeMargin: 110
-    c4ShapePadding: 20
----
-C4Context
-    title agent-harness の System Context
+flowchart TB
+    subgraph AH["agent-harness"]
+        direction LR
+        core["core<br/>共通の基盤と、リポジトリの運用の取り決め"]
+        docs["docs<br/>文書の体系と、文書のチェック"]
+        process["process<br/>開発のプロセスの定義と、進み具合のチェック"]
+        guardrails["guardrails<br/>取り返しのつかない操作を止める規則"]
+    end
+    third["サードパーティの配布元<br/>スキルとプラグイン"]
+    apm["microsoft/apm<br/>取得、バージョンの固定、配置、差分の検出"]
+    repo["利用者のリポジトリ<br/>マニフェスト、ロックファイル、context、配置されたスキルとフック"]
 
-    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
-
-    %% 1 行目: 人と、人が使うもの
-    Person(dev, "開発者", "複数のリポジトリで Claude Code や Codex CLI を使う")
-    System_Ext(agent, "コーディングエージェント", "Claude Code、Codex CLI")
-
-    %% 2 行目: 導入の道具と、導入先
-    System_Ext(apm, "microsoft/apm", "取得、バージョンの固定、配置、差分の検出")
-    System_Ext(repo, "利用者のリポジトリ", "マニフェスト、ロックファイル、context、コーディングエージェントごとの設定")
-
-    %% 3 行目: 配布元
-    System(ah, "agent-harness", "テンプレート、ガードレール、チェック、マニフェストの例の配布元")
-    System_Ext(third, "サードパーティの配布元", "サードパーティのスキルとプラグイン")
-
-    Rel_R(dev, agent, "作業を頼む")
-    Rel_D(dev, apm, "導入のコマンドを実行する")
-    Rel(dev, repo, "マニフェストにパッケージを書く")
-    Rel_D(agent, repo, "スキル、フック、context を読む")
-
-    Rel_R(apm, repo, "スキルとフックを配置する")
-    Rel_D(apm, ah, "パッケージを取得する")
-    Rel(apm, third, "拡張機能を取得する")
-
-    %% ラベル位置の微調整
-    UpdateRelStyle(dev, agent, $offsetY="-18")
-    UpdateRelStyle(dev, apm, $offsetX="-35")
-    UpdateRelStyle(dev, repo, $offsetX="10", $offsetY="-30")
-    UpdateRelStyle(agent, repo, $offsetX="10")
-    UpdateRelStyle(apm, repo, $offsetY="-18")
-    UpdateRelStyle(apm, ah, $offsetX="-35")
-    UpdateRelStyle(apm, third, $offsetX="10", $offsetY="-30")
+    AH -- "パッケージを取得する" --> apm
+    third -- "拡張機能を取得する" --> apm
+    apm -- "マニフェストを読み、スキルとフックを配置する" --> repo
 ```
 
 パッケージマネージャーには microsoft/apm を使う。  
