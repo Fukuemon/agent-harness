@@ -12,6 +12,8 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 
 どちらもフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 
+`packages/global` は、このリポジトリの開発者個人の global の構成で、利用者に勧めるパッケージではない。扱いは [ADR-0022](adr/0022-personal-global-package.md) にある。
+
 ## Installation
 
 導入の方法は 3 つある。apm を推奨する。バージョンを固定でき、docs のチェックを lefthook と CI から呼べるのは apm だけである。

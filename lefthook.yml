@@ -13,3 +13,15 @@ pre-commit:
     textlint:
       glob: "*.md"
       run: pnpm exec textlint {staged_files}
+
+# packages/global を直したら、この端末の user scope へ配置し直す
+post-commit:
+  commands:
+    apply-global:
+      run: node scripts/apply-global.mjs HEAD~1 HEAD
+
+# 別の端末で直した変更を pull したときも、配置し直す
+post-merge:
+  commands:
+    apply-global:
+      run: node scripts/apply-global.mjs ORIG_HEAD HEAD

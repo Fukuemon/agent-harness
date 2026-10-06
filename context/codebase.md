@@ -12,6 +12,8 @@ status: stable
 - 境界はパッケージ（`packages/<名前>`）である。core は共通の基盤で、docs と process は 1 つずつ外せる。
   - ADR-0013: [共通の基盤はパッケージ core に置き、ほかのパッケージはそれを前提にする](../adr/0013-core-package.md)
   - ADR-0021: [ガードレールは考え方として持ち、止める仕組みと値は配らない](../adr/0021-guardrails-as-principle.md)
+- パッケージ global は、開発者個人の global の構成で、製品のパッケージの境界の外にある。ほかのパッケージのスキルは、このリポジトリを指す依存で参照し、ほかのパッケージからは参照されない。
+  - ADR-0022: [個人の global の構成をパッケージ global に置き、製品のパッケージと分けて扱う](../adr/0022-personal-global-package.md)
 - パッケージの中には、利用者に届くものだけを置く。このリポジトリ自身の開発に使うもの（`skills/`、`scripts/`、`design/`、`adr/`、`context/`）は、パッケージの外に置く。
 - 全体の構成は [全体像の Repository Layout](../design/DesignDoc.md#repository-layout) にある。
 

@@ -43,13 +43,13 @@ function toRegExp(pattern) {
   return m ? new RegExp(m[1], m[2].includes("g") ? m[2] : `${m[2]}g`) : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
 }
 
-// packages/<名前>/skills/ の下の Markdown だけを対象にする
+// packages/<名前>/skills/ の下の Markdown だけを対象にする。global は個人の環境を前提にする構成なので除く
 function skillDocs(dir) {
   const files = [];
   if (!existsSync(dir)) return files;
   for (const pkg of readdirSync(dir, { withFileTypes: true })) {
     const skills = join(dir, pkg.name, "skills");
-    if (pkg.isDirectory() && existsSync(skills)) walk(skills, files);
+    if (pkg.name !== "global" && pkg.isDirectory() && existsSync(skills)) walk(skills, files);
   }
   return files;
 }
