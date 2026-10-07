@@ -26,7 +26,7 @@ description: 画面の動作確認やレビューの証跡を、ブラウザの�
 - agent-browser は CDP で動くため、Chromium 系しか操作できない。1 つのブラウザでの確認、探索的テスト、ログイン済みのセッションを使う操作に使う。
 - Playwright は、複数のエンジンの比較、手順の反復、既存の e2e テストを証跡にするときに使う。
 - e2e は、観点ごとのテストを書いて撮り、動画、trace、レポートを 1 回でそろえるときに使う。対象のリポジトリの依存には足さない。
-- テストのモックを使う画面では、Playwright の外のブラウザではモックが当たらない。agent-browser で撮るときの扱いは references にある。
+- テストが Playwright の `route` で張るモックは、Playwright が起動したブラウザの中でだけ応答を差し替える。agent-browser や手で開いたブラウザでは当たらないので、モックを使う画面を agent-browser で撮るときは、[references/agent-browser.md](references/agent-browser.md) の手順で張り直す。
 - Playwright の `firefox` と `webkit` はエンジンで、Firefox や Safari のアプリそのものではない。証跡には、どの層で測ったかを書く。
 
 ## 画面の大きさ
