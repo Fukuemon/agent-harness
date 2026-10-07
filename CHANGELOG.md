@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.2.0](https://github.com/Fukuemon/agent-harness/compare/v0.1.0...v0.2.0) (2026-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core:** context/project.yml の version を 2 に上げ、guardrails のキーを削除する。
+
+### Features
+
+* **core:** project.yml から guardrails を削除し、version を 2 に上げる [#59](https://github.com/Fukuemon/agent-harness/issues/59) ([7dda7cf](https://github.com/Fukuemon/agent-harness/commit/7dda7cf2a3eb6886249051be614ebe951bf55245))
+* **core:** write-issue-pr に、起票の前の下書きへ文書のチェックを掛ける手順を足す [#51](https://github.com/Fukuemon/agent-harness/issues/51) ([df163f1](https://github.com/Fukuemon/agent-harness/commit/df163f1ee49c8fb3a500a7e53f6bf5510092ad4b))
+* **core:** 保護するブランチを CONTRIBUTING.md に書く [#59](https://github.com/Fukuemon/agent-harness/issues/59) ([4ae7250](https://github.com/Fukuemon/agent-harness/commit/4ae72500ac6af951c79c8bb3436a09b0c9400214))
+* **docs:** C4 の L1 の図を PRD の Landscape に置き、Design Doc からリンクする [#57](https://github.com/Fukuemon/agent-harness/issues/57) ([9096ef6](https://github.com/Fukuemon/agent-harness/commit/9096ef69e3f9e969457137b21128a08198e39fe8))
+* **docs:** write-design-docs の PRD の節の構成と粒度の規則を足す [#57](https://github.com/Fukuemon/agent-harness/issues/57) ([021f73a](https://github.com/Fukuemon/agent-harness/commit/021f73a132293673cee3491c0862259524509d43))
+* **docs:** write-prose に、無生物主語、意味の保持、言い換えの上限の規則を足す [#50](https://github.com/Fukuemon/agent-harness/issues/50) ([4c41683](https://github.com/Fukuemon/agent-harness/commit/4c4168313b413e133c56274bc78b14ebd651559c))
+* **docs:** write-prose の「文と段落」を、「文」と「段落と箇条書き」の節に分けて書き直す [#55](https://github.com/Fukuemon/agent-harness/issues/55) ([ee220ad](https://github.com/Fukuemon/agent-harness/commit/ee220adc00f93e37528b20c8014c3f7dda24f6df))
+* **docs:** write-prose の図の節に、視点ごとに分ける規則と縦向きに描く規則を足す [#57](https://github.com/Fukuemon/agent-harness/issues/57) ([3ae305e](https://github.com/Fukuemon/agent-harness/commit/3ae305ec0da5294a310db535a0ed0a7e02295d92))
+* **docs:** 文章の規則のテンプレートに、AI が書きがちな語を検出する規則を足す [#49](https://github.com/Fukuemon/agent-harness/issues/49) ([3bb3720](https://github.com/Fukuemon/agent-harness/commit/3bb3720bb1138be09c8725c2ec2803ce0f797244))
+
+
+### Bug Fixes
+
+* **core:** version 1 の保護ブランチを、導入の更新で引き継ぐ [#59](https://github.com/Fukuemon/agent-harness/issues/59) ([5c22ebc](https://github.com/Fukuemon/agent-harness/commit/5c22ebcb1e8f03c403c3bd14fbe8a53c873bd1e2))
+* **core:** コメントのフックを、context/project.yml がないリポジトリでは動かさない [#61](https://github.com/Fukuemon/agent-harness/issues/61) ([b9c0e5e](https://github.com/Fukuemon/agent-harness/commit/b9c0e5e3619678610ec99e519d4a713fe87d3366))
+* **core:** スキルに残る、保護ブランチを project.yml から読む記述を直す [#59](https://github.com/Fukuemon/agent-harness/issues/59) ([bb3e14e](https://github.com/Fukuemon/agent-harness/commit/bb3e14ed5cb4d812c6d89d6fcb3c4c7f3bd1fb49))
+* **core:** セッションの開始のフックを、context/project.yml がないリポジトリでは動かさない [#61](https://github.com/Fukuemon/agent-harness/issues/61) ([ea9ca8d](https://github.com/Fukuemon/agent-harness/commit/ea9ca8dce68efe736818888093dbebb4b7e57f83))
+* **docs:** 「に他なりません」も検出するように、文末の飾りの規則を修正する [#49](https://github.com/Fukuemon/agent-harness/issues/49) ([e2534db](https://github.com/Fukuemon/agent-harness/commit/e2534db8bea694b26abd3a0cd59af89d63083ef9))
+* **docs:** PRD の Background、User Stories、Milestones の規則の条件を明確にする [#57](https://github.com/Fukuemon/agent-harness/issues/57) ([e69e249](https://github.com/Fukuemon/agent-harness/commit/e69e249c94b981df492e8b1f3be017c0daf39746))
+* **docs:** User Stories の単位を、1 つの目的を果たす一続きの操作に揃える [#57](https://github.com/Fukuemon/agent-harness/issues/57) ([6415eb5](https://github.com/Fukuemon/agent-harness/commit/6415eb5e195b80de9d7171169a68e53df88dceda))
+* **docs:** 文書のフックを、context/project.yml がないリポジトリでは動かさない [#61](https://github.com/Fukuemon/agent-harness/issues/61) ([39f5f02](https://github.com/Fukuemon/agent-harness/commit/39f5f02f62b2a3dd492caab6e4646abc2e2e865d))
+
+
+### Documentation
+
+* **core:** core の範囲に、ガードレールの規則と止める仕組みを足す [#59](https://github.com/Fukuemon/agent-harness/issues/59) ([6e6a14e](https://github.com/Fukuemon/agent-harness/commit/6e6a14e0ccbbc2363d5d25842562dae507aba045))
+* **core:** 導入のスキルに、apm を使わずに入れた場合の案内を足す [#61](https://github.com/Fukuemon/agent-harness/issues/61) ([dae34bf](https://github.com/Fukuemon/agent-harness/commit/dae34bfe04a0bf62bca47ffee117a6b9045a4312))
+* ガードレールを考え方として扱う形に、PRD と設計を合わせる [#59](https://github.com/Fukuemon/agent-harness/issues/59) ([1f4faf6](https://github.com/Fukuemon/agent-harness/commit/1f4faf6d27c116f2f2205823fa157de6e6bf4493))
+* 文書の「寿命」を「ライフサイクル」に言い換える [#57](https://github.com/Fukuemon/agent-harness/issues/57) ([7106fad](https://github.com/Fukuemon/agent-harness/commit/7106fad539234dccab649a7b92006d0ba1e02ee6))
+
 ## 0.1.0 (2026-09-30)
 
 
