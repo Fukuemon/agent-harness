@@ -33,4 +33,4 @@ body:
     id: environment
     attributes:
       label: 環境
-      description: agent-harness のバージョン、コーディングエージェントとそのバージョン、OS
+      description: 再現したコミット、実行したコマンド、コーディングエージェントとそのバージョン、OS
