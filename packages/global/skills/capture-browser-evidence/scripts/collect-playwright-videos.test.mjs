@@ -37,3 +37,9 @@ test("--prefix が無ければ、2 で終わる", () => {
   const r = run([{ title: "成功する", video: true }]);
   assert.equal(r.status, 2);
 });
+
+test("--prefix にブランチ名の / があっても、名前から除いて 0 で終わる", () => {
+  const r = run([{ title: "成功する", video: true }], "--prefix", "feature/66");
+  assert.equal(r.status, 0, r.stderr);
+  assert.ok(existsSync(join(r.out, "feature66-login-01-一覧画面-成功する.webm")), r.stdout);
+});

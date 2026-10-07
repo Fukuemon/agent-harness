@@ -73,8 +73,8 @@ description: 画面の動作確認やレビューの証跡を、ブラウザの�
 Playwright と agent-browser の `.webm`（VP8）は、macOS の QuickTime とプレビュー、ホスティングサービスのプレビューで再生できないことがある。
 
 ```bash
-bash scripts/convert-captures.sh <dir>          # <dir>/webm を <dir>/mp4 へ H.264 で変換する
-bash scripts/convert-captures.sh <dir> -s 1.8   # 尺を 1.8 倍に引き伸ばす
+bash {このスキルのディレクトリ}/scripts/convert-captures.sh <dir>          # <dir>/webm を <dir>/mp4 へ H.264 で変換する
+bash {このスキルのディレクトリ}/scripts/convert-captures.sh <dir> -s 1.8   # 尺を 1.8 倍に引き伸ばす
 ```
 
 - 終了コード 0: 全部の出力が H.264 で、尺があることまで確かめた。

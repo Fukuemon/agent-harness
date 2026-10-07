@@ -24,5 +24,5 @@ gh pr comment <number> -R <owner>/<repo> --body-file <本文.md> --attach ./medi
 - private なリポジトリの URL は、認証がないと 404 になる。公開の場に URL を貼っても、権限のない人は見られない。
 
 ```bash
-gh api repos/<owner>/<repo>/issues/comments/<id> --jq '.body' | grep -c 'github.com/user-attachments/assets/'
+gh api repos/<owner>/<repo>/issues/comments/<id> --jq '.body' | grep -o 'github.com/user-attachments/assets/' | wc -l
 ```

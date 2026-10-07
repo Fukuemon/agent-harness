@@ -103,7 +103,7 @@ def main() -> int:
             for suffix, src in enumerate(videos):
                 # 同一テストで複数タブを録った場合はどのタブかを番号で残す
                 tab = '' if len(videos) == 1 else f'-tab{suffix + 1}'
-                name = f'{args.prefix}-{spec_slug}-{index:02d}-{group_part}{title}{tab}.webm'
+                name = f'{sanitize(args.prefix)}-{spec_slug}-{index:02d}-{group_part}{title}{tab}.webm'
                 shutil.copy2(src, out / name)
                 copied += 1
                 print(f'  {name}')

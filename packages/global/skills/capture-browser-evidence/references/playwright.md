@@ -64,7 +64,7 @@ export default defineConfig({
 ```bash
 npx playwright test --config <置き場所>/playwright.capture.config.ts \
   --reporter=json <specs> > <置き場所>/<検証名>/report.json
-python3 scripts/collect-playwright-videos.py <置き場所>/<検証名>/report.json <置き場所>/<検証名>/<条件> --prefix <条件>
+uv run --no-project python {このスキルのディレクトリ}/scripts/collect-playwright-videos.py <置き場所>/<検証名>/report.json <置き場所>/<検証名>/<条件> --prefix <条件>
 ```
 
 - 出力は `<出力先>/webm/<条件>-<spec のファイル名>-<連番>-<describe 名>-<テスト名>.webm`。describe 名が末尾の丸括弧に画面名を持つときは、括弧の中だけを使う。
