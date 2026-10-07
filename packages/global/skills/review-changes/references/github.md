@@ -25,8 +25,9 @@ query($o: String!, $r: String!, $n: Int!, $endCursor: String) {
 }' -f o=<owner> -f r=<repo> -F n=<number>
 ```
 
-- 差分行に付かないコメントは `gh api repos/<owner>/<repo>/issues/<number>/comments` で取る。
-- レビューの本文は `gh api repos/<owner>/<repo>/pulls/<number>/reviews` で取る。
+- 差分行に付かないコメントは `gh api --paginate repos/<owner>/<repo>/issues/<number>/comments` で取る。
+- レビューの本文は `gh api --paginate repos/<owner>/<repo>/pulls/<number>/reviews` で取る。
+- `gh api` の一覧は、`--paginate` を付けないと 1 ページ目しか返らない。
 
 ## 差分行に投稿する
 
