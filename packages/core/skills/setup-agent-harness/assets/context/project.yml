@@ -1,5 +1,7 @@
 version: 2
 
+hosting: github
+
 docs:
   design: design
   adr: adr

@@ -10,13 +10,14 @@ description: agent-harness を利用者のリポジトリに導入するとき�
 
 ## 初めて導入するとき
 
-1. 利用者に 2 点を尋ねる。答えがなければ既定を使う。
+1. 利用者に 3 点を尋ねる。答えがなければ既定を使う。
    - 保護するブランチの名前。既定は `main,develop`。`,` で区切る。CONTRIBUTING.md に書かれる。
    - 文書のディレクトリ名。Design Doc、ADR、spec の順で、既定は `design,adr,specs`。
+   - ホスティングサービス。`github` か `gitlab`。既定は、`origin` の URL に `gitlab` を含めば `gitlab`、それ以外は `github`。`context/project.yml` の `hosting` に書かれる。
 2. リポジトリのルートで、このスキルの `scripts/setup.mjs` を実行する。
 
 ```sh
-node <このスキルのディレクトリ>/scripts/setup.mjs --branches main,develop --docs design,adr,specs
+node <このスキルのディレクトリ>/scripts/setup.mjs --branches main,develop --docs design,adr,specs --hosting github
 ```
 
 3. スクリプトが表示した「写した」と「飛ばした」の一覧を、利用者にそのまま見せる。既にあるファイルは写されない。`.gitignore` には、`.ai-out/` と、`apm.lock.yaml` にある apm の配置先の行が足される。`.ai-out/` は公開しない作業メモの置き場である。  
@@ -45,8 +46,8 @@ context の 6 種類は、すべて `status: draft` の骨組みとして置か�
 
 ## パッケージを更新したとき
 
-- 2 点の引数は省ける。保護するブランチは既にある CONTRIBUTING.md から、文書のディレクトリ名は `context/project.yml` から引き継ぐ。
-- `--diff` は、テンプレートと既存のファイルの差分を表示する。書き換えない。利用者は差分を見て、取り込む変更を手で反映する。まだ写していないファイルがあれば、それも表示する。
+- 3 点の引数は省ける。保護するブランチは既にある CONTRIBUTING.md から、文書のディレクトリ名とホスティングサービスは `context/project.yml` から引き継ぐ。
+- `--diff` は、テンプレートと既存のファイルの差分を表示する。書き換えない。利用者は差分を見て、取り込む変更を手で反映する。まだ写していないファイルと、選ばなかったホスティングサービスの雛形が残っていれば、それも表示する。残った雛形を消すかは利用者が決める。
 - `--force <パス>` は、名指ししたファイルだけをテンプレートで上書きする。上書きの前に差分を表示する。複数のファイルは `--force` を繰り返す。
 - 全部を一括で上書きする選択肢はない。context は利用者が書いた内容そのもので、一括の上書きは内容を失う。
 
@@ -63,3 +64,4 @@ node <このスキルのディレクトリ>/scripts/setup.mjs --force CONTRIBUTI
 - ほかのスキルの `assets/`。docs、process のパッケージが配置されていれば、そのテンプレートも写る。
   - パッケージマネージャーで入れた場合は、同じ `skills/` にあるスキルを見る。
   - コーディングエージェントの標準の方法で一覧から入れた場合は、プラグインごとに分かれた置き場から、同じ一覧のプラグインを見る。
+- issue と merge request（pull request）の雛形は、選んだホスティングサービスの `.github/` か `.gitlab/` の一方だけを写す。`gitlab` を選ぶと、CONTRIBUTING.md の「pull request」を「merge request」と書いて写す。

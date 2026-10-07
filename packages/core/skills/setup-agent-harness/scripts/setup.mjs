@@ -1,7 +1,8 @@
 // スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
-// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--diff] [--force <パス>]... | --gitignore
-// 省いた値は、既にある CONTRIBUTING.md と context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs
-// 保護するブランチは CONTRIBUTING.md の <保護するブランチ> に、文書のディレクトリ名は context/project.yml に書く
+// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--hosting github|gitlab] [--diff] [--force <パス>]... | --gitignore
+// 省いた値は、既にある CONTRIBUTING.md と context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs、origin の URL から推定したホスティングサービス
+// 保護するブランチは CONTRIBUTING.md の <保護するブランチ> に、文書のディレクトリ名とホスティングサービスは context/project.yml に書く
+// 雛形は、選んだホスティングサービスの .github/ か .gitlab/ の一方だけを写す
 // .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す。apm.yml には、apm install の後にそれを行う post-install を足す
 // --gitignore は .gitignore の行だけをそろえる。apm の post-install から呼ばれる
 // どちらも、パッケージから消えたスキルとフックの写しを配置先から消し、.gitignore の行も消す
@@ -12,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 
-const opts = { branches: "", docs: "", diff: false, gitignore: false, force: [] };
+const opts = { branches: "", docs: "", hosting: "", diff: false, gitignore: false, force: [] };
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
@@ -23,6 +24,7 @@ for (let i = 0; i < argv.length; i++) {
   else fail(`知らない引数: ${a}`);
 }
 const root = process.cwd();
+const HOSTS = { github: ".github/", gitlab: ".gitlab/" };
 const DEPLOYED_DIR = /^\/\.(claude|agents|codex)\/(skills|hooks)\/[^/]+\/$/;
 // apm の lifecycle は利用者の apm.yml にしか書けず、パッケージからは渡せない
 const LIFECYCLE = `lifecycle:
@@ -49,6 +51,8 @@ opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", a
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
 for (const d of docs) if (d.split("/").some((s) => s === "" || s === "." || s === "..")) fail(`文書のディレクトリはリポジトリの中の相対パスで書く。空、.、.. の区切りは使えない: ${d}`);
+opts.hosting ||= pick("hosting", "") || guessHosting();
+if (!HOSTS[opts.hosting]) fail(`--hosting は github か gitlab: ${opts.hosting}`);
 if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
 const skillDir = fileURLToPath(new URL("..", import.meta.url));
@@ -68,8 +72,14 @@ for (const root of skillsRoots()) {
     }
   }
 }
+// 選ばなかったホスティングサービスの雛形は写さない
+const otherHost = Object.entries(HOSTS).find(([h]) => h !== opts.hosting)[1];
+const unused = [...candidates.keys()].filter((p) => p.startsWith(otherHost));
+for (const p of unused) candidates.delete(p);
 candidates.set("context/project.yml", fillProject(candidates.get("context/project.yml")));
-candidates.set("CONTRIBUTING.md", candidates.get("CONTRIBUTING.md").replace("<保護するブランチ>", opts.branches.split(",").map((b) => `\`${b}\``).join("、")));
+let contributing = candidates.get("CONTRIBUTING.md").replace("<保護するブランチ>", opts.branches.split(",").map((b) => `\`${b}\``).join("、"));
+if (opts.hosting === "gitlab") contributing = contributing.replaceAll("pull request", "merge request").replace(/"PR #(\d+)"/g, '"MR !$1"');
+candidates.set("CONTRIBUTING.md", contributing);
 for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
 
@@ -87,6 +97,8 @@ if (opts.force.length) {
     const d = showDiff(p);
     if (d) { differs++; console.log(d); } else console.log(`${p}: 差分なし`);
   }
+  const stale = unused.filter((p) => existsSync(join(root, p)));
+  if (stale.length) { differs++; console.log(`${otherHost}: ${opts.hosting} では使わない雛形がある。不要なら消す\n${stale.map((p) => `  ${p}`).join("\n")}`); }
   if (unignored.length) { differs++; console.log(`.gitignore: 次の行がない。既定の実行で足される\n${unignored.map((l) => `  ${l}`).join("\n")}`); }
   if (lifecycle !== "ok") { differs++; console.log(`apm.yml: .gitignore をそろえる post-install がない。${lifecycle === "missing" ? "既定の実行で足される" : "lifecycle: があるので、次を手で足す"}\n${LIFECYCLE}`); }
   process.exit(differs ? 1 : 0);
@@ -224,9 +236,20 @@ function collect(dir, into, base = dir) {
   return into;
 }
 
+// origin の URL に gitlab を含めば gitlab、それ以外と、Git を読めないときは github
+function guessHosting() {
+  try {
+    const url = execFileSync("git", ["remote", "get-url", "origin"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    return /gitlab/i.test(url) ? "gitlab" : "github";
+  } catch {
+    return "github";
+  }
+}
+
 function fillProject(yaml) {
   const [design, adr, spec] = docs;
   return yaml
+    .replace(/^hosting: .*$/m, `hosting: ${opts.hosting}`)
     .replace(/^(\s*design:) .*$/m, `$1 ${design}`)
     .replace(/^(\s*adr:) .*$/m, `$1 ${adr}`)
     .replace(/^(\s*spec:) .*$/m, `$1 ${spec}`);
