@@ -1,6 +1,6 @@
 ---
 name: improve-performance
-description: 計測ログでボトルネックを特定し、改善案を実装の前に計測して採用を判定し、記録を残す。「遅い」「性能を改善して」「EXPLAIN ANALYZE で分析して」のような依頼で使う。
+description: 計測ログでボトルネックを特定し、改善案を実装の前に計測して採用を判定し、記録を残す。「遅い」「性能を改善して」「EXPLAIN ANALYZE で分析して」のような依頼で読み込む。
 ---
 
 # improve-performance

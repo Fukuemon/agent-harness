@@ -1,6 +1,6 @@
 ---
 name: review-changes
-description: ホスティングサービス上の変更（GitHub の pull request、GitLab の merge request）を head のコードで裏取りしてレビューし、must、imo、nits、ask の重要度を付けて差分行に投稿する。「この PR をレビューして」「MR の Rv をして」「この変更をレビューして」のような依頼で使う。
+description: ホスティングサービス上の変更（GitHub の pull request、GitLab の merge request）を head のコードで裏取りしてレビューし、must、imo、nits、ask の重要度を付けて差分行に投稿する。「この PR をレビューして」「MR の Rv をして」「この変更をレビューして」のような依頼で読み込む。
 ---
 
 # review-changes
