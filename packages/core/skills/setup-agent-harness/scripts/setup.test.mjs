@@ -21,6 +21,10 @@ function setup() {
   writeFileSync(join(skills, "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: 全体像\ndescription: 全体の設計\nstatus: draft\n---\n");
   mkdirSync(join(skills, "other", "assets", "adr"), { recursive: true });
   writeFileSync(join(skills, "other", "assets", "adr", "template.md"), "# ADR\n");
+  mkdirSync(join(skills, "other", "assets", ".github"), { recursive: true });
+  writeFileSync(join(skills, "other", "assets", ".github", "pull_request_template.md"), "Closes #\n");
+  mkdirSync(join(skills, "other", "assets", ".gitlab", "merge_request_templates"), { recursive: true });
+  writeFileSync(join(skills, "other", "assets", ".gitlab", "merge_request_templates", "Default.md"), "Closes #\n");
   const repo = join(base, "my-repo");
   mkdirSync(repo);
   return { repo, script: join(skills, "setup-agent-harness", "scripts", "setup.mjs") };
@@ -126,6 +130,8 @@ test("知らない引数と、テンプレートにない --force と、リポ�
   assert.equal(run(repo, script, ["--force", "nope.md"]).status, 2);
   assert.equal(run(repo, script, ["--docs", "../shared,adr,specs"]).status, 2);
   assert.equal(run(repo, script, ["--docs", ".,adr,specs"]).status, 2);
+  assert.equal(run(repo, script, ["--hosting", "bitbucket"]).status, 2);
+  assert.equal(run(repo, script, ["--hosting", "constructor"]).status, 2);
   assert.ok(!existsSync(join(repo, "..", "shared")), "リポジトリの外に写した");
 });
 
@@ -275,4 +281,45 @@ test("利用者の自作のスキルと、Git が追跡しているディレク�
   run(repo, script, ["--gitignore"]);
   assert.ok(existsSync(join(repo, ".claude/skills/mine/SKILL.md")), "自作のスキルが消えた");
   assert.ok(existsSync(join(repo, ".claude/skills/tracked/SKILL.md")), "追跡しているディレクトリが消えた");
+});
+
+test("Git の origin がなければ GitHub の雛形だけを写す", () => {
+  const { repo, script } = setup();
+  run(repo, script);
+  assert.ok(existsSync(join(repo, ".github/pull_request_template.md")), ".github/ がない");
+  assert.ok(!existsSync(join(repo, ".gitlab")), ".gitlab/ を写した");
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^hosting: github$/m);
+  assert.match(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), /pull request/);
+});
+
+test("origin が GitLab なら GitLab の雛形だけを写し、CONTRIBUTING.md を merge request の呼び方にする", () => {
+  const { repo, script } = setup();
+  execFileSync("git", ["init", "-q"], { cwd: repo });
+  execFileSync("git", ["remote", "add", "origin", "git@gitlab.example.com:group/my-repo.git"], { cwd: repo });
+  run(repo, script);
+  assert.ok(existsSync(join(repo, ".gitlab/merge_request_templates/Default.md")), ".gitlab/ がない");
+  assert.ok(!existsSync(join(repo, ".github")), ".github/ を写した");
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^hosting: gitlab$/m);
+  const contributing = readFileSync(join(repo, "CONTRIBUTING.md"), "utf8");
+  assert.match(contributing, /merge request/);
+  assert.doesNotMatch(contributing, /pull request|PR #/);
+});
+
+test("2 回目は引数を省いても、値のファイルのホスティングサービスを引き継ぐ", () => {
+  const { repo, script } = setup();
+  run(repo, script, ["--hosting", "gitlab"]);
+  const d = run(repo, script, ["--diff"]);
+  assert.equal(d.status, 0, d.out);
+  assert.doesNotMatch(d.out, /\.github/);
+});
+
+test("--diff は、選ばなかったホスティングサービスの雛形が残っていれば知らせて終了コード 1", () => {
+  const { repo, script } = setup();
+  run(repo, script, ["--hosting", "github"]);
+  writeFileSync(join(repo, "context/project.yml"), readFileSync(join(repo, "context/project.yml"), "utf8").replace("hosting: github", "hosting: gitlab"));
+  run(repo, script);
+  const d = run(repo, script, ["--diff"]);
+  assert.equal(d.status, 1, d.out);
+  assert.match(d.out, /gitlab では使わない雛形がある[\s\S]*\.github\/pull_request_template\.md/);
+  assert.ok(existsSync(join(repo, ".github/pull_request_template.md")), "残っていた雛形を消した");
 });

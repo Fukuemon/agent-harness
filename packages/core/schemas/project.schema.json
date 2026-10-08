@@ -11,6 +11,10 @@
       "type": "integer",
       "const": 2
     },
+    "hosting": {
+      "description": "issue と merge request（pull request）の雛形を、どのホスティングサービスの形式で写すか。導入のスクリプトが読む。",
+      "enum": ["github", "gitlab"]
+    },
     "docs": {
       "description": "文書の体系が読む。文書のディレクトリ名。",
       "type": "object",

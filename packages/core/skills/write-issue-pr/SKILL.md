@@ -5,7 +5,14 @@ description: issue を起票するとき、pull request を書くとき、レビ
 
 # write-issue-pr
 
-form と雛形は、このスキルの `assets/.github/` にあり、導入のスキルが利用者のリポジトリへ写す。ここには、節に何を書くかの判断だけを書く。  
+form と雛形は、このスキルの `assets/.github/` と `assets/.gitlab/` にある。導入のスキルが、`context/project.yml` の `hosting` に合う一方を利用者のリポジトリへ写す。ここには、節に何を書くかの判断だけを書く。  
+規則は `hosting: github` の呼び方で書く。`hosting` が `gitlab` のリポジトリでは、次のように読み替える。
+
+- pull request は merge request、Draft の pull request は Draft の merge request と読む。
+- form は `.gitlab/issue_templates/` の雛形と読む。種類のラベルは、雛形の末尾のクイックアクション `/label ~"type:*"` が付ける。
+- sub-issue は、task の雛形の「親の要求」欄に番号を書き、親の要求と関連する issue のリンクで結ぶ。
+- `Closes #<番号>` はそのまま使う。既定のブランチへのマージで issue が閉じる点は同じである。
+
 共通の規則はこの本文にある。作業に応じて、次の 1 つだけを開く。
 
 - issue を起票するときは [references/issue.md](references/issue.md)
