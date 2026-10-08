@@ -3,7 +3,7 @@ apm_version: 0.32.0
 dependencies:
 - repo_url: _local/core
   name: core
-  version: 0.2.0
+  version: 0.2.1
   package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/setup-agent-harness
@@ -156,7 +156,7 @@ dependencies:
   declared_license: MIT
 - repo_url: _local/docs
   name: docs
-  version: 0.2.0
+  version: 0.2.1
   package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/setup-design-docs
