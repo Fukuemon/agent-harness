@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.1](https://github.com/Fukuemon/agent-harness/compare/v0.2.0...v0.2.1) (2026-10-08)
+
+
+### Features
+
+* **core:** 導入のときにホスティングサービスを選び、GitLab の雛形を写す機能を追加する [#46](https://github.com/Fukuemon/agent-harness/issues/46) ([a85837f](https://github.com/Fukuemon/agent-harness/commit/a85837f16237e02700bc675dc5db93396e7a316c))
+* **docs:** write-prose に比喩の動詞、名詞の連続、装飾に頼った文を直す規則を追加する [#65](https://github.com/Fukuemon/agent-harness/issues/65) ([1148025](https://github.com/Fukuemon/agent-harness/commit/11480258e8e384430d471830daddbcd194e84542))
+
+
+### Bug Fixes
+
+* **core:** --hosting に Object の継承したプロパティの名前を渡すと通る誤りを修正する [#46](https://github.com/Fukuemon/agent-harness/issues/46) ([cba2fe1](https://github.com/Fukuemon/agent-harness/commit/cba2fe1703a5a46bcdd7c75e90b8bd5b857fbd61))
+* **core:** 雛形の「環境」と「影響」の文面を利用者のリポジトリ向けに修正する [#46](https://github.com/Fukuemon/agent-harness/issues/46) ([33a0a7a](https://github.com/Fukuemon/agent-harness/commit/33a0a7ad0856e0ef0dae121fe72d8f860f72eb4b))
+* **docs:** 「注目すべき点はない」を前置きとして指摘しないよう prh の規則を狭める [#65](https://github.com/Fukuemon/agent-harness/issues/65) ([38c6322](https://github.com/Fukuemon/agent-harness/commit/38c632219921c6c02afa4b251dae557d9a2b0036))
+* **docs:** write-prose の比喩の動詞の例を、原文にない原因と効果を補わない言い換えにする [#65](https://github.com/Fukuemon/agent-harness/issues/65) ([68f536e](https://github.com/Fukuemon/agent-harness/commit/68f536ea1ae1651bf7c7de8e588c895eb04e9b0c))
+
 ## [0.2.0](https://github.com/Fukuemon/agent-harness/compare/v0.1.0...v0.2.0) (2026-10-07)
 
 
