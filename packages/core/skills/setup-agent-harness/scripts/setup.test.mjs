@@ -131,6 +131,7 @@ test("知らない引数と、テンプレートにない --force と、リポ�
   assert.equal(run(repo, script, ["--docs", "../shared,adr,specs"]).status, 2);
   assert.equal(run(repo, script, ["--docs", ".,adr,specs"]).status, 2);
   assert.equal(run(repo, script, ["--hosting", "bitbucket"]).status, 2);
+  assert.equal(run(repo, script, ["--hosting", "constructor"]).status, 2);
   assert.ok(!existsSync(join(repo, "..", "shared")), "リポジトリの外に写した");
 });
 

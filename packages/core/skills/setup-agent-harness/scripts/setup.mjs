@@ -52,7 +52,7 @@ const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
 for (const d of docs) if (d.split("/").some((s) => s === "" || s === "." || s === "..")) fail(`文書のディレクトリはリポジトリの中の相対パスで書く。空、.、.. の区切りは使えない: ${d}`);
 opts.hosting ||= pick("hosting", "") || guessHosting();
-if (!HOSTS[opts.hosting]) fail(`--hosting は github か gitlab: ${opts.hosting}`);
+if (!Object.hasOwn(HOSTS, opts.hosting)) fail(`--hosting は github か gitlab: ${opts.hosting}`);
 if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
 const skillDir = fileURLToPath(new URL("..", import.meta.url));
