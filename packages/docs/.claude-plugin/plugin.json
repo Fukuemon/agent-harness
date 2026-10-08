@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "description": "Design Doc、ADR、spec の形とチェック。テンプレートと書き方のスキル、経緯の混入とリンクと実装とのずれのチェック。",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Fukuemon"
   },
