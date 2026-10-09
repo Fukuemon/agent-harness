@@ -323,3 +323,23 @@ test("--diff は、選ばなかったホスティングサービスの雛形が�
   assert.match(d.out, /gitlab では使わない雛形がある[\s\S]*\.github\/pull_request_template\.md/);
   assert.ok(existsSync(join(repo, ".github/pull_request_template.md")), "残っていた雛形を消した");
 });
+
+test("apm.lock.yaml があれば、ロックファイルにないスキルの assets/ は写さない", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "apm.lock.yaml"), [
+    "dependencies:",
+    "- repo_url: _local/core",
+    "  deployed_files:",
+    "  - .claude/skills/setup-agent-harness",
+    "  - .claude/skills/setup-agent-harness/SKILL.md",
+    "",
+  ].join("\n"));
+  const skills = join(repo, ".claude", "skills");
+  cpSync(skillSrc, join(skills, "setup-agent-harness"), { recursive: true });
+  mkdirSync(join(skills, "mine", "assets"), { recursive: true });
+  writeFileSync(join(skills, "mine", "assets", "mine-template.md"), "# mine\n");
+  const r = run(repo, join(skills, "setup-agent-harness", "scripts", "setup.mjs"));
+  assert.equal(r.status, 0, r.out);
+  assert.ok(existsSync(join(repo, "AGENTS.md")), "AGENTS.md がない");
+  assert.ok(!existsSync(join(repo, "mine-template.md")), "ロックファイルにないスキルの assets/ を写した");
+});

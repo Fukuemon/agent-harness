@@ -62,10 +62,16 @@ const candidates = new Map();
 collect(join(skillDir, "assets"), candidates);
 // ほかのスキルの assets/ にある design/、adr/、specs/ は、利用者が答えた文書のディレクトリ名に置き換える
 const dirs = { design: docs[0], adr: docs[1], specs: docs[2] };
-for (const root of skillsRoots()) {
-  for (const name of readdirSync(root)) {
-    const assets = join(root, name, "assets");
+// apm.lock.yaml がないと、自作のスキルとほかの方法で入れたスキルを見分けられず、それらの assets/ も写す
+const local = relative(root, skillsRoot);
+const apmSkills = existsSync(join(root, "apm.lock.yaml")) && !local.startsWith("..")
+  ? new Set(deployedDirs().filter((d) => d.startsWith(`/${local}/`)).map((d) => d.slice(local.length + 2, -1)))
+  : undefined;
+for (const dir of skillsRoots()) {
+  for (const name of readdirSync(dir)) {
+    const assets = join(dir, name, "assets");
     if (name === basename(skillDir) || !existsSync(assets)) continue;
+    if (dir === skillsRoot && apmSkills && !apmSkills.has(name)) continue;
     for (const [p, body] of collect(assets, new Map())) {
       const [head, ...rest] = p.split("/");
       candidates.set(head in dirs && rest.length ? [dirs[head], ...rest].join("/") : p, body);

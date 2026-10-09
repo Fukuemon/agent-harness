@@ -95,8 +95,8 @@ dependencies:
     .agents/skills/setup-agent-harness/assets/context/project.yml: sha256:c17fa3258a56ac55b59f057371005cc52aa397a87bcea771648623e7a09d6b30
     .agents/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:30b74d5d2a798d514920447c4c9ec5651593e5416179f0e63887a0d8e97a97ef
     .agents/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
-    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:96459de6d53b4d11983a617b83866154932908340677928526f2209b52239485
-    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:634c1ba55963e45f1c35319f37e03b83b21f200a84f5e778a723401a11ce7815
+    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
+    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
     .agents/skills/write-comments/SKILL.md: sha256:a3a19b019df0b899949ca4516bbe4e31594da1133d3fcf1f0102f308e62c1f4a
     .agents/skills/write-commit/SKILL.md: sha256:f098cd3f7283144e5dc93ff6a1edbee4fe261d699e6aad865d447d73b3930741
     .agents/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
@@ -128,8 +128,8 @@ dependencies:
     .claude/skills/setup-agent-harness/assets/context/project.yml: sha256:c17fa3258a56ac55b59f057371005cc52aa397a87bcea771648623e7a09d6b30
     .claude/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:30b74d5d2a798d514920447c4c9ec5651593e5416179f0e63887a0d8e97a97ef
     .claude/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
-    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:96459de6d53b4d11983a617b83866154932908340677928526f2209b52239485
-    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:634c1ba55963e45f1c35319f37e03b83b21f200a84f5e778a723401a11ce7815
+    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
+    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
     .claude/skills/write-comments/SKILL.md: sha256:a3a19b019df0b899949ca4516bbe4e31594da1133d3fcf1f0102f308e62c1f4a
     .claude/skills/write-commit/SKILL.md: sha256:f098cd3f7283144e5dc93ff6a1edbee4fe261d699e6aad865d447d73b3930741
     .claude/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
@@ -223,11 +223,11 @@ dependencies:
     .agents/skills/write-prose/SKILL.md: sha256:6587c1f3da6ab3a5c35cd3be2cedbf206ac99feb6661092529be3c9a1bf7bce2
     .claude/hooks/docs/hooks/check-docs.mjs: sha256:0f3d06c73e84cb4bf3dc9efd0c0f76894497bacee16b9452bd66300c059960da
     .claude/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
-    .claude/hooks/docs/hooks/check-history.mjs: sha256:0698cd5bd42036a7a0cfa32a4e6c0adae43bf27bcbbcabc299c47f8a196926e1
-    .claude/hooks/docs/hooks/check-links.mjs: sha256:13ef1c6f3b8111b3cf64aae89cde0d6ad756e7f6cd19e3cdf931f0ce3f45ffca
-    .claude/hooks/docs/hooks/checks.test.mjs: sha256:217518ea4256db97259b607dbe5779deaeec19e6285ebd6750feaf210fd12199
+    .claude/hooks/docs/hooks/check-history.mjs: sha256:14a2c8290b4a6fdc5de68b8c3225a6fa453c127ffb15aa4e9f24f120d7e16692
+    .claude/hooks/docs/hooks/check-links.mjs: sha256:df441a60160efac67eff271c9f01d30ca11c3586c7ba3358e1d361e0436b6a19
+    .claude/hooks/docs/hooks/checks.test.mjs: sha256:bc81411de61c54c07784936a40d60faa8e096360a934a51ec77975c9e75970d3
     .claude/hooks/docs/hooks/doc-checks.mjs: sha256:85f703eba914c6d362142c23ef16bd314fb542452ca28cf6e942360438d0564f
-    .claude/hooks/docs/hooks/list-drift.mjs: sha256:b7d08712021f334052e0ec26e19034abe3e03f1c01fe124ff0a220bbc57426b0
+    .claude/hooks/docs/hooks/list-drift.mjs: sha256:853a215bb43519fec6daf7363c6ddb2af61b61b41a9b7489f26f8f9dadfa1dbd
     .claude/hooks/docs/hooks/package.json: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
     .claude/skills/setup-design-docs/SKILL.md: sha256:47e6a2dd94c723e706c4dba43553296e10d0580e9412b00601bacd890fa9d9df
     .claude/skills/write-design-docs/SKILL.md: sha256:7ced8f6ed02f080994d6cadf772c8058f9ae74932525eda1bec513f8e055c1bc
@@ -244,11 +244,11 @@ dependencies:
     .claude/skills/write-prose/SKILL.md: sha256:6587c1f3da6ab3a5c35cd3be2cedbf206ac99feb6661092529be3c9a1bf7bce2
     .codex/hooks/docs/hooks/check-docs.mjs: sha256:0f3d06c73e84cb4bf3dc9efd0c0f76894497bacee16b9452bd66300c059960da
     .codex/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
-    .codex/hooks/docs/hooks/check-history.mjs: sha256:0698cd5bd42036a7a0cfa32a4e6c0adae43bf27bcbbcabc299c47f8a196926e1
-    .codex/hooks/docs/hooks/check-links.mjs: sha256:13ef1c6f3b8111b3cf64aae89cde0d6ad756e7f6cd19e3cdf931f0ce3f45ffca
-    .codex/hooks/docs/hooks/checks.test.mjs: sha256:217518ea4256db97259b607dbe5779deaeec19e6285ebd6750feaf210fd12199
+    .codex/hooks/docs/hooks/check-history.mjs: sha256:14a2c8290b4a6fdc5de68b8c3225a6fa453c127ffb15aa4e9f24f120d7e16692
+    .codex/hooks/docs/hooks/check-links.mjs: sha256:df441a60160efac67eff271c9f01d30ca11c3586c7ba3358e1d361e0436b6a19
+    .codex/hooks/docs/hooks/checks.test.mjs: sha256:bc81411de61c54c07784936a40d60faa8e096360a934a51ec77975c9e75970d3
     .codex/hooks/docs/hooks/doc-checks.mjs: sha256:85f703eba914c6d362142c23ef16bd314fb542452ca28cf6e942360438d0564f
-    .codex/hooks/docs/hooks/list-drift.mjs: sha256:b7d08712021f334052e0ec26e19034abe3e03f1c01fe124ff0a220bbc57426b0
+    .codex/hooks/docs/hooks/list-drift.mjs: sha256:853a215bb43519fec6daf7363c6ddb2af61b61b41a9b7489f26f8f9dadfa1dbd
     .codex/hooks/docs/hooks/package.json: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
   source: local
   local_path: ./packages/docs
@@ -316,7 +316,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:0698cd5bd42036a7a0cfa32a4e6c0adae43bf27bcbbcabc299c47f8a196926e1
+  content_hash: sha256:14a2c8290b4a6fdc5de68b8c3225a6fa453c127ffb15aa4e9f24f120d7e16692
 - kind: project-relative
   target: claude
   value: .claude/hooks/docs/hooks/check-links.mjs
@@ -325,7 +325,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:13ef1c6f3b8111b3cf64aae89cde0d6ad756e7f6cd19e3cdf931f0ce3f45ffca
+  content_hash: sha256:df441a60160efac67eff271c9f01d30ca11c3586c7ba3358e1d361e0436b6a19
 - kind: project-relative
   target: claude
   value: .claude/hooks/docs/hooks/checks.test.mjs
@@ -334,7 +334,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:217518ea4256db97259b607dbe5779deaeec19e6285ebd6750feaf210fd12199
+  content_hash: sha256:bc81411de61c54c07784936a40d60faa8e096360a934a51ec77975c9e75970d3
 - kind: project-relative
   target: claude
   value: .claude/hooks/docs/hooks/doc-checks.mjs
@@ -352,7 +352,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:b7d08712021f334052e0ec26e19034abe3e03f1c01fe124ff0a220bbc57426b0
+  content_hash: sha256:853a215bb43519fec6daf7363c6ddb2af61b61b41a9b7489f26f8f9dadfa1dbd
 - kind: project-relative
   target: claude
   value: .claude/hooks/docs/hooks/package.json
@@ -469,7 +469,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:96459de6d53b4d11983a617b83866154932908340677928526f2209b52239485
+  content_hash: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-agent-harness/scripts/setup.test.mjs
@@ -478,7 +478,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:634c1ba55963e45f1c35319f37e03b83b21f200a84f5e778a723401a11ce7815
+  content_hash: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-design-docs
@@ -928,7 +928,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:96459de6d53b4d11983a617b83866154932908340677928526f2209b52239485
+  content_hash: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-agent-harness/scripts/setup.test.mjs
@@ -937,7 +937,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:634c1ba55963e45f1c35319f37e03b83b21f200a84f5e778a723401a11ce7815
+  content_hash: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-design-docs
@@ -1342,7 +1342,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:0698cd5bd42036a7a0cfa32a4e6c0adae43bf27bcbbcabc299c47f8a196926e1
+  content_hash: sha256:14a2c8290b4a6fdc5de68b8c3225a6fa453c127ffb15aa4e9f24f120d7e16692
 - kind: project-relative
   target: codex
   value: .codex/hooks/docs/hooks/check-links.mjs
@@ -1351,7 +1351,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:13ef1c6f3b8111b3cf64aae89cde0d6ad756e7f6cd19e3cdf931f0ce3f45ffca
+  content_hash: sha256:df441a60160efac67eff271c9f01d30ca11c3586c7ba3358e1d361e0436b6a19
 - kind: project-relative
   target: codex
   value: .codex/hooks/docs/hooks/checks.test.mjs
@@ -1360,7 +1360,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:217518ea4256db97259b607dbe5779deaeec19e6285ebd6750feaf210fd12199
+  content_hash: sha256:bc81411de61c54c07784936a40d60faa8e096360a934a51ec77975c9e75970d3
 - kind: project-relative
   target: codex
   value: .codex/hooks/docs/hooks/doc-checks.mjs
@@ -1378,7 +1378,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:b7d08712021f334052e0ec26e19034abe3e03f1c01fe124ff0a220bbc57426b0
+  content_hash: sha256:853a215bb43519fec6daf7363c6ddb2af61b61b41a9b7489f26f8f9dadfa1dbd
 - kind: project-relative
   target: codex
   value: .codex/hooks/docs/hooks/package.json
