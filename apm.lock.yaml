@@ -95,8 +95,8 @@ dependencies:
     .agents/skills/setup-agent-harness/assets/context/project.yml: sha256:c17fa3258a56ac55b59f057371005cc52aa397a87bcea771648623e7a09d6b30
     .agents/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:30b74d5d2a798d514920447c4c9ec5651593e5416179f0e63887a0d8e97a97ef
     .agents/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
-    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
-    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
+    .agents/skills/setup-agent-harness/scripts/setup.mjs: sha256:78bec7833ecbad60af19cdab0b3bb04c6b2ca2735ea4c8dd184e1cb0fa0ae4e1
+    .agents/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:04ef12e8086600ce9bb5dbe441426039f52f46073fb92edc0f9907850feeedf3
     .agents/skills/write-comments/SKILL.md: sha256:a3a19b019df0b899949ca4516bbe4e31594da1133d3fcf1f0102f308e62c1f4a
     .agents/skills/write-commit/SKILL.md: sha256:f098cd3f7283144e5dc93ff6a1edbee4fe261d699e6aad865d447d73b3930741
     .agents/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
@@ -128,8 +128,8 @@ dependencies:
     .claude/skills/setup-agent-harness/assets/context/project.yml: sha256:c17fa3258a56ac55b59f057371005cc52aa397a87bcea771648623e7a09d6b30
     .claude/skills/setup-agent-harness/assets/context/tech-stack.md: sha256:30b74d5d2a798d514920447c4c9ec5651593e5416179f0e63887a0d8e97a97ef
     .claude/skills/setup-agent-harness/assets/context/testing.md: sha256:788028a6b8a5a37cbb217137b6658c62e7929acc84891a6a055986dd2aabf682
-    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
-    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
+    .claude/skills/setup-agent-harness/scripts/setup.mjs: sha256:78bec7833ecbad60af19cdab0b3bb04c6b2ca2735ea4c8dd184e1cb0fa0ae4e1
+    .claude/skills/setup-agent-harness/scripts/setup.test.mjs: sha256:04ef12e8086600ce9bb5dbe441426039f52f46073fb92edc0f9907850feeedf3
     .claude/skills/write-comments/SKILL.md: sha256:a3a19b019df0b899949ca4516bbe4e31594da1133d3fcf1f0102f308e62c1f4a
     .claude/skills/write-commit/SKILL.md: sha256:f098cd3f7283144e5dc93ff6a1edbee4fe261d699e6aad865d447d73b3930741
     .claude/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
@@ -469,7 +469,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
+  content_hash: sha256:78bec7833ecbad60af19cdab0b3bb04c6b2ca2735ea4c8dd184e1cb0fa0ae4e1
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-agent-harness/scripts/setup.test.mjs
@@ -478,7 +478,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
+  content_hash: sha256:04ef12e8086600ce9bb5dbe441426039f52f46073fb92edc0f9907850feeedf3
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-design-docs
@@ -928,7 +928,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:1d56f8a8cf443fd0cce92ee7c813baa9cd8c4d4c967d58ac9059151028504bb6
+  content_hash: sha256:78bec7833ecbad60af19cdab0b3bb04c6b2ca2735ea4c8dd184e1cb0fa0ae4e1
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-agent-harness/scripts/setup.test.mjs
@@ -937,7 +937,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:22203b08d5b20354906ebbde0cbd5025da7d69dedb26ad9c986932d5c62c8e13
+  content_hash: sha256:04ef12e8086600ce9bb5dbe441426039f52f46073fb92edc0f9907850feeedf3
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-design-docs

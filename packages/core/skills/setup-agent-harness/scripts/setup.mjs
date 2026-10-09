@@ -265,7 +265,9 @@ function buildIndex() {
   const gather = (dir) => {
     const entries = new Map();
     if (existsSync(join(root, dir))) collect(join(root, dir), entries);
-    for (const [p, body] of candidates) if (p.startsWith(`${dir}/`)) entries.set(p.slice(dir.length + 1), body);
+    for (const [p, body] of candidates) {
+      if (p.startsWith(`${dir}/`) && (opts.force.includes(p) || !existsSync(join(root, p)))) entries.set(p.slice(dir.length + 1), body);
+    }
     for (const f of entries.keys()) if (!f.endsWith(".md")) entries.delete(f);
     return entries;
   };

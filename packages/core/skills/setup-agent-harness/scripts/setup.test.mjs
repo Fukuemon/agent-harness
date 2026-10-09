@@ -343,3 +343,15 @@ test("apm.lock.yaml があれば、ロックファイルにないスキルの as
   assert.ok(existsSync(join(repo, "AGENTS.md")), "AGENTS.md がない");
   assert.ok(!existsSync(join(repo, "mine-template.md")), "ロックファイルにないスキルの assets/ を写した");
 });
+
+test("目次は、既にある文書の frontmatter をテンプレートの値で上書きしない", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"), { recursive: true });
+  writeFileSync(join(repo, "context", "testing.md"), "---\ntype: context\ntitle: 自分のテスト\ndescription: 書き終えたテストの規約\nstatus: stable\n---\n");
+  mkdirSync(join(repo, "design"), { recursive: true });
+  writeFileSync(join(repo, "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: 自分の全体像\ndescription: 書き終えた設計\nstatus: stable\n---\n");
+  run(repo, script);
+  const index = readFileSync(join(repo, "context/index.md"), "utf8");
+  assert.match(index, /\[自分のテスト\]\(testing\.md\) — 書き終えたテストの規約\n/);
+  assert.match(index, /\[自分の全体像\]\(\.\.\/design\/DesignDoc\.md\) — 書き終えた設計\n/);
+});
