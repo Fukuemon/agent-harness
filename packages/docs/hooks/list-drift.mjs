@@ -7,7 +7,7 @@ import { execFileSync } from "node:child_process";
 const git = (...args) => execFileSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
 let files;
 try {
-  files = git("ls-files", "*.md").split("\n").filter(Boolean);
+  files = git("ls-files", "-z", "*.md").split("\0").filter(Boolean);
 } catch {
   console.error("Git の履歴を読めない。リポジトリの中で実行する");
   process.exit(2);
