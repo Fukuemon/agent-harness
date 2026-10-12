@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.2.2](https://github.com/Fukuemon/agent-harness/compare/v0.2.1...v0.2.2) (2026-10-12)
+
+
+### Features
+
+* **docs:** プロジェクトの語を許す手順と、ADR の一部の置き換えの書き方を足す ([fb5da78](https://github.com/Fukuemon/agent-harness/commit/fb5da7800f77dd2641d32cb444614a2f9ed3a6a6)), closes [#80](https://github.com/Fukuemon/agent-harness/issues/80)
+* **docs:** 見出しの語と、CONTRIBUTING.md の案内も、誤検知の手順に回す [#80](https://github.com/Fukuemon/agent-harness/issues/80) ([f435848](https://github.com/Fukuemon/agent-harness/commit/f435848b5117ed19ce1c39525a8e59a8e83277c3))
+
+
+### Bug Fixes
+
+* **core:** --force で上書きした雛形もラベルをそろえ、merge request の見出しを使う [#81](https://github.com/Fukuemon/agent-harness/issues/81) ([de3a75d](https://github.com/Fukuemon/agent-harness/commit/de3a75df56d930af71cc92cd697dedc9a6168d2a))
+* **core:** --separate-git-dir の置き場を bare のリポジトリと区別する [#76](https://github.com/Fukuemon/agent-harness/issues/76) ([d614702](https://github.com/Fukuemon/agent-harness/commit/d614702698d5a28ee718386b115f2e7b17041207))
+* **core:** apm.lock.yaml が変わったときに配置し直し、チェックを飛ばしたことを表示する [#79](https://github.com/Fukuemon/agent-harness/issues/79) ([f99313a](https://github.com/Fukuemon/agent-harness/commit/f99313a23ee3d738b93d7016a24e4a7017712c61))
+* **core:** setup-agent-harness が worktree と旧形式の project.yml を正しく扱う [#76](https://github.com/Fukuemon/agent-harness/issues/76) ([8172ebc](https://github.com/Fukuemon/agent-harness/commit/8172ebc16654722e816362ba029d8a42dec09f10))
+* **core:** setup-agent-harness が写す assets/ を、apm.lock.yaml にあるスキルに絞る [#73](https://github.com/Fukuemon/agent-harness/issues/73) ([1c617e6](https://github.com/Fukuemon/agent-harness/commit/1c617e6cb6be8c9ce2be9478ff1c259423febe7e))
+* **core:** setup.mjs --index は、frontmatter が欠けた文書があれば失敗する [#77](https://github.com/Fukuemon/agent-harness/issues/77) ([dcd8bea](https://github.com/Fukuemon/agent-harness/commit/dcd8bea52ed6b85bdb81d8e1847a015e658edfd9))
+* **core:** ラベルをそろえるのは写した雛形だけにし、ラベルを全部読む [#81](https://github.com/Fukuemon/agent-harness/issues/81) ([dda6ac7](https://github.com/Fukuemon/agent-harness/commit/dda6ac7b431e9274f38490a0cfb02e5a0081a1bf))
+* **core:** リモートがないときは、ラベルをそろえる手順を後に回す [#81](https://github.com/Fukuemon/agent-harness/issues/81) ([282cce3](https://github.com/Fukuemon/agent-harness/commit/282cce3d369d2c5352499c113cfbf9bb5f3143f4))
+* **core:** 導入のときに、issue の雛形のラベルを今のラベルにそろえる ([bb2ec1b](https://github.com/Fukuemon/agent-harness/commit/bb2ec1b5954cdc21d33604a06f3f6103ef691f6e)), closes [#81](https://github.com/Fukuemon/agent-harness/issues/81)
+* **core:** 後に回したラベルの対応と、節のない CONTRIBUTING.md を扱う [#81](https://github.com/Fukuemon/agent-harness/issues/81) ([5962dac](https://github.com/Fukuemon/agent-harness/commit/5962dac94e0b3f8a61293cde0c674130dfd6a255))
+* **core:** 本体の作業ツリーでは、その名前をリポジトリの名前にする [#76](https://github.com/Fukuemon/agent-harness/issues/76) ([3b093f1](https://github.com/Fukuemon/agent-harness/commit/3b093f182935e1e14f01ed2745bbda1c8fe50982))
+* **core:** 目次に、コードの隣の Design Doc とルートの PRD を載せる [#77](https://github.com/Fukuemon/agent-harness/issues/77) ([d4c9699](https://github.com/Fukuemon/agent-harness/commit/d4c9699b693a4e0dabee595c496695403bd4948d))
+* **core:** 目次を、既にある文書の frontmatter から作る [#73](https://github.com/Fukuemon/agent-harness/issues/73) ([ef0931c](https://github.com/Fukuemon/agent-harness/commit/ef0931c66ca17387323718d28a40340044a82fec))
+* **docs:** --exclude のパターンが空の pathspec を拒む [#78](https://github.com/Fukuemon/agent-harness/issues/78) ([568c125](https://github.com/Fukuemon/agent-harness/commit/568c12542ecaef8131b6e9c5c7fcdf16bcc9657b))
+* **docs:** --exclude の短い形の pathspec にも exclude を足す [#78](https://github.com/Fukuemon/agent-harness/issues/78) ([35c8642](https://github.com/Fukuemon/agent-harness/commit/35c8642994a917218a6707f6655756f70a2ab1f7))
+* **docs:** --exclude の空のパスを拒み、魔法の語を exclude とまとめる [#78](https://github.com/Fukuemon/agent-harness/issues/78) ([09ac795](https://github.com/Fukuemon/agent-harness/commit/09ac7953fff5c109298b65110e2dbf96f93d63b2))
+* **docs:** attr: で絞る除外は、パターンがなくても受け付ける [#78](https://github.com/Fukuemon/agent-harness/issues/78) ([a9f4f0e](https://github.com/Fukuemon/agent-harness/commit/a9f4f0e7cd09f86a0634272fdeb4b316a121ea6e))
+* **docs:** 文書のチェックが、まだ追跡していない文書を見て、--exclude でパスを外せる [#78](https://github.com/Fukuemon/agent-harness/issues/78) ([559b30c](https://github.com/Fukuemon/agent-harness/commit/559b30c4da694f64a996c357303754d900ac7b1d))
+* **docs:** 文書のチェックが、日本語のファイル名の Markdown も読む [#73](https://github.com/Fukuemon/agent-harness/issues/73) ([6333ca6](https://github.com/Fukuemon/agent-harness/commit/6333ca65e21c1c8748f85d79319ba877cb954df2))
+
+
+### Documentation
+
+* **core:** 目次を作り直す手段を setup.mjs --index にする [#77](https://github.com/Fukuemon/agent-harness/issues/77) ([4f59d26](https://github.com/Fukuemon/agent-harness/commit/4f59d2686bbb3954b96937ba97e1eee5fcdca10c))
+* **docs:** CI でサイトの原稿を --exclude で外す手順を書く [#78](https://github.com/Fukuemon/agent-harness/issues/78) ([6830978](https://github.com/Fukuemon/agent-harness/commit/6830978408ba53064dcb7cd48806d9afc47c4146))
+
 ## [0.2.1](https://github.com/Fukuemon/agent-harness/compare/v0.2.0...v0.2.1) (2026-10-08)
 
 
