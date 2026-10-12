@@ -216,6 +216,14 @@ test("bare のリポジトリの worktree では、<リポジトリ名> は .git
   assert.match(readFileSync(join(wt, "design/DesignDoc.md"), "utf8"), /^title: my-repo Design Doc$/m);
 });
 
+test("--separate-git-dir で作ったリポジトリでは、<リポジトリ名> は作業ツリーの名前に置き換わる", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "..", "skills", "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: <リポジトリ名> Design Doc\ndescription: 全体の設計\n---\n");
+  execFileSync("git", ["init", "-q", "--separate-git-dir", join(repo, "..", "git-storage")], { cwd: repo, stdio: "ignore" });
+  run(repo, script);
+  assert.match(readFileSync(join(repo, "design/DesignDoc.md"), "utf8"), /^title: my-repo Design Doc$/m);
+});
+
 test("引用符で囲んだ docs: の値は、エスケープした引用符と # を含めて読む", () => {
   const { repo, script } = setup();
   mkdirSync(join(repo, "context"));

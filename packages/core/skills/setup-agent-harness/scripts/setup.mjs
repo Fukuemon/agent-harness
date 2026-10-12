@@ -272,8 +272,9 @@ function repositoryName() {
   try {
     const common = resolve(root, execFileSync("git", ["rev-parse", "--git-common-dir"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim());
     if (basename(common) === ".git") return basename(dirname(common));
-    // bare のリポジトリの worktree では、共通のディレクトリが my-repo.git のような名前になる
-    if (common !== resolve(root)) return basename(common).replace(/\.git$/, "");
+    // bare のリポジトリの worktree では、共通のディレクトリが my-repo.git のような名前になる。--separate-git-dir の置き場は bare ではないので、作業ツリーの名前を使う
+    const bare = execFileSync("git", ["--git-dir", common, "rev-parse", "--is-bare-repository"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() === "true";
+    if (bare) return basename(common).replace(/\.git$/, "");
   } catch {}
   return basename(root);
 }
