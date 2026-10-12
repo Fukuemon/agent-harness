@@ -191,6 +191,69 @@ test("<リポジトリ名> は、写すすべてのファイルでリポジト�
   assert.doesNotMatch(doc, /<リポジトリ名>/);
 });
 
+test("worktree の中で実行しても、<リポジトリ名> は本体のリポジトリの名前に置き換わる", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "..", "skills", "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: <リポジトリ名> Design Doc\ndescription: 全体の設計\n---\n");
+  const git = (...args) => execFileSync("git", args, { cwd: repo, stdio: "ignore" });
+  git("init", "-q");
+  git("-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-q", "--allow-empty", "-m", "init");
+  git("worktree", "add", "-q", ".wt/feature-1");
+  const wt = join(repo, ".wt", "feature-1");
+  run(wt, script);
+  assert.match(readFileSync(join(wt, "design/DesignDoc.md"), "utf8"), /^title: my-repo Design Doc$/m);
+});
+
+test("bare のリポジトリの worktree では、<リポジトリ名> は .git を除いた bare のディレクトリの名前に置き換わる", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "..", "skills", "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: <リポジトリ名> Design Doc\ndescription: 全体の設計\n---\n");
+  const bare = join(repo, "..", "my-repo.git");
+  const git = (cwd, ...args) => execFileSync("git", args, { cwd, stdio: "ignore" });
+  git(repo, "init", "-q", "--bare", bare);
+  git(bare, "-c", "user.name=t", "-c", "user.email=t@example.com", "commit-tree", "-m", "init", "4b825dc642cb6eb9a060e54bf8d69288fbee4904");
+  const wt = join(repo, "..", "feature-1");
+  git(bare, "worktree", "add", "-q", "--orphan", "-b", "feature-1", wt);
+  run(wt, script);
+  assert.match(readFileSync(join(wt, "design/DesignDoc.md"), "utf8"), /^title: my-repo Design Doc$/m);
+});
+
+test("引用符で囲んだ docs: の値は、エスケープした引用符と # を含めて読む", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), 'version: 2\n\ndocs:\n  design: "docs/de\\"#\\"sign" # 設計\n  adr: \'docs/a\'\'dr\'\n  spec: docs/specs\n');
+  const r = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(r.status, 0, r.out);
+  const yml = readFileSync(join(repo, "context/project.yml"), "utf8");
+  assert.match(yml, /^  design: "docs\/de\\"#\\"sign"$/m);
+  assert.match(yml, /^  adr: "docs\/a'dr"$/m);
+});
+
+test("version 1 の project.yml の paths: の下の行は、文書のディレクトリとして読まない", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), "paths:\n  adr: adr/\n  design_doc: design/DesignDoc.md\n");
+  const r = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^docs:\n  design: design\n  adr: adr\n  spec: specs$/m);
+});
+
+test("version 2 の docs: の節の値は、末尾のスラッシュを除いて引き継ぐ", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), "version: 2\n\ndocs:\n  design: docs/design/\n  adr: docs/adr\n  spec: docs/specs\n");
+  const r = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^  design: docs\/design$/m);
+});
+
+test("docs: の節は、空行とコメントの行を挟んでも続き、値の行末のコメントを除く", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), "version: 2\n\ndocs: # 文書\n  design: docs/design # 設計\n\n# ADR\n  adr: \"docs/adr # 旧\" # 決定\n  spec: docs/specs\nhosting: github # 置き場\n");
+  const r = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^docs:\n  design: docs\/design\n  adr: "docs\/adr # 旧"\n  spec: docs\/specs$/m);
+});
+
 test("Claude Code のプラグインのキャッシュでは、同じ marketplace のほかのプラグインの最新のバージョンの assets/ も写す", () => {
   const base = mkdtempSync(join(tmpdir(), "harness-"));
   const market = join(base, "plugins", "cache", "agent-harness");

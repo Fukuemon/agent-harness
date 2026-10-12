@@ -47,9 +47,22 @@ const apmPath = join(root, "apm.yml");
 const apmYml = existsSync(apmPath) ? readFileSync(apmPath, "utf8") : "";
 const lifecycle = !apmYml || apmYml.includes("setup.mjs\" --gitignore") ? "ok" : /^lifecycle:/m.test(apmYml) ? "manual" : "missing";
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
-const pick = (key, fallback) => new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1].trim().replace(/^["']|["']$/g, "") ?? fallback;
+// YAML の値から、囲みの引用符と行末のコメントを除く。引用符の中の # はコメントとして扱わない
+const scalar = (v) => {
+  const t = v.trim();
+  const double = /^"((?:[^"\\]|\\.)*)"/.exec(t);
+  if (double) try { return JSON.parse(`"${double[1]}"`); } catch { return double[1]; }
+  const single = /^'((?:[^']|'')*)'/.exec(t);
+  if (single) return single[1].replaceAll("''", "'");
+  return t.replace(/\s+#.*$/, "");
+};
+const pick = (key, fallback) => { const v = new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1]; return v === undefined ? fallback : scalar(v); };
+// 文書のディレクトリは version 2 の docs: の節からだけ読む。version 1 の paths: の下の同じ名前の行を拾わないため
+// 節は、次の字下げのないキーの手前まで続く。空行と字下げのないコメントの行を挟んでも続く
+const docsBlock = /^docs:[ \t]*(?:#.*)?\r?\n((?:(?:[ \t]+.*|[ \t]*|#.*)(?:\r?\n|$))*)/m.exec(existing)?.[1] ?? "";
+const pickDoc = (key, fallback) => { const v = new RegExp(`^[ \\t]+${key}: (.+)$`, "m").exec(docsBlock)?.[1]; return (v === undefined ? "" : scalar(v).replace(/\/+$/, "")) || fallback; };
 opts.branches ||= pickBranches() || pickList("names") || "main,develop";
-opts.docs ||= ["design", "adr", "spec"].map((k) => pick(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
+opts.docs ||= ["design", "adr", "spec"].map((k) => pickDoc(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
 for (const d of docs) if (d.split("/").some((s) => s === "" || s === "." || s === "..")) fail(`文書のディレクトリはリポジトリの中の相対パスで書く。空、.、.. の区切りは使えない: ${d}`);
@@ -88,7 +101,8 @@ candidates.set("context/project.yml", fillProject(candidates.get("context/projec
 let contributing = candidates.get("CONTRIBUTING.md").replace("<保護するブランチ>", opts.branches.split(",").map((b) => `\`${b}\``).join("、"));
 if (opts.hosting === "gitlab") contributing = contributing.replaceAll("pull request", "merge request").replace(/"PR #(\d+)"/g, '"MR !$1"');
 candidates.set("CONTRIBUTING.md", contributing);
-for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
+const repoName = repositoryName();
+for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", repoName));
 candidates.set("context/index.md", buildIndex().index);
 if (opts.index) {
   const { index, missing } = buildIndex(false);
@@ -253,6 +267,17 @@ function collect(dir, into, base = dir) {
 }
 
 // origin の URL に gitlab を含めば gitlab、それ以外と、Git を読めないときは github
+// worktree の中でも本体のリポジトリの名前にするため、Git の共通のディレクトリの親の名前を使う
+function repositoryName() {
+  try {
+    const common = resolve(root, execFileSync("git", ["rev-parse", "--git-common-dir"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim());
+    if (basename(common) === ".git") return basename(dirname(common));
+    // bare のリポジトリの worktree では、共通のディレクトリが my-repo.git のような名前になる
+    if (common !== resolve(root)) return basename(common).replace(/\.git$/, "");
+  } catch {}
+  return basename(root);
+}
+
 function guessHosting() {
   try {
     const url = execFileSync("git", ["remote", "get-url", "origin"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
@@ -263,7 +288,8 @@ function guessHosting() {
 }
 
 function fillProject(yaml) {
-  const [design, adr, spec] = docs;
+  // 英数字と . / _ - だけの値はそのまま書き、ほかは # や : をコメントと区切りに読まれないよう引用符で囲む
+  const [design, adr, spec] = docs.map((d) => (/^[\w./-]+$/.test(d) ? d : JSON.stringify(d)));
   return yaml
     .replace(/^hosting: .*$/m, `hosting: ${opts.hosting}`)
     .replace(/^(\s*design:) .*$/m, `$1 ${design}`)
