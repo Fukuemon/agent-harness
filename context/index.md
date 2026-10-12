@@ -13,5 +13,8 @@
 
 ## Design Doc
 
+- [AI エージェントにプロジェクト固有の知識と自動チェックを与える agent-harness PRD](../PRD.md) — 固有の知識、自動チェック、開発プロセスの標準を、複数のリポジトリで複製せずに使えるようにする（draft）
 - [agent-harness Design Doc](../design/DesignDoc.md) — agent-harness の全体像。パッケージの一覧と責務、配布の形、パッケージに共通する方針を書く（draft）
 - [開発プロセス](../design/features/process/DesignDoc_process.md) — 開発のプロセスの種類、要求ごとの選択、選んだ結果の宣言、agent-harness とワークフローのハーネスの分担（draft）
+- [core](../packages/core/DesignDoc.md) — 利用者のリポジトリに固有の知識の置き場を作るパッケージ。値のファイル、context、目次、AGENTS.md、導入のスキル（draft）
+- [文書の体系](../packages/docs/DesignDoc.md) — Design Doc、ADR、spec の種類とライフサイクル、実装とのずれの検出、spec を削除する前の保証、文書のチェック（draft）

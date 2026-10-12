@@ -1,10 +1,11 @@
 // スキル setup-agent-harness が呼ぶ。setup-agent-harness と、同じ skills/ か同じ marketplace のプラグインにあるほかのスキルの assets/ を、利用者のリポジトリに写す。
-// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--hosting github|gitlab] [--diff] [--force <パス>]... | --gitignore
+// 使い方: node setup.mjs [--branches main,develop] [--docs design,adr,specs] [--hosting github|gitlab] [--diff] [--force <パス>]... | --gitignore | --index
 // 省いた値は、既にある CONTRIBUTING.md と context/project.yml から引き継ぐ。それもなければ main と develop、design,adr,specs、origin の URL から推定したホスティングサービス
 // 保護するブランチは CONTRIBUTING.md の <保護するブランチ> に、文書のディレクトリ名とホスティングサービスは context/project.yml に書く
 // 雛形は、選んだホスティングサービスの .github/ か .gitlab/ の一方だけを写す
 // .gitignore に .ai-out/ と、apm.lock.yaml にある apm の配置先の行がなければ足す。apm.yml には、apm install の後にそれを行う post-install を足す
 // --gitignore は .gitignore の行だけをそろえる。apm の post-install から呼ばれる
+// --index は、既にある文書の frontmatter から context/index.md だけを作り直す
 // どちらも、パッケージから消えたスキルとフックの写しを配置先から消し、.gitignore の行も消す
 // 終了コード: 0 は完了、1 は --diff で差分か未配置のファイルあり、2 は引数の誤り
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, mkdtempSync } from "node:fs";
@@ -13,12 +14,13 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 
-const opts = { branches: "", docs: "", hosting: "", diff: false, gitignore: false, force: [] };
+const opts = { branches: "", docs: "", hosting: "", diff: false, gitignore: false, index: false, force: [] };
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
   if (a === "--diff") opts.diff = true;
   else if (a === "--gitignore") opts.gitignore = true;
+  else if (a === "--index") opts.index = true;
   else if (a === "--force") opts.force.push(argv[++i]);
   else if (a.startsWith("--") && a.slice(2) in opts) opts[a.slice(2)] = argv[++i];
   else fail(`知らない引数: ${a}`);
@@ -88,6 +90,12 @@ if (opts.hosting === "gitlab") contributing = contributing.replaceAll("pull requ
 candidates.set("CONTRIBUTING.md", contributing);
 for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
 candidates.set("context/index.md", buildIndex());
+if (opts.index) {
+  candidates.set("context/index.md", buildIndex(false));
+  write("context/index.md");
+  console.log("書き換えた: context/index.md");
+  process.exit(0);
+}
 
 if (opts.force.length) {
   for (const p of opts.force) {
@@ -261,17 +269,31 @@ function fillProject(yaml) {
     .replace(/^(\s*spec:) .*$/m, `$1 ${spec}`);
 }
 
-function buildIndex() {
+// templates が false なら、まだ写していないテンプレートを目次に載せない
+function buildIndex(templates = true) {
+  const fromTemplate = (p) => templates && (opts.force.includes(p) || !existsSync(join(root, p)));
   const gather = (dir) => {
     const entries = new Map();
     if (existsSync(join(root, dir))) collect(join(root, dir), entries);
-    for (const [p, body] of candidates) {
-      if (p.startsWith(`${dir}/`) && (opts.force.includes(p) || !existsSync(join(root, p)))) entries.set(p.slice(dir.length + 1), body);
-    }
+    for (const [p, body] of candidates) if (p.startsWith(`${dir}/`) && fromTemplate(p)) entries.set(p.slice(dir.length + 1), body);
     for (const f of entries.keys()) if (!f.endsWith(".md")) entries.delete(f);
     return entries;
   };
-  return renderIndex(gather("context"), gather(docs[0]), docs[0]).index;
+  const design = new Map([...gather(docs[0])].map(([f, body]) => [`${docs[0]}/${f}`, body]));
+  for (const [p, body] of outsideDesignDocs(docs[0])) design.set(p, body);
+  if (candidates.has("PRD.md") && fromTemplate("PRD.md")) design.set("PRD.md", candidates.get("PRD.md"));
+  return renderIndex(gather("context"), design).index;
+}
+
+// 設計文書のディレクトリの外にある、ルートの PRD.md と、コードの隣の DesignDoc.md。スキルの assets/ のテンプレートと、Git の外では集めない
+function outsideDesignDocs(designDir) {
+  let paths;
+  try {
+    paths = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "PRD.md", ":(glob)**/DesignDoc.md", ":(exclude,glob)**/assets/**"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).split("\0");
+  } catch {
+    return new Map();
+  }
+  return new Map(paths.filter((p) => p && !p.startsWith(`${designDir}/`) && existsSync(join(root, p))).map((p) => [p, readFileSync(join(root, p), "utf8")]));
 }
 
 function frontmatter(body) {
@@ -285,7 +307,7 @@ function frontmatter(body) {
   };
 }
 
-function renderIndex(context, design, designDir) {
+function renderIndex(context, design) {
   const missing = [];
   const line = (link, body) => {
     const meta = frontmatter(body);
@@ -294,7 +316,7 @@ function renderIndex(context, design, designDir) {
   };
   const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
   const lines = sorted(context).filter(([f]) => f !== "index.md" && f !== "log.md").map(([f, body]) => line(f, body));
-  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([f, body]) => line(`../${designDir}/${f}`, body)));
+  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([p, body]) => line(`../${p}`, body)));
   const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
   return { index, missing };
 }

@@ -13,8 +13,9 @@ const root = process.cwd();
 if (!existsSync(join(root, "context"))) fail("context/ がない。導入のスキル setup-agent-harness で置く");
 
 const designDir = readProject()?.docs?.design;
-const design = designDir && existsSync(join(root, designDir)) ? collect(join(root, designDir)) : new Map();
-const { index, missing } = renderIndex(collect(join(root, "context")), design, designDir);
+const design = new Map(designDir && existsSync(join(root, designDir)) ? [...collect(join(root, designDir))].map(([f, body]) => [`${designDir}/${f}`, body]) : []);
+for (const [p, body] of outsideDesignDocs(designDir)) design.set(p, body);
+const { index, missing } = renderIndex(collect(join(root, "context")), design);
 if (missing.length) fail(missing.join("\n"));
 
 const target = join(root, "context/index.md");
@@ -59,7 +60,18 @@ function frontmatter(body) {
   };
 }
 
-function renderIndex(context, design, designDir) {
+// 設計文書のディレクトリの外にある、ルートの PRD.md と、コードの隣の DesignDoc.md。スキルの assets/ のテンプレートと、Git の外では集めない
+function outsideDesignDocs(designDir) {
+  let paths;
+  try {
+    paths = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "PRD.md", ":(glob)**/DesignDoc.md", ":(exclude,glob)**/assets/**"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).split("\0");
+  } catch {
+    return new Map();
+  }
+  return new Map(paths.filter((p) => p && !(designDir && p.startsWith(`${designDir}/`)) && existsSync(join(root, p))).map((p) => [p, readFileSync(join(root, p), "utf8")]));
+}
+
+function renderIndex(context, design) {
   const missing = [];
   const line = (link, body) => {
     const meta = frontmatter(body);
@@ -68,7 +80,7 @@ function renderIndex(context, design, designDir) {
   };
   const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
   const lines = sorted(context).filter(([f]) => f !== "index.md" && f !== "log.md").map(([f, body]) => line(f, body));
-  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([f, body]) => line(`../${designDir}/${f}`, body)));
+  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([p, body]) => line(`../${p}`, body)));
   const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
   return { index, missing };
 }
