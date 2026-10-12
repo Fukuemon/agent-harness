@@ -64,4 +64,5 @@ description: PRD、Design Doc、ADR、spec を書くとき、直すとき、レ�
 ## 文章のチェック
 
 - 導入のスキルが写した `.textlintrc.json` と `prh.yml` で、textlint を動かす。指摘された語は言い換える。`--fix` は使わない。
+- 指摘された語がプロジェクトの用語のときは、言い換えずに、setup-design-docs の「誤検知を扱う」の手順で利用者と決める。
 - 丁寧語で書くプロジェクトは、`.textlintrc.json` の `preferInBody` と `preferInList` を `ですます` にする。
