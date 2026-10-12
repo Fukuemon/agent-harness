@@ -89,3 +89,44 @@ test("docs.design は YAML として読み、行末のコメントに影響さ�
   assert.equal(run(r).status, 0, run(r).out);
   assert.match(readFileSync(join(r, "context/index.md"), "utf8"), /\.\.\/design\/DesignDoc\.md/);
 });
+
+test("コードの隣の DesignDoc.md とルートの PRD.md も載り、スキルの assets/ のテンプレートは載らない。導入のスキルの目次と一致する", () => {
+  const r = repo((r) => {
+    execFileSync("git", ["init", "-q"], { cwd: r });
+    mkdirSync(join(r, "packages/foo"), { recursive: true });
+    writeFileSync(join(r, "packages/foo/DesignDoc.md"), doc("foo"));
+    writeFileSync(join(r, "PRD.md"), doc("要求"));
+    mkdirSync(join(r, "skills/bar/assets/design"), { recursive: true });
+    writeFileSync(join(r, "skills/bar/assets/design/DesignDoc.md"), doc("テンプレート"));
+  });
+  const index = readFileSync(join(r, "context/index.md"), "utf8");
+  assert.match(index, /- \[要求\]\(\.\.\/PRD\.md\) — 要求の取り決め\n/);
+  assert.match(index, /- \[foo\]\(\.\.\/packages\/foo\/DesignDoc\.md\) — fooの取り決め\n/);
+  assert.doesNotMatch(index, /テンプレート/);
+  const check = run(r);
+  assert.equal(check.status, 0, check.out);
+});
+
+test("導入のスキルの --index は、既にある文書の frontmatter から目次だけを作り直す", () => {
+  const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
+  mkdirSync(join(r, "packages/foo"), { recursive: true });
+  writeFileSync(join(r, "packages/foo/DesignDoc.md"), doc("foo"));
+  writeFileSync(join(r, "context/index.md"), "# 古い目次\n");
+  execFileSync("node", [setup, "--index"], { cwd: r });
+  assert.match(readFileSync(join(r, "context/index.md"), "utf8"), /\.\.\/packages\/foo\/DesignDoc\.md/);
+  assert.equal(run(r).status, 0, run(r).out);
+});
+
+test("導入のスキルの --index は、frontmatter が欠けた文書があれば、目次を書かずに失敗する", () => {
+  const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
+  writeFileSync(join(r, "context/broken.md"), "---\ntype: context\ntitle: 壊れた\n---\n");
+  writeFileSync(join(r, "context/index.md"), "# 古い目次\n");
+  let status = 0;
+  try {
+    execFileSync("node", [setup, "--index"], { cwd: r, stdio: "pipe" });
+  } catch (e) {
+    status = e.status;
+  }
+  assert.equal(status, 2);
+  assert.equal(readFileSync(join(r, "context/index.md"), "utf8"), "# 古い目次\n");
+});

@@ -59,7 +59,8 @@ node <このスキルのディレクトリ>/scripts/setup.mjs --force CONTRIBUTI
 ## 写すもの
 
 - このスキルの `assets/` の全部。`context/project.yml`、AGENTS.md、CONTRIBUTING.md、context の 6 種類（技術スタック、コードベースの構造、コードと文書の規約、テスト、基盤と運用、業務の知識）。見出しの下の 1 行の案内は、何を書くかだけを示す。
-- `context/index.md`。写す context と、既にある context の frontmatter から作る。`context/domain/` のような下位のディレクトリも載せ、`status: draft` の文書には印を付ける。
+- `context/index.md`。写す context と、既にある context の frontmatter から作る。`context/domain/` のような下位のディレクトリも載せ、`status: draft` の文書には印を付ける。Design Doc の節には、設計文書のディレクトリの文書、コードの隣の `DesignDoc.md`、ルートの `PRD.md` を載せる。
+  - 目次だけを作り直すときは、`--index` を付けて実行する。テンプレートは写さない。Git のフックや CI から呼んでもよい。
 - 業務の知識は、`context/domain.md` が用語と概念の一覧を持ち、状態と遷移、不変条件、禁止事項は概念ごとに `context/domain/<概念>.md` に置く。概念の文書はテンプレートにない。
 - ほかのスキルの `assets/`。docs、process のパッケージが配置されていれば、そのテンプレートも写る。
   - パッケージマネージャーで入れた場合は、同じ `skills/` にあるスキルを見る。
