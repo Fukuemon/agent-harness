@@ -59,8 +59,8 @@ const scalar = (v) => {
 const pick = (key, fallback) => { const v = new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1]; return v === undefined ? fallback : scalar(v); };
 // 文書のディレクトリは version 2 の docs: の節からだけ読む。version 1 の paths: の下の同じ名前の行を拾わないため
 // 節は、次の字下げのないキーの手前まで続く。空行と字下げのないコメントの行を挟んでも続く
-const docsBlock = /^docs:[ \t]*(?:#.*)?\r?\n((?:(?:[ \t]+.*|[ \t]*|#.*)(?:\r?\n|$))*)/m.exec(existing)?.[1] ?? "";
-const pickDoc = (key, fallback) => { const v = new RegExp(`^[ \\t]+${key}: (.+)$`, "m").exec(docsBlock)?.[1]; return (v === undefined ? "" : scalar(v).replace(/\/+$/, "")) || fallback; };
+const docsBlock = /^(["']?)docs\1:[ \t]*(?:#.*)?\r?\n((?:(?:[ \t]+.*|[ \t]*|#.*)(?:\r?\n|$))*)/m.exec(existing)?.[2] ?? "";
+const pickDoc = (key, fallback) => { const v = new RegExp(`^[ \\t]+(["']?)${key}\\1: (.+)$`, "m").exec(docsBlock)?.[2]; return (v === undefined ? "" : scalar(v).replace(/\/+$/, "")) || fallback; };
 opts.branches ||= pickBranches() || pickList("names") || "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pickDoc(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
@@ -270,11 +270,14 @@ function collect(dir, into, base = dir) {
 // worktree の中でも本体のリポジトリの名前にするため、Git の共通のディレクトリの親の名前を使う
 function repositoryName() {
   try {
-    const common = resolve(root, execFileSync("git", ["rev-parse", "--git-common-dir"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim());
+    const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    const common = resolve(root, git("rev-parse", "--git-common-dir"));
+    // bare のリポジトリの worktree では、共通のディレクトリが my-repo.git のような名前になる
+    if (git("--git-dir", common, "rev-parse", "--is-bare-repository") === "true") return basename(common).replace(/\.git$/, "");
+    // 本体の作業ツリーでは、その名前を使う。--separate-git-dir で Git のデータを別の場所に置いていても同じ
+    if (resolve(root, git("rev-parse", "--git-dir")) === common) return basename(root);
+    // ほかの worktree では、本体の .git の親が本体の作業ツリーである
     if (basename(common) === ".git") return basename(dirname(common));
-    // bare のリポジトリの worktree では、共通のディレクトリが my-repo.git のような名前になる。--separate-git-dir の置き場は bare ではないので、作業ツリーの名前を使う
-    const bare = execFileSync("git", ["--git-dir", common, "rev-parse", "--is-bare-repository"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() === "true";
-    if (bare) return basename(common).replace(/\.git$/, "");
   } catch {}
   return basename(root);
 }
