@@ -1,13 +1,15 @@
 // governs と verified_commit を持つ文書のうち、verified_commit より後に governs の範囲が変わったものを一覧する。
-// 使い方: node packages/docs/hooks/list-drift.mjs。Git が追跡する Markdown の全部を見る
+// 使い方: node packages/docs/hooks/list-drift.mjs [ファイル]... [--exclude <パス>]...。ファイルを省くと、Git が追跡する Markdown と、まだ追跡していない Markdown の全部を見る
 // 終了コード: 0 は完了（一覧があっても 0）、1 は governs と verified_commit の片方だけを持つ文書か、履歴にない verified_commit がある、2 は Git の履歴を読めない
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { markdownFiles } from "./doc-checks.mjs";
 
 const git = (...args) => execFileSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
 let files;
 try {
-  files = git("ls-files", "-z", "*.md").split("\0").filter(Boolean);
+  git("rev-parse", "--git-dir");
+  files = markdownFiles(process.argv.slice(2));
 } catch {
   console.error("Git の履歴を読めない。リポジトリの中で実行する");
   process.exit(2);

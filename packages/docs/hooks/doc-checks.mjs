@@ -2,9 +2,42 @@
 // パッケージマネージャーは hooks/ だけを利用者のリポジトリへ写すので、処理はここに置く
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { execFileSync } from "node:child_process";
 
 const HISTORY = /変更履歴|更新履歴|改訂履歴|\bhistory\b|\bchangelog\b/i;
 const ISSUE = /(^|[\s(（、。])#(\d+)\b/g;
+
+/**
+ * コマンドの引数から、チェックする Markdown を決める。ファイルを渡せばそれだけを、省けば Git が追跡するものと、まだ追跡していないものを見る。
+ * `--exclude <パス>` は、省いたときの対象から外す。Git の pathspec の形で書く。`:(glob)` のような魔法の語は、exclude と 1 つの括弧にまとめる。
+ */
+export function markdownFiles(argv) {
+  const files = [];
+  const excludes = [];
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === "--exclude") excludes.push(argv[++i]);
+    else files.push(argv[i]);
+  }
+  // 空のパスは、:(exclude) だけになり、全部の Markdown を外すので、ないものと同じく拒む
+  if (excludes.some((p) => !p)) throw new Error("--exclude にはパスが要る");
+  if (files.length) return files;
+  const pathspec = ["*.md", ...excludes.map(excludePathspec)];
+  return execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ...pathspec], { encoding: "utf8" }).split("\0").filter(Boolean);
+}
+
+// 魔法の語の付いた pathspec に exclude を足す。:(glob)x は :(exclude,glob)x に、短い形の :/x は :(exclude,top)x にする。
+// :!x と :^x は既に除外なので、そのまま渡す
+// パターンが空の除外は、全部の Markdown を外すので拒む。attr: の付いた除外は、属性で絞るので、パターンがなくてもよい
+function excludePathspec(p) {
+  const long = /^:\(([^)]*)\)(.*)$/s.exec(p);
+  const short = long ? undefined : /^:([/!^]*):?(.*)$/s.exec(p);
+  const pattern = long?.[2] ?? short?.[2] ?? p;
+  if (!pattern && !/(^|,)attr:/.test(long?.[1] ?? "")) throw new Error(`--exclude にはパターンが要る: ${p}`);
+  if (long) return `:(exclude,${long[1]})${pattern}`;
+  if (!short) return `:(exclude)${p}`;
+  if (/[!^]/.test(short[1])) return p;
+  return `:(exclude${short[1] ? ",top" : ""})${pattern}`;
+}
 
 /** Markdown の frontmatter の type を返す。frontmatter がなければ undefined。 */
 export function docType(text) {

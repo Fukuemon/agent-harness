@@ -1,12 +1,17 @@
 // Markdown の相対リンクの先のファイルと、見出しのアンカーが存在することを確かめる。
-// 使い方: node packages/docs/hooks/check-links.mjs [ファイル]...。省くと Git が追跡する Markdown の全部を見る
+// 使い方: node packages/docs/hooks/check-links.mjs [ファイル]... [--exclude <パス>]...。ファイルを省くと、Git が追跡する Markdown と、まだ追跡していない Markdown（.gitignore で外したものを除く）の全部を見る
 // 終了コード: 0 はリンク切れがない、1 はある、2 はファイルが読めない
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { execFileSync } from "node:child_process";
-import { brokenLinks } from "./doc-checks.mjs";
+import { brokenLinks, markdownFiles } from "./doc-checks.mjs";
 
-const files = process.argv.slice(2).length ? process.argv.slice(2) : execFileSync("git", ["ls-files", "-z", "*.md"], { encoding: "utf8" }).split("\0").filter(Boolean);
+let files;
+try {
+  files = markdownFiles(process.argv.slice(2));
+} catch (err) {
+  console.error(err.message);
+  process.exit(2);
+}
 let failed = 0;
 for (const file of files) {
   let body;

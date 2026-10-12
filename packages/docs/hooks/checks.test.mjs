@@ -108,3 +108,47 @@ test("引数を省いたとき、日本語のファイル名の Markdown も読�
   assert.equal(drift.status, 0, drift.out);
   assert.match(drift.out, /docs\/設計\.md: 未確認/);
 });
+
+test("引数を省いたとき、まだ追跡していない Markdown も見る。.gitignore で外したものは見ない", () => {
+  const { dir } = repo({ "README.md": "# r\n", ".gitignore": "ignored/\n" });
+  write(dir, { "design/new.md": "[切れたリンク](missing.md)\n", "ignored/old.md": "[切れたリンク](missing.md)\n" });
+  const r = run(dir, "check-links.mjs");
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.out, /design\/new\.md:1: missing\.md/);
+  assert.doesNotMatch(r.out, /ignored/);
+});
+
+test("--exclude で外したパスは、引数を省いたときの対象に入らない", () => {
+  const post = "---\ntype: context\ntitle: p\ndescription: p\n---\n\n[サイト内の URL](/labs/foo)\n\n## 変更履歴\n";
+  const { dir } = repo({ "README.md": "# r\n", "site/post.md": post, "site/a/b.md": post });
+  assert.equal(run(dir, "check-links.mjs").status, 1);
+  assert.equal(run(dir, "check-history.mjs").status, 1);
+  const r = run(dir, "check-links.mjs", ["--exclude", "site/"]);
+  assert.equal(r.status, 0, r.out);
+  assert.equal(run(dir, "check-history.mjs", ["--exclude", "site/"]).status, 0);
+  assert.equal(run(dir, "check-links.mjs", ["--exclude", ":(glob)site/**/*.md"]).status, 0);
+  for (const p of [":/site/", ":!site/"]) assert.equal(run(dir, "check-links.mjs", ["--exclude", p]).status, 0, p);
+  write(dir, { ".gitattributes": "site/** site-doc\n" });
+  assert.equal(run(dir, "check-links.mjs", ["--exclude", ":(attr:site-doc)"]).status, 0);
+});
+
+test("--exclude に空のパスを渡すと、対象を空にせずに失敗する", () => {
+  const { dir } = repo({ "README.md": "# r\n", "design/a.md": "[切れたリンク](missing.md)\n" });
+  const r = run(dir, "check-links.mjs", ["--exclude", ""]);
+  assert.notEqual(r.status, 0, r.out);
+  assert.match(r.out, /--exclude にはパスが要る/);
+  for (const p of [":", ":(glob)", ":/"]) {
+    const e = run(dir, "check-links.mjs", ["--exclude", p]);
+    assert.notEqual(e.status, 0, p);
+    assert.match(e.out, /--exclude にはパターンが要る/);
+  }
+});
+
+test("list-drift は、渡したファイルだけを見る", () => {
+  const { dir, head } = repo({ "src/a.js": "a\n", "design/a.md": "---\ntype: design-doc\ntitle: a\ndescription: a\ngoverns: [src/]\nverified_commit: unverified\n---\n", "design/b.md": "---\ntype: design-doc\ntitle: b\ndescription: b\ngoverns: [src/]\n---\n" });
+  assert.ok(head);
+  const r = run(dir, "list-drift.mjs", ["design/a.md"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(r.out, /design\/a\.md: 未確認/);
+  assert.doesNotMatch(r.out, /design\/b\.md/);
+});
