@@ -21,8 +21,18 @@ export function markdownFiles(argv) {
   // 空のパスは、:(exclude) だけになり、全部の Markdown を外すので、ないものと同じく拒む
   if (excludes.some((p) => !p)) throw new Error("--exclude にはパスが要る");
   if (files.length) return files;
-  const pathspec = ["*.md", ...excludes.map((p) => (p.startsWith(":(") ? `:(exclude,${p.slice(2)}` : `:(exclude)${p}`))];
+  const pathspec = ["*.md", ...excludes.map(excludePathspec)];
   return execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ...pathspec], { encoding: "utf8" }).split("\0").filter(Boolean);
+}
+
+// 魔法の語の付いた pathspec に exclude を足す。:(glob)x は :(exclude,glob)x に、短い形の :/x は :(exclude,top)x にする。
+// :!x と :^x は既に除外なので、そのまま渡す
+function excludePathspec(p) {
+  if (p.startsWith(":(")) return `:(exclude,${p.slice(2)}`;
+  const short = /^:([/!^]*):?(.*)$/s.exec(p);
+  if (!short) return `:(exclude)${p}`;
+  if (/[!^]/.test(short[1])) return p;
+  return `:(exclude${short[1] ? ",top" : ""})${short[2]}`;
 }
 
 /** Markdown の frontmatter の type を返す。frontmatter がなければ undefined。 */
