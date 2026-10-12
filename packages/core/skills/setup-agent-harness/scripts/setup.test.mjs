@@ -323,3 +323,35 @@ test("--diff は、選ばなかったホスティングサービスの雛形が�
   assert.match(d.out, /gitlab では使わない雛形がある[\s\S]*\.github\/pull_request_template\.md/);
   assert.ok(existsSync(join(repo, ".github/pull_request_template.md")), "残っていた雛形を消した");
 });
+
+test("apm.lock.yaml があれば、ロックファイルにないスキルの assets/ は写さない", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "apm.lock.yaml"), [
+    "dependencies:",
+    "- repo_url: _local/core",
+    "  deployed_files:",
+    "  - .claude/skills/setup-agent-harness",
+    "  - .claude/skills/setup-agent-harness/SKILL.md",
+    "",
+  ].join("\n"));
+  const skills = join(repo, ".claude", "skills");
+  cpSync(skillSrc, join(skills, "setup-agent-harness"), { recursive: true });
+  mkdirSync(join(skills, "mine", "assets"), { recursive: true });
+  writeFileSync(join(skills, "mine", "assets", "mine-template.md"), "# mine\n");
+  const r = run(repo, join(skills, "setup-agent-harness", "scripts", "setup.mjs"));
+  assert.equal(r.status, 0, r.out);
+  assert.ok(existsSync(join(repo, "AGENTS.md")), "AGENTS.md がない");
+  assert.ok(!existsSync(join(repo, "mine-template.md")), "ロックファイルにないスキルの assets/ を写した");
+});
+
+test("目次は、既にある文書の frontmatter をテンプレートの値で上書きしない", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"), { recursive: true });
+  writeFileSync(join(repo, "context", "testing.md"), "---\ntype: context\ntitle: 自分のテスト\ndescription: 書き終えたテストの規約\nstatus: stable\n---\n");
+  mkdirSync(join(repo, "design"), { recursive: true });
+  writeFileSync(join(repo, "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: 自分の全体像\ndescription: 書き終えた設計\nstatus: stable\n---\n");
+  run(repo, script);
+  const index = readFileSync(join(repo, "context/index.md"), "utf8");
+  assert.match(index, /\[自分のテスト\]\(testing\.md\) — 書き終えたテストの規約\n/);
+  assert.match(index, /\[自分の全体像\]\(\.\.\/design\/DesignDoc\.md\) — 書き終えた設計\n/);
+});

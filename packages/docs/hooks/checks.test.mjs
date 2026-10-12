@@ -95,3 +95,16 @@ test("list-drift は履歴にない verified_commit を終了コード 1 で報�
   assert.equal(r.status, 1, r.out);
   assert.match(r.out, /design\/typo\.md: verified_commit deadbeef が履歴にない/);
 });
+
+test("引数を省いたとき、日本語のファイル名の Markdown も読む", () => {
+  const { dir } = repo({ "docs/設計.md": `---\ntype: design-doc\ntitle: 設計\ndescription: 設計\ngoverns: [src]\nverified_commit: unverified\n---\n\n[ない](missing.md)\n\n## 変更履歴\n` });
+  const history = run(dir, "check-history.mjs");
+  assert.equal(history.status, 1, history.out);
+  assert.match(history.out, /docs\/設計\.md/);
+  const links = run(dir, "check-links.mjs");
+  assert.equal(links.status, 1, links.out);
+  assert.match(links.out, /docs\/設計\.md/);
+  const drift = run(dir, "list-drift.mjs");
+  assert.equal(drift.status, 0, drift.out);
+  assert.match(drift.out, /docs\/設計\.md: 未確認/);
+});

@@ -6,7 +6,7 @@ import { resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { brokenLinks } from "./doc-checks.mjs";
 
-const files = process.argv.slice(2).length ? process.argv.slice(2) : execFileSync("git", ["ls-files", "*.md"], { encoding: "utf8" }).split("\n").filter(Boolean);
+const files = process.argv.slice(2).length ? process.argv.slice(2) : execFileSync("git", ["ls-files", "-z", "*.md"], { encoding: "utf8" }).split("\0").filter(Boolean);
 let failed = 0;
 for (const file of files) {
   let body;
