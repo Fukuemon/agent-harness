@@ -2,9 +2,27 @@
 // パッケージマネージャーは hooks/ だけを利用者のリポジトリへ写すので、処理はここに置く
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { execFileSync } from "node:child_process";
 
 const HISTORY = /変更履歴|更新履歴|改訂履歴|\bhistory\b|\bchangelog\b/i;
 const ISSUE = /(^|[\s(（、。])#(\d+)\b/g;
+
+/**
+ * コマンドの引数から、チェックする Markdown を決める。ファイルを渡せばそれだけを、省けば Git が追跡するものと、まだ追跡していないものを見る。
+ * `--exclude <パス>` は、省いたときの対象から外す。Git の pathspec の形で書く。
+ */
+export function markdownFiles(argv) {
+  const files = [];
+  const excludes = [];
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === "--exclude") excludes.push(argv[++i]);
+    else files.push(argv[i]);
+  }
+  if (excludes.includes(undefined)) throw new Error("--exclude にはパスが要る");
+  if (files.length) return files;
+  const pathspec = ["*.md", ...excludes.map((p) => `:(exclude)${p}`)];
+  return execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ...pathspec], { encoding: "utf8" }).split("\0").filter(Boolean);
+}
 
 /** Markdown の frontmatter の type を返す。frontmatter がなければ undefined。 */
 export function docType(text) {
