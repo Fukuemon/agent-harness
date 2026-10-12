@@ -89,9 +89,11 @@ let contributing = candidates.get("CONTRIBUTING.md").replace("<保護するブ�
 if (opts.hosting === "gitlab") contributing = contributing.replaceAll("pull request", "merge request").replace(/"PR #(\d+)"/g, '"MR !$1"');
 candidates.set("CONTRIBUTING.md", contributing);
 for (const [p, body] of candidates) candidates.set(p, body.replaceAll("<リポジトリ名>", basename(root)));
-candidates.set("context/index.md", buildIndex());
+candidates.set("context/index.md", buildIndex().index);
 if (opts.index) {
-  candidates.set("context/index.md", buildIndex(false));
+  const { index, missing } = buildIndex(false);
+  if (missing.length) fail(missing.join("\n"));
+  candidates.set("context/index.md", index);
   write("context/index.md");
   console.log("書き換えた: context/index.md");
   process.exit(0);
@@ -282,7 +284,7 @@ function buildIndex(templates = true) {
   const design = new Map([...gather(docs[0])].map(([f, body]) => [`${docs[0]}/${f}`, body]));
   for (const [p, body] of outsideDesignDocs(docs[0])) design.set(p, body);
   if (candidates.has("PRD.md") && fromTemplate("PRD.md")) design.set("PRD.md", candidates.get("PRD.md"));
-  return renderIndex(gather("context"), design).index;
+  return renderIndex(gather("context"), design);
 }
 
 // 設計文書のディレクトリの外にある、ルートの PRD.md と、コードの隣の DesignDoc.md。スキルの assets/ のテンプレートと、Git の外では集めない

@@ -116,3 +116,17 @@ test("導入のスキルの --index は、既にある文書の frontmatter か�
   assert.match(readFileSync(join(r, "context/index.md"), "utf8"), /\.\.\/packages\/foo\/DesignDoc\.md/);
   assert.equal(run(r).status, 0, run(r).out);
 });
+
+test("導入のスキルの --index は、frontmatter が欠けた文書があれば、目次を書かずに失敗する", () => {
+  const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
+  writeFileSync(join(r, "context/broken.md"), "---\ntype: context\ntitle: 壊れた\n---\n");
+  writeFileSync(join(r, "context/index.md"), "# 古い目次\n");
+  let status = 0;
+  try {
+    execFileSync("node", [setup, "--index"], { cwd: r, stdio: "pipe" });
+  } catch (e) {
+    status = e.status;
+  }
+  assert.equal(status, 2);
+  assert.equal(readFileSync(join(r, "context/index.md"), "utf8"), "# 古い目次\n");
+});
