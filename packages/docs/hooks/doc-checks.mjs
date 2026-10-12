@@ -27,12 +27,12 @@ export function markdownFiles(argv) {
 
 // 魔法の語の付いた pathspec に exclude を足す。:(glob)x は :(exclude,glob)x に、短い形の :/x は :(exclude,top)x にする。
 // :!x と :^x は既に除外なので、そのまま渡す
-// パターンが空の除外は、全部の Markdown を外すので拒む
+// パターンが空の除外は、全部の Markdown を外すので拒む。attr: の付いた除外は、属性で絞るので、パターンがなくてもよい
 function excludePathspec(p) {
   const long = /^:\(([^)]*)\)(.*)$/s.exec(p);
   const short = long ? undefined : /^:([/!^]*):?(.*)$/s.exec(p);
   const pattern = long?.[2] ?? short?.[2] ?? p;
-  if (!pattern) throw new Error(`--exclude にはパターンが要る: ${p}`);
+  if (!pattern && !/(^|,)attr:/.test(long?.[1] ?? "")) throw new Error(`--exclude にはパターンが要る: ${p}`);
   if (long) return `:(exclude,${long[1]})${pattern}`;
   if (!short) return `:(exclude)${p}`;
   if (/[!^]/.test(short[1])) return p;

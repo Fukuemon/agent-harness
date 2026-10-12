@@ -225,8 +225,8 @@ dependencies:
     .claude/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
     .claude/hooks/docs/hooks/check-history.mjs: sha256:daca850c0bc10ddb47c0ce8039529ec289a49aec4cf3e6494f606e171731082b
     .claude/hooks/docs/hooks/check-links.mjs: sha256:8ca6c50db788a199e1954d1919318ba23bca87f7badde8f986322c3b717f580e
-    .claude/hooks/docs/hooks/checks.test.mjs: sha256:c5a4fd4999859c1563f00141006bc0313a7c69e7cc20f420b52303f5f9e23282
-    .claude/hooks/docs/hooks/doc-checks.mjs: sha256:af12319b9cabc97e2357dfc4ed2c3f1c3a50336781df2e04a9f74f984f4cb5ff
+    .claude/hooks/docs/hooks/checks.test.mjs: sha256:a45f56fc53b9a8600b00a343809af3d1066c6f5ab44bc34e835834d47c00be23
+    .claude/hooks/docs/hooks/doc-checks.mjs: sha256:8a0fbe78affe9184ad928f094d299aea0817e56cc23cbe0732d8cb05a6a9e3e9
     .claude/hooks/docs/hooks/list-drift.mjs: sha256:a2422953eb0336fa947354e1ca55e1d24282b3270205d192d9c5fbd416f01475
     .claude/hooks/docs/hooks/package.json: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
     .claude/skills/setup-design-docs/SKILL.md: sha256:99b367af2f0c77b8fc090ccb4a2a73ef7c47b3e503bc757f59358e258e6fdfb6
@@ -246,8 +246,8 @@ dependencies:
     .codex/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
     .codex/hooks/docs/hooks/check-history.mjs: sha256:daca850c0bc10ddb47c0ce8039529ec289a49aec4cf3e6494f606e171731082b
     .codex/hooks/docs/hooks/check-links.mjs: sha256:8ca6c50db788a199e1954d1919318ba23bca87f7badde8f986322c3b717f580e
-    .codex/hooks/docs/hooks/checks.test.mjs: sha256:c5a4fd4999859c1563f00141006bc0313a7c69e7cc20f420b52303f5f9e23282
-    .codex/hooks/docs/hooks/doc-checks.mjs: sha256:af12319b9cabc97e2357dfc4ed2c3f1c3a50336781df2e04a9f74f984f4cb5ff
+    .codex/hooks/docs/hooks/checks.test.mjs: sha256:a45f56fc53b9a8600b00a343809af3d1066c6f5ab44bc34e835834d47c00be23
+    .codex/hooks/docs/hooks/doc-checks.mjs: sha256:8a0fbe78affe9184ad928f094d299aea0817e56cc23cbe0732d8cb05a6a9e3e9
     .codex/hooks/docs/hooks/list-drift.mjs: sha256:a2422953eb0336fa947354e1ca55e1d24282b3270205d192d9c5fbd416f01475
     .codex/hooks/docs/hooks/package.json: sha256:8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a
   source: local
@@ -334,7 +334,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:c5a4fd4999859c1563f00141006bc0313a7c69e7cc20f420b52303f5f9e23282
+  content_hash: sha256:a45f56fc53b9a8600b00a343809af3d1066c6f5ab44bc34e835834d47c00be23
 - kind: project-relative
   target: claude
   value: .claude/hooks/docs/hooks/doc-checks.mjs
@@ -343,7 +343,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:af12319b9cabc97e2357dfc4ed2c3f1c3a50336781df2e04a9f74f984f4cb5ff
+  content_hash: sha256:8a0fbe78affe9184ad928f094d299aea0817e56cc23cbe0732d8cb05a6a9e3e9
 - kind: project-relative
   target: claude
   value: .claude/hooks/docs/hooks/list-drift.mjs
@@ -1360,7 +1360,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:c5a4fd4999859c1563f00141006bc0313a7c69e7cc20f420b52303f5f9e23282
+  content_hash: sha256:a45f56fc53b9a8600b00a343809af3d1066c6f5ab44bc34e835834d47c00be23
 - kind: project-relative
   target: codex
   value: .codex/hooks/docs/hooks/doc-checks.mjs
@@ -1369,7 +1369,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:af12319b9cabc97e2357dfc4ed2c3f1c3a50336781df2e04a9f74f984f4cb5ff
+  content_hash: sha256:8a0fbe78affe9184ad928f094d299aea0817e56cc23cbe0732d8cb05a6a9e3e9
 - kind: project-relative
   target: codex
   value: .codex/hooks/docs/hooks/list-drift.mjs

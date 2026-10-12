@@ -128,6 +128,8 @@ test("--exclude で外したパスは、引数を省いたときの対象に入�
   assert.equal(run(dir, "check-history.mjs", ["--exclude", "site/"]).status, 0);
   assert.equal(run(dir, "check-links.mjs", ["--exclude", ":(glob)site/**/*.md"]).status, 0);
   for (const p of [":/site/", ":!site/"]) assert.equal(run(dir, "check-links.mjs", ["--exclude", p]).status, 0, p);
+  write(dir, { ".gitattributes": "site/** site-doc\n" });
+  assert.equal(run(dir, "check-links.mjs", ["--exclude", ":(attr:site-doc)"]).status, 0);
 });
 
 test("--exclude に空のパスを渡すと、対象を空にせずに失敗する", () => {
