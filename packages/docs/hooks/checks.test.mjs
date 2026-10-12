@@ -119,11 +119,21 @@ test("引数を省いたとき、まだ追跡していない Markdown も見る�
 });
 
 test("--exclude で外したパスは、引数を省いたときの対象に入らない", () => {
-  const { dir } = repo({ "README.md": "# r\n", "site/post.md": "[サイト内の URL](/labs/foo)\n" });
+  const post = "---\ntype: context\ntitle: p\ndescription: p\n---\n\n[サイト内の URL](/labs/foo)\n\n## 変更履歴\n";
+  const { dir } = repo({ "README.md": "# r\n", "site/post.md": post, "site/a/b.md": post });
   assert.equal(run(dir, "check-links.mjs").status, 1);
+  assert.equal(run(dir, "check-history.mjs").status, 1);
   const r = run(dir, "check-links.mjs", ["--exclude", "site/"]);
   assert.equal(r.status, 0, r.out);
   assert.equal(run(dir, "check-history.mjs", ["--exclude", "site/"]).status, 0);
+  assert.equal(run(dir, "check-links.mjs", ["--exclude", ":(glob)site/**/*.md"]).status, 0);
+});
+
+test("--exclude に空のパスを渡すと、対象を空にせずに失敗する", () => {
+  const { dir } = repo({ "README.md": "# r\n", "design/a.md": "[切れたリンク](missing.md)\n" });
+  const r = run(dir, "check-links.mjs", ["--exclude", ""]);
+  assert.notEqual(r.status, 0, r.out);
+  assert.match(r.out, /--exclude にはパスが要る/);
 });
 
 test("list-drift は、渡したファイルだけを見る", () => {
