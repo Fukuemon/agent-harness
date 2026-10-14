@@ -111,7 +111,7 @@ context と Design Doc は frontmatter を持つ。
 
 値は 1 行で書く。目次の生成は frontmatter を YAML として読まず、行の形で読むためである。引用符は付けてもよい。
 
-目次は `context/index.md` で、`context/` の下位のディレクトリを含む全部の frontmatter から生成する。文書の体系を入れていれば、`design/`、コードの隣の `DesignDoc.md`、ルートの `PRD.md` も載せる。スキルの `assets/` の下のテンプレートは載せない。手で編集しない。手書きの更新日も持たない。日付は更新し忘れを検出できないが、commit と履歴の差分は検出できる。
+目次は `context/index.md` で、`context/` の下位のディレクトリを含む全部の frontmatter から生成する。文書の体系を入れていれば、`design/`、コードの隣の `DesignDoc.md`、ルートの `PRD.md` も載せる。スキルの `assets/` の下のテンプレートと、`design/` の下の frontmatter を持たない資料は載せない。手で編集しない。手書きの更新日も持たない。日付は更新し忘れを検出できないが、commit と履歴の差分は検出できる。
 
 - 生成するのは `scripts/build-index.mjs` である。既定は生成し直した目次と `context/index.md` を比べ、差分があれば終了コード 1、必須のキーが欠けていれば終了コード 2 で報告する。`--write` は目次を書き換える。
 - lefthook の pre-commit は `--write` で目次を書き換え、書き換えた目次をステージする。CI は `--write` を付けずに動かし、ずれを失敗として報告する。文書を編集した後のコーディングエージェントのフックには置かない。目次を読むのは次のセッションの開始時なので、コミットの前に揃っていれば足りるためである。

@@ -130,3 +130,12 @@ test("導入のスキルの --index は、frontmatter が欠けた文書があ�
   assert.equal(status, 2);
   assert.equal(readFileSync(join(r, "context/index.md"), "utf8"), "# 古い目次\n");
 });
+
+test("設計文書のディレクトリにある、frontmatter を持たない資料は目次に載せず、失敗にもしない", () => {
+  const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
+  mkdirSync(join(r, "design/features/site/reference"), { recursive: true });
+  writeFileSync(join(r, "design/features/site/reference/profile.md"), "# 企業プロフィール\n");
+  execFileSync("node", [setup, "--index"], { cwd: r });
+  assert.doesNotMatch(readFileSync(join(r, "context/index.md"), "utf8"), /profile\.md/);
+  assert.equal(run(r).status, 0, run(r).out);
+});
