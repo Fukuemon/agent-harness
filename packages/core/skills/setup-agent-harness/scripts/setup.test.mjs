@@ -258,11 +258,20 @@ test("--separate-git-dir で作ったリポジトリのほかの worktree では
 test("アンカーとタグの付いた docs: の節と、キーと同じ字下げの列を読む", () => {
   const { repo, script } = setup();
   mkdirSync(join(repo, "context"));
-  writeFileSync(join(repo, "context/project.yml"), "version: 2\ndocs: &doc_paths\n  design: !!str docs/design\n  adr: docs/adr\n  spec: docs/specs\nguardrails:\n  protected_branches:\n    names:\n    - trunk\n    - release\n");
+  writeFileSync(join(repo, "context/project.yml"), "version: 2\ndocs: &doc_paths\n  design: !!str docs/design # 旧 'design'\n  adr: docs/adr\n  spec: docs/specs\nguardrails:\n  protected_branches:\n    names:\n    - trunk\n    - release\n");
   const r = run(repo, script, ["--force", "context/project.yml", "--force", "CONTRIBUTING.md"]);
   assert.equal(r.status, 0, r.out);
   assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^docs:\n  design: docs\/design\n  adr: docs\/adr\n  spec: docs\/specs$/m);
   assert.match(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), /`trunk`、`release`/);
+});
+
+test("引用符で始まらない値の中の引用符は、引用として扱わず、後ろのコメントを除く", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), "version: 2\ndocs:\n  design: docs/team's # 旧ディレクトリ\n  adr: adr\n  spec: specs\n");
+  const r = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^  design: "docs\/team's"$/m);
 });
 
 test("引用符で囲んだ docs: の値は、エスケープした引用符と # を含めて読む", () => {

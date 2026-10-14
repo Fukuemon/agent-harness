@@ -264,7 +264,7 @@ function parseYaml(source) {
   return root && !Array.isArray(root) ? root : {};
 }
 
-// 引用符の外の、行頭か空白の後の # から後ろを除く
+// 引用符の外の、行頭か空白の後の # から後ろを除く。引用符は、キーか値の始まりにあるときだけ引用として扱う
 function stripComment(line) {
   let quote = "";
   for (let k = 0; k < line.length; k++) {
@@ -272,7 +272,7 @@ function stripComment(line) {
     if (quote) {
       if (quote === '"' && c === "\\") k++;
       else if (c === quote) quote = "";
-    } else if (c === '"' || c === "'") quote = c;
+    } else if ((c === '"' || c === "'") && /(?:^|[:\-\[,])\s*$/.test(line.slice(0, k))) quote = c;
     else if (c === "#" && (k === 0 || /\s/.test(line[k - 1]))) return line.slice(0, k);
   }
   return line;
