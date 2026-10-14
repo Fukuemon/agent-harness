@@ -13,7 +13,7 @@ const root = process.cwd();
 if (!existsSync(join(root, "context"))) fail("context/ がない。導入のスキル setup-agent-harness で置く");
 
 const designDir = readProject()?.docs?.design;
-const design = new Map(designDir && existsSync(join(root, designDir)) ? [...collect(join(root, designDir))].map(([f, body]) => [`${designDir}/${f}`, body]) : []);
+const design = new Map(designDir && existsSync(join(root, designDir)) ? [...collect(join(root, designDir))].map(([f, body]) => [`${designDir}/${f}`, body]).filter(([p, body]) => !isMaterial(p, body)) : []);
 for (const [p, body] of outsideDesignDocs(designDir)) design.set(p, body);
 const { index, missing } = renderIndex(collect(join(root, "context")), design);
 if (missing.length) fail(missing.join("\n"));
@@ -80,9 +80,7 @@ function renderIndex(context, design) {
   };
   const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
   const lines = sorted(context).filter(([f]) => f !== "index.md" && f !== "log.md").map(([f, body]) => line(f, body));
-  // 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない
-  const docs = sorted(design).filter(([, body]) => /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body));
-  if (docs.length) lines.push("", "## Design Doc", "", ...docs.map(([p, body]) => line(`../${p}`, body)));
+  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([p, body]) => line(`../${p}`, body)));
   const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
   return { index, missing };
 }
@@ -102,4 +100,9 @@ function showDiff(target, content) {
 function fail(msg) {
   console.error(msg);
   process.exit(2);
+}
+
+// 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない。DesignDoc.md は frontmatter が要るので外さない
+function isMaterial(path, body) {
+  return !path.endsWith("/DesignDoc.md") && !/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body);
 }

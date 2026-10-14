@@ -369,7 +369,7 @@ function buildIndex(templates = true) {
     for (const f of entries.keys()) if (!f.endsWith(".md")) entries.delete(f);
     return entries;
   };
-  const design = new Map([...gather(docs[0])].map(([f, body]) => [`${docs[0]}/${f}`, body]));
+  const design = new Map([...gather(docs[0])].map(([f, body]) => [`${docs[0]}/${f}`, body]).filter(([p, body]) => !isMaterial(p, body)));
   for (const [p, body] of outsideDesignDocs(docs[0])) design.set(p, body);
   if (candidates.has("PRD.md") && fromTemplate("PRD.md")) design.set("PRD.md", candidates.get("PRD.md"));
   return renderIndex(gather("context"), design);
@@ -406,9 +406,7 @@ function renderIndex(context, design) {
   };
   const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
   const lines = sorted(context).filter(([f]) => f !== "index.md" && f !== "log.md").map(([f, body]) => line(f, body));
-  // 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない
-  const docs = sorted(design).filter(([, body]) => /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body));
-  if (docs.length) lines.push("", "## Design Doc", "", ...docs.map(([p, body]) => line(`../${p}`, body)));
+  if (design.size) lines.push("", "## Design Doc", "", ...sorted(design).map(([p, body]) => line(`../${p}`, body)));
   const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
   return { index, missing };
 }
@@ -433,4 +431,9 @@ function write(p) {
 function fail(msg) {
   console.error(msg);
   process.exit(2);
+}
+
+// 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない。DesignDoc.md は frontmatter が要るので外さない
+function isMaterial(path, body) {
+  return !path.endsWith("/DesignDoc.md") && !/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body);
 }
