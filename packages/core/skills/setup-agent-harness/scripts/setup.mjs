@@ -271,6 +271,7 @@ function stripComment(line) {
     const c = line[k];
     if (quote) {
       if (quote === '"' && c === "\\") k++;
+      else if (quote === "'" && c === "'" && line[k + 1] === "'") k++;
       else if (c === quote) quote = "";
     } else if ((c === '"' || c === "'") && /(?:^|[:\-\[,])\s*$/.test(line.slice(0, k))) quote = c;
     else if (c === "#" && (k === 0 || /\s/.test(line[k - 1]))) return line.slice(0, k);

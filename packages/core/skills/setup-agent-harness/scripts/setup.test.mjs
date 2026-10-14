@@ -277,12 +277,12 @@ test("引用符で始まらない値の中の引用符は、引用として扱�
 test("引用符で囲んだ docs: の値は、エスケープした引用符と # を含めて読む", () => {
   const { repo, script } = setup();
   mkdirSync(join(repo, "context"));
-  writeFileSync(join(repo, "context/project.yml"), 'version: 2\n\ndocs:\n  design: "docs/de\\"#\\"sign" # 設計\n  adr: \'docs/a\'\'dr\'\n  spec: docs/specs\n');
+  writeFileSync(join(repo, "context/project.yml"), 'version: 2\n\ndocs:\n  design: "docs/de\\"#\\"sign" # 設計\n  adr: \'docs/a\'\'dr # 旧\'\n  spec: docs/specs\n');
   const r = run(repo, script, ["--force", "context/project.yml"]);
   assert.equal(r.status, 0, r.out);
   const yml = readFileSync(join(repo, "context/project.yml"), "utf8");
   assert.match(yml, /^  design: "docs\/de\\"#\\"sign"$/m);
-  assert.match(yml, /^  adr: "docs\/a'dr"$/m);
+  assert.match(yml, /^  adr: "docs\/a'dr # 旧"$/m);
 });
 
 test("version 1 の project.yml の paths: の下の行は、文書のディレクトリとして読まない", () => {
