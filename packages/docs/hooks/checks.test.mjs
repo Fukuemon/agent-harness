@@ -137,7 +137,7 @@ test("--exclude に空のパスを渡すと、対象を空にせずに失敗す�
   const r = run(dir, "check-links.mjs", ["--exclude", ""]);
   assert.notEqual(r.status, 0, r.out);
   assert.match(r.out, /--exclude にはパスが要る/);
-  for (const p of [":", ":(glob)", ":/"]) {
+  for (const p of [":", ":(glob)", ":/", ":(attr: )"]) {
     const e = run(dir, "check-links.mjs", ["--exclude", p]);
     assert.notEqual(e.status, 0, p);
     assert.match(e.out, /--exclude にはパターンが要る/);
