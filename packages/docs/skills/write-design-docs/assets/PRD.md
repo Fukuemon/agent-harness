@@ -33,7 +33,7 @@ status: draft
 
 ## Proposed Solution / Feature Description
 
-### Landscape
+### System Context
 
 <!-- 作るものが全体として何をするか。利用者、作るもの、関わる外部のシステムの C4 の L1 の図 -->
 
