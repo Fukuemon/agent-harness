@@ -1,5 +1,5 @@
 // 字幕とカーソルを重ねて、1 本の証跡を録画する。対象のリポジトリへ写して使う。
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, rmdirSync } from 'node:fs';
 import path from 'node:path';
 import type { Browser, Page } from '@playwright/test';
 import { caption, showCaptionInRecording } from './caption';
@@ -17,8 +17,36 @@ export type Recording = {
   check: (text: string) => Promise<void>;
 };
 
-/** 1 本の証跡。dir は置き場、name は拡張子を除くファイル名、header は字幕の 1 段目に出す、どの証跡かの名前 */
-export type Take = { dir: string; name: string; header: string; baseURL?: string };
+/**
+ * 1 本の証跡。dir は検証名の置き場、name は拡張子を除くファイル名で、比べる条件を含める。
+ * header は字幕の 1 段目に出す、どの証跡かの名前。
+ */
+export type Take = {
+  dir: string;
+  name: string;
+  header: string;
+  baseURL?: string;
+};
+
+/** 録画の外でログインし、その後のログインの状態と、prepare の戻り値を返す */
+const signInOutside = async <T>(browser: Browser, take: Take, prepare: (page: Page) => Promise<T>) => {
+  const signIn = await browser.newContext({ baseURL: take.baseURL, viewport: VIEWPORT });
+  try {
+    const page = await signIn.newPage();
+    const prepared = await prepare(page);
+    // opaque な origin(setContent、about:blank、data:)では sessionStorage を読めないので、持ち込まない
+    const items = await page.evaluate((): Record<string, string> => {
+      try {
+        return { ...sessionStorage };
+      } catch {
+        return {};
+      }
+    });
+    return { prepared, storageState: await signIn.storageState(), session: { origin: new URL(page.url()).origin, items } };
+  } finally {
+    await signIn.close();
+  }
+};
 
 /**
  * 1 本を録画し、置き場へ mp4、静止画、README を書き出す。
@@ -32,12 +60,7 @@ export const recordEvidence = async <T>(
   body: (r: Recording, prepared: T) => Promise<void>,
 ): Promise<void> => {
   const { dir, name, header } = take;
-  const signIn = await browser.newContext({ baseURL: take.baseURL, viewport: VIEWPORT });
-  const signInPage = await signIn.newPage();
-  const prepared = await prepare(signInPage);
-  const storageState = await signIn.storageState();
-  const session = { origin: new URL(signInPage.url()).origin, items: await signInPage.evaluate(() => ({ ...sessionStorage })) };
-  await signIn.close();
+  const { prepared, storageState, session } = await signInOutside(browser, take, prepare);
 
   mkdirSync(path.join(dir, 'webm'), { recursive: true });
   mkdirSync(path.join(dir, 'frames'), { recursive: true });
@@ -48,11 +71,13 @@ export const recordEvidence = async <T>(
     recordVideo: { dir: path.join(dir, 'webm', '.raw'), size: VIEWPORT },
   });
   // storageState は sessionStorage を持たない。タブで最初に開いたときだけ入れ、画面が書き換えた値を読み直しで戻さない
-  await context.addInitScript(({ origin, items }) => {
-    if (location.origin !== origin || sessionStorage.getItem('__e2e-session-restored')) return;
-    for (const [k, v] of Object.entries(items)) sessionStorage.setItem(k, v);
-    sessionStorage.setItem('__e2e-session-restored', '1');
-  }, session);
+  if (Object.keys(session.items).length > 0) {
+    await context.addInitScript(({ origin, items }) => {
+      if (location.origin !== origin || sessionStorage.getItem('__e2e-session-restored')) return;
+      for (const [k, v] of Object.entries(items)) sessionStorage.setItem(k, v);
+      sessionStorage.setItem('__e2e-session-restored', '1');
+    }, session);
+  }
   await showCursorInRecording(context);
   await showCaptionInRecording(context, `${header}　(${CURSOR_LEGEND})`);
   const page = await context.newPage();
@@ -77,6 +102,10 @@ export const recordEvidence = async <T>(
   await context.close().catch(() => undefined);
   await page.video()?.saveAs(path.join(dir, 'webm', `${name}.webm`));
   await page.video()?.delete();
+  // 並べて撮っているほかの録画が残っていれば消さない。空のときだけ消える
+  try {
+    rmdirSync(path.join(dir, 'webm', '.raw'));
+  } catch {}
   finishEvidence(dir, { name, header, captions, elapsed, failure: failure === undefined ? undefined : String(failure) });
   if (failure !== undefined) throw failure;
 };

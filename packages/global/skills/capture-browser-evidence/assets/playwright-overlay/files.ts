@@ -1,6 +1,6 @@
 // 録画を mp4 に変換し、置き場の README を書き直す。対象のリポジトリへ写して使う。ffmpeg と ffprobe が要る。
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { CURSOR_LEGEND } from './cursor';
 
@@ -22,19 +22,21 @@ const run = (cmd: string, args: string[]): string => {
   try {
     return execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (e) {
-    throw new Error(`${cmd} が失敗した。ffmpeg と ffprobe を入れる: ${String(e)}`);
+    if ((e as NodeJS.ErrnoException).code === 'ENOENT') throw new Error(`${cmd} が無い。ffmpeg と ffprobe を入れる`);
+    throw new Error(`${cmd} が失敗した: ${String(e)}`);
   }
 };
 
 const clock = (sec: number): string => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
 
 /**
- * webm/<name>.webm を、QuickTime とホスティングサービスで再生できる H.264 の <name>.mp4 に変換し、
- * 撮った記録を webm/<name>.json に残して README.md を書き直す。
+ * webm/<name>.webm を、QuickTime とホスティングサービスで再生できる H.264 の mp4/<name>.mp4 に変換し、
+ * 撮った記録を webm/<name>.json に残して README.md を書き直す。出力先は convert-captures.sh と同じである。
  */
 export const finishEvidence = (dir: string, take: Omit<Done, 'codec' | 'seconds'>): void => {
   const webm = path.join(dir, 'webm', `${take.name}.webm`);
-  const mp4 = path.join(dir, `${take.name}.mp4`);
+  mkdirSync(path.join(dir, 'mp4'), { recursive: true });
+  const mp4 = path.join(dir, 'mp4', `${take.name}.mp4`);
   run('ffmpeg', ['-y', '-loglevel', 'error', '-i', webm, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4]);
   const probe = JSON.parse(
     run('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=codec_name:format=duration', '-of', 'json', mp4]),
@@ -53,9 +55,9 @@ const writeReadme = (dir: string): void => {
   const sections = takes.map((t) => {
     // 録画はページを開いた直後の何も描いていない間を持たないので、動画の尺は操作の時間より短い。差を引いて動画の時刻にする
     const lag = Math.max(0, t.elapsed - (t.seconds ?? t.elapsed));
-    const lines = t.captions.map((c) => `| ${clock(Math.max(0, c.at - lag))} | ${c.text.replaceAll('\n', '<br>')} | ${c.frame ?? ''} |`);
+    const lines = t.captions.map((c) => `| ${clock(Math.max(0, c.at - lag))} | ${c.text.replaceAll('|', '\\|').replaceAll('\n', '<br>')} | ${c.frame ?? ''} |`);
     return [
-      `## ${t.name}.mp4`,
+      `## mp4/${t.name}.mp4`,
       '',
       `${t.codec}、${t.seconds?.toFixed(1)} 秒。字幕の 1 段目は「${t.header}」。`,
       ...(t.failure ? ['', `**撮影が途中で失敗した**: ${t.failure}`] : []),

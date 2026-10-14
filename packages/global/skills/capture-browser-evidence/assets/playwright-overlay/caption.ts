@@ -8,6 +8,7 @@ const STEP_KEY = '__e2e-caption-step';
 /**
  * 録画の上端に、どの証跡か(header)と、いま行っている手順の文を字幕で出す。
  * 手順の文は sessionStorage に置き、画面を読み直しても同じ文を出し続ける。
+ * setContent、about:blank、data: のページは origin が opaque で sessionStorage が例外を投げるので、window に置く。
  * 字幕は pointer-events を持たないので、画面の操作には影響しない。
  */
 export const showCaptionInRecording = async (context: BrowserContext, header: string): Promise<void> => {
@@ -29,7 +30,14 @@ export const showCaptionInRecording = async (context: BrowserContext, header: st
           pointerEvents: 'none',
           whiteSpace: 'pre-wrap',
         });
-        const render = () => (bar.textContent = `${header}\n${sessionStorage.getItem(key) ?? ''}`);
+        const read = (): string => {
+          try {
+            return sessionStorage.getItem(key) ?? '';
+          } catch {
+            return (window as unknown as Record<string, string | undefined>)[key] ?? '';
+          }
+        };
+        const render = () => (bar.textContent = `${header}\n${read()}`);
         render();
         window.addEventListener('__e2e-caption', render);
         document.body.appendChild(bar);
@@ -45,7 +53,11 @@ export const showCaptionInRecording = async (context: BrowserContext, header: st
 export const caption = async (page: Page, text: string): Promise<void> => {
   await page.evaluate(
     ({ text, key }) => {
-      sessionStorage.setItem(key, text);
+      try {
+        sessionStorage.setItem(key, text);
+      } catch {
+        (window as unknown as Record<string, string>)[key] = text;
+      }
       window.dispatchEvent(new Event('__e2e-caption'));
     },
     { text, key: STEP_KEY },
