@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.3](https://github.com/Fukuemon/agent-harness/compare/v0.2.2...v0.2.3) (2026-10-14)
+
+
+### Bug Fixes
+
+* **core:** frontmatter は閉じる --- まで見て判定する [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([c181531](https://github.com/Fukuemon/agent-harness/commit/c1815314f0845e0d79dcc470d6dde9426782664f))
+* **core:** frontmatter を持たない文書を外すのは、設計文書のディレクトリの資料だけにする [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([50853bb](https://github.com/Fukuemon/agent-harness/commit/50853bbae13faf08199b56fc6612c60f36e55364))
+* **core:** setup.mjs が project.yml を YAML の構造で読む [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([d8b605a](https://github.com/Fukuemon/agent-harness/commit/d8b605aaada7be1483a60d7352500fe36c9cfa19))
+* **core:** ラベルの一覧を、ページを順に読んで全部集める [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([1a86bed](https://github.com/Fukuemon/agent-harness/commit/1a86bed901f1a302747ecab0c231a235449f0742))
+* **core:** 値の途中の引用符を、引用の始まりとして扱わない [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([2fde22a](https://github.com/Fukuemon/agent-harness/commit/2fde22a967c5ff722152be99db636ff7b6dadf6a))
+* **core:** 単引用符の中の '' を、引用の終わりとして扱わない [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([f6e67a4](https://github.com/Fukuemon/agent-harness/commit/f6e67a496fad13578ad02fe9cdd15f2535969c47))
+* **core:** 機能ごとの DesignDoc_&lt;機能&gt;.md も、frontmatter がなければ失敗にする [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([ac06aed](https://github.com/Fukuemon/agent-harness/commit/ac06aedd48599bdd6ecbb0656384bb2fb8e32d82))
+* **core:** 設計文書のディレクトリの、frontmatter を持たない資料を目次に載せない [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([3e547e6](https://github.com/Fukuemon/agent-harness/commit/3e547e62aba787e12ccc91b1eb86a7f7f4cf1a7d))
+* **docs:** --exclude の、条件が空の attr: を拒む [#89](https://github.com/Fukuemon/agent-harness/issues/89) ([95fd289](https://github.com/Fukuemon/agent-harness/commit/95fd2897f1de7b3ff0953b79ab15e7e4fddbeee4))
+* **docs:** PRD の最初の図の見出しを System Context にする [#92](https://github.com/Fukuemon/agent-harness/issues/92) ([2e6cd3f](https://github.com/Fukuemon/agent-harness/commit/2e6cd3f99f6e314a70006795168778df1ba8e4de))
+
 ## [0.2.2](https://github.com/Fukuemon/agent-harness/compare/v0.2.1...v0.2.2) (2026-10-12)
 
 
