@@ -2,6 +2,15 @@
 
 コマンドの仕様は `agent-browser skills get core` が返す。探索的テストのガイドは `agent-browser skills get dogfood` にある。
 
+## 探索の結果を spec に移す
+
+spec を書く前に、agent-browser で画面を操作して、spec に書く値を調べる。
+
+- セレクタは、`agent-browser snapshot` が出す role と名前で取る。spec では `getByRole` と名前で書く。`@e1` のような参照は、スナップショットのたびに変わるので持ち込まない。
+- 操作ごとに、次の操作に進む前に待つ状態（現れる要素、変わる URL、届く API の応答）を書き留める。spec では、その状態を待ってから次の操作に進む。
+- 撮影のために足す操作（拡大、スクロール）が要るかを、ここで決める。
+- 調べた結果は、作業の出力の置き場に、手順書の文、操作、セレクタ、待つ状態を並べた表で残す。表の行は、spec の `step` と `check` に 1 つずつ対応させる。
+
 ## 手順はスクリプトにする
 
 コマンドを 1 つずつ打って撮ると、録画が途中で止まり、`record stop` が `✗ No recording in progress` を返したことがある。手順を bash のスクリプトにして流すと、headed でも headless でも止まらなかった。
@@ -25,7 +34,7 @@ agent-browser record stop      # 保存したパスを出力する
 ## 動画は実時間より縮む
 
 画面が変わらない間のフレームが落ち、約 45 秒の操作が 7〜12 秒の動画になった。`wait` で間を取っても、動画では間にならない。  
-手順をゆっくり見せる必要があるときは、Playwright の `slowMo` で撮る。agent-browser の動画を使うときは、縮んでいることを README に書く。
+手順をゆっくり見せる必要があるときは、Playwright の spec と雛形で撮る。agent-browser の動画を使うときは、縮んでいることを README に書く。
 
 ## テストのモック
 

@@ -23,9 +23,11 @@ description: 画面の動作確認やレビューの証跡を、ブラウザの�
 
 ## ツールの選び方
 
-- agent-browser は CDP で動くため、Chromium 系しか操作できない。1 つのブラウザでの確認、探索的テスト、ログイン済みのセッションを使う操作に使う。
-- Playwright は、複数のエンジンの比較、手順の反復、既存の e2e テストを証跡にするときに使う。
-  - 観点ごとに撮る spec を新しく書くときは、`assets/playwright-overlay/` を対象のリポジトリへ写し、字幕とカーソルを重ねて撮る。手順は [references/playwright.md](references/playwright.md) の「字幕とカーソルを重ねて撮る」にある。
+- 証跡は、原則として Playwright の spec で撮る。観点ごとの spec を書き、`assets/playwright-overlay/` を対象のリポジトリへ写して、字幕とカーソルを重ねる。pull request が更新されたときも、同じ spec で撮り直せる。手順は [references/playwright.md](references/playwright.md) の「字幕とカーソルを重ねて撮る」にある。
+  - 複数のエンジンの比較と、既存の e2e テストを証跡にするときも Playwright を使う。
+- agent-browser は、spec を書く前の探索に使う。画面の流れ、セレクタ、待つ状態を調べ、spec に移す。手順は [references/agent-browser.md](references/agent-browser.md) の「探索の結果を spec に移す」にある。
+  - agent-browser で証跡を撮るのは、spec を書くほどではない 1 回きりの再現と、Playwright で自動化できない認証（SSO など）を通る画面だけにする。
+  - agent-browser は CDP で動くため、Chromium 系しか操作できない。
 - e2e は、観点ごとのテストを書いて撮り、動画、trace、レポートを 1 回でそろえるときに使う。対象のリポジトリの依存には足さない。
 - テストが Playwright の `route` で張るモックは、Playwright が起動したブラウザの中でだけ応答を差し替える。agent-browser や手で開いたブラウザでは当たらないので、モックを使う画面を agent-browser で撮るときは、[references/agent-browser.md](references/agent-browser.md) の手順で張り直す。
 - Playwright の `firefox` と `webkit` はエンジンで、Firefox や Safari のアプリそのものではない。証跡には、どの層で測ったかを書く。
