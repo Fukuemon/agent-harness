@@ -20,20 +20,23 @@ export type Recording = {
 /**
  * 1 本の証跡。dir は検証名の置き場、name は拡張子を除くファイル名で、比べる条件を含める。
  * header は字幕の 1 段目に出す、どの証跡かの名前。
+ * version はログインした後の画面から、撮った対象のバージョンを読む。読めた値を header の後ろに足す。
  */
 export type Take = {
   dir: string;
   name: string;
   header: string;
   baseURL?: string;
+  version?: (page: Page) => Promise<string | undefined>;
 };
 
-/** 録画の外でログインし、その後のログインの状態と、prepare の戻り値を返す */
+/** 録画の外でログインし、その後のログインの状態と、prepare と version の戻り値を返す */
 const signInOutside = async <T>(browser: Browser, take: Take, prepare: (page: Page) => Promise<T>) => {
   const signIn = await browser.newContext({ baseURL: take.baseURL, viewport: VIEWPORT });
   try {
     const page = await signIn.newPage();
     const prepared = await prepare(page);
+    const version = (await take.version?.(page)) ?? '';
     // opaque な origin(setContent、about:blank、data:)では sessionStorage を読めないので、持ち込まない
     const items = await page.evaluate((): Record<string, string> => {
       try {
@@ -42,7 +45,7 @@ const signInOutside = async <T>(browser: Browser, take: Take, prepare: (page: Pa
         return {};
       }
     });
-    return { prepared, storageState: await signIn.storageState(), session: { origin: new URL(page.url()).origin, items } };
+    return { prepared, version, storageState: await signIn.storageState(), session: { origin: new URL(page.url()).origin, items } };
   } finally {
     await signIn.close();
   }
@@ -59,8 +62,9 @@ export const recordEvidence = async <T>(
   prepare: (page: Page) => Promise<T>,
   body: (r: Recording, prepared: T) => Promise<void>,
 ): Promise<void> => {
-  const { dir, name, header } = take;
-  const { prepared, storageState, session } = await signInOutside(browser, take, prepare);
+  const { dir, name } = take;
+  const { prepared, version, storageState, session } = await signInOutside(browser, take, prepare);
+  const header = `${take.header} ${version}`.trim();
 
   mkdirSync(path.join(dir, 'webm'), { recursive: true });
   mkdirSync(path.join(dir, 'frames'), { recursive: true });
