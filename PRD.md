@@ -204,7 +204,7 @@ agent-harness が Design Doc、context、ADR を短く保って唯一の参照�
 
 ## Proposed Solution / Feature Description
 
-### Landscape
+### System Context
 
 agent-harness は、開発者がコーディングエージェントに作業を頼むリポジトリへ、固有の知識の置き場、自動チェック、開発プロセスの標準と、ガードレールの考え方を届ける。  
 取得と配置はパッケージマネージャーに任せ、agent-harness は配る中身だけを持つ。
