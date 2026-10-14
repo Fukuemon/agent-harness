@@ -130,3 +130,22 @@ test("導入のスキルの --index は、frontmatter が欠けた文書があ�
   assert.equal(status, 2);
   assert.equal(readFileSync(join(r, "context/index.md"), "utf8"), "# 古い目次\n");
 });
+
+test("設計文書のディレクトリにある、frontmatter を持たない資料は目次に載せず、失敗にもしない", () => {
+  const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
+  mkdirSync(join(r, "design/features/site/reference"), { recursive: true });
+  writeFileSync(join(r, "design/features/site/reference/profile.md"), "# 企業プロフィール\n");
+  writeFileSync(join(r, "design/features/site/reference/rule.md"), "---\n# 水平線で始まる資料\n");
+  execFileSync("node", [setup, "--index"], { cwd: r });
+  assert.doesNotMatch(readFileSync(join(r, "context/index.md"), "utf8"), /profile\.md|rule\.md/);
+  assert.equal(run(r).status, 0, run(r).out);
+});
+
+test("frontmatter を持たない DesignDoc.md と DesignDoc_<機能>.md は、設計文書のディレクトリの中でも外でも失敗にする", () => {
+  for (const p of ["design/features/a/DesignDoc.md", "design/features/a/DesignDoc_a.md", "packages/foo/DesignDoc.md"]) {
+    const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
+    mkdirSync(join(r, p, ".."), { recursive: true });
+    writeFileSync(join(r, p), "# 設計\n");
+    assert.equal(run(r).status, 2, p);
+  }
+});

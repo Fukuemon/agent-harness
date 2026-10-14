@@ -32,7 +32,7 @@ function excludePathspec(p) {
   const long = /^:\(([^)]*)\)(.*)$/s.exec(p);
   const short = long ? undefined : /^:([/!^]*):?(.*)$/s.exec(p);
   const pattern = long?.[2] ?? short?.[2] ?? p;
-  if (!pattern && !/(^|,)attr:/.test(long?.[1] ?? "")) throw new Error(`--exclude にはパターンが要る: ${p}`);
+  if (!pattern && !/(?:^|,)attr:[ \t]*\S/.test(long?.[1] ?? "")) throw new Error(`--exclude にはパターンが要る: ${p}`);
   if (long) return `:(exclude,${long[1]})${pattern}`;
   if (!short) return `:(exclude)${p}`;
   if (/[!^]/.test(short[1])) return p;

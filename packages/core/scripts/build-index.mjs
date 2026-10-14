@@ -13,7 +13,7 @@ const root = process.cwd();
 if (!existsSync(join(root, "context"))) fail("context/ がない。導入のスキル setup-agent-harness で置く");
 
 const designDir = readProject()?.docs?.design;
-const design = new Map(designDir && existsSync(join(root, designDir)) ? [...collect(join(root, designDir))].map(([f, body]) => [`${designDir}/${f}`, body]) : []);
+const design = new Map(designDir && existsSync(join(root, designDir)) ? [...collect(join(root, designDir))].map(([f, body]) => [`${designDir}/${f}`, body]).filter(([p, body]) => !isMaterial(p, body)) : []);
 for (const [p, body] of outsideDesignDocs(designDir)) design.set(p, body);
 const { index, missing } = renderIndex(collect(join(root, "context")), design);
 if (missing.length) fail(missing.join("\n"));
@@ -100,4 +100,10 @@ function showDiff(target, content) {
 function fail(msg) {
   console.error(msg);
   process.exit(2);
+}
+
+// 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない。
+// DesignDoc.md、機能ごとの DesignDoc_<機能>.md、PRD.md は frontmatter が要るので外さない
+function isMaterial(path, body) {
+  return !/(?:^|\/)(?:DesignDoc(?:_[^/]*)?|PRD)\.md$/.test(path) && !/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body);
 }

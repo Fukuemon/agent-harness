@@ -47,26 +47,17 @@ const apmPath = join(root, "apm.yml");
 const apmYml = existsSync(apmPath) ? readFileSync(apmPath, "utf8") : "";
 const lifecycle = !apmYml || apmYml.includes("setup.mjs\" --gitignore") ? "ok" : /^lifecycle:/m.test(apmYml) ? "manual" : "missing";
 const existing = existsSync(join(root, "context/project.yml")) ? readFileSync(join(root, "context/project.yml"), "utf8") : "";
-// YAML の値から、囲みの引用符と行末のコメントを除く。引用符の中の # はコメントとして扱わない
-const scalar = (v) => {
-  const t = v.trim();
-  const double = /^"((?:[^"\\]|\\.)*)"/.exec(t);
-  if (double) try { return JSON.parse(`"${double[1]}"`); } catch { return double[1]; }
-  const single = /^'((?:[^']|'')*)'/.exec(t);
-  if (single) return single[1].replaceAll("''", "'");
-  return t.replace(/\s+#.*$/, "");
-};
-const pick = (key, fallback) => { const v = new RegExp(`^\\s*${key}: (.+)$`, "m").exec(existing)?.[1]; return v === undefined ? fallback : scalar(v); };
-// 文書のディレクトリは version 2 の docs: の節からだけ読む。version 1 の paths: の下の同じ名前の行を拾わないため
-// 節は、次の字下げのないキーの手前まで続く。空行と字下げのないコメントの行を挟んでも続く
-const docsBlock = /^(["']?)docs\1:[ \t]*(?:#.*)?\r?\n((?:(?:[ \t]+.*|[ \t]*|#.*)(?:\r?\n|$))*)/m.exec(existing)?.[2] ?? "";
-const pickDoc = (key, fallback) => { const v = new RegExp(`^[ \\t]+(["']?)${key}\\1: (.+)$`, "m").exec(docsBlock)?.[2]; return (v === undefined ? "" : scalar(v).replace(/\/+$/, "")) || fallback; };
-opts.branches ||= pickBranches() || pickList("names") || "main,develop";
+const project = parseYaml(existing);
+const text = (v) => (typeof v === "string" ? v : "");
+const list = (v) => (Array.isArray(v) ? v.filter((x) => typeof x === "string").join(",") : text(v));
+// 文書のディレクトリは version 2 の docs: の節からだけ読む。version 1 の paths: の下の同じ名前のキーを拾わないため
+const pickDoc = (key, fallback) => text(project.docs?.[key]).replace(/\/+$/, "") || fallback;
+opts.branches ||= pickBranches() || list(project.guardrails?.protected_branches?.names) || "main,develop";
 opts.docs ||= ["design", "adr", "spec"].map((k) => pickDoc(k, { design: "design", adr: "adr", spec: "specs" }[k])).join(",");
 const docs = opts.docs.split(",");
 if (docs.length !== 3) fail(`--docs は design,adr,spec の 3 つを順に書く: ${opts.docs}`);
 for (const d of docs) if (d.split("/").some((s) => s === "" || s === "." || s === "..")) fail(`文書のディレクトリはリポジトリの中の相対パスで書く。空、.、.. の区切りは使えない: ${d}`);
-opts.hosting ||= pick("hosting", "") || guessHosting();
+opts.hosting ||= text(project.hosting) || guessHosting();
 if (!Object.hasOwn(HOSTS, opts.hosting)) fail(`--hosting は github か gitlab: ${opts.hosting}`);
 if (opts.force.includes(undefined)) fail("--force にはパスが要る");
 
@@ -236,18 +227,83 @@ function deployedDirs() {
 
 // version 1 の context/project.yml の guardrails.protected_branches.names を読む。CONTRIBUTING.md に行がない利用者の移行のため
 // YAML の配列を、[a, b] の形と、- a の行が続く形のどちらでも読む
-function pickList(key) {
-  const m = new RegExp(`^(\\s*)${key}:[ \\t]*(.*)$`, "m").exec(existing);
-  if (!m) return undefined;
-  if (m[2].startsWith("[")) return m[2].replace(/[\[\]\s"']/g, "");
-  const rest = existing.slice(m.index + m[0].length);
-  const items = [];
-  for (const line of rest.split("\n").slice(1)) {
-    const item = /^\s*-\s+(.+)$/.exec(line);
-    if (!item) break;
-    items.push(item[1].trim().replace(/^["']|["']$/g, ""));
+// context/project.yml を読む、依存のない小さな YAML の読み取り。字下げのマッピングと列、行の中の列、引用符の値、コメント、アンカーとタグを扱う。
+// 複数行の文字列、エイリアス、行の中のマッピングは読まない。読めない行は飛ばす
+function parseYaml(source) {
+  const lines = [];
+  for (const raw of source.split(/\r?\n/)) {
+    const body = stripComment(raw);
+    if (!body.trim() || /^(?:---|\.\.\.)\s*$/.test(body)) continue;
+    lines.push({ indent: body.length - body.trimStart().length, text: body.trim() });
   }
-  return items.join(",");
+  let i = 0;
+  const isItem = (l) => /^-(?:\s|$)/.test(l.text);
+  const node = (rest, indent) => {
+    const v = rest.replace(/^(?:[&!]\S*\s*)+/, "");
+    if (v) return v.startsWith("[") ? flow(v) : scalar(v);
+    if (i < lines.length && lines[i].indent > indent) return block();
+    if (i < lines.length && lines[i].indent === indent && isItem(lines[i])) return block();
+    return null;
+  };
+  const block = () => {
+    const indent = lines[i].indent;
+    if (isItem(lines[i])) {
+      const items = [];
+      while (i < lines.length && lines[i].indent === indent && isItem(lines[i])) items.push(node(lines[i++].text.slice(1).trim(), indent));
+      return items;
+    }
+    const map = {};
+    while (i < lines.length && lines[i].indent === indent && !isItem(lines[i])) {
+      const m = /^("(?:[^"\\]|\\.)*"|'(?:[^']|'')*'|[^"'\s][^:]*?)\s*:(?:\s+(.*))?$/.exec(lines[i++].text);
+      if (m) map[scalar(m[1])] = node(m[2] ?? "", indent);
+      while (i < lines.length && lines[i].indent > indent) i++;
+    }
+    return map;
+  };
+  const root = lines.length ? block() : {};
+  return root && !Array.isArray(root) ? root : {};
+}
+
+// 引用符の外の、行頭か空白の後の # から後ろを除く。引用符は、キーか値の始まりにあるときだけ引用として扱う
+function stripComment(line) {
+  let quote = "";
+  for (let k = 0; k < line.length; k++) {
+    const c = line[k];
+    if (quote) {
+      if (quote === '"' && c === "\\") k++;
+      else if (quote === "'" && c === "'" && line[k + 1] === "'") k++;
+      else if (c === quote) quote = "";
+    } else if ((c === '"' || c === "'") && /(?:^|[:\-\[,])\s*$/.test(line.slice(0, k))) quote = c;
+    else if (c === "#" && (k === 0 || /\s/.test(line[k - 1]))) return line.slice(0, k);
+  }
+  return line;
+}
+
+// 囲みの引用符を解く。二重引用符はエスケープを、単引用符は '' を解く
+function scalar(v) {
+  const t = v.trim();
+  const double = /^"((?:[^"\\]|\\.)*)"$/.exec(t);
+  if (double) try { return JSON.parse(`"${double[1]}"`); } catch { return double[1]; }
+  const single = /^'((?:[^']|'')*)'$/.exec(t);
+  if (single) return single[1].replaceAll("''", "'");
+  return t;
+}
+
+function flow(v) {
+  const inner = v.replace(/^\[|\]$/g, "");
+  const items = [];
+  let quote = "", cur = "";
+  for (let k = 0; k < inner.length; k++) {
+    const c = inner[k];
+    if (quote) {
+      if (quote === '"' && c === "\\") { cur += c + inner[++k]; continue; }
+      if (c === quote) quote = "";
+    } else if (c === '"' || c === "'") quote = c;
+    else if (c === ",") { items.push(cur); cur = ""; continue; }
+    cur += c;
+  }
+  items.push(cur);
+  return items.map((x) => scalar(x)).filter((x) => x !== "");
 }
 
 // CONTRIBUTING.md の「保護するブランチは `a`、`b` である。」の行から読む
@@ -278,6 +334,9 @@ function repositoryName() {
     if (resolve(root, git("rev-parse", "--git-dir")) === common) return basename(root);
     // ほかの worktree では、本体の .git の親が本体の作業ツリーである
     if (basename(common) === ".git") return basename(dirname(common));
+    // --separate-git-dir で作ったリポジトリのほかの worktree では、Git は本体の作業ツリーの場所を持たない。origin の URL の名前を使う
+    const origin = /([^/:]+?)(?:\.git)?\/?$/.exec(git("remote", "get-url", "origin"))?.[1];
+    if (origin) return origin;
   } catch {}
   return basename(root);
 }
@@ -311,7 +370,7 @@ function buildIndex(templates = true) {
     for (const f of entries.keys()) if (!f.endsWith(".md")) entries.delete(f);
     return entries;
   };
-  const design = new Map([...gather(docs[0])].map(([f, body]) => [`${docs[0]}/${f}`, body]));
+  const design = new Map([...gather(docs[0])].map(([f, body]) => [`${docs[0]}/${f}`, body]).filter(([p, body]) => !isMaterial(p, body)));
   for (const [p, body] of outsideDesignDocs(docs[0])) design.set(p, body);
   if (candidates.has("PRD.md") && fromTemplate("PRD.md")) design.set("PRD.md", candidates.get("PRD.md"));
   return renderIndex(gather("context"), design);
@@ -373,4 +432,10 @@ function write(p) {
 function fail(msg) {
   console.error(msg);
   process.exit(2);
+}
+
+// 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない。
+// DesignDoc.md、機能ごとの DesignDoc_<機能>.md、PRD.md は frontmatter が要るので外さない
+function isMaterial(path, body) {
+  return !/(?:^|\/)(?:DesignDoc(?:_[^/]*)?|PRD)\.md$/.test(path) && !/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body);
 }

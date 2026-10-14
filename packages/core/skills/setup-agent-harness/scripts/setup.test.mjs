@@ -242,15 +242,47 @@ test("引用符で囲んだキーの docs: の節も読む", () => {
   assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^docs:\n  design: docs\/design\n  adr: docs\/adr\n  spec: docs\/specs$/m);
 });
 
+test("--separate-git-dir で作ったリポジトリのほかの worktree では、<リポジトリ名> は origin の名前に置き換わる", () => {
+  const { repo, script } = setup();
+  writeFileSync(join(repo, "..", "skills", "other", "assets", "design", "DesignDoc.md"), "---\ntype: design-doc\ntitle: <リポジトリ名> Design Doc\ndescription: 全体の設計\n---\n");
+  const git = (...args) => execFileSync("git", args, { cwd: repo, stdio: "ignore" });
+  git("init", "-q", "--separate-git-dir", join(repo, "..", "git-storage"));
+  git("remote", "add", "origin", "git@github.com:someone/my-repo.git");
+  git("-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-q", "--allow-empty", "-m", "init");
+  const wt = join(repo, "..", "feature-1");
+  git("worktree", "add", "-q", wt);
+  run(wt, script);
+  assert.match(readFileSync(join(wt, "design/DesignDoc.md"), "utf8"), /^title: my-repo Design Doc$/m);
+});
+
+test("アンカーとタグの付いた docs: の節と、キーと同じ字下げの列を読む", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), "version: 2\ndocs: &doc_paths\n  design: !!str docs/design # 旧 'design'\n  adr: docs/adr\n  spec: docs/specs\nguardrails:\n  protected_branches:\n    names:\n    - trunk\n    - release\n");
+  const r = run(repo, script, ["--force", "context/project.yml", "--force", "CONTRIBUTING.md"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^docs:\n  design: docs\/design\n  adr: docs\/adr\n  spec: docs\/specs$/m);
+  assert.match(readFileSync(join(repo, "CONTRIBUTING.md"), "utf8"), /`trunk`、`release`/);
+});
+
+test("引用符で始まらない値の中の引用符は、引用として扱わず、後ろのコメントを除く", () => {
+  const { repo, script } = setup();
+  mkdirSync(join(repo, "context"));
+  writeFileSync(join(repo, "context/project.yml"), "version: 2\ndocs:\n  design: docs/team's # 旧ディレクトリ\n  adr: adr\n  spec: specs\n");
+  const r = run(repo, script, ["--force", "context/project.yml"]);
+  assert.equal(r.status, 0, r.out);
+  assert.match(readFileSync(join(repo, "context/project.yml"), "utf8"), /^  design: "docs\/team's"$/m);
+});
+
 test("引用符で囲んだ docs: の値は、エスケープした引用符と # を含めて読む", () => {
   const { repo, script } = setup();
   mkdirSync(join(repo, "context"));
-  writeFileSync(join(repo, "context/project.yml"), 'version: 2\n\ndocs:\n  design: "docs/de\\"#\\"sign" # 設計\n  adr: \'docs/a\'\'dr\'\n  spec: docs/specs\n');
+  writeFileSync(join(repo, "context/project.yml"), 'version: 2\n\ndocs:\n  design: "docs/de\\"#\\"sign" # 設計\n  adr: \'docs/a\'\'dr # 旧\'\n  spec: docs/specs\n');
   const r = run(repo, script, ["--force", "context/project.yml"]);
   assert.equal(r.status, 0, r.out);
   const yml = readFileSync(join(repo, "context/project.yml"), "utf8");
   assert.match(yml, /^  design: "docs\/de\\"#\\"sign"$/m);
-  assert.match(yml, /^  adr: "docs\/a'dr"$/m);
+  assert.match(yml, /^  adr: "docs\/a'dr # 旧"$/m);
 });
 
 test("version 1 の project.yml の paths: の下の行は、文書のディレクトリとして読まない", () => {
