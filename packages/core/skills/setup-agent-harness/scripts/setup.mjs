@@ -407,7 +407,7 @@ function renderIndex(context, design) {
   const sorted = (entries) => [...entries].sort(([a], [b]) => (a < b ? -1 : 1));
   const lines = sorted(context).filter(([f]) => f !== "index.md" && f !== "log.md").map(([f, body]) => line(f, body));
   // 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない
-  const docs = sorted(design).filter(([, body]) => /^---\r?\n/.test(body));
+  const docs = sorted(design).filter(([, body]) => /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body));
   if (docs.length) lines.push("", "## Design Doc", "", ...docs.map(([p, body]) => line(`../${p}`, body)));
   const index = `# context の目次\n\n作業の中で参照する、このリポジトリの規約と事実。変更を取り込むまでの手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。\n\n${lines.join("\n")}\n`;
   return { index, missing };

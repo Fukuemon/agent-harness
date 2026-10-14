@@ -135,7 +135,8 @@ test("設計文書のディレクトリにある、frontmatter を持たない�
   const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
   mkdirSync(join(r, "design/features/site/reference"), { recursive: true });
   writeFileSync(join(r, "design/features/site/reference/profile.md"), "# 企業プロフィール\n");
+  writeFileSync(join(r, "design/features/site/reference/rule.md"), "---\n# 水平線で始まる資料\n");
   execFileSync("node", [setup, "--index"], { cwd: r });
-  assert.doesNotMatch(readFileSync(join(r, "context/index.md"), "utf8"), /profile\.md/);
+  assert.doesNotMatch(readFileSync(join(r, "context/index.md"), "utf8"), /profile\.md|rule\.md/);
   assert.equal(run(r).status, 0, run(r).out);
 });
