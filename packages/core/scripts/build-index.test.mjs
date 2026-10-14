@@ -141,8 +141,8 @@ test("設計文書のディレクトリにある、frontmatter を持たない�
   assert.equal(run(r).status, 0, run(r).out);
 });
 
-test("frontmatter を持たない DesignDoc.md は、設計文書のディレクトリの中でも外でも失敗にする", () => {
-  for (const p of ["design/features/a/DesignDoc.md", "packages/foo/DesignDoc.md"]) {
+test("frontmatter を持たない DesignDoc.md と DesignDoc_<機能>.md は、設計文書のディレクトリの中でも外でも失敗にする", () => {
+  for (const p of ["design/features/a/DesignDoc.md", "design/features/a/DesignDoc_a.md", "packages/foo/DesignDoc.md"]) {
     const r = repo((r) => execFileSync("git", ["init", "-q"], { cwd: r }));
     mkdirSync(join(r, p, ".."), { recursive: true });
     writeFileSync(join(r, p), "# 設計\n");

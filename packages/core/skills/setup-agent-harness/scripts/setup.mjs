@@ -433,7 +433,8 @@ function fail(msg) {
   process.exit(2);
 }
 
-// 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない。DesignDoc.md は frontmatter が要るので外さない
+// 設計文書のディレクトリにある、frontmatter を持たない Markdown（参考の資料やデータ）は、目次に載せない。
+// DesignDoc.md、機能ごとの DesignDoc_<機能>.md、PRD.md は frontmatter が要るので外さない
 function isMaterial(path, body) {
-  return !path.endsWith("/DesignDoc.md") && !/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body);
+  return !/(?:^|\/)(?:DesignDoc(?:_[^/]*)?|PRD)\.md$/.test(path) && !/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/.test(body);
 }
