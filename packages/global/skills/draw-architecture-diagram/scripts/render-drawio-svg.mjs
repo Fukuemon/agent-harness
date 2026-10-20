@@ -68,11 +68,14 @@ if (content) {
 }
 const model = source.match(/<mxGraphModel[\s\S]*<\/mxGraphModel>/);
 if (!model) usage("mxGraphModel が見つからない。圧縮した .drawio は、draw.io で「圧縮しない」にして保存し直す");
+if (model[0].split("<mxGraphModel").length > 2) usage("複数ページの .drawio は描けない。1 ページずつ別のファイルに分ける");
 const xml = model[0].replace(/<!--[\s\S]*?-->/g, "").replace(/>\s+</g, "><");
 
 const cmd = (process.env.AGENT_BROWSER_CMD || "agent-browser").split(/\s+/);
+// 既定のセッションのタブを動かさず、並べて実行しても混ざらないよう、実行ごとにセッションを分ける
+const session = ["--session", `render-drawio-svg-${process.pid}`];
 function browser(...rest) {
-  const r = spawnSync(cmd[0], [...cmd.slice(1), ...rest], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const r = spawnSync(cmd[0], [...cmd.slice(1), ...session, ...rest], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   if (r.error || r.status !== 0) {
     console.error(`agent-browser が失敗した: ${rest[0]}\n${r.error?.message ?? r.stderr}`);
     process.exit(2);
@@ -87,7 +90,7 @@ writeFileSync(
   page,
   `<!doctype html><html><head><meta charset="utf-8">
 <script src="https://viewer.diagrams.net/js/viewer-static.min.js"></script></head><body><div id="c"></div><script>
-window.xml=${JSON.stringify(xml)};
+window.xml=${JSON.stringify(xml).replace(/</g, "\\u003c")};
 window.inlineIcons=${inlineIcons};
 function fixColors(s){return s.replace(/light-dark\(([^,()]+(?:\([^()]*\))?),\s*[^()]+(?:\([^()]*\))?\)/g,"$1");}
 // 図形の定義に頼るアイコンを、その場で描いた SVG の画像に置き換える。ラベルの位置と文字の設定だけを残す
@@ -119,6 +122,7 @@ window.addEventListener("load",function(){
 </script></body></html>`,
 );
 
+process.on("exit", () => spawnSync(cmd[0], [...cmd.slice(1), ...session, "close"]));
 browser("open", pathToFileURL(page).href);
 browser("wait", "7000");
 let svg;
