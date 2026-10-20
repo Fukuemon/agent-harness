@@ -5,10 +5,13 @@
 // Markdown には画像として埋め込め、draw.io（デスクトップ、VS Code の拡張、Obsidian の Diagrams）で開くと編集できる。
 //
 // 使い方:
-//   render-drawio-svg.mjs <入力> <出力.svg> [--png <確認用.png>]
+//   render-drawio-svg.mjs <入力> <出力.svg> [--png <確認用.png>] [--inline-icons]
 //
 // 入力は、mxGraphModel を含むファイル（.drawio、.xml、編集できる SVG）である。
 // --png を付けると、出力した SVG をブラウザで開いたスクリーンショットも保存する。
+// --inline-icons を付けると、AWS のリソースのアイコンと Kubernetes のアイコンを、SVG の data URI の画像に置き換える。
+// 図形の定義（aws4.xml、kubernetes.xml）を持たない draw.io（Obsidian の Diagrams）でも、編集の画面でアイコンが崩れない。
+// 置き換えたアイコンは画像になり、編集の画面で別のサービスのアイコンへスタイルで切り替えられない。
 //
 // 描画には agent-browser と、viewer.diagrams.net の viewer-static.min.js を使う。
 // 読み込むのは JS とアイコンの定義だけで、図のデータは外へ送らない。
@@ -27,11 +30,14 @@ import { pathToFileURL } from "node:url";
 
 function usage(message) {
   if (message) console.error(message);
-  console.error("使い方: render-drawio-svg.mjs <入力> <出力.svg> [--png <確認用.png>]");
+  console.error("使い方: render-drawio-svg.mjs <入力> <出力.svg> [--png <確認用.png>] [--inline-icons]");
   process.exit(1);
 }
 
 const args = process.argv.slice(2);
+const inlineIndex = args.indexOf("--inline-icons");
+const inlineIcons = inlineIndex !== -1;
+if (inlineIcons) args.splice(inlineIndex, 1);
 const pngIndex = args.indexOf("--png");
 let png = null;
 if (pngIndex !== -1) {
@@ -82,9 +88,29 @@ writeFileSync(
   `<!doctype html><html><head><meta charset="utf-8">
 <script src="https://viewer.diagrams.net/js/viewer-static.min.js"></script></head><body><div id="c"></div><script>
 window.xml=${JSON.stringify(xml)};
+window.inlineIcons=${inlineIcons};
+function fixColors(s){return s.replace(/light-dark\(([^,()]+(?:\([^()]*\))?),\s*[^()]+(?:\([^()]*\))?\)/g,"$1");}
+// 図形の定義に頼るアイコンを、その場で描いた SVG の画像に置き換える。ラベルの位置と文字の設定だけを残す
+function inlineIconCells(graph){
+  var model=graph.getModel(),keep=/^(html|whiteSpace|fontColor|fontSize|fontStyle|labelPosition|verticalLabelPosition|align|verticalAlign|spacing[A-Za-z]*|labelBackgroundColor)=/;
+  model.beginUpdate();
+  try{
+    for(var id in model.cells){
+      var c=model.cells[id],st=c.style||"";
+      if(!c.vertex||!/shape=mxgraph\.(aws4\.resourceIcon|kubernetes\.icon)/.test(st))continue;
+      var tg=new Graph(document.createElement("div"));
+      tg.insertVertex(tg.getDefaultParent(),null,"",0,0,c.geometry.width,c.geometry.height,st);
+      var icon=fixColors(new XMLSerializer().serializeToString(tg.getSvg(null,1,0,false,null,true,null,null,null,false,false)));
+      var rest=st.split(";").filter(function(kv){return keep.test(kv);});
+      model.setStyle(c,rest.concat(["shape=image","aspect=fixed","imageAspect=0","image=data:image/svg+xml,"+btoa(unescape(encodeURIComponent(icon)))]).join(";")+";");
+    }
+  }finally{model.endUpdate();}
+  window.xml=mxUtils.getXml(new mxCodec().encode(model));
+}
 window.addEventListener("load",function(){
   var v=new GraphViewer(document.getElementById("c"),mxUtils.parseXml(window.xml).documentElement,{});
   setTimeout(function(){
+    if(window.inlineIcons)inlineIconCells(v.graph);
     var svg=v.graph.getSvg("#ffffff",1,10,true,null,true,null,null,null,false,true);
     svg.setAttribute("content",window.xml);
     window.svgOut=new XMLSerializer().serializeToString(svg);

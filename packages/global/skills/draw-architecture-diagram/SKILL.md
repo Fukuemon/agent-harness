@@ -68,6 +68,7 @@ node <スキルのディレクトリ>/scripts/render-drawio-svg.mjs <入力> <�
 - 終了コード 1 は引数か入力の誤りである。圧縮した `.drawio` は、draw.io で圧縮しない形式に保存し直す。
 - 終了コード 2 は描画の失敗である。agent-browser と viewer.diagrams.net に届くかを確かめる。
 - `--png` の画像は、必ず開いて見る。XML が正しくても、線と文字が重なることがある。
+- 利用者が図形のライブラリを持たない draw.io（Obsidian の Diagrams プラグイン）で編集するなら、`--inline-icons` を付ける。AWS のリソースのアイコンと Kubernetes のアイコンを、SVG の data URI の画像に置き換える。置き換えたアイコンは、編集の画面で別のサービスへスタイルで切り替えられない。
 
 ## 置き場
 
@@ -78,5 +79,5 @@ node <スキルのディレクトリ>/scripts/render-drawio-svg.mjs <入力> <�
 
 ## 利用者が編集するとき
 
-- 利用者に、編集に使うアプリと開き方を伝える。クラウドのアイコンを使った図は、draw.io のデスクトップのアプリかエディタの拡張機能で編集する。
-- Obsidian の Diagrams プラグインは、クラウドのアイコンを使った図を表示できる。編集の画面では、アイコンが四角になり、既定の設定ではエラーになる。条件は [references/obsidian.md](references/obsidian.md) にある。
+- 利用者に、編集に使うアプリと開き方を伝える。
+- Obsidian の Diagrams プラグインで編集するなら、`--inline-icons` で描画し、プラグインの画面の形を `full` か `compact` にしてもらう。条件は [references/obsidian.md](references/obsidian.md) にある。

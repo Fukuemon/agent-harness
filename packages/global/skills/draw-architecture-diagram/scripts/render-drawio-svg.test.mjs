@@ -48,3 +48,12 @@ test("編集できる SVG を入力にしても、content 属性から mxGraphMo
   const r = run([input, join(dir, "b.svg")], { AGENT_BROWSER_CMD: join(dir, "missing-command") });
   assert.equal(r.status, 2);
 });
+
+test("--inline-icons を付けても、入力を読んで描画へ進む", () => {
+  const dir = mkdtempSync(join(tmpdir(), "render-drawio-svg-"));
+  const input = join(dir, "a.drawio");
+  writeFileSync(input, `<mxfile><diagram id="a">${model}</diagram></mxfile>`);
+  // オプションを引数の誤りとして扱えば 1、受け付ければ存在しないコマンドで 2 になる
+  const r = run([input, join(dir, "a.svg"), "--inline-icons"], { AGENT_BROWSER_CMD: join(dir, "missing-command") });
+  assert.equal(r.status, 2);
+});
