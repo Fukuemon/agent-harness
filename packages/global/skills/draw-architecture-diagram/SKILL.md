@@ -79,4 +79,4 @@ node <スキルのディレクトリ>/scripts/render-drawio-svg.mjs <入力> <�
 ## 利用者が編集するとき
 
 - 利用者に、編集に使うアプリと開き方を伝える。クラウドのアイコンを使った図は、draw.io のデスクトップのアプリかエディタの拡張機能で編集する。
-- Obsidian の Diagrams プラグインは、クラウドのアイコンを使った図を表示できるが、編集できない。条件は [references/obsidian.md](references/obsidian.md) にある。
+- Obsidian の Diagrams プラグインは、クラウドのアイコンを使った図を表示できる。編集の画面では、アイコンが四角になり、既定の設定ではエラーになる。条件は [references/obsidian.md](references/obsidian.md) にある。
