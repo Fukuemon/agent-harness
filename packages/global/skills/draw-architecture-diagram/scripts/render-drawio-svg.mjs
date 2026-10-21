@@ -2,7 +2,7 @@
 // draw.io の図（mxGraphModel）を、draw.io で編集できる SVG に描画する。
 //
 // SVG の本体に描画の結果を持ち、ルートの content 属性に mxGraphModel を持つ。
-// Markdown には画像として埋め込め、draw.io（デスクトップ、VS Code の拡張、Obsidian の Diagrams）で開くと編集できる。
+// Markdown には画像として埋め込め、draw.io（デスクトップのアプリ、エディタの拡張機能、ノートのアプリのプラグイン）で開くと編集できる。
 //
 // 使い方:
 //   render-drawio-svg.mjs <入力> <出力.svg> [--png <確認用.png>] [--inline-icons]
@@ -10,7 +10,7 @@
 // 入力は、mxGraphModel を含むファイル（.drawio、.xml、編集できる SVG）である。
 // --png を付けると、出力した SVG をブラウザで開いたスクリーンショットも保存する。
 // --inline-icons を付けると、AWS のリソースのアイコンと Kubernetes のアイコンを、SVG の data URI の画像に置き換える。
-// 図形の定義（aws4.xml、kubernetes.xml）を持たない draw.io（Obsidian の Diagrams）でも、編集の画面でアイコンが崩れない。
+// 図形の定義（aws4.xml、kubernetes.xml）を持たない draw.io でも、編集の画面でアイコンが崩れない。
 // 置き換えたアイコンは画像になり、編集の画面で別のサービスのアイコンへスタイルで切り替えられない。
 //
 // 描画には agent-browser と、viewer.diagrams.net の viewer-static.min.js を使う。
@@ -22,7 +22,7 @@
 //   1  引数か入力の誤り
 //   2  描画に失敗した（agent-browser が無い、viewer を読み込めない、時間切れ）
 
-import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
@@ -122,9 +122,12 @@ window.addEventListener("load",function(){
 </script></body></html>`,
 );
 
-process.on("exit", () => spawnSync(cmd[0], [...cmd.slice(1), ...session, "close"]));
+process.on("exit", () => {
+  spawnSync(cmd[0], [...cmd.slice(1), ...session, "close"]);
+  rmSync(work, { recursive: true, force: true });
+});
 browser("open", pathToFileURL(page).href);
-browser("wait", "7000");
+browser("wait", "--fn", "window.svgOut !== undefined");
 let svg;
 try {
   svg = JSON.parse(browser("eval", "window.svgOut || ''").trim());
