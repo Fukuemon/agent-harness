@@ -49,6 +49,66 @@ rules:
         to: 日本語版の違い
       - from: ツールの版
         to: ツールのバージョン
+  # 技術者がカタカナ語で呼ぶ技術用語。文脈で意味が変わる語（表、列、題、写す、取り込む）は、スキル write-prose の規則で判断し、ここに置かない
+  - expected: デフォルト値
+    pattern: /既定の?値/
+    prh: default value はデフォルト値と書く
+    specs:
+      - from: 既定の値を使う
+        to: デフォルト値を使う
+      - from: 既定値を変える
+        to: デフォルト値を変える
+  - expected: デフォルト$1
+    pattern: /既定(?!の?値)(では|で|は|の|に|を|と|から)/
+    prh: default はデフォルトと書く
+    specs:
+      - from: 既定では無効
+        to: デフォルトでは無効
+      - from: 既定のブランチ
+        to: デフォルトのブランチ
+  - expected: テンプレート
+    pattern: 雛形
+    prh: template はテンプレートと書く
+    specs:
+      - from: issue の雛形
+        to: issue のテンプレート
+  - expected: リクエスト$1レスポンス
+    pattern: /要求(と|や|、)応答/
+    prh: HTTP の request と response は、リクエストとレスポンスと書く
+    specs:
+      - from: 要求と応答を記録する
+        to: リクエストとレスポンスを記録する
+  - expected: $1$2の$3テーブル
+    pattern: /(DB|データベース)(\s?)の(\s?)表(?![現示記])/
+    prh: DB の table はテーブルと書く。Markdown の表は検出しない
+    specs:
+      - from: DB の表の名前
+        to: DB のテーブルの名前
+      - from: DB の表現力
+        to: DB の表現力
+  - expected: ローカル環境
+    pattern: 手元の環境
+    prh: 開発者のマシンの環境は、ローカル環境と書く
+    specs:
+      - from: 手元の環境で試す
+        to: ローカル環境で試す
+  - expected: ローカル環境で
+    pattern: /手元で(?=動か|起動|実行)/
+    prh: 開発者のマシンで動かすことは、ローカル環境で起動する、のように書く
+    specs:
+      - from: 手元で動かす
+        to: ローカル環境で動かす
+      - from: 手元で扱う
+        to: 手元で扱う
+  - expected: シークレット
+    patterns:
+      - 秘密の値
+      - 秘密情報
+      - 秘密の情報
+    prh: secret はシークレットと書く
+    specs:
+      - from: 秘密情報の置き場
+        to: シークレットの置き場
   - expected: 何をどう決めたかを書く
     pattern: /側に倒[さしすせそ]/
     prh: 判断を方向の比喩で書かない。「失敗したら処理を止める」のように、決めた動作を書く

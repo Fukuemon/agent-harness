@@ -39,7 +39,7 @@ node <docs>/check-links.mjs
 5. CI のワークフローがあれば、チェックの手順を足す。
    - checkout で Git の履歴を全部取る。`list-drift.mjs` が Git の履歴を全部読むためである。
    - 配置先は Git で追跡しないので、チェックの前に `apm install --frozen` を実行する。
-   - apm は、CONTRIBUTING.md の「開発の準備」と同じ手段で入れる。書かれていなければ、利用者に尋ねる。名前を推測して入れない。
+   - apm は、CONTRIBUTING.md の「開発環境のセットアップ」と同じ手段で入れる。書かれていなければ、利用者に尋ねる。名前を推測して入れない。
    - textlint、`check-history.mjs`、`check-links.mjs` は失敗にする。`list-drift.mjs` の一覧は失敗にしない。
    - 3 つのスクリプトは、ファイルを省くと、まだ追跡していない Markdown も見る。静的サイトの原稿のように、リンクをサイト内の URL で書く Markdown は、`--exclude <パス>` で対象から外す。外したパスと理由は、CONTRIBUTING.md の「文書を直すとき」に書く。
 6. 足したチェックを 1 度ずつ実行し、結果を利用者に見せる。既存の文書に指摘が出たら、直すかを利用者と決める。
