@@ -220,7 +220,7 @@ dependencies:
     .agents/skills/write-design-docs/references/feature-design-doc.md: sha256:ccef84d3fe85e2a45d52767c632bd8eee11b16f67bae1f4ebf5b35fc9b4f9487
     .agents/skills/write-design-docs/references/prd.md: sha256:c565e9eca4335f6bdeb6fcc88d7865cb137cbe048c4f1193476ec8c987cac276
     .agents/skills/write-design-docs/references/spec.md: sha256:0d6ef5ddbc90caf1ac5fe2f36bf0435e7f62ae81dec9a9f178c778d94ec71882
-    .agents/skills/write-prose/SKILL.md: sha256:6587c1f3da6ab3a5c35cd3be2cedbf206ac99feb6661092529be3c9a1bf7bce2
+    .agents/skills/write-prose/SKILL.md: sha256:dba1affc83f1ca90816d53d33c22d5085a7f9851c74a8c51099af18f9a438cc1
     .claude/hooks/docs/hooks/check-docs.mjs: sha256:0f3d06c73e84cb4bf3dc9efd0c0f76894497bacee16b9452bd66300c059960da
     .claude/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
     .claude/hooks/docs/hooks/check-history.mjs: sha256:daca850c0bc10ddb47c0ce8039529ec289a49aec4cf3e6494f606e171731082b
@@ -241,7 +241,7 @@ dependencies:
     .claude/skills/write-design-docs/references/feature-design-doc.md: sha256:ccef84d3fe85e2a45d52767c632bd8eee11b16f67bae1f4ebf5b35fc9b4f9487
     .claude/skills/write-design-docs/references/prd.md: sha256:c565e9eca4335f6bdeb6fcc88d7865cb137cbe048c4f1193476ec8c987cac276
     .claude/skills/write-design-docs/references/spec.md: sha256:0d6ef5ddbc90caf1ac5fe2f36bf0435e7f62ae81dec9a9f178c778d94ec71882
-    .claude/skills/write-prose/SKILL.md: sha256:6587c1f3da6ab3a5c35cd3be2cedbf206ac99feb6661092529be3c9a1bf7bce2
+    .claude/skills/write-prose/SKILL.md: sha256:dba1affc83f1ca90816d53d33c22d5085a7f9851c74a8c51099af18f9a438cc1
     .codex/hooks/docs/hooks/check-docs.mjs: sha256:0f3d06c73e84cb4bf3dc9efd0c0f76894497bacee16b9452bd66300c059960da
     .codex/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
     .codex/hooks/docs/hooks/check-history.mjs: sha256:daca850c0bc10ddb47c0ce8039529ec289a49aec4cf3e6494f606e171731082b
@@ -802,7 +802,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:6587c1f3da6ab3a5c35cd3be2cedbf206ac99feb6661092529be3c9a1bf7bce2
+  content_hash: sha256:dba1affc83f1ca90816d53d33c22d5085a7f9851c74a8c51099af18f9a438cc1
 - kind: project-relative
   target: claude
   value: .claude/skills/write-skill
@@ -1261,7 +1261,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:6587c1f3da6ab3a5c35cd3be2cedbf206ac99feb6661092529be3c9a1bf7bce2
+  content_hash: sha256:dba1affc83f1ca90816d53d33c22d5085a7f9851c74a8c51099af18f9a438cc1
 - kind: project-relative
   target: codex
   value: .agents/skills/write-skill
