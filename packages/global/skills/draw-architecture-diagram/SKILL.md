@@ -63,9 +63,9 @@ description: インフラとシステムの構成図（クラウドのリソー�
 node <スキルのディレクトリ>/scripts/render-drawio-svg.mjs <入力> <出力.svg> --png <確認用.png>
 ```
 
-- 入力は 1 ページの `.drawio`（圧縮しない形式）か、編集できる SVG である。SVG を入力にすると、図を直した後の描画し直しに使える。
+- 入力は 1 ページの `.drawio` か、編集できる SVG である。SVG を入力にすると、利用者が draw.io で直した後の描画し直しに使える。
 - agent-browser が要る。コマンドが `agent-browser` で動かない環境では、`AGENT_BROWSER_CMD` で差し替える。
-- 終了コード 1 は引数か入力の誤りである。圧縮した `.drawio` は、draw.io で圧縮しない形式に保存し直す。
+- 終了コード 1 は引数か入力の誤りである。
 - 終了コード 2 は描画の失敗である。agent-browser と viewer.diagrams.net に届くかを確かめる。
 - 利用者が図形のライブラリ（`aws4.xml`、`kubernetes.xml`）を持たない draw.io で編集するなら、`--inline-icons` を付ける。AWS のリソースのアイコンと Kubernetes のアイコンを、SVG の data URI の画像に置き換える。置き換えたアイコンは、編集の画面で別のサービスへスタイルで切り替えられない。
 

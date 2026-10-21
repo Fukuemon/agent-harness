@@ -7,7 +7,7 @@
 // 使い方:
 //   render-drawio-svg.mjs <入力> <出力.svg> [--png <確認用.png>] [--inline-icons]
 //
-// 入力は、mxGraphModel を含むファイル（.drawio、.xml、編集できる SVG）である。
+// 入力は、mxGraphModel を含むファイル（.drawio、.xml、編集できる SVG）である。draw.io が圧縮した diagram も読む。
 // --png を付けると、出力した SVG をブラウザで開いたスクリーンショットも保存する。
 // --inline-icons を付けると、AWS のリソースのアイコンと Kubernetes のアイコンを、SVG の data URI の画像に置き換える。
 // 図形の定義（aws4.xml、kubernetes.xml）を持たない draw.io でも、編集の画面でアイコンが崩れない。
@@ -27,6 +27,7 @@ import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
+import { inflateRawSync } from "node:zlib";
 
 function usage(message) {
   if (message) console.error(message);
@@ -66,9 +67,19 @@ if (content) {
     .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d)))
     .replace(/&amp;/g, "&");
 }
+const pages = source.split("<diagram").length - 1;
+if (pages > 1) usage("複数ページの .drawio は描けない。1 ページずつ別のファイルに分ける");
+// draw.io の編集の画面で保存すると、diagram の中身を deflate と base64 で圧縮することがある
+const compressed = source.match(/<diagram[^>]*>\s*([A-Za-z0-9+/=\s]+?)\s*<\/diagram>/);
+if (compressed) {
+  try {
+    source = decodeURIComponent(inflateRawSync(Buffer.from(compressed[1], "base64")).toString("latin1"));
+  } catch {
+    usage("圧縮した diagram を展開できず、mxGraphModel を得られない");
+  }
+}
 const model = source.match(/<mxGraphModel[\s\S]*<\/mxGraphModel>/);
-if (!model) usage("mxGraphModel が見つからない。圧縮した .drawio は、draw.io で「圧縮しない」にして保存し直す");
-if (model[0].split("<mxGraphModel").length > 2) usage("複数ページの .drawio は描けない。1 ページずつ別のファイルに分ける");
+if (!model) usage("mxGraphModel が見つからない");
 const xml = model[0].replace(/<!--[\s\S]*?-->/g, "").replace(/>\s+</g, "><");
 
 const cmd = (process.env.AGENT_BROWSER_CMD || "agent-browser").split(/\s+/);

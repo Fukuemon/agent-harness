@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { deflateRawSync } from "node:zlib";
 
 const script = fileURLToPath(new URL("./render-drawio-svg.mjs", import.meta.url));
 const model = '<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>';
@@ -55,6 +56,16 @@ test("--inline-icons を付けても、入力を読んで描画へ進む", () =>
   writeFileSync(input, `<mxfile><diagram id="a">${model}</diagram></mxfile>`);
   // オプションを引数の誤りとして扱えば 1、受け付ければ存在しないコマンドで 2 になる
   const r = run([input, join(dir, "a.svg"), "--inline-icons"], { AGENT_BROWSER_CMD: join(dir, "missing-command") });
+  assert.equal(r.status, 2);
+});
+
+test("圧縮した diagram を展開して、描画へ進む", () => {
+  const dir = mkdtempSync(join(tmpdir(), "render-drawio-svg-"));
+  const input = join(dir, "a.drawio");
+  const packed = deflateRawSync(encodeURIComponent(model)).toString("base64");
+  writeFileSync(input, `<mxfile><diagram id="a">${packed}</diagram></mxfile>`);
+  // 展開に失敗すれば 1、成功すれば存在しないコマンドで 2 になる
+  const r = run([input, join(dir, "a.svg")], { AGENT_BROWSER_CMD: join(dir, "missing-command") });
   assert.equal(r.status, 2);
 });
 
