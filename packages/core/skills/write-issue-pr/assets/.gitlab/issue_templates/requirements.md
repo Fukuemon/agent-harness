@@ -32,6 +32,6 @@
 
 ## 進め方
 
-<!-- context/project.yml の既定と違うときだけ書く。行うプロセス、レビューの範囲、spec を置くかどうか -->
+<!-- context/project.yml のデフォルトと違うときだけ書く。行うプロセス、レビューの範囲、spec を置くかどうか -->
 
 /label ~"type:requirements"
