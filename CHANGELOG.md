@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.4](https://github.com/Fukuemon/agent-harness/compare/v0.2.3...v0.2.4) (2026-10-21)
+
+
+### Features
+
+* **core:** テンプレートの文言を技術用語のカタカナ表記に変更する [#102](https://github.com/Fukuemon/agent-harness/issues/102) ([f044113](https://github.com/Fukuemon/agent-harness/commit/f0441131ba94a96d6c7d4b0278133cd52ccced93))
+* **docs:** テンプレートの prh.yml に技術用語のカタカナ表記の規則を追加する [#102](https://github.com/Fukuemon/agent-harness/issues/102) ([a2693e3](https://github.com/Fukuemon/agent-harness/commit/a2693e3205eb35e382d72223369a68cb1ee8b105))
+* **docs:** 技術用語をカタカナ語や英語のまま書く規則を write-prose に追加する [#102](https://github.com/Fukuemon/agent-harness/issues/102) ([c5aa5dd](https://github.com/Fukuemon/agent-harness/commit/c5aa5dda8a1ba0efbcfcded5263dbf7c2393680c))
+
 ## [0.2.3](https://github.com/Fukuemon/agent-harness/compare/v0.2.2...v0.2.3) (2026-10-14)
 
 
