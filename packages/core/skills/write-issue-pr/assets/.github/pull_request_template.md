@@ -1,5 +1,5 @@
 Closes #
-<!-- issue を複数の pull request に分けたときは、最後の pull request 以外を Refs # にする -->
+<!-- issue を複数の pull request に分けたときは、最後にマージする pull request 以外を Refs # にする -->
 
 ## 概要
 

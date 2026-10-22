@@ -48,7 +48,7 @@ body:
       placeholder: |
         | # | 条件（WHEN / IF） | 期待結果（SHALL） |
         | --- | --- | --- |
-        | 1 | 〇〇のとき | 外から観測できる結果 |
+        | 1 | <〇〇のとき、〇〇ならば> | <外から観測できる結果> |
   - type: textarea
     id: dependencies
     attributes:
