@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/Fukuemon/agent-harness/compare/v0.2.4...v0.2.5) (2026-10-22)
+
+
+### Features
+
+* **core:** pull request の雛形に、検証とエビデンスの節を足す [#108](https://github.com/Fukuemon/agent-harness/issues/108) ([b5044b0](https://github.com/Fukuemon/agent-harness/commit/b5044b0d7ef19f6761342d925c5d655f98df1ef0))
+
 ## [0.2.4](https://github.com/Fukuemon/agent-harness/compare/v0.2.3...v0.2.4) (2026-10-21)
 
 
