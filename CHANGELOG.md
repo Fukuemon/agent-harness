@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.6](https://github.com/Fukuemon/agent-harness/compare/v0.2.5...v0.2.6) (2026-10-22)
+
+
+### Features
+
+* **core:** pull request の雛形の表の観点を、条件と期待結果の列に分ける [#111](https://github.com/Fukuemon/agent-harness/issues/111) ([f2f5600](https://github.com/Fukuemon/agent-harness/commit/f2f5600af06e654887df03f3f6cd5b0c8cd49567))
+* **core:** write-issue-pr に、運用で迷った場面の規則と、issue の検証の観点の欄を足す [#113](https://github.com/Fukuemon/agent-harness/issues/113) ([9283068](https://github.com/Fukuemon/agent-harness/commit/9283068a9301d7eec8ae7693dd8b953c1457551e))
+
+
+### Bug Fixes
+
+* **core:** issue の書き方から、ホスティングサービスの名前を外す [#113](https://github.com/Fukuemon/agent-harness/issues/113) ([76eace5](https://github.com/Fukuemon/agent-harness/commit/76eace528f66cd808a584e41520456e9b8efe3ce))
+* **core:** write-issue-pr の検証の観点と分けた pull request の規則を、レビューに合わせて直す [#113](https://github.com/Fukuemon/agent-harness/issues/113) ([eaf9775](https://github.com/Fukuemon/agent-harness/commit/eaf9775c861447d3e0f8305f6fd87a10573fb354))
+
 ## [0.2.5](https://github.com/Fukuemon/agent-harness/compare/v0.2.4...v0.2.5) (2026-10-22)
 
 
