@@ -7,7 +7,7 @@ status: draft
 
 # エビデンス
 
-パッケージ verification のスキルが読む、利用者の context の例。撮影の手段のセクションだけを、Playwright と agent-browser を使う構成で埋めた。  
+パッケージ verification のスキルが読む、利用者の context の例。attach-evidence が写す骨組みのうち、撮影の手段の Capture Tools のセクションだけを、Playwright と agent-browser を使う構成で埋めた。  
 写して使うときは、利用者のリポジトリのツールとコマンドに書き換える。
 
 ## Capture Tools
