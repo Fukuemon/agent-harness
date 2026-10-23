@@ -69,6 +69,22 @@ describe('evidenceDir と evidenceName', () => {
     assert.equal(evidenceName(variants({ baseUrl: 'http://a' })[0]), '実施')
   })
 
+  it('配置先の各段のパスの区切りを置き換え、root の下の決まった深さに置く', () => {
+    const s = { ...scenario, issue: '12/13', actor: 'a/b', title: '../x' }
+    assert.equal(
+      evidenceDir({ root: '/r', envName: 'local', date: '2026-01-02', scenario: s }),
+      path.resolve('/r/12-13/evidence/local/2026-01-02/a-b/S3_..-x'),
+    )
+  })
+
+  it('配置先の段が空、. か .. になるときと、日付の形が違うときは、例外を投げる', () => {
+    const at = (o) => () => evidenceDir({ root: '/r', envName: 'local', date: '2026-01-02', scenario, ...o })
+    assert.throws(at({ scenario: { ...scenario, actor: '..' } }), /置き場の名前にできない/)
+    assert.throws(at({ scenario: { ...scenario, issue: '' } }), /置き場の名前にできない/)
+    assert.throws(at({ envName: '.' }), /置き場の名前にできない/)
+    assert.throws(at({ date: '../2026' }), /YYYY-MM-DD/)
+  })
+
   it('例の値のパスの区切りを置き換え、1 つのファイル名にする', () => {
     const [single] = variants({ baseUrl: 'http://a' })
     assert.equal(evidenceName(single, { no: 2, column: '日付', value: '2026/10/23' }), '02_2026-10-23')

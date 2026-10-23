@@ -71,6 +71,7 @@ export const evidenceDate = (given?: string): string => {
 /**
  * 1 つのシナリオのエビデンスの配置先。<root>/<issue>/evidence/<envName>/<date>/<アクター>/S<n>_<シナリオ名>/ の絶対パスを返す。
  * <アクター>/ から下はエビデンスの格納先のフォルダと同じ形にし、シナリオのフォルダをそのまま上げられるようにする。
+ * 各段の名前のパスの区切り(/ と \)は - に置き換える。空、`.`、`..` になる段と、YYYY-MM-DD でない date は、例外を投げる。
  *
  * @param o.root 要求ごとのフォルダを並べる場所
  * @param o.date evidenceDate の戻り値
@@ -83,13 +84,24 @@ export const evidenceDir = (o: {
 }): string =>
   path.resolve(
     o.root,
-    o.scenario.issue,
+    segment(o.scenario.issue),
     'evidence',
-    o.envName,
-    o.date,
-    o.scenario.actor,
-    `S${o.scenario.no}_${o.scenario.title}`,
+    segment(o.envName),
+    segment(evidenceDate(o.date)),
+    segment(o.scenario.actor),
+    segment(`S${o.scenario.no}_${o.scenario.title}`),
   )
+
+/**
+ * パスの 1 段に使う名前。パスの区切り(/ と \)を - に置き換える。
+ * 空、`.`、`..` は、置き場の外や上の段を指すので、例外を投げる。
+ */
+const segment = (value: string): string => {
+  const name = value.replace(/[/\\]/g, '-')
+  if (name === '' || name === '.' || name === '..')
+    throw new Error(`エビデンスの置き場の名前にできない: ${JSON.stringify(value)}`)
+  return name
+}
 
 /**
  * エビデンスのファイル名(拡張子なし)。例の行ごとに、改修前と改修後が名前の順で隣り合う。
