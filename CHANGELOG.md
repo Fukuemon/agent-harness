@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.7](https://github.com/Fukuemon/agent-harness/compare/v0.2.6...v0.2.7) (2026-10-23)
+
+
+### Features
+
+* **docs:** 「確かめる」と画面の「地」を、確認すると背景に揃える規則を足す [#116](https://github.com/Fukuemon/agent-harness/issues/116) ([924591f](https://github.com/Fukuemon/agent-harness/commit/924591f1a827ae76639319d90bc88bca7414ea0d))
+
+
+### Bug Fixes
+
+* **core:** スキルとテンプレートの本文の「確かめる」を「確認する」にする [#116](https://github.com/Fukuemon/agent-harness/issues/116) ([f7474e0](https://github.com/Fukuemon/agent-harness/commit/f7474e09974e1e8fa5131d202ef6e764a40ef8fa))
+* **docs:** 「確かめ」の名詞の規則に、と と も が続く形を足す [#116](https://github.com/Fukuemon/agent-harness/issues/116) ([215bc2f](https://github.com/Fukuemon/agent-harness/commit/215bc2f9ba9956c721dd9a06035d04b923cc283a))
+* **docs:** 「確かめる」と「地」の規則を、否定の活用と地図や下地を区別するよう直す [#116](https://github.com/Fukuemon/agent-harness/issues/116) ([2fdb88c](https://github.com/Fukuemon/agent-harness/commit/2fdb88ce0b58fe2e4ddabc55172194dfd45f1fd9))
+* **docs:** スキルと Design Doc の本文の「確かめる」を「確認する」にする [#116](https://github.com/Fukuemon/agent-harness/issues/116) ([5ae7040](https://github.com/Fukuemon/agent-harness/commit/5ae70403d94f6b9eeae9cb29159230bab1ef8257))
+
 ## [0.2.6](https://github.com/Fukuemon/agent-harness/compare/v0.2.5...v0.2.6) (2026-10-22)
 
 
