@@ -137,7 +137,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 - **検証 `verification`:** 観点の設計、検証の spec の書き方、撮影と確認、pull request へのエビデンスの添付を持つ。撮影の手段の具体は、利用者の context が持つ。
   - [検証の Design Doc](../packages/verification/DesignDoc.md)
 - **E2E `e2e`:** E2E のテストの書き方のスキル、テストと録画の kit のコード、テストの書き方の lint の規則を持つ。kit のコードは npm のレジストリで配る。
-  - [E2E の Design Doc](features/e2e/DesignDoc_e2e.md)
+  - [E2E の Design Doc](../packages/e2e/DesignDoc.md)
 - **デザインシステム `design-system`:** トークンの段の分け方、デザインシステムの文書の型、アクセシビリティの基準と確認の方法、カタログの構成を持つ。
   - [デザインシステムの Design Doc](features/design-system/DesignDoc_design-system.md)
 - **画面仕様書 `screens`:** 画面ごとの状態、構成要素、操作できるモックの型と、モックの共通のファイル、規約の点検を持つ。処理と通信は機能の Design Doc が持つ。
