@@ -82,6 +82,21 @@ test("終わった heredoc のコマンドが画面に残っていても、別�
   assert.deepEqual(lines(r), []);
 });
 
+test("heredoc のコマンドが続いたら、HEREDOC をコマンドごとに出す", () => {
+  const r = watch([
+    read(["⏺ Bash(python3 a.py - <<'EOF')", "Running 1 shell command… (3m 10s)"]),
+    read(["⏺ Bash(python3 b.py - <<'EOF')", "Running 1 shell command… (0m 10s)"]),
+    read(["⏺ Bash(python3 b.py - <<'EOF')", "Running 1 shell command… (3m 10s)"]),
+  ]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある", "HEREDOC 3 分を超えた heredoc のコマンドがある"]);
+});
+
+test("同じ表示の heredoc のコマンドが続いても、経過の分が減ったら HEREDOC をもう一度出す", () => {
+  const cmd = "⏺ Bash(python3 - <<'EOF')";
+  const r = watch(["3m 10s", "10s", "3m 10s"].map((t) => read([cmd, `Running 1 shell command… (${t})`])));
+  assert.equal(lines(r).length, 2);
+});
+
 test("実行中の呼び出しが heredoc なら、HEREDOC を出す", () => {
   const r = watch([read(["⏺ Bash(pnpm test)", "  ⎿  ok", "⏺ Bash(python3 - <<'EOF')", "Running 1 shell command… (3m 10s)"])]);
   assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);

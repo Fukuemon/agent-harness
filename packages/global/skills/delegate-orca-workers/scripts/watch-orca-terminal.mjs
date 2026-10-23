@@ -59,7 +59,7 @@ const limitText = /usage limit reached|you've hit your|limit will reset|resets a
 const waitingText = /◯ |[0-9]+ shell|background agent/;
 
 const readsFor = (minutes) => Math.ceil((minutes * 60) / args.interval);
-const state = { status: "running", readFail: "", heredocTold: false, limit: "", lastLong: 0, nextLong: 8, prev: null, same: 0 };
+const state = { status: "running", readFail: "", heredocTold: false, limit: "", lastElapsed: 0, call: "", nextLong: 8, prev: null, same: 0 };
 
 function say(line) {
   console.log(line);
@@ -91,7 +91,16 @@ function inspect(raw) {
   const text = tail.join("\n");
   const minutes = [...text.matchAll(shellMinutes)].map((m) => Number(m[1]));
   const elapsed = minutes.length ? minutes[minutes.length - 1] : 0;
-  const current = tail.slice(Math.max(0, tail.findLastIndex((line) => toolCall.test(line)))).join("\n");
+  const callIndex = tail.findLastIndex((line) => toolCall.test(line));
+  const current = tail.slice(Math.max(0, callIndex)).join("\n");
+  // 経過の分が前より減るか、最後の呼び出しの行が変わったら、別のコマンドが始まったとみなす
+  const call = callIndex >= 0 ? tail[callIndex] : "";
+  if (elapsed < state.lastElapsed || call !== state.call) {
+    state.heredocTold = false;
+    state.nextLong = 8;
+  }
+  state.lastElapsed = elapsed;
+  state.call = call;
 
   if (heredoc.test(current)) {
     if (elapsed >= 3 && !state.heredocTold) {
@@ -106,9 +115,6 @@ function inspect(raw) {
   if (limitLine && limitLine !== state.limit) say(`LIMIT ${limitLine.trim()}`);
   state.limit = limitLine;
 
-  // 経過の分が前より減ったら、別のコマンドが始まったとみなす
-  if (elapsed < state.lastLong) state.nextLong = 8;
-  state.lastLong = elapsed;
   if (elapsed >= state.nextLong) {
     say(`LONGCMD ${elapsed}m`);
     state.nextLong = (Math.floor(elapsed / 10) + 1) * 10;
