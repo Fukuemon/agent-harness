@@ -301,8 +301,8 @@ dependencies:
     .agents/skills/write-screen-spec/assets/docs/screens/_template/mocks/screen-id.css: sha256:0827bd7961e358a41363905a697ab10766b8331e170936c9fc93ccceaad49890
     .agents/skills/write-screen-spec/assets/docs/screens/index.md: sha256:39114d03d7cd1177dd4cde856efe8655d3f46f62780d1383cdad68c166913fa6
     .agents/skills/write-screen-spec/assets/docs/screens/rules.md: sha256:874f67abcb26d72edcb487264341a1d7f6dcade5c8d775cc02b06b4d57d0d405
-    .agents/skills/write-screen-spec/scripts/check-screens.mjs: sha256:5ec711cf9497b424ecf5fbe287166b3d2959febe57e12f6051958fc43cbe1c3e
-    .agents/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:44b6693ea053b8f567572b81285c37b7fe53a5e4019f45eea670662d6c626fa6
+    .agents/skills/write-screen-spec/scripts/check-screens.mjs: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
+    .agents/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
     .claude/skills/write-screen-spec/SKILL.md: sha256:c3a1ef7e34b3aa89e618a70ed72de09268aa893c707bcfafb087f2e3fe5e038a
     .claude/skills/write-screen-spec/assets/docs/screens/_common/embed-mock.js: sha256:51f552af92c59250696114e52ccfba5be20c518a39a7660a80724ee6f7a74779
     .claude/skills/write-screen-spec/assets/docs/screens/_common/interact.js: sha256:07709412617a9c8d5f8ef54dff089a386fd2f3d922474b9a4df49091274758d5
@@ -315,8 +315,8 @@ dependencies:
     .claude/skills/write-screen-spec/assets/docs/screens/_template/mocks/screen-id.css: sha256:0827bd7961e358a41363905a697ab10766b8331e170936c9fc93ccceaad49890
     .claude/skills/write-screen-spec/assets/docs/screens/index.md: sha256:39114d03d7cd1177dd4cde856efe8655d3f46f62780d1383cdad68c166913fa6
     .claude/skills/write-screen-spec/assets/docs/screens/rules.md: sha256:874f67abcb26d72edcb487264341a1d7f6dcade5c8d775cc02b06b4d57d0d405
-    .claude/skills/write-screen-spec/scripts/check-screens.mjs: sha256:5ec711cf9497b424ecf5fbe287166b3d2959febe57e12f6051958fc43cbe1c3e
-    .claude/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:44b6693ea053b8f567572b81285c37b7fe53a5e4019f45eea670662d6c626fa6
+    .claude/skills/write-screen-spec/scripts/check-screens.mjs: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
+    .claude/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
   source: local
   local_path: ./packages/screens
   declared_license: MIT
@@ -1275,7 +1275,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:5ec711cf9497b424ecf5fbe287166b3d2959febe57e12f6051958fc43cbe1c3e
+  content_hash: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
 - kind: project-relative
   target: claude
   value: .claude/skills/write-screen-spec/scripts/check-screens.test.mjs
@@ -1284,7 +1284,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:44b6693ea053b8f567572b81285c37b7fe53a5e4019f45eea670662d6c626fa6
+  content_hash: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
 - kind: project-relative
   target: claude
   value: .claude/skills/write-skill
@@ -2076,7 +2076,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:5ec711cf9497b424ecf5fbe287166b3d2959febe57e12f6051958fc43cbe1c3e
+  content_hash: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
 - kind: project-relative
   target: codex
   value: .agents/skills/write-screen-spec/scripts/check-screens.test.mjs
@@ -2085,7 +2085,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:44b6693ea053b8f567572b81285c37b7fe53a5e4019f45eea670662d6c626fa6
+  content_hash: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
 - kind: project-relative
   target: codex
   value: .agents/skills/write-skill

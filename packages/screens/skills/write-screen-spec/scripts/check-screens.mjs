@@ -343,7 +343,9 @@ function matchesPlaceholder(testId) {
 function checkTestIds(e2eDir) {
   for (const file of testFiles(join(root, e2eDir))) {
     const shown = relative(root, file);
-    for (const m of readFileSync(file, "utf8").matchAll(/getByTestId\(\s*([^)\n]*)/g)) {
+    // 行のコメントは、行頭か空白の後の // だけを外す。文字列の中の URL の // を残すため
+    const code = readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|\s)\/\/.*$/gm, "$1");
+    for (const m of code.matchAll(/getByTestId\(\s*([^)\n]*)/g)) {
       const target = readTestIdArg(m[1]);
       if (target === null || target.prefix === "") {
         report(shown, `getByTestId(${m[1].trim()}) の testid を読めない。文字列か、始まりの付いたテンプレートか /^…/ で書く`);

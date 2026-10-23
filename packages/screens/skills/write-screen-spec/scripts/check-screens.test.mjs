@@ -177,6 +177,16 @@ test("screens.e2e_dir があり、全ての画面を見るときだけ、テス�
   assert.equal(run(repo({ project, files: { "e2e/a.spec.ts": missing } }), [SCREEN]).code, 0);
 });
 
+test("テストのコードのコメントの中の getByTestId は見ない", () => {
+  const code = [
+    '// 消した: page.getByTestId("order-list-cancel")',
+    '/* page.getByTestId("order-list-close") */',
+    'await page.goto("https://example.com/"); page.getByTestId("order-list-submit")',
+  ].join("\n");
+  const r = run(repo({ project: "screens:\n  e2e_dir: e2e\n", files: { "e2e/a.spec.ts": code } }));
+  assert.equal(r.code, 0, r.out);
+});
+
 test("モックの {…} の形に当たる testid は、モックにあるとみなす", () => {
   const button = '<button type="button" class="wf-btn" data-m="1" data-testid="order-list-row-{注文の ID}">注文</button>';
   const r = run(repo({
