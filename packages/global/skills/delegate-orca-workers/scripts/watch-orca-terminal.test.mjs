@@ -97,6 +97,11 @@ test("同じ表示の heredoc のコマンドが続いても、経過の分が�
   assert.equal(lines(r).length, 2);
 });
 
+test("小文字の区切り語の heredoc でも、HEREDOC を出す", () => {
+  const r = watch([read(["⏺ Bash(python3 - <<'eof')", "Running 1 shell command… (3m 10s)"])]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
+});
+
 test("実行中の呼び出しが heredoc なら、HEREDOC を出す", () => {
   const r = watch([read(["⏺ Bash(pnpm test)", "  ⎿  ok", "⏺ Bash(python3 - <<'EOF')", "Running 1 shell command… (3m 10s)"])]);
   assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
