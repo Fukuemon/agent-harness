@@ -75,8 +75,9 @@ function readConfig(path) {
     const m = line.match(/^\s+([a-z0-9_]+):\s*(.*)$/);
     if (!m) continue;
     const raw = m[2].trim();
-    const quoted = raw.match(/^(["'])(.*)\1$/);
-    values[m[1]] = quoted ? quoted[2] : raw.replace(/\s+#.*$/, "");
+    // 引用符の中の # はコメントにしない。引用符の後ろにだけ、行末のコメントを許す
+    const quoted = raw.match(/^(["'])(.*?)\1\s*(#.*)?$/);
+    values[m[1]] = quoted ? quoted[2] : raw.replace(/(^|\s+)#.*$/, "");
   }
   for (const key of ["dir", "tokens_css", "e2e_dir"]) {
     const v = values[key];

@@ -192,6 +192,16 @@ test("screens.dir の画面の置き場が無いと、終了コード 2 で終�
   assert.match(r.out, /screens.dir を確認する/);
 });
 
+test("screens のキーの値は、引用符と行末のコメントを外して読む", () => {
+  const project = `screens:\n  dir: "docs/screens" # 画面仕様書\n  catalog_url: 'https://example.com/catalog/' # カタログ\n  e2e_dir: e2e # テスト\n`;
+  const files = {
+    [`${SCREEN}/index.md`]: spec("\n**カタログ**: [Button の Default](https://example.com/catalog/button)\n"),
+    "e2e/a.spec.ts": 'page.getByTestId("order-list-submit")\n',
+  };
+  const r = run(repo({ project, files }));
+  assert.equal(r.code, 0, r.out);
+});
+
 test("screens のキーの値が相対パスでないと、終了コード 2 で終わる", () => {
   const r = run(repo({ project: "screens:\n  e2e_dir: ../e2e\n" }));
   assert.equal(r.code, 2, r.out);
