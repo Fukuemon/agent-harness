@@ -49,8 +49,8 @@ npm の trusted publishing は、GitHub Actions の OIDC で公開し、トー�
 - 利用者のマニフェストには、パッケージごとにそのパッケージのタグを書く。移行の案内は、README の Installation と Update の節と、ルートの `CHANGELOG.md` の冒頭に置く。
   - 既存の `v0.2.8` を書いたマニフェストは、そのまま動く。新しい形へは、そのパッケージを次に上げるときに書き換えればよい。
   - プラグインのマーケットプレイスは、リポジトリ全体を 1 つの ref で取得する。ref には core のタグを書くよう案内する。そのコミットの時点の各パッケージが、それぞれの `plugin.json` のバージョンで入る。
-- e2e の kit は、`packages/e2e/kit/` に置き、npm のレジストリに `@fukuemon/e2e-kit` の名前で公開する。lint の規則も、同じ npm のパッケージに入れる。
-  - scope の `@fukuemon` は、GitHub の owner の名前を小文字にしたもので、リポジトリの path と対応が取れる。scope を使うには、npm に `fukuemon` の名前のユーザーか組織が要る。
+- e2e の kit は、`packages/e2e/kit/` に置き、npm のレジストリに `@agent-harness/e2e-kit` の名前で公開する。lint の規則も、同じ npm のパッケージに入れる。
+  - scope の `@agent-harness` は製品の名前で、利用者が製品の名前で探せる。scope を使うには、npm に `agent-harness` の組織を作る。名前を取れなければ、この ADR を置き換えて名前を決め直す。
   - 公開は、`.github/workflows/release.yml` の中の、e2e のリリースができたときだけ動くジョブで行う。そのジョブだけに `id-token: write` を与え、npm のトークンを secrets に置かない。信頼する発行元には `release.yml` を登録する。
   - まだ公開していないパッケージに信頼する発行元を登録できないときは、最初の 1 回だけ、Owner が手元から 2 要素認証で公開する。この場合も、トークンを secrets に置かない。
 - e2e のスキルと kit は、同じ component で同じバージョンにし、同じタグ `e2e-v<バージョン>` で公開する。
@@ -116,8 +116,8 @@ npm のパッケージの名前の選択肢。
 
 | 選択肢 | 強み | 弱み |
 | --- | --- | --- |
-| **採用:** `@fukuemon/e2e-kit` | リポジトリの owner と対応が取れる。scope の中の名前は衝突しない | npm に `fukuemon` のユーザーか組織が要る |
-| `@agent-harness/e2e-kit` | 製品の名前で探せる | npm に `agent-harness` の組織が要り、その名前を取れるかを確認していない |
+| **採用:** `@agent-harness/e2e-kit` | 製品の名前で探せる。scope の中の名前は衝突しない | npm に `agent-harness` の組織が要り、その名前を取れるかを確認していない |
+| `@fukuemon/e2e-kit` | リポジトリの owner と対応が取れる | npm に `fukuemon` のユーザーか組織が要る。製品の名前で探せない |
 | scope のない `agent-harness-e2e-kit` | npm の組織が要らない | 名前が長い。似た名前のパッケージと見分けにくい |
 
 スキルと kit のバージョンの合わせ方の選択肢。
