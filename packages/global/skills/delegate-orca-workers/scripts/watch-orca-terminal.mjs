@@ -49,12 +49,12 @@ if (!args) {
   process.exit(1);
 }
 
-// 表示の文言は Claude Code と Codex CLI の端末の表示に合わせている。表示が変わったら正規表現を直す
+// 表示の文言は、元にした運用で見た Claude Code の端末の表示に合わせている。表示が変わったら正規表現を直す
 const spinner = /^[✻✳✽✶✢·*] |esc to interrupt|tokens/;
 const heredoc = /<<-?\s*['"]?[A-Z_]+['"]?/;
 // Claude Code は、ツールの呼び出しを行頭の ⏺ で表示する。最後の呼び出しから後を、実行中のコマンドとみなす
 const toolCall = /^\s*⏺ /;
-const shellMinutes =/Running [0-9]+ shell command[^0-9]*([0-9]+)m/g;
+const shellMinutes = /Running [0-9]+ shell command[^0-9]*([0-9]+)m/g;
 const limitText = /usage limit reached|you've hit your|limit will reset|resets at [0-9]|5-hour limit|weekly limit/i;
 const waitingText = /◯ |[0-9]+ shell|background agent/;
 
