@@ -9,7 +9,7 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 | --- | --- | --- |
 | core | 固有の知識の置き場と、リポジトリの運用の取り決め | setup-agent-harness、write-context、write-skill、write-commit、write-issue-pr、write-comments |
 | docs | PRD、Design Doc、ADR、spec の形と、文章の規則とチェック | setup-design-docs、write-design-docs、write-prose |
-| verification | 観点の設計と、動作の確認のエビデンスの撮影と添付 | design-test-cases、capture-browser-evidence |
+| verification | 観点の設計と、動作の確認のエビデンスの撮影と添付 | attach-evidence、design-test-cases、write-verification-spec、run-verification-scenarios、capture-browser-evidence |
 
 core と docs はフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 
