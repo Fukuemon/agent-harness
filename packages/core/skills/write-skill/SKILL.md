@@ -46,9 +46,10 @@ frontmatter の形、description の書き方、評価のしかたのような�
 - `references/` のファイルは、`SKILL.md` から直接参照する。`references/` から別のファイルを参照しない。参照が 2 段になると、途中までしか読まれないことがある。
   - 出典: [Skill authoring best practices の Avoid deeply nested references](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices#avoid-deeply-nested-references)
 - 100 行を超える `references/` のファイルは、先頭に目次を置く。先頭だけを読まれても、ファイルのどこに何があるかが分かる。
+  - 利用者のリポジトリへ写すためのテンプレートは除く。写す中身なので、目次を足すと利用者の文書に入る。
   - 出典: [Skill authoring best practices の Structure longer reference files with a table of contents](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices#structure-longer-reference-files-with-a-table-of-contents)
 - `assets/` には、利用者のリポジトリへ写すテンプレートを置く。本文の規則は置かない。
-  - 導入のスキル setup-agent-harness が `assets/` を全部写すので、利用者が選んで写すテンプレートは `references/` の下に置く。
+  - 導入のスキル setup-agent-harness が `assets/` を全部、同じパスへ写すので、利用者が選んで写すテンプレートと、写す先が利用者ごとに違うテンプレートは `references/` の下に置く。
 - `scripts/` には、手順のうち機械的に決まる処理を置く。本文には、呼び方と、終了コードごとに何をするかだけを書く。処理の中身を本文で説明しない。
 
 ## パッケージとして配るスキル
