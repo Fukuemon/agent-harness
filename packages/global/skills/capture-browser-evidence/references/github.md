@@ -2,7 +2,7 @@
 
 ## 上げ方
 
-gh 2.99.0 以降の `--attach` で上げる。`gh --version` で確かめ、古ければ利用者に更新を頼む。
+gh 2.99.0 以降の `--attach` で上げる。`gh --version` で確認し、古ければ利用者に更新を頼む。
 
 - 使えるコマンドは `gh issue create`、`gh issue edit`、`gh issue comment`、`gh pr create`、`gh pr edit`、`gh pr comment` である。`gh pr review` と差分行のコメントには使えない。
 - 本文に `![<名前>](./<path>)` と書き、同じパスを `--attach` に渡す。本文の参照は、上げた先の URL に書き換わる。本文が参照しないファイルは、本文の末尾に足される。
@@ -27,9 +27,9 @@ gh pr create -R <owner>/<repo> --draft --title <題> --body-file <本文.md> \
 
 差分行のコメントに動画を添えるときは、先に pull request のコメントへ上げ、そのコメントの本文から URL を取って貼る。
 
-## 添付できたことの確かめ方
+## 添付できたことの確認の方法
 
-- 投稿した後に、API で本文を取り、`https://github.com/user-attachments/assets/` の参照の数が、上げたファイルの数と合うことを確かめる。
+- 投稿した後に、API で本文を取り、`https://github.com/user-attachments/assets/` の参照の数が、上げたファイルの数と合うことを確認する。
 - 表のセルの中の `![<名前>](./<path>)` は、`[<名前>](<URL>)` の形に書き換わる。画面では動画として表示される。
 - private なリポジトリの URL は、認証がないと 404 になる。公開の場に URL を貼っても、権限のない人は見られない。
 

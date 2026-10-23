@@ -40,8 +40,8 @@ gh api repos/<owner>/<repo>/pulls/<number>/comments \
 
 - 削除した行は `side=LEFT` にし、`line` に変更前の行番号を入れる。
 - 複数の行にまたがるときは、`-F start_line=<n> -f start_side=RIGHT` を足す。`line` が終わりの行になる。
-- 差分にない行を指すと、`422` の `could not be resolved` で失敗する。通常のコメントにはならないので、行番号を差分で確かめ直す。
-- 応答の `line` が指定した行であることを確かめる。
+- 差分にない行を指すと、`422` の `could not be resolved` で失敗する。通常のコメントにはならないので、行番号を差分で確認し直す。
+- 応答の `line` が指定した行であることを確認する。
 - `gh pr review` は差分行に投稿できない。
 
 ## 対応の案の書き方

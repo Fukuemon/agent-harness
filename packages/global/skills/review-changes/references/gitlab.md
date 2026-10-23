@@ -3,7 +3,7 @@
 glab で操作する。`<host>` と `<encoded>`（プロジェクトのパスの `/` を `%2F` にしたもの）と `<iid>` は、merge request の URL から取る。
 
 - `glab api` には `-R` がなく、`--hostname <host>` で渡す。リポジトリの外では既定が gitlab.com になるため、必ず付ける。
-- 権限が無いときも、GitLab は `404` を返す。パスとホストが正しければ、次に権限を確かめる。
+- 権限が無いときも、GitLab は `404` を返す。パスとホストが正しければ、次に権限を確認する。
 - `glab api` は、`-f` か `-F` を付けると既定のメソッドが POST になる。一覧は `--paginate` を付けないと 1 ページ目しか返らない。
 
 ## head を取る
@@ -47,7 +47,7 @@ glab api --hostname <host> --paginate \
        "projects/<encoded>/merge_requests/<iid>/discussions"
    ```
 
-3. 自分のノートの `type` が `DiffNote` であることを確かめる。`position` が誤っていても、API はエラーを返さずに通常のコメントとして作ることがある。`DiffNote` でなければ、そのノートを削除し、手順 1 に戻る。
+3. 自分のノートの `type` が `DiffNote` であることを確認する。`position` が誤っていても、API はエラーを返さずに通常のコメントとして作ることがある。`DiffNote` でなければ、そのノートを削除し、手順 1 に戻る。
 
    ```sh
    glab api --hostname <host> --paginate "projects/<encoded>/merge_requests/<iid>/discussions" \

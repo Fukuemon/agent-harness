@@ -16,7 +16,7 @@ spec を書く前に、agent-browser で画面を操作して、spec に書く�
 コマンドを 1 つずつ打って撮ると、録画が途中で止まり、`record stop` が `✗ No recording in progress` を返したことがある。手順を bash のスクリプトにして流すと、headed でも headless でも止まらなかった。
 
 - zsh では、引用符のない変数が単語に分かれない。`agent-browser mouse move $xy` に座標が渡らず、直前のポインタの位置を押す。スクリプトは bash で実行する。
-- `record stop` の出力が `✓ Recording saved` であることと、動画の尺を確かめる。
+- `record stop` の出力が `✓ Recording saved` であることと、動画の尺を確認する。
 
 ## 録画は新しいコンテキストで始まる
 
