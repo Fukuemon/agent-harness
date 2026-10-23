@@ -14,8 +14,8 @@ keywords: [パッケージ, microsoft/apm, プラグイン, lefthook]
 
 ## Overview
 
-agent-harness は、3 つのパッケージと、利用者が写して使う例を配るリポジトリである。  
-パッケージは、共通の基盤の core と、文書の体系、開発プロセスの 2 つで、利用者はマニフェストに書いて導入する。core 以外は 1 つずつ選べる。  
+agent-harness は、8 つのパッケージと、利用者が写して使う例を配るリポジトリである。  
+パッケージは、共通の基盤の core、文書の体系、開発プロセスと、アプリを作るための 5 つの関心（検証、E2E、デザインシステム、画面仕様書、文書のサイト）で、利用者はマニフェストに書いて導入する。core 以外は 1 つずつ選べる。  
 利用者のリポジトリでは、パッケージのスキルとテンプレートとチェックが、Claude Code と Codex CLI の作業を支える。Cursor は可能な範囲で対応する。
 
 - [PRD](../PRD.md) — 課題、目標、受け入れの条件
@@ -65,6 +65,7 @@ flowchart TB
         core["core<br/>共通の基盤と、リポジトリの運用の取り決め"]
         docs["docs<br/>文書の体系と、文書のチェック"]
         process["process<br/>開発のプロセスの定義と、進み具合のチェック"]
+        concerns["verification、e2e、design-system、screens、docs-site<br/>アプリを作るための関心ごとの取り決めと手段"]
     end
     third["サードパーティの配布元<br/>スキルとプラグイン"]
     apm["microsoft/apm<br/>取得、バージョンの固定、配置、差分の検出"]
@@ -92,13 +93,13 @@ flowchart TB
 
 ## Components
 
-構成要素は、利用者のリポジトリの共通の基盤、4 つのパッケージ、パッケージが共有するものである。
+構成要素は、利用者のリポジトリの共通の基盤、パッケージ、パッケージが共有するものである。
 
 ### 共通の基盤
 
 利用者のリポジトリの `context/` が、すべてのパッケージに共通の基盤である。
 
-- `context/project.yml` は、機械が読む固有の値を持つ。3 つのパッケージのスクリプトは、ここから自分のキーを読む。
+- `context/project.yml` は、機械が読む固有の値を持つ。各パッケージのスクリプトは、ここから自分のキーだけを読む。
 - `context/` の文書は、モデルが読む固有の事実を持つ。パッケージのスクリプトは読まない。AGENTS.md の指示から目次を経て、モデルが開く。
 - 基盤を置くのはパッケージ core で、ほかのパッケージはそれを前提にする。どのパッケージを外しても、置いた `context/` は残る。
 
@@ -128,7 +129,23 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 - **開発プロセス `process`:** 開発のプロセスの定義、要求ごとの選択（行うプロセス、反映する時点、分解する時点、レビューの範囲）の項目と選択肢、宣言の schema と、進み具合のチェックを持つ。作業を次へ進める制御は持たない。
   - [開発プロセスの Design Doc](features/process/DesignDoc_process.md)
 
-このほかに、このリポジトリの開発者個人の global の構成を `packages/global` に置く。利用者に勧める製品ではなく、上の 3 つとは扱いを分ける。ルートのプラグインの一覧に載せず、バージョンを上げる対象と、パッケージの本文の固有の名前のチェックからも外す。
+アプリを作るための取り決めと手段は、関心ごとに 5 つのパッケージに分ける。画面を持たないプロダクトや、文書のサイトを公開しないプロダクトには要らないので、core に入れない。  
+5 つは生成物と値でつながるが、互いに依存しない。2 つのパッケージが同じ値（トークンの CSS のパス、カタログの URL など）を使うときは、それぞれのキーに同じ値を書き、各パッケージの導入のスキルが利用者に尋ねる。
+
+- ADR-0023: [検証、E2E、デザインシステム、画面仕様書、文書のサイトを関心ごとのパッケージにし、組み合わせは値のファイルのキーで渡す](../adr/0023-concern-packages.md)
+
+- **検証 `verification`:** 観点の設計、検証の spec の書き方、撮影と確認、pull request へのエビデンスの添付を持つ。撮影の手段の具体は、利用者の context が持つ。
+  - [検証の Design Doc](features/verification/DesignDoc_verification.md)
+- **E2E `e2e`:** E2E のテストの書き方のスキル、テストと録画の kit のコード、テストの書き方の lint の規則を持つ。kit のコードは npm のレジストリで配る。
+  - [E2E の Design Doc](features/e2e/DesignDoc_e2e.md)
+- **デザインシステム `design-system`:** トークンの段の分け方、デザインシステムの文書の型、アクセシビリティの基準と確認の方法、カタログの構成を持つ。
+  - [デザインシステムの Design Doc](features/design-system/DesignDoc_design-system.md)
+- **画面仕様書 `screens`:** 画面ごとの状態、構成要素、操作できるモックの型と、モックの共通のファイル、規約の点検を持つ。処理と通信は機能の Design Doc が持つ。
+  - [画面仕様書の Design Doc](features/screens/DesignDoc_screens.md)
+- **文書のサイト `docs-site`:** 文書、カタログ、図を 1 つのサイトに並べて公開し、pull request ごとにプレビューを出す構成を持つ。
+  - [文書のサイトの Design Doc](features/docs-site/DesignDoc_docs-site.md)
+
+このほかに、このリポジトリの開発者個人の global の構成を `packages/global` に置く。利用者に勧める製品ではなく、上の製品のパッケージとは扱いを分ける。ルートのプラグインの一覧に載せず、バージョンを上げる対象と、パッケージの本文の固有の名前のチェックからも外す。
 
 - ADR-0022: [個人の global の構成をパッケージ global に置き、製品のパッケージと分けて扱う](../adr/0022-personal-global-package.md)
 
@@ -227,7 +244,7 @@ agent-harness/
 ├── .claude-plugin/
 │   └── marketplace.json        パッケージの一覧
 ├── packages/
-│   └── <パッケージの名前>/    core、docs、process
+│   └── <パッケージの名前>/    core、docs、process、verification、e2e、design-system、screens、docs-site
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── DesignDoc.md        機能ごとの Design Doc。パッケージを作った時点で design/features/ から移す
