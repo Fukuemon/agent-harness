@@ -3,11 +3,11 @@
 // 写した後に、SOURCES、PREFIX、TEXT_PAIRS、NON_TEXT_PAIRS を、自分のトークンに合わせて書き換える。
 // 使い方: node check-contrast.mjs [--root <ブロック>]... [CSS のファイルかパッケージのパス]...
 //   --root は、:root のほかに画面に効く値として読むブロックを、報告に出た形（`[data-theme=dark]`、`@media (prefers-color-scheme: dark) :root`）で渡す。
-//   ダークモードのように条件ごとの値があるときは、条件ごとに --root を替えて流す
+//   ダークモードのように条件ごとの値があるときは、条件ごとに --root を替えて流す。--root を渡すと、ほかの条件つきのブロックの意味の段の宣言は読み飛ばして数を出す
 //   引数を省くと SOURCES を読む。リポジトリの中のファイルは ./ で始める。
 //   パッケージのパス（`@scope/name/dist/tokens.css` の形）は、カレントディレクトリの package.json から解決する
 // 読む値: :root のブロック（`:root, :host` のようなセレクタの並びと、@layer の中を含む）の変数の宣言だけを、画面に効く値として読む。
-//   値は、var() の参照（空白とフォールバックを含む）、#rgb、#rrggbb を受ける。!important は外して読む。
+//   値は、var() の参照（空白とフォールバックを含む）、#rgb、#rrggbb を受ける。!important の値は、後の通常の宣言より優先する。
 //   rgb()、hsl()、色の名前、calc() は色に解決できないと報告する。
 //   :root 以外のブロックと @media などの中の宣言は、PREFIX の変数なら確認できないと報告し、ほかの変数（基本の段）は読み飛ばして数を出す
 // 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の意味の段の宣言がある、2 は CSS が読めない
@@ -56,6 +56,8 @@ const sources = args.length ? args : SOURCES;
 const properties = new Map();
 const conditional = [];
 let skipped = 0;
+let otherConditions = 0;
+const importantNames = new Set();
 for (const source of sources) {
   let css;
   try {
@@ -68,6 +70,7 @@ for (const source of sources) {
   readDeclarations(css.replace(/\/\*[\s\S]*?\*\//g, ""), source);
 }
 if (skipped) console.error(`:root 以外のブロックか条件つきのブロックにある基本の段の宣言を ${skipped} 個読み飛ばした`);
+if (otherConditions) console.error(`--root の外の条件つきのブロックにある意味の段の宣言を ${otherConditions} 個読み飛ばした`);
 
 if (conditional.length) {
   console.error(`条件つきのブロック（@media、:root 以外のセレクタなど）の中の意味の段の宣言は確認できない。画面に効く値として読むなら、ブロックを --root で渡して流す\n${conditional.join("\n")}`);
@@ -99,13 +102,21 @@ function readDeclarations(css, source) {
   let text = "";
   // @layer は条件ではないので、ブロックの名前から外す
   const key = () => blocks.filter((b) => !/^@layer\b/.test(b)).join(" ");
-  const isRoot = () => key().split(",").some((s) => s.trim() === ":root") || roots.includes(key());
+  // 外側のブロックが @layer だけで、一番内側のセレクタの並びに :root があるときだけ、条件のない値とみなす
+  const isRoot = () =>
+    (blocks.slice(0, -1).every((b) => /^@layer\b/.test(b)) && blocks.at(-1).split(",").some((s) => s.trim() === ":root")) ||
+    roots.includes(key());
   const flush = () => {
     const m = /^(--[\w-]+)\s*:\s*([\s\S]+)$/.exec(text.trim());
     text = "";
     if (!m || !blocks.length) return;
+    const important = /!important\s*$/i.test(m[2]);
     const value = m[2].replace(/\s*!important\s*$/i, "").trim();
-    if (isRoot()) properties.set(m[1], value);
+    // !important の宣言は、後の通常の宣言に上書きされない
+    if (isRoot()) {
+      if (important || !importantNames.has(m[1])) properties.set(m[1], value);
+      if (important) importantNames.add(m[1]);
+    } else if (m[1].startsWith(PREFIX) && roots.length) otherConditions++;
     else if (m[1].startsWith(PREFIX)) conditional.push(`${source}: ${key()} の ${m[1]}`);
     else skipped++;
   };

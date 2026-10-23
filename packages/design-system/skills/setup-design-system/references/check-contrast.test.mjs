@@ -160,3 +160,28 @@ test("--root で渡したブロックは、:root の後の値として読む", (
   assert.equal(r.status, 1);
   assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
 });
+
+test("@media の中の :root を含むセレクタの並びは、条件つきとして報告する", () => {
+  const r = run(`${semantic({ "text-secondary": "#999999" })}@media print { :host, :root { --app-color-text-secondary: #666666; } }\n`);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /条件つきのブロック/);
+});
+
+test("!important の値は、後の通常の宣言に上書きされない", () => {
+  const r = run(`${semantic({ "text-secondary": "#999999 !important" })}:root { --app-color-text-secondary: #666666; }\n`);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
+
+test("--root で 1 つのテーマを選ぶと、ほかのテーマのブロックは読み飛ばす", () => {
+  const css = `${semantic()}[data-theme=light] { --app-color-text: #1a1a1a; }\n[data-theme=dark] { --app-color-text-secondary: #999999; }\n`;
+  const dir = mkdtempSync(join(tmpdir(), "check-contrast-"));
+  writeFileSync(join(dir, "base.css"), BASE);
+  writeFileSync(join(dir, "semantic.css"), css);
+  const light = spawnSync(process.execPath, [script, "--root", "[data-theme=light]", "./base.css", "./semantic.css"], { cwd: dir, encoding: "utf8" });
+  assert.equal(light.status, 0, light.stderr);
+  assert.match(light.stderr, /--root の外の条件つきのブロックにある意味の段の宣言を 1 個読み飛ばした/);
+  const dark = spawnSync(process.execPath, [script, "--root", "[data-theme=dark]", "./base.css", "./semantic.css"], { cwd: dir, encoding: "utf8" });
+  assert.equal(dark.status, 1);
+  assert.match(dark.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
