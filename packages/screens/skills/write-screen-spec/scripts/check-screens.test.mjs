@@ -169,7 +169,7 @@ test("screens.catalog_url があるときだけ、カタログの欄のリンク
   assert.equal(run(repo({ files })).code, 0);
   const r = run(repo({ project: "screens:\n  catalog_url: https://example.com/catalog/\n", files }));
   assert.equal(r.code, 1, r.out);
-  assert.match(r.out, /screens.catalog_url で始まらない/);
+  assert.match(r.out, /screens.catalog_url の下でない/);
 });
 
 test("screens.e2e_dir があり、全ての画面を見るときだけ、テストの testid がモックにあるかを見る", () => {
@@ -180,7 +180,6 @@ test("screens.e2e_dir があり、全ての画面を見るときだけ、テス�
   const r = run(repo({ project, files: { "e2e/a.spec.ts": missing } }));
   assert.equal(r.code, 1, r.out);
   assert.match(r.out, /テストの testid order-list-cancel がどのモックの data-testid にも無い/);
-  assert.equal(run(repo({ project, files: { "e2e/a.spec.ts": missing } }), [SCREEN]).code, 0);
 });
 
 test("テストのコードのコメントの中の getByTestId は見ない", () => {
@@ -237,4 +236,65 @@ test("schema は screens のキーの相対パスと URL を受け、絶対パ�
   assert.ok(validate({ version: 2, screens: { dir: "docs/screens", tokens_css: "docs/tokens.css", catalog_url: "https://example.com/catalog/", e2e_dir: "e2e" } }), JSON.stringify(validate.errors));
   assert.ok(!validate({ version: 2, screens: { dir: "/docs/screens" } }));
   assert.ok(!validate({ version: 2, screens: { catalog_url: "catalog" } }));
+});
+
+test("getByTestId の引数がリテラルで始まらなければ、違反にせず件数を出して飛ばす", () => {
+  const code = [
+    "page.getByTestId(SUBMIT)",
+    "page.getByTestId(`${prefix}-row-${i}`)",
+    "page.getByTestId(`order-list-${String(1)}`)",
+  ].join("\n");
+  const r = run(repo({ project: "screens:\n  e2e_dir: e2e\n", files: { "e2e/a.spec.ts": code } }));
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /getByTestId の引数 2 件は、照らさずに飛ばした/);
+});
+
+test("引数で画面を渡したときは、テストの testid を見ない", () => {
+  const files = { "e2e/a.spec.ts": 'page.getByTestId("order-list-cancel")\n' };
+  assert.equal(run(repo({ project: "screens:\n  e2e_dir: e2e\n", files }), [SCREEN]).code, 0);
+});
+
+test("単引用符の data-testid も、モックの testid として読む", () => {
+  const button = "<button type=\"button\" class=\"wf-btn\" data-m='1' data-testid='order-list-submit'>注文する</button>";
+  const r = run(repo({
+    project: "screens:\n  e2e_dir: e2e\n",
+    files: { [`${SCREEN}/mocks/01-initial.html`]: mock({ button }), "e2e/a.spec.ts": 'page.getByTestId("order-list-submit")\n' },
+  }));
+  assert.equal(r.code, 0, r.out);
+});
+
+test("構成のセクションで、空行の後の字下げのない文はタブを閉じる", () => {
+  const table = "    | 1 | ボタン | 注文する | [注文する](#注文する) |\n";
+  const after = spec().replace(table, `${table}\nどの状態でも、注文の数を見出しに出す。\n`);
+  assert.equal(run(repo({ files: { [`${SCREEN}/index.md`]: after } })).code, 0);
+  const joined = spec().replace(table, `${table}字下げを忘れた行。\n`);
+  const r = run(repo({ files: { [`${SCREEN}/index.md`]: joined } }));
+  assert.equal(r.code, 1, r.out);
+  assert.match(r.out, /タブの中身を 4 つの空白で字下げする/);
+});
+
+test("4 文字のフェンスの中の 3 文字のフェンスでは、フェンスを閉じない", () => {
+  const nested = "    ````markdown\n    ```html\n    <iframe src=\"x.html\"></iframe>\n    ```\n    ````\n\n";
+  const md = spec().replace("    <iframe class=", `${nested}    <iframe class=`);
+  const r = run(repo({ files: { [`${SCREEN}/index.md`]: md } }));
+  assert.equal(r.code, 0, r.out);
+});
+
+test("カタログの欄の、タイトル付きのリンクを読み、catalog_url の外のドメインを通さない", () => {
+  const project = "screens:\n  catalog_url: https://example.com\n";
+  const titled = spec('\n**カタログ**: [Button の Default](https://example.com/catalog/button "Button")\n');
+  assert.equal(run(repo({ project, files: { [`${SCREEN}/index.md`]: titled } })).code, 0);
+  const evil = spec("\n**カタログ**: [Button の Default](https://example.com.evil/button)\n");
+  const r = run(repo({ project, files: { [`${SCREEN}/index.md`]: evil } }));
+  assert.equal(r.code, 1, r.out);
+});
+
+test("screens を flow の形やブロックのスカラーで書くと、終了コード 2 で終わる", () => {
+  assert.equal(run(repo({ project: "screens: {dir: docs/screens}\n" })).code, 2);
+  assert.equal(run(repo({ project: "screens:\n  dir: |\n    docs/screens\n" })).code, 2);
+});
+
+test("screens.e2e_dir がファイルなら、終了コード 2 で終わる", () => {
+  const r = run(repo({ project: "screens:\n  e2e_dir: e2e.ts\n", files: { "e2e.ts": "\n" } }));
+  assert.equal(r.code, 2, r.out);
 });

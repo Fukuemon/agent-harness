@@ -1,24 +1,17 @@
 // 画面仕様書（<screens.dir>/<画面 ID>_<画面の名前>/）を、画面仕様書の規約（<screens.dir>/rules.md）の「点検」のセクションの項目で確認する。
-// context/project.yml の screens のキーを読む。dir の既定は docs/screens。catalog_url があればカタログの欄のリンクを、e2e_dir があればテストのコードの testid を見る。
+// リポジトリのルートで流す。context/project.yml の screens のキーを読む。dir の既定は docs/screens。
+// catalog_url があればカタログの欄のリンクを、e2e_dir があればテストのコードの testid を見る。
 // 引数で画面のディレクトリを渡すと、そのディレクトリだけを見る。省くと全ての画面を見て、testid も見る。
 // 使い方: node check-screens.mjs [画面のディレクトリ]...
 // 終了コード: 0 は違反なし、1 は違反あり（一覧を標準エラーに出す）、2 は設定の誤りか、ファイルが読めない
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
+import { readScreensConfig } from "./read-screens-config.mjs";
 
 const root = process.cwd();
-const config = readConfig(join(root, "context/project.yml"));
-const SCREENS_DIR = config.dir ?? "docs/screens";
-const COMMON = join(SCREENS_DIR, "_common");
-if (!existsSync(join(COMMON, "mock.js"))) fail(`${join(COMMON, "mock.js")} が無い。screens.dir を確認する`);
-if (config.tokens_css !== undefined && !existsSync(join(root, config.tokens_css))) fail(`screens.tokens_css の ${config.tokens_css} が無い`);
-if (config.e2e_dir !== undefined && !existsSync(join(root, config.e2e_dir))) fail(`screens.e2e_dir の ${config.e2e_dir} が無い`);
-
+const SCRIPTS = ["../../_common/mock.js", "../../_common/interact.js"];
 const SCREEN_DIR_NAME = /^([a-z]+-[a-z]+)_(.+)$/;
 const MOCK_NAME = /^\d{2}-[a-z0-9]+(-[a-z0-9]+)*\.html$/;
-// デバイスの名前は mock.js の VIEWS だけに書くので、そこから読む
-const VIEWS = new Set([...readFileSync(join(COMMON, "mock.js"), "utf8").matchAll(/^\s+'?([a-z-]+)'?: \{ label:/gm)].map((m) => m[1]));
-const SCRIPTS = ["../../_common/mock.js", "../../_common/interact.js"];
 const GO_TARGET = /^(\.\.\/\.\.\/[a-z]+-[a-z]+_[^/]+\/mocks\/)?\d{2}-[a-z0-9-]+\.html$/;
 const TESTID = /^[a-z][a-z0-9]*(-([a-z0-9]+(_[a-z0-9]+)*|\{[^}]+\}))+$/;
 const TABLE_HEADER = ["番号", "種別", "要素名", "仕様"];
@@ -30,64 +23,61 @@ const FORBIDDEN = [
   [/prefers-color-scheme/i, "ダークモード"],
 ];
 const PLACEHOLDER = /<(画面|要素|操作|状態)[^>]*>/;
-const LINK_TARGET = /\]\(([^)\s]+)\)/g;
+const LINK_TARGET = /\]\(<?([^)\s>]+)>?(?:\s+(?:"[^"]*"|'[^']*'|\([^)]*\)))?\)/g;
 const TEST_FILE = /\.(c|m)?(j|t)sx?$/;
+// テストのツールが書き出す結果と、依存のディレクトリは読まない
+const SKIPPED_DIRS = new Set(["node_modules", "test-results", "playwright-report", "coverage", "dist"]);
 
 const problems = [];
 const mockTestIds = new Set();
 const report = (path, message) => problems.push(`${path}: ${message}`);
+let config;
+let VIEWS;
 
-const targets = process.argv.length > 2
-  ? process.argv.slice(2)
-  : readdirSync(SCREENS_DIR).filter((e) => !e.startsWith("_") && !e.startsWith(".")).map((e) => join(SCREENS_DIR, e)).filter((p) => statSync(p).isDirectory());
-for (const dir of targets) checkScreen(dir);
-if (process.argv.length <= 2 && config.e2e_dir !== undefined) checkTestIds(config.e2e_dir);
-
-if (problems.length > 0) {
-  console.error(`画面仕様書の規約の違反が ${problems.length} 件ある。`);
-  for (const p of problems) console.error(`- ${p}`);
-  process.exit(1);
+try {
+  main();
+} catch (e) {
+  fail(`読めない: ${e.message}`);
 }
-console.log(`${targets.length} 画面が規約に合っている。`);
+
+function main() {
+  const projectPath = join(root, "context/project.yml");
+  try {
+    config = existsSync(projectPath) ? readScreensConfig(readFileSync(projectPath, "utf8")) : {};
+  } catch (e) {
+    fail(`${projectPath}: ${e.message}`);
+  }
+  const screensDir = config.dir ?? "docs/screens";
+  const common = join(screensDir, "_common");
+  if (!existsSync(join(common, "mock.js"))) fail(`${join(common, "mock.js")} が無い。リポジトリのルートで流しているか、screens.dir を確認する`);
+  if (config.tokens_css !== undefined && !existsSync(join(root, config.tokens_css))) fail(`screens.tokens_css の ${config.tokens_css} が無い`);
+  if (config.e2e_dir !== undefined && !isDirectory(join(root, config.e2e_dir))) fail(`screens.e2e_dir の ${config.e2e_dir} がディレクトリでない`);
+  // デバイスの名前は mock.js の VIEWS だけに書くので、そこから読む
+  VIEWS = new Set([...readFileSync(join(common, "mock.js"), "utf8").matchAll(/^\s+'?([a-z-]+)'?: \{ label:/gm)].map((m) => m[1]));
+
+  const all = process.argv.length <= 2;
+  const targets = all
+    ? readdirSync(screensDir).filter((e) => !e.startsWith("_") && !e.startsWith(".")).map((e) => join(screensDir, e)).filter(isDirectory)
+    : process.argv.slice(2);
+  for (const dir of targets) checkScreen(dir);
+  const skipped = all && config.e2e_dir !== undefined ? checkTestIds(config.e2e_dir) : 0;
+
+  if (skipped > 0) console.log(`値を読めない getByTestId の引数 ${skipped} 件は、照らさずに飛ばした。`);
+  if (problems.length > 0) {
+    console.error(`画面仕様書の規約の違反が ${problems.length} 件ある。`);
+    for (const p of problems) console.error(`- ${p}`);
+    process.exit(1);
+  }
+  console.log(`${targets.length} 画面が規約に合っている。`);
+}
 
 function fail(message) {
   console.error(message);
   process.exit(2);
 }
 
-// 依存を持たずに配置先で動かすため、YAML は screens: の下の 1 段のスカラーだけを読む
-function readConfig(path) {
-  if (!existsSync(path)) return {};
-  let text;
-  try {
-    text = readFileSync(path, "utf8");
-  } catch (e) {
-    fail(`読めない: ${path}\n${e.message}`);
-  }
-  const values = {};
-  let inScreens = false;
-  for (const line of text.split(/\r?\n/)) {
-    if (/^\S/.test(line)) {
-      inScreens = /^screens:\s*(#.*)?$/.test(line);
-      continue;
-    }
-    if (!inScreens) continue;
-    const m = line.match(/^\s+([a-z0-9_]+):\s*(.*)$/);
-    if (!m) continue;
-    const raw = m[2].trim();
-    // 引用符の中の # はコメントにしない。引用符の後ろにだけ、行末のコメントを許す
-    const quoted = raw.match(/^(["'])(.*?)\1\s*(#.*)?$/);
-    values[m[1]] = quoted ? quoted[2] : raw.replace(/(^|\s+)#.*$/, "");
-  }
-  for (const key of ["dir", "tokens_css", "e2e_dir"]) {
-    const v = values[key];
-    if (v === undefined) continue;
-    if (v === "" || v.startsWith("/") || v.split("/").some((s) => s === "" || s === "." || s === "..")) {
-      fail(`screens.${key} はリポジトリのルートからの相対パスで書く。空、.、.. の区切りは使えない: ${v}`);
-    }
-  }
-  if (values.catalog_url !== undefined && !/^https?:\/\/\S+$/.test(values.catalog_url)) fail(`screens.catalog_url は http か https の URL で書く: ${values.catalog_url}`);
-  return values;
+function isDirectory(path) {
+  return existsSync(path) && statSync(path).isDirectory();
 }
 
 /** CSS と HTML のコメントを除く。コメントの中の語を禁止の記述として拾わないため */
@@ -103,13 +93,19 @@ function isContiguous(numbers) {
   return [...numbers].map(Number).sort((a, b) => a - b).every((n, i) => n === i + 1);
 }
 
+/** link が base と同じか、base の後ろが /、?、# で続くか。https://a.com で https://a.com.example を通さないため */
+function isUnder(link, base) {
+  if (!link.startsWith(base)) return false;
+  return base.endsWith("/") || link.length === base.length || "/?#".includes(link[base.length]);
+}
+
 function checkCatalogLinks(markdown, specPath) {
   markdown.split(/\r?\n/).forEach((line, index) => {
     if (!line.startsWith("**カタログ**:")) return;
     const links = [...line.matchAll(LINK_TARGET)].map((m) => m[1]);
     if (links.length === 0) report(specPath, `カタログの欄にリンクが無い（${index + 1} 行目）`);
     for (const link of links) {
-      if (!link.startsWith(config.catalog_url)) report(specPath, `カタログの欄のリンク ${link} が screens.catalog_url で始まらない（${index + 1} 行目）`);
+      if (!isUnder(link, config.catalog_url)) report(specPath, `カタログの欄のリンク ${link} が screens.catalog_url の下でない（${index + 1} 行目）`);
     }
   });
 }
@@ -121,20 +117,29 @@ function readStates(markdown, specPath) {
   let current = null;
   let inComposition = false;
   let inTable = false;
-  let inFence = null;
+  let fence = null;
+  let blankBefore = false;
   // タブの中身は 4 つの空白で字下げするので、外して読む
   const unindent = (line) => (current !== null ? line.replace(/^ {4}/, "") : line);
   lines.forEach((rawLine, index) => {
-    if (current !== null && rawLine.trim() !== "" && !/^( {4}|=== "|## )/.test(rawLine)) {
-      report(specPath, `「${current.name}」のタブの中身を 4 つの空白で字下げする（${index + 1} 行目）`);
+    const blank = rawLine.trim() === "";
+    if (current !== null && fence === null && !blank && !/^( {4}|=== "|## )/.test(rawLine)) {
+      // 空行の後の字下げのない行は、タブの外の文にする
+      if (blankBefore) current = null;
+      else report(specPath, `「${current.name}」のタブの中身を 4 つの空白で字下げする（${index + 1} 行目）`);
     }
+    blankBefore = blank;
     const line = unindent(rawLine);
-    const fence = line.match(/^(`{3,}|~{3,})/);
-    if (fence && (inFence === null || fence[1].startsWith(inFence))) {
-      inFence = inFence === null ? fence[1][0].repeat(3) : null;
+    const marker = line.match(/^(`{3,}|~{3,})(.*)$/);
+    if (fence === null && marker) {
+      fence = marker[1];
       return;
     }
-    if (inFence !== null) return;
+    if (fence !== null) {
+      // 閉じるのは、同じ文字で同じ長さ以上の、後ろに何も無い行だけ
+      if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length && marker[2].trim() === "") fence = null;
+      return;
+    }
     if (/^## /.test(line)) {
       inComposition = line.trim() === "## 構成";
       current = null;
@@ -208,12 +213,12 @@ function checkMock(mockPath, screenId) {
   const tokens = config.tokens_css === undefined ? [] : [relative(dirname(mockPath), join(root, config.tokens_css)).split(sep).join("/")];
   const expected = ["../../_common/mock.css", ...tokens, "../../_common/wireframe.css", `${screenId}.css`];
   if (sheets.join() !== expected.join()) report(mockPath, `stylesheet を ${expected.join("、")} の順に読む`);
-  const body = html.match(/<body\b[^>]*>/)?.[0] ?? "";
+  const body = code.match(/<body\b[^>]*>/)?.[0] ?? "";
   if (!VIEWS.has(attr(body, "data-view") ?? "")) report(mockPath, `body の data-view を ${[...VIEWS].join("、")} のどれかにする`);
   for (const cls of ["stage", "screen", "screen-body", "markers"]) {
-    if (!new RegExp(`class="(?:[^"]*\\s)?${cls}(?:\\s[^"]*)?"`).test(html)) report(mockPath, `class="${cls}" の要素が無い`);
+    if (!new RegExp(`class="(?:[^"]*\\s)?${cls}(?:\\s[^"]*)?"`).test(code)) report(mockPath, `class="${cls}" の要素が無い`);
   }
-  if (!/<div class="markers">\s*<\/div>/.test(html)) report(mockPath, ".markers は空にする");
+  if (!/<div class="markers">\s*<\/div>/.test(code)) report(mockPath, ".markers は空にする");
   const scripts = [...code.matchAll(/<script\b[^>]*>/g)].map((m) => attr(m[0], "src"));
   if (scripts.join() !== SCRIPTS.join()) report(mockPath, `script は ${SCRIPTS.join("、")} だけをこの順に読む`);
   checkInteractions(code, mockPath);
@@ -222,17 +227,17 @@ function checkMock(mockPath, screenId) {
   for (const [pattern, label] of FORBIDDEN) if (pattern.test(loaded)) report(mockPath, `${label}を使わない`);
   if (PLACEHOLDER.test(html)) report(mockPath, `テンプレートの ${html.match(PLACEHOLDER)[0]} が残っている`);
   const numbers = new Set();
-  for (const m of code.matchAll(/\sdata-m=["']([^"']*)["']/g)) {
-    if (!/^[1-9]\d*$/.test(m[1])) {
-      report(mockPath, `data-m="${m[1]}" が整数でない`);
+  for (const m of code.matchAll(/\sdata-m=(["'])([^"']*)\1/g)) {
+    if (!/^[1-9]\d*$/.test(m[2])) {
+      report(mockPath, `data-m="${m[2]}" が整数でない`);
       continue;
     }
-    numbers.add(m[1]);
+    numbers.add(m[2]);
   }
   if (!isContiguous(numbers)) report(mockPath, `data-m が 1 から欠番なく続いていない（${[...numbers].join("、")}）`);
-  for (const m of code.matchAll(/\bdata-testid="([^"]*)"/g)) {
-    mockTestIds.add(m[1]);
-    if (!TESTID.test(m[1])) report(mockPath, `data-testid="${m[1]}" の形が規約と違う`);
+  for (const m of code.matchAll(/\bdata-testid=(["'])([^"']*)\1/g)) {
+    mockTestIds.add(m[2]);
+    if (!TESTID.test(m[2])) report(mockPath, `data-testid="${m[2]}" の形が規約と違う`);
   }
   return numbers;
 }
@@ -257,7 +262,7 @@ function checkScreen(dir) {
   if (!existsSync(specPath)) report(dir, "index.md が無い");
   if (!existsSync(apiPath)) report(dir, "api.md が無い");
   else if (PLACEHOLDER.test(readFileSync(apiPath, "utf8"))) report(apiPath, "テンプレートの <…> が残っている");
-  if (!existsSync(mocksDir)) {
+  if (!isDirectory(mocksDir)) {
     report(dir, "mocks/ が無い");
     return;
   }
@@ -313,50 +318,60 @@ function checkScreen(dir) {
 function testFiles(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const path = join(dir, e.name);
-    if (e.isDirectory()) return e.name === "node_modules" ? [] : testFiles(path);
+    if (e.isDirectory()) return SKIPPED_DIRS.has(e.name) || e.name.startsWith(".") ? [] : testFiles(path);
     return TEST_FILE.test(e.name) ? [path] : [];
   });
 }
 
-/** getByTestId の引数から、照らす値を返す。exact は同じ値、prefix は始まり。読めなければ null */
+/** getByTestId の引数の先頭のリテラルから、照らす値を返す。exact は同じ値、prefix は始まり。リテラルで始まらなければ null */
 function readTestIdArg(arg) {
-  const quoted = arg.match(/^(['"])([^'"]+)\1/);
+  const quoted = arg.match(/^(['"])([^'"\n]+)\1/);
   if (quoted) return { exact: quoted[2] };
-  const template = arg.match(/^`([^`]*)`/);
+  const template = arg.match(/^`([^`\n]*)`/);
   if (template) {
     const i = template[1].indexOf("${");
-    return i === -1 ? { exact: template[1] } : { prefix: template[1].slice(0, i) };
+    if (i === -1) return { exact: template[1] };
+    return i === 0 ? null : { prefix: template[1].slice(0, i) };
   }
-  const regex = arg.match(/^\/\^((?:[^\\/.*+?()[\]{}|$]|\\.)*)/);
+  const regex = arg.match(/^\/\^((?:[^\\/.*+?()[\]{}|$]|\\.)+)/);
   if (regex) return { prefix: regex[1].replace(/\\(.)/g, "$1") };
   return null;
 }
 
-/** モックの x-{…} の {…} には 1 文字以上のどの値も入るとみなして、テストの testid に当てる */
-function matchesPlaceholder(testId) {
+/** モックの x-{…} の {…} を、1 文字以上のどの値も入る形の正規表現にする */
+function placeholderPattern(id) {
+  return new RegExp(`^${id.split(/\{[^}]*\}/).map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join(".+")}$`);
+}
+
+function matchesExact(testId) {
+  return mockTestIds.has(testId) || [...mockTestIds].some((id) => id.includes("{") && placeholderPattern(id).test(testId));
+}
+
+/** prefix で始まる値が、モックの testid か、モックの x-{…} の形から作れるか */
+function matchesPrefix(prefix) {
   return [...mockTestIds].some((id) => {
-    if (!id.includes("{")) return false;
-    const pattern = id.split(/\{[^}]*\}/).map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join(".+");
-    return new RegExp(`^${pattern}$`).test(testId);
+    if (id.startsWith(prefix)) return true;
+    const head = id.includes("{") ? id.slice(0, id.indexOf("{")) : null;
+    return head !== null && prefix.startsWith(head);
   });
 }
 
-// 文字列の testid は同じ値か、モックの x-{…} の形を探す。`x-${…}` と /^x-/ は、x- で始まる値を探す
+/** テストのコードの getByTestId のリテラルを、モックの testid と照らす。リテラルで始まらない引数は飛ばし、その数を返す */
 function checkTestIds(e2eDir) {
+  let skipped = 0;
   for (const file of testFiles(join(root, e2eDir))) {
     const shown = relative(root, file);
     // 行のコメントは、行頭か空白の後の // だけを外す。文字列の中の URL の // を残すため
     const code = readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|\s)\/\/.*$/gm, "$1");
-    for (const m of code.matchAll(/getByTestId\(\s*([^)\n]*)/g)) {
+    for (const m of code.matchAll(/getByTestId\(\s*([^\n]*)/g)) {
       const target = readTestIdArg(m[1]);
-      if (target === null || target.prefix === "") {
-        report(shown, `getByTestId(${m[1].trim()}) の testid を読めない。文字列か、始まりの付いたテンプレートか /^…/ で書く`);
+      if (target === null) {
+        skipped++;
         continue;
       }
-      const found = target.exact !== undefined
-        ? mockTestIds.has(target.exact) || matchesPlaceholder(target.exact)
-        : [...mockTestIds].some((id) => id.startsWith(target.prefix));
+      const found = target.exact !== undefined ? matchesExact(target.exact) : matchesPrefix(target.prefix);
       if (!found) report(shown, `テストの testid ${target.exact ?? `${target.prefix}…`} がどのモックの data-testid にも無い`);
     }
   }
+  return skipped;
 }

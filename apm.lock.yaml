@@ -309,8 +309,8 @@ dependencies:
     .agents/skills/write-screen-spec/references/screens/_template/mocks/screen-id.css: sha256:0827bd7961e358a41363905a697ab10766b8331e170936c9fc93ccceaad49890
     .agents/skills/write-screen-spec/references/screens/index.md: sha256:39114d03d7cd1177dd4cde856efe8655d3f46f62780d1383cdad68c166913fa6
     .agents/skills/write-screen-spec/references/screens/rules.md: sha256:18a76c1b0ec44660c9ae0bd6e352dfb583b65f1bb79e23e123ed61ca7671fb44
-    .agents/skills/write-screen-spec/scripts/check-screens.mjs: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
-    .agents/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:1971d0922be943c4a2173bd90c096a24ae83ff91b75c9190cf2f29c83dc5dd44
+    .agents/skills/write-screen-spec/scripts/check-screens.mjs: sha256:451732350516f05434099e525a91f6cb2d93636d2888a183d95647cb189c4d83
+    .agents/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:04e4ac52d99e497e0dbe9c74711c9f7eb4eb389cccf73b46290aa3bbe9996779
     .agents/skills/write-screen-spec/scripts/copy-screen-templates.mjs: sha256:952eb052b525aded66ab92c31c3bab3bb7ad3b1c35f732118a6e25991b92e3f3
     .agents/skills/write-screen-spec/scripts/copy-screen-templates.test.mjs: sha256:5a3fb2f64db534d7dea459805ced13d72e031b7c05002247b616f948aa31b2b9
     .agents/skills/write-screen-spec/scripts/read-screens-config.mjs: sha256:bb764150681f9e0e2ccec32e6357dbb96a4aa219f1b25bfc4a068352167c0e68
@@ -327,8 +327,8 @@ dependencies:
     .claude/skills/write-screen-spec/references/screens/_template/mocks/screen-id.css: sha256:0827bd7961e358a41363905a697ab10766b8331e170936c9fc93ccceaad49890
     .claude/skills/write-screen-spec/references/screens/index.md: sha256:39114d03d7cd1177dd4cde856efe8655d3f46f62780d1383cdad68c166913fa6
     .claude/skills/write-screen-spec/references/screens/rules.md: sha256:18a76c1b0ec44660c9ae0bd6e352dfb583b65f1bb79e23e123ed61ca7671fb44
-    .claude/skills/write-screen-spec/scripts/check-screens.mjs: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
-    .claude/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:1971d0922be943c4a2173bd90c096a24ae83ff91b75c9190cf2f29c83dc5dd44
+    .claude/skills/write-screen-spec/scripts/check-screens.mjs: sha256:451732350516f05434099e525a91f6cb2d93636d2888a183d95647cb189c4d83
+    .claude/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:04e4ac52d99e497e0dbe9c74711c9f7eb4eb389cccf73b46290aa3bbe9996779
     .claude/skills/write-screen-spec/scripts/copy-screen-templates.mjs: sha256:952eb052b525aded66ab92c31c3bab3bb7ad3b1c35f732118a6e25991b92e3f3
     .claude/skills/write-screen-spec/scripts/copy-screen-templates.test.mjs: sha256:5a3fb2f64db534d7dea459805ced13d72e031b7c05002247b616f948aa31b2b9
     .claude/skills/write-screen-spec/scripts/read-screens-config.mjs: sha256:bb764150681f9e0e2ccec32e6357dbb96a4aa219f1b25bfc4a068352167c0e68
@@ -1291,7 +1291,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
+  content_hash: sha256:451732350516f05434099e525a91f6cb2d93636d2888a183d95647cb189c4d83
 - kind: project-relative
   target: claude
   value: .claude/skills/write-screen-spec/scripts/check-screens.test.mjs
@@ -1300,7 +1300,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:1971d0922be943c4a2173bd90c096a24ae83ff91b75c9190cf2f29c83dc5dd44
+  content_hash: sha256:04e4ac52d99e497e0dbe9c74711c9f7eb4eb389cccf73b46290aa3bbe9996779
 - kind: project-relative
   target: claude
   value: .claude/skills/write-screen-spec/scripts/copy-screen-templates.mjs
@@ -2128,7 +2128,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
+  content_hash: sha256:451732350516f05434099e525a91f6cb2d93636d2888a183d95647cb189c4d83
 - kind: project-relative
   target: codex
   value: .agents/skills/write-screen-spec/scripts/check-screens.test.mjs
@@ -2137,7 +2137,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:1971d0922be943c4a2173bd90c096a24ae83ff91b75c9190cf2f29c83dc5dd44
+  content_hash: sha256:04e4ac52d99e497e0dbe9c74711c9f7eb4eb389cccf73b46290aa3bbe9996779
 - kind: project-relative
   target: codex
   value: .agents/skills/write-screen-spec/scripts/copy-screen-templates.mjs
