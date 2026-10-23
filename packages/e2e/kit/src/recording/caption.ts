@@ -16,6 +16,8 @@ export const showCaptionInRecording = async (
 ): Promise<void> => {
   await context.addInitScript(
     ({ header, key }) => {
+      // init script は iframe の中でも動く。字幕は録画の最上位の文書にだけ出す
+      if (window !== window.top) return
       const read = (): string => {
         try {
           return sessionStorage.getItem(key) ?? ''

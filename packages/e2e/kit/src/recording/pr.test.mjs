@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { describe, it } from 'node:test'
+import { after as afterAll, before as beforeAll, describe, it } from 'node:test'
 import { variants } from '../evidence/index.ts'
 import { recordPrEvidence, worktreeVersion } from './pr.ts'
 
@@ -25,6 +25,66 @@ describe('recordPrEvidence', () => {
       recordPrEvidence(null, { ...target, number: '12' }, { name: 'List_View', title: 't', actor: 'x', variant: single }, never, never),
       /name は英小文字/,
     )
+  })
+})
+
+// 撮る場合のテストには、ブラウザのエンジンと ffmpeg が要る。無ければ飛ばす
+let browser
+beforeAll(async () => {
+  try {
+    execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' })
+    const { chromium } = await import('@playwright/test')
+    browser = await chromium.launch()
+  } catch {
+    browser = undefined
+  }
+})
+afterAll(async () => {
+  await browser?.close()
+})
+
+describe('recordPrEvidence で撮る', () => {
+  const body = async (r) => {
+    await r.page.goto('data:text/html,<p>x</p>')
+    await r.check('ならば 見える')
+  }
+  const take = (variant) => ({ name: 'open-list', title: '一覧を開く', actor: 'ログインなし', variant })
+  const versioned = (root) => ({ ...target, root, number: '12', readVersion: async () => 'v1' })
+
+  it('添付する mp4 を <番号>/<名前>.mp4 にコピーする', async (t) => {
+    if (!browser) return t.skip('ブラウザのエンジンか ffmpeg が無い')
+    const root = mkdtempSync(path.join(tmpdir(), 'e2e-kit-pr-'))
+    await recordPrEvidence(browser, versioned(root), take(single), async () => undefined, body)
+    const out = path.join(root, '.ai-out/evidence/12')
+    assert.ok(existsSync(path.join(out, 'open-list.mp4')))
+    assert.ok(existsSync(path.join(out, 'open-list', '実施.mp4')))
+    assert.match(readFileSync(path.join(out, 'open-list', 'README.md'), 'utf8'), /#12 open-list \/ 実施 \/ ローカル環境 v1/)
+  })
+
+  it('改修前と改修後は、-before と -after を付けてコピーする', async (t) => {
+    if (!browser) return t.skip('ブラウザのエンジンか ffmpeg が無い')
+    const root = mkdtempSync(path.join(tmpdir(), 'e2e-kit-pr-'))
+    for (const variant of [after, before]) {
+      await recordPrEvidence(browser, { ...versioned(root), evidenceDir: 'out' }, take(variant), async () => undefined, body)
+    }
+    assert.deepEqual(
+      readdirSync(path.join(root, 'out/12')).filter((f) => f.endsWith('.mp4')).sort(),
+      ['open-list-after.mp4', 'open-list-before.mp4'],
+    )
+  })
+
+  it('撮影が失敗したときは、前の撮影の添付する mp4 を消してから例外を投げ直す', async (t) => {
+    if (!browser) return t.skip('ブラウザのエンジンか ffmpeg が無い')
+    const root = mkdtempSync(path.join(tmpdir(), 'e2e-kit-pr-'))
+    await recordPrEvidence(browser, versioned(root), take(single), async () => undefined, body)
+    const attached = path.join(root, '.ai-out/evidence/12/open-list.mp4')
+    await assert.rejects(
+      recordPrEvidence(browser, versioned(root), take(single), async () => undefined, async () => {
+        throw new Error('押せなかった')
+      }),
+      /押せなかった/,
+    )
+    assert.equal(existsSync(attached), false)
   })
 })
 

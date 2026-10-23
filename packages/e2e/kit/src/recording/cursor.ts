@@ -15,6 +15,8 @@ export const CURSOR_LEGEND = `カーソル: ${COLOR.up.name}丸はマウスの�
 export const showCursorInRecording = async (context: BrowserContext): Promise<void> => {
   await context.addInitScript(
     ({ up, down }) => {
+      // init script は iframe の中でも動く。丸は録画の最上位の文書にだけ描く
+      if (window !== window.top) return
       const install = () => {
         const dot = document.createElement('div')
         dot.id = '__e2e-cursor'

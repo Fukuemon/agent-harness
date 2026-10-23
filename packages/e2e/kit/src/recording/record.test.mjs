@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdtempSync, readFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readdirSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { after, before, describe, it } from 'node:test'
@@ -110,5 +110,38 @@ describe('recordEvidence', () => {
     }
     assert.ok(existsSync(path.join(dir, 'compare', '実施-1.png')))
     assert.match(readFileSync(path.join(dir, 'README.md'), 'utf8'), /## 改修前と改修後の比較/)
+  })
+
+  it('同じ名前で撮り直すと、前の撮影のスクリーンショットを消し、README の行を重ねない', async (t) => {
+    if (!browser) return t.skip('ブラウザのエンジンか ffmpeg が無い')
+    const dir = mkdtempSync(path.join(tmpdir(), 'e2e-kit-record-'))
+    const [single] = variants({ baseUrl: 'http://localhost' })
+    const take = (checks) =>
+      recordEvidence(browser, target(dir), { scenario, variant: single }, async () => undefined, async (r) => {
+        await r.page.goto(page('body'))
+        for (let i = 0; i < checks; i++) await r.check(`ならば ${i + 1} 番目が見える`)
+      })
+    await take(2)
+    await take(1)
+    assert.deepEqual(readdirSync(path.join(dir, 'frames')), ['実施-1.png'])
+    const readme = readFileSync(path.join(dir, 'README.md'), 'utf8')
+    assert.equal(readme.match(/^## 実施\.mp4$/gm)?.length, 1)
+    assert.doesNotMatch(readme, /2 番目/)
+  })
+})
+
+describe('recordEvidence の前提', () => {
+  it('ffmpeg が無ければ、ブラウザを開く前に例外を投げる', async () => {
+    const pathBefore = process.env.PATH
+    process.env.PATH = mkdtempSync(path.join(tmpdir(), 'e2e-kit-empty-path-'))
+    try {
+      const [single] = variants({ baseUrl: 'http://localhost' })
+      await assert.rejects(
+        recordEvidence(null, target('/nonexistent'), { scenario, variant: single }, async () => undefined, async () => {}),
+        /ffmpeg が無い/,
+      )
+    } finally {
+      process.env.PATH = pathBefore
+    }
   })
 })

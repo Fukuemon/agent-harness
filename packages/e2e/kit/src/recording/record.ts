@@ -4,7 +4,7 @@ import type { Browser, Page } from '@playwright/test'
 import { evidenceName, type Example, type Scenario, type Variant } from '../evidence/index.ts'
 import { caption, showCaptionInRecording } from './caption.ts'
 import { CURSOR_LEGEND, showCursorInRecording } from './cursor.ts'
-import { clearTake, finishEvidence, RECORDS_DIR, type CaptionAt } from './files.ts'
+import { assertConverters, clearTake, finishEvidence, RECORDS_DIR, type CaptionAt } from './files.ts'
 
 const DEFAULT_VIEWPORT = { width: 1920, height: 1200 }
 
@@ -40,9 +40,10 @@ export type RecordingTarget = {
 }
 
 /**
- * 1 つの版と例の行を録画し、エビデンスの配置先へ mp4、スクリーンショット、README を書き出す。ffmpeg と ffprobe が要る。
+ * 1 つの版と例の行を録画し、エビデンスの配置先へ mp4、スクリーンショット、README を書き出す。ffmpeg と ffprobe が要る。無ければ、録画を始める前に例外を投げる。
  * 操作が途中で失敗しても、そこまでの録画を書き出してから、例外を投げ直す。何が起きたかを見るため。
  * prepare が失敗したときは、録画を始めずに例外を投げ直す。
+ * 操作が失敗し、書き出しも失敗したときは、両方を持つ AggregateError を投げる。
  *
  * @param prepare 録画の外で、ログインとデータの確認を行う。戻り値は body に渡る。録画は、prepare が終えたときの Cookie、localStorage、IndexedDB と、最後に開いた origin の sessionStorage を持ち越して始まる
  * @param body 録画する操作。最初の step より前に画面を開く。シナリオの前提と操作の文は step で、判定の文は check で字幕に出してから操作する
@@ -54,6 +55,8 @@ export const recordEvidence = async <T>(
   prepare: (page: Page) => Promise<T>,
   body: (r: Recording, prepared: T) => Promise<void>,
 ): Promise<void> => {
+  // 変換のツールが無いと、録画を全部終えた後にしか分からず、本体の失敗の理由も消えるので、先に確認する
+  assertConverters()
   const { dir, appName, envLabel, viewport = DEFAULT_VIEWPORT, timezoneId } = target
   const name = evidenceName(s.variant, s.example)
   const where = [
@@ -143,19 +146,24 @@ export const recordEvidence = async <T>(
   try {
     rmdirSync(raw)
   } catch {}
-  finishEvidence(dir, {
-    name,
-    header,
-    appName,
-    envLabel,
-    version,
-    variant: s.variant,
-    example: s.example,
-    scenario: s.scenario,
-    captions,
-    elapsed,
-    failure: failure === undefined ? undefined : describeFailure(failure),
-  })
+  try {
+    finishEvidence(dir, {
+      name,
+      header,
+      appName,
+      envLabel,
+      version,
+      variant: s.variant,
+      example: s.example,
+      scenario: s.scenario,
+      captions,
+      elapsed,
+      failure: failure === undefined ? undefined : describeFailure(failure),
+    })
+  } catch (e) {
+    if (failure === undefined) throw e
+    throw new AggregateError([failure, e], `操作が失敗し、録画の書き出しも失敗した: ${describeFailure(failure)}`)
+  }
   if (failure !== undefined) throw failure
 }
 

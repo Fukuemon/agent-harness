@@ -41,6 +41,12 @@ const run = (cmd: string, args: string[]): string => {
   }
 }
 
+/** 録画の変換に使う ffmpeg と ffprobe があるかを確認する。無ければ、録画を始める前に例外を投げる */
+export const assertConverters = (): void => {
+  run('ffmpeg', ['-version'])
+  run('ffprobe', ['-version'])
+}
+
 const clock = (sec: number): string =>
   `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`
 
