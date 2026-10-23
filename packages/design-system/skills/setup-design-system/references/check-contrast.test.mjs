@@ -85,6 +85,13 @@ test("ブロックの最後の、セミコロンのない宣言も読む", () =>
   assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
 });
 
+test("条件つきのブロックの中の宣言があれば、確認できないと報告して 1 で終わる", () => {
+  const r = run(`${semantic({ "text-secondary": "#999999" })}@media print { :root { --app-color-text-secondary: #666666; } }\n`);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /条件つきのブロック/);
+  assert.match(r.stderr, /@media print :root の --app-color-text-secondary/);
+});
+
 test("枠が 3:1 に届かなければ、1 で終わる", () => {
   const r = run(semantic({ "border-field": "#e9e9eb" }));
   assert.equal(r.status, 1);

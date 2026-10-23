@@ -3,7 +3,7 @@
 // 写した後に、SOURCES、PREFIX、TEXT_PAIRS、NON_TEXT_PAIRS を、自分のトークンに合わせて書き換える。
 // 使い方: node check-contrast.mjs [CSS のファイルかパッケージのパス]...
 //   引数を省くと SOURCES を読む。パッケージのパス（`@scope/name/dist/tokens.css` の形）は、カレントディレクトリの package.json から解決する
-// 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か色に解決できないトークンがある、2 は CSS が読めない
+// 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の宣言がある、2 は CSS が読めない
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { isAbsolute, join, resolve } from "node:path";
@@ -40,6 +40,7 @@ const NON_TEXT_PAIRS = [
 
 const sources = process.argv.length > 2 ? process.argv.slice(2) : SOURCES;
 const properties = new Map();
+const conditional = [];
 for (const source of sources) {
   let css;
   try {
@@ -50,7 +51,12 @@ for (const source of sources) {
   }
   // コメントに残した古い値や例の宣言を、今の値として読まない
   css = css.replace(/\/\*[\s\S]*?\*\//g, "");
-  for (const [, name, value] of css.matchAll(/(--[\w-]+)\s*:\s*([^;{}]+)(?=[;}])/g)) properties.set(name, value.trim());
+  readDeclarations(css, source);
+}
+
+if (conditional.length) {
+  console.error(`条件つきのブロック（@media、:root 以外のセレクタなど）の中の宣言は確認できない。条件ごとの値を別の CSS に分け、別に流す\n${conditional.join("\n")}`);
+  process.exit(1);
 }
 
 const failures = [];
@@ -71,6 +77,28 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`${TEXT_PAIRS.length + NON_TEXT_PAIRS.length} 組が基準に届いた`);
+
+// 一番外の :root のブロックの宣言だけを、画面に効く値として読む。ほかのブロックの変数の宣言は conditional に残す
+function readDeclarations(css, source) {
+  const blocks = [];
+  let text = "";
+  const flush = () => {
+    const m = /^(--[\w-]+)\s*:\s*([\s\S]+)$/.exec(text.trim());
+    if (m && blocks.length === 1 && blocks[0] === ":root") properties.set(m[1], m[2].trim());
+    else if (m && blocks.length) conditional.push(`${source}: ${blocks.join(" ")} の ${m[1]}`);
+    text = "";
+  };
+  for (const ch of css) {
+    if (ch === "{") {
+      blocks.push(text.trim().replace(/\s+/g, " "));
+      text = "";
+    } else if (ch === "}") {
+      flush();
+      blocks.pop();
+    } else if (ch === ";") flush();
+    else text += ch;
+  }
+}
 
 function locate(source) {
   if (isAbsolute(source) || source.startsWith(".")) return resolve(source);
