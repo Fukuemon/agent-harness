@@ -5,7 +5,7 @@ description: issue を起票するとき、pull request を書くとき、レビ
 
 # write-issue-pr
 
-form とテンプレートは、このスキルの `assets/.github/` と `assets/.gitlab/` にある。導入のスキルが、`context/project.yml` の `hosting` に合う一方を利用者のリポジトリへ写す。ここには、節に何を書くかの判断だけを書く。  
+form とテンプレートは、このスキルの `assets/.github/` と `assets/.gitlab/` にある。導入のスキルが、`context/project.yml` の `hosting` に合う一方を利用者のリポジトリへ写す。ここには、セクションに何を書くかの判断だけを書く。  
 規則は `hosting: github` の呼び方で書く。`hosting` が `gitlab` のリポジトリでは、次のように読み替える。
 
 - pull request は merge request、Draft の pull request は Draft の merge request と読む。
@@ -21,8 +21,8 @@ form とテンプレートは、このスキルの `assets/.github/` と `assets
 ## 共通
 
 - タイトルは、接頭辞と、完了したときにどうなっているかの 1 文で書く。pull request のタイトルは、対応する issue のタイトルと同じにする。issue を複数の pull request に分けたときの付け足し方は [references/pull-request.md](references/pull-request.md) にある。
-- 文書と ADR は、パスではなくホスティングサービスの URL で示し、節のアンカーまで付ける。issue と pull request の本文ではパスがリンクにならない。
-- 文書の節とコードの行を指すリンクの ref には、ブランチ名ではなくコミットの SHA を使う。ブランチが進むと、節のアンカーと行がずれる。
+- 文書と ADR は、パスではなくホスティングサービスの URL で示し、セクションのアンカーまで付ける。issue と pull request の本文ではパスがリンクにならない。
+- 文書のセクションとコードの行を指すリンクの ref には、ブランチ名ではなくコミットの SHA を使う。ブランチが進むと、セクションのアンカーと行がずれる。
   - これから作る文書や、変わり続ける文書の最新を示したいときだけ、デフォルトのブランチの名前を ref にする。
 - 本文とコメントに、`.ai-out/` のような公開しない作業メモのパスを書かない。読む人が開けない。要る内容は本文に書く。
 - 本文とコメントに、コーディングエージェントが生成したことを示す行と、セッションの URL を付けない。セッションの URL は、外部の人には開けない。コミットでは、write-commit が配る commitlint の設定の `no-ai-attribution` が同じ行を拒む。

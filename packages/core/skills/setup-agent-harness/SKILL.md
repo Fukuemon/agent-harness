@@ -42,14 +42,14 @@ context の 6 種類は、すべて `status: draft` の骨組みとして置か�
    - lefthook
 3. `lefthook.yml` の `commit-msg` に、`<実行コマンド> commitlint --edit {1}` を足す。`<実行コマンド>` は、手順 2 で決めたパッケージマネージャーで、インストールしたコマンドを実行するものにする。フックの中では、インストールしたコマンドにパスが通っていない。`lefthook.yml` がなければ作る。lefthook のフックが clone した後にも入るよう、`package.json` の `prepare` に `lefthook install` を足す。
 4. CI のワークフローがあれば、pull request のコミットを `<実行コマンド> commitlint` で確認する手順を足す。checkout で Git の履歴を全部取り、基点のブランチから HEAD までを `--from` と `--to` で渡す。
-5. CONTRIBUTING.md の「コミットするとき」の節に、commit-msg のフックがメッセージの形式を確認することを 1 行で書く。
+5. CONTRIBUTING.md の「コミットするとき」のセクションに、commit-msg のフックがメッセージの形式を確認することを 1 行で書く。
 6. 形式に合わないメッセージを commitlint の標準入力に渡し、失敗することを利用者に見せる。
 
 ## issue のラベルをそろえる
 
 写した issue の雛形は、種類のラベル `type:requirements`、`type:task`、`type:bug` を付ける。form では `labels` が、Markdown の雛形では末尾のクイックアクション `/label` が付ける。  
 リポジトリが別のラベルの体系を持つと、雛形で起票した issue だけが体系の外のラベルを持ち、ラベルで絞り込む利用者や仕組みから漏れる。
-ホスティングサービスのリモートがまだないときと、CLI が認証されていないときは、ラベルを読めない。この節を後に回すことを利用者に伝え、リモートを作った後に行う。
+ホスティングサービスのリモートがまだないときと、CLI が認証されていないときは、ラベルを読めない。このセクションを後に回すことを利用者に伝え、リモートを作った後に行う。
 
 1. 対象を決める。スクリプトが「写した」か「上書きした」に挙げた issue の雛形だけを扱う。「飛ばした」雛形は、利用者が持っていたものなので、ラベルを変えない。ただし、後に回したラベルの対応を再開するときは、前に写した雛形も対象にする。対象の雛形がなければ、ここで終える。
 2. 今のラベルを全部読む。ホスティングサービスの CLI の一覧は、何もしないと先頭の一部しか出さない。件数の上限を上げるフラグを、CLI のヘルプで確認して付ける（`gh label list --limit 1000` など）。1 ページの件数に上限があるサービスでは、ページを順に読み、空のページが返るまで続ける。CONTRIBUTING.md のラベルの記述も見る。
@@ -58,7 +58,7 @@ context の 6 種類は、すべて `status: draft` の骨組みとして置か�
    - 雛形のラベルを足す。ホスティングサービスの CLI でラベルを作る。
    - 雛形のラベルを、今の体系のラベルに書き換える。写した雛形は利用者のファイルなので、直してよい。
    - そのままにする。
-5. 決めた対応を、CONTRIBUTING.md の「issue と pull request」の節（`gitlab` では「issue と merge request」）に、種類とラベルの組で書く。節の案内のコメントは消す。既にあった CONTRIBUTING.md にその節がなければ、ラベルを書いている節に足すか、節を足すかを利用者と決める。
+5. 決めた対応を、CONTRIBUTING.md の「issue と pull request」のセクション（`gitlab` では「issue と merge request」）に、種類とラベルの組で書く。セクションの案内のコメントは消す。既にあった CONTRIBUTING.md にそのセクションがなければ、ラベルを書いているセクションに足すか、セクションを足すかを利用者と決める。
 
 ## パッケージを更新したとき
 
@@ -76,7 +76,7 @@ node <このスキルのディレクトリ>/scripts/setup.mjs --force CONTRIBUTI
 ## 写すもの
 
 - このスキルの `assets/` の全部。`context/project.yml`、AGENTS.md、CONTRIBUTING.md、context の 6 種類（技術スタック、コードベースの構造、コードと文書の規約、テスト、基盤と運用、業務の知識）。見出しの下の 1 行の案内は、何を書くかだけを示す。
-- `context/index.md`。写す context と、既にある context の frontmatter から作る。`context/domain/` のような下位のディレクトリも載せ、`status: draft` の文書には印を付ける。Design Doc の節には、設計文書のディレクトリの文書、コードの隣の `DesignDoc.md`、ルートの `PRD.md` を載せる。
+- `context/index.md`。写す context と、既にある context の frontmatter から作る。`context/domain/` のような下位のディレクトリも載せ、`status: draft` の文書には印を付ける。Design Doc のセクションには、設計文書のディレクトリの文書、コードの隣の `DesignDoc.md`、ルートの `PRD.md` を載せる。
   - 目次だけを作り直すときは、`--index` を付けて実行する。テンプレートは写さない。Git のフックや CI から呼んでもよい。
 - 業務の知識は、`context/domain.md` が用語と概念の一覧を持ち、状態と遷移、不変条件、禁止事項は概念ごとに `context/domain/<概念>.md` に置く。概念の文書はテンプレートにない。
 - ほかのスキルの `assets/`。docs、process のパッケージが配置されていれば、そのテンプレートも写る。

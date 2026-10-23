@@ -19,7 +19,7 @@ core の導入のスキル setup-agent-harness を先に実行しておく。`.t
    - textlint-rule-prh
    - textlint-rule-no-mix-dearu-desumasu
    - textlint-rule-sentence-length
-3. CONTRIBUTING.md の「文書を直すとき」の節を、次の内容で埋める。`<実行コマンド>` は手順 2 で決めたパッケージマネージャーのものに、`<docs>` は手順 1 のディレクトリに置き換える。案内のコメントは消す。
+3. CONTRIBUTING.md の「文書を直すとき」のセクションを、次の内容で埋める。`<実行コマンド>` は手順 2 で決めたパッケージマネージャーのものに、`<docs>` は手順 1 のディレクトリに置き換える。案内のコメントは消す。
 
 ~~~markdown
 ## 文書を直すとき

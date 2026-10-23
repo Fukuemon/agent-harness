@@ -12,7 +12,7 @@ description: コード、挙動、構成を調べ、行単位の根拠と blob l
 
 ## 構成
 
-雛形は [assets/survey-template.md](assets/survey-template.md) にある。節は `調査前の状況整理`、`TL;DR`、`調査結果`、`追加で確認が必要な点` の順に置き、対象に合わない小見出しは削る。文書に残すときは、末尾に調査の時点のコミットの SHA、ブランチ、調査日を書く。
+雛形は [assets/survey-template.md](assets/survey-template.md) にある。セクションは `調査前の状況整理`、`TL;DR`、`調査結果`、`追加で確認が必要な点` の順に置き、対象に合わない小見出しは削る。文書に残すときは、末尾に調査の時点のコミットの SHA、ブランチ、調査日を書く。
 
 ## 根拠の書き方
 

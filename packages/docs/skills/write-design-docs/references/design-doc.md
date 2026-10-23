@@ -2,7 +2,7 @@
 
 決定済みの設計だけを書く。過去にどうだったか、なぜ変えたか、どの issue で決めたかは書かない。
 
-## 8 節
+## 8 つのセクション
 
 次の順で持つ。
 
@@ -15,14 +15,14 @@
 7. Cross-Cutting Concerns。すべての要素に共通する決め事。
 8. Repository Layout。ディレクトリの木。
 
-節の見出しは役割の名前を英語で書き、話題の名前は小見出しに日本語で書く。骨組みは一般の形と対応づけられ、話題は読み手に伝わる語になる。
+セクションの見出しは役割の名前を英語で書き、話題の名前は小見出しに日本語で書く。骨組みは一般の形と対応づけられ、話題は読み手に伝わる語になる。
 
 - 出典: [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
 
 ## 図
 
 - C4 モデルの L2 の Container だけを描く。主要な実行の単位とデータの流れである。
-- 誰が何のために使うかを示す L1 の System Context は、PRD の System Context の節が持つ。PRD は Design Doc より先に書かれ、同じ図を両方に置くと食い違う。
+- 誰が何のために使うかを示す L1 の System Context は、PRD の System Context のセクションが持つ。PRD は Design Doc より先に書かれ、同じ図を両方に置くと食い違う。
 - 内部の構成と処理の流れは、機能ごとの Design Doc に描く。
 - 図の直前に、図が示す内容を 1 文で書く。図だけに書かれた決定を作らない。
 - 出典: [C4 model](https://c4model.com/)
