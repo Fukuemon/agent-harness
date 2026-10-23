@@ -72,6 +72,13 @@ test("文字の組が 4.5:1 に届かなければ、比を出して 1 で終わ�
   assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1。4\.5:1 以上が要る/);
 });
 
+test("コメントの中の宣言は、今の値として読まない", () => {
+  const css = `${semantic({ "text-secondary": "#999999" })}/* 前の値: --app-color-text-secondary: #666666; */\n`;
+  const r = run(css);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
+
 test("枠が 3:1 に届かなければ、1 で終わる", () => {
   const r = run(semantic({ "border-field": "#e9e9eb" }));
   assert.equal(r.status, 1);

@@ -55,6 +55,12 @@ test("行の途中に @import が残れば、2 で終わる", () => {
   assert.equal(run(dir, ...ARGS).status, 2);
 });
 
+test("コメントの中の @import は、残った @import として扱わない", () => {
+  const dir = setup();
+  writeFileSync(join(dir, "src/tokens/semantic.css"), "/* 基本の段は @import で読む */\n:root { --a: #fff; }\n");
+  assert.equal(run(dir, ...ARGS).status, 0);
+});
+
 test("--out か元の CSS がなければ、2 で終わる", () => {
   const dir = setup();
   assert.equal(run(dir, "./src/tokens/semantic.css").status, 2);

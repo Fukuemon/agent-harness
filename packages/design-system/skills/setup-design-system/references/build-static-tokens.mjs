@@ -30,7 +30,7 @@ const parts = sources.map((source) => {
   }
   // 元の CSS は、次の段の CSS を @import で読む。中身は sources の順に並べるので、行ごと外す
   css = css.replace(/^@import [^;]+;\r?\n?/gm, "").trim();
-  if (/@import/.test(css)) fail(`@import が行の途中に残る: ${source}。静的なファイルは読めないので、元の CSS を直す`);
+  if (/@import/.test(css.replace(/\/\*[\s\S]*?\*\//g, ""))) fail(`@import が行の途中に残る: ${source}。静的なファイルは読めないので、元の CSS を直す`);
   return css;
 });
 

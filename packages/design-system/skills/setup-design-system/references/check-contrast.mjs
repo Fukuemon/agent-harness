@@ -48,6 +48,8 @@ for (const source of sources) {
     console.error(`読めない: ${source}\n${e.message}`);
     process.exit(2);
   }
+  // コメントに残した古い値や例の宣言を、今の値として読まない
+  css = css.replace(/\/\*[\s\S]*?\*\//g, "");
   for (const [, name, value] of css.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) properties.set(name, value.trim());
 }
 
