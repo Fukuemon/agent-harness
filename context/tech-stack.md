@@ -26,12 +26,14 @@ verified_commit: f75d3803d873194fd9767a539486719f80768619
 | lefthook | Git のフック | `package.json` |
 | commitlint | コミットメッセージのチェック | `package.json` |
 | yaml と ajv | 値のファイルの読み取りと schema の検証。チェックのスクリプトが使う | `package.json` |
+| TypeScript、Playwright、ESLint | e2e の kit の型のチェックとビルド、録画のテスト、lint の規則のテスト。Playwright は kit の peer の範囲の下限に固定する | `package.json`。kit の peer の範囲は `packages/e2e/kit/package.json` |
 | GitHub Actions | CI。mise で同じバージョンを入れる | `.github/workflows/ci.yml` |
 
 - 利用者に前提とする Node.js のバージョンは、このリポジトリが開発に使うバージョンとは別である。
   - ADR-0012: [チェックとフックのスクリプトは Node.js で書く](../adr/0012-node-runtime.md)
   - ADR-0016: [ツールのバージョンは mise で管理し、テンプレートの既定にする](../adr/0016-mise-for-tool-versions.md)
-- チェックのスクリプトが依存してよいライブラリは、yaml と ajv だけである。
+- チェックのスクリプトが依存してよいライブラリは、yaml と ajv だけにする。
+- kit の開発の依存は、ルートの `package.json` に足す。typescript-eslint のパーサーが受け付ける範囲に TypeScript をそろえる。
 
 ## Upgrade Checks
 
@@ -39,9 +41,11 @@ verified_commit: f75d3803d873194fd9767a539486719f80768619
 - textlint の規則（preset-ai-words-ja、prh）は、バージョンで指摘する語が変わる。上げたら全文書に lint を掛け、新しい指摘を言い換える。`--fix` は使わない。
 - microsoft/apm は 1.0 より前で、配置の形が変わりうる。上げたら `apm install` の配置先を確かめる。配置先は [スキルの置き場所](skills.md) にある。
 - Node.js を上げたら、`mise.toml` の 1 行を変え、CI が通ることを確かめる。
+- kit の Playwright の下限を上げるときは、kit の `peerDependencies` とルートの `devDependencies` を同じコミットで変え、`pnpm check:kit` と `pnpm test` を通す。利用者のリポジトリが使うバージョンを範囲から外さない。
 
 ## Scaffolding
 
 - 新しいパッケージは、`packages/core` の構成を写して作る。構成は [全体像の Repository Layout](../design/DesignDoc.md#repository-layout) にある。
 - 新しいスキルは、`skills/` か `packages/<名前>/skills/` に `SKILL.md` を置き、`apm.yml` に足して `apm install` する。手順は [スキルの置き場所](skills.md) にある。
 - 新しいチェックのスクリプトは、`.mjs` で書き、隣に同じ名前の `.test.mjs` を置く。規則は [コードと文書の規約](conventions.md) と [テスト](testing.md) にある。
+- npm のレジストリで配るコードは、`packages/e2e/kit` の構成を写して作る。ソースは `.ts`、テストは隣の `.test.mjs` にする。構成は [E2E の Design Doc](../packages/e2e/DesignDoc.md#ビルドとテスト) にある。

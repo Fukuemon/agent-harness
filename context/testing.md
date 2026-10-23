@@ -9,9 +9,10 @@ status: stable
 
 ## Test Types and Guarantees
 
-- 種類は 1 つである。`node:test` で書き、スクリプトの隣の `*.test.mjs` に置く。スクリプトを子プロセスで実行し、終了コード、出力、ファイルの結果を確かめる。
+- テストは `node:test` で書き、対象の隣の `*.test.mjs` に置く。スクリプトのテストは、スクリプトを子プロセスで実行し、終了コード、出力、ファイルの結果を確かめる。
 - schema のテストは、テンプレートの `project.yml` が schema に合うことと、制約の検出を保証する。
 - 導入のスキルと目次のテストは、使い捨てのディレクトリで実行し、2 つの実装（`setup.mjs` と `build-index.mjs`）の出力が一致することを保証する。
+- e2e の kit のテストは、kit の関数を import して、戻り値、例外、書き出したファイルを確かめる。kit は関数を export するライブラリで、子プロセスで実行するスクリプトではないためである。lint の規則は、ESLint の RuleTester で、止める書き方と許す書き方を確かめる。
 - テストの基盤の構成はない。フレームワークは使わない。
 
 ## Runtime Requirements
@@ -19,6 +20,7 @@ status: stable
 - Node.js（バージョンは `mise.toml`）と git が要る。ネットワークと環境変数は要らない。
 - パッケージ global の Python のスクリプトのテストには、python3 も要る。テストは Node.js で書き、スクリプトを python3 の子プロセスで実行する。
 - 動画を変換するスクリプトのテストは、ffmpeg が無い環境では変換の確認だけを飛ばす。CI の実行環境に ffmpeg があるとは限らないためである。
+- kit の録画のテストには、Playwright のブラウザのエンジンと ffmpeg が要る。どちらかが無ければ飛ばす。CI の実行環境にはブラウザのエンジンを入れないので、録画を変えたら手元で `pnpm test` を流す。
 - 使い捨てのディレクトリは `os.tmpdir()` に作る。テストは消さない。
 
 ## Mocking and Test Data

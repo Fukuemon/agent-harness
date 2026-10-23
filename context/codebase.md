@@ -22,8 +22,10 @@ status: stable
 - core 以外のパッケージは、core が置いた `context/project.yml` だけを前提にし、互いに依存しない。
 - スクリプトは、実行時に他のパッケージのファイルを読まない。YAML の読み込みと schema の検証は、各パッケージが自前で持つ。
 - スキルの `scripts/` とパッケージの `scripts/` は、利用者のリポジトリへ写される先が違うので、互いに import しない。同じ処理が要るときは複製し、出力の一致をテストで確かめる。
-- 外部のライブラリは、yaml と ajv だけである。
+- チェックとフックのスクリプトが使う外部のライブラリは、yaml と ajv だけにする。
   - ADR-0012: [チェックとフックのスクリプトは Node.js で書く](../adr/0012-node-runtime.md)
+- e2e の kit は、ブラウザのテストのツールを peer に取る。開発の依存はルートの `package.json` に置き、kit の下に `node_modules` を作らない。パッケージマネージャーがローカルのパッケージを写すとき、パッケージの外を指すシンボリックリンクで止まるためである。
+  - ADR-0024: [パッケージごとにバージョンを上げ、e2e の kit を npm のレジストリで配る](../adr/0024-per-package-versions.md)
 
 ## State Ownership
 
@@ -36,4 +38,5 @@ status: stable
 - チェックのスクリプトは `packages/<名前>/scripts/` に、コーディングエージェントのフックが呼ぶスクリプトは `packages/<名前>/hooks/` に置く。どちらに置くかの境界は ADR-0015 にある。
   - ADR-0015: [コーディングエージェントのフックに置くのは、その時点でモデルに行動を求めるものだけにする](../adr/0015-agent-hook-boundary.md)
 - このリポジトリ自身だけのチェックは、ルートの `scripts/` に置く。
+- npm のレジストリで配るコードは、`packages/<名前>/kit/` に置く。
 - パッケージの Design Doc は、パッケージの隣（`packages/<名前>/DesignDoc.md`）に置く。パッケージを作る前は `design/features/` に置く。
