@@ -28,3 +28,9 @@ apm_modules/
 /.agents/skills/design-test-cases/
 /.claude/skills/capture-browser-evidence/
 /.claude/skills/design-test-cases/
+/.agents/skills/attach-evidence/
+/.agents/skills/run-verification-scenarios/
+/.agents/skills/write-verification-spec/
+/.claude/skills/attach-evidence/
+/.claude/skills/run-verification-scenarios/
+/.claude/skills/write-verification-spec/
