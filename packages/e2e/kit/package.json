@@ -34,7 +34,7 @@
     "node": ">=22.12"
   },
   "scripts": {
-    "prepack": "rm -rf dist && tsc -p tsconfig.build.json"
+    "prepack": "rm -rf dist && cp ../../../LICENSE LICENSE && tsc -p tsconfig.build.json"
   },
   "peerDependencies": {
     "@playwright/test": ">=1.59.0 <2",
