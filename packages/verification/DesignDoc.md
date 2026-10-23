@@ -10,7 +10,7 @@ keywords: [検証, エビデンス, 観点, EARS, 録画]
 
 ## Overview
 
-パッケージ verification は、変更が期待どおりに動くことを、観点の表とエビデンスで pull request の読み手に示すための取り決めと手順を持つ。全体像は [agent-harness Design Doc](../../DesignDoc.md) にある。
+パッケージ verification は、変更が期待どおりに動くことを、観点の表とエビデンスで pull request の読み手に示すための取り決めと手順を持つ。全体像は [agent-harness Design Doc](../../design/DesignDoc.md) にある。
 
 ## Scope
 
@@ -42,7 +42,13 @@ keywords: [検証, エビデンス, 観点, EARS, 録画]
 | attach-evidence | エビデンスを本文の表に入れ、入ったことを確かめる。コメントにある動画を本文へ移す |
 | capture-browser-evidence | spec を書かずに、ブラウザを操作して録画とテキストのログを残す |
 
-ホスティングサービスごとの添付の仕方は、スキルの `references/` にサービスごとのファイルで置く。
+ファイルの置き場は、導入のスキルが `assets/` を全部、利用者のリポジトリへ写すことに合わせて決める。
+
+- ホスティングサービスごとの添付の仕方は、`context/project.yml` の `hosting` の値（`github`、`gitlab`）を名前にした `references/` のファイルに置く。スキルは、`hosting` に合う 1 つだけを読む。
+- 撮影の手段の具体は、利用者の `context/testing/evidence.md` が持つ。スキルの `references/` には、どの手段でも間違えやすい点だけを置く。手段ごとの書き方の例は、`examples/verification/` にある。
+- 観点の設計の文書の骨組みは、写さずにスキルが読むので `references/` に置く。
+- 録画に字幕とカーソルを重ねる雛形のコードは、利用者が選んで写すので、`references/` の下に撮影の手段の名前のディレクトリで置く。e2e の kit が同じ仕組みを配るようになったら消す。
+  - ADR-0023: [検証、E2E、デザインシステム、画面仕様書、文書のサイトを関心ごとのパッケージにし、組み合わせは値のファイルのキーで渡す](../../adr/0023-concern-packages.md)
 
 ## Interface
 
