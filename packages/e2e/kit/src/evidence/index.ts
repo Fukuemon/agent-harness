@@ -91,8 +91,14 @@ export const evidenceDir = (o: {
     `S${o.scenario.no}_${o.scenario.title}`,
   )
 
-/** エビデンスのファイル名(拡張子なし)。例の行ごとに、改修前と改修後が名前の順で隣り合う */
+/**
+ * エビデンスのファイル名(拡張子なし)。例の行ごとに、改修前と改修後が名前の順で隣り合う。
+ * 例の値のパスの区切り(/ と \)は - に置き換え、1 つのファイル名にする。字幕と README には、置き換える前の値を出す。
+ */
 export const evidenceName = (variant: Variant, example?: Example): string =>
-  [...(example ? [String(example.no).padStart(2, '0'), example.value] : []), variant.label]
+  [
+    ...(example ? [String(example.no).padStart(2, '0'), example.value.replace(/[/\\]/g, '-')] : []),
+    variant.label,
+  ]
     .filter(Boolean)
     .join('_') || '実施'

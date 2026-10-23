@@ -68,4 +68,10 @@ describe('evidenceDir と evidenceName', () => {
     assert.equal(evidenceName(before), '改修前')
     assert.equal(evidenceName(variants({ baseUrl: 'http://a' })[0]), '実施')
   })
+
+  it('例の値のパスの区切りを置き換え、1 つのファイル名にする', () => {
+    const [single] = variants({ baseUrl: 'http://a' })
+    assert.equal(evidenceName(single, { no: 2, column: '日付', value: '2026/10/23' }), '02_2026-10-23')
+    assert.equal(evidenceName(single, { no: 3, column: 'URL', value: 'a\\b' }), '03_a-b')
+  })
 })
