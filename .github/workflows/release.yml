@@ -14,6 +14,9 @@ concurrency:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      e2e-released: ${{ steps.release.outputs['packages/e2e--release_created'] }}
+      e2e-tag: ${{ steps.release.outputs['packages/e2e--tag_name'] }}
     steps:
       # GITHUB_TOKEN で作った PR と push では CI が動かないため、GitHub App のトークンを使う
       - uses: actions/create-github-app-token@v3
@@ -45,3 +48,24 @@ jobs:
           git add apm.lock.yaml
           git commit -m "chore: apm.lock.yaml のバージョンを更新する"
           git push
+
+  # e2e のリリースができたときだけ、同じタグの kit を npm のレジストリへ trusted publishing で公開する
+  publish-e2e-kit:
+    needs: release-please
+    # 信頼する発行元を npm に登録するまでは、リポジトリの変数 E2E_KIT_PUBLISH を置かず、公開しない。手順は CONTRIBUTING.md にある
+    if: needs.release-please.outputs.e2e-released == 'true' && vars.E2E_KIT_PUBLISH == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.e2e-tag }}
+      - uses: jdx/mise-action@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm check:kit
+      # trusted publishing には npm CLI の 11.5.1 以上が要る。mise.toml の Node.js に付く npm を使う
+      - working-directory: packages/e2e/kit
+        run: npm publish --access public
