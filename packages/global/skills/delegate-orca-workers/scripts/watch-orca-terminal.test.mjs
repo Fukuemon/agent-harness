@@ -65,6 +65,11 @@ test("シェルのコマンドが 8 分を超えたら LONGCMD を出し、そ�
   assert.deepEqual(lines(r), ["LONGCMD 8m", "LONGCMD 10m", "LONGCMD 20m"]);
 });
 
+test("別のコマンドが 8 分を超えたら、LONGCMD をもう一度出す", () => {
+  const r = watch([8, 0, 2, 8].map((m) => read(m ? [`Running 1 shell command… (${m}m 0s)`] : ["完了"])));
+  assert.deepEqual(lines(r), ["LONGCMD 8m", "LONGCMD 8m"]);
+});
+
 test("読み取りが失敗したら、READFAIL を理由ごとに 1 回出す", () => {
   const stale = JSON.stringify({ ok: false, error: { code: "terminal_handle_stale" } });
   const r = watch([stale, stale, "not json"]);

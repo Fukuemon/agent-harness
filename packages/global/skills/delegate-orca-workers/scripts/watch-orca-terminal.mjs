@@ -63,6 +63,11 @@ function say(line) {
   console.log(line);
 }
 
+function fail(reason) {
+  if (reason !== state.readFail) say(`READFAIL ${reason}`);
+  state.readFail = reason;
+}
+
 function inspect(raw) {
   let status;
   let tail;
@@ -73,9 +78,7 @@ function inspect(raw) {
     status = terminal.status ?? "?";
     tail = terminal.tail.slice(-25);
   } catch (error) {
-    const reason = error.message.split("\n")[0];
-    if (reason !== state.readFail) say(`READFAIL ${reason}`);
-    state.readFail = reason;
+    fail(error.message.split("\n")[0]);
     return;
   }
   state.readFail = "";
@@ -100,6 +103,7 @@ function inspect(raw) {
   if (limitLine && limitLine !== state.limit) say(`LIMIT ${limitLine.trim()}`);
   state.limit = limitLine;
 
+  if (longest < state.lastLong) state.lastLong = 0;
   if (longest >= 8 && (longest === 8 || longest % 10 === 0) && longest !== state.lastLong) {
     say(`LONGCMD ${longest}m`);
     state.lastLong = longest;
@@ -128,6 +132,7 @@ for (;;) {
     console.error(`${command} を起動できない`);
     process.exit(1);
   }
-  inspect(r.status === 0 ? r.stdout : r.stdout || r.stderr || String(r.error));
+  if (r.error) fail(r.error.code ?? r.error.message);
+  else inspect(r.stdout || r.stderr);
   await new Promise((resolve) => setTimeout(resolve, args.interval * 1000));
 }
