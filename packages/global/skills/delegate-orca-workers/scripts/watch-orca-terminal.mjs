@@ -51,7 +51,7 @@ if (!args) {
 
 // 表示の文言は、元にした運用で見た Claude Code の端末の表示に合わせている。表示が変わったら正規表現を直す
 const spinner = /^[✻✳✽✶✢·*] |esc to interrupt|tokens/;
-const heredoc = /<<-?\s*['"]?[A-Za-z_]\w*['"]?/;
+const heredoc = /(?<!<)<<(?!<)-?\s*['"]?[A-Za-z_]\w*['"]?/;
 // Claude Code は、ツールの呼び出しを行頭の ⏺ で表示する。最後の呼び出しから後を、実行中のコマンドとみなす
 const toolCall = /^\s*⏺ /;
 const shellMinutes = /Running [0-9]+ shell command[^0-9]*([0-9]+)m/g;

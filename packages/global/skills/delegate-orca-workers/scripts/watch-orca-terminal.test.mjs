@@ -102,6 +102,11 @@ test("小文字の区切り語の heredoc でも、HEREDOC を出す", () => {
   assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
 });
 
+test("here-string は heredoc とみなさない", () => {
+  const r = watch([read(["⏺ Bash(python3 process.py <<< 'input')", "Running 1 shell command… (3m 10s)"])]);
+  assert.deepEqual(lines(r), []);
+});
+
 test("実行中の呼び出しが heredoc なら、HEREDOC を出す", () => {
   const r = watch([read(["⏺ Bash(pnpm test)", "  ⎿  ok", "⏺ Bash(python3 - <<'EOF')", "Running 1 shell command… (3m 10s)"])]);
   assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
