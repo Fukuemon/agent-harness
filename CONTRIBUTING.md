@@ -176,6 +176,26 @@ sequenceDiagram
 4. release workflow が終わったら、`gh release view <名前>-v<バージョン>` で、変えたパッケージごとにタグとリリースができたことを確かめる。
 5. release workflow が失敗したときは、GitHub の Actions の画面で失敗した実行を再実行する。
 
+### e2e の kit の公開
+
+e2e のリリースができると、`.github/workflows/release.yml` の `publish-e2e-kit` のジョブが、同じタグの kit を npm のレジストリへ `@fukuemon/e2e-kit` として公開する。  
+公開は trusted publishing で行い、npm のトークンを secrets に置かない。`id-token: write` を持つのは、このジョブだけである。  
+ジョブは、リポジトリの変数 `E2E_KIT_PUBLISH` が `true` のときだけ動く。変数を置くまでは、e2e をリリースしても kit は公開されない。
+
+- ADR-0024: [パッケージごとにバージョンを上げ、e2e の kit を npm のレジストリで配る](adr/0024-per-package-versions.md)
+
+最初の 1 回は、Owner が手元から公開する。まだ公開していないパッケージには、信頼する発行元を登録できないことがあるためである。
+
+1. npm に組織 `fukuemon` を作る。Owner のアカウントで 2 要素認証を有効にしておく。
+2. `e2e-v<バージョン>` のタグを checkout し、`pnpm install --frozen-lockfile` と `pnpm check:kit` を通す。
+3. `packages/e2e/kit` で `npm publish --access public` を実行する。`prepack` がビルドする。2 要素認証のコードを求められたら入れる。
+4. npm のパッケージの設定の画面で、信頼する発行元に、このリポジトリと workflow のファイル名 `release.yml` を登録する。
+5. GitHub のリポジトリの変数に `E2E_KIT_PUBLISH` を `true` で置く。以後は、e2e のリリースのたびに workflow が公開する。
+
+- 出典: [Trusted publishing for npm packages](https://docs.npmjs.com/trusted-publishers)
+
+変数を置く前にリリースしたバージョンは、公開されていない。手順 2 と 3 で、そのタグから手で公開する。
+
 ## issue と pull request 
 
 - 作業は issue から始める。`.github/ISSUE_TEMPLATE/` の form で起票する。form が種類のラベル `type:*`（`requirements`、`task`、`bug`）を付けるので、パッケージのラベル `pkg:*` を足す。GitHub の milestone は使わない。タスクは親の要求の sub-issue にする。
