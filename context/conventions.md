@@ -12,7 +12,7 @@ status: stable
 - スクリプトは `<動詞>-<対象>.mjs` にする。`validate-project`、`build-index`、`check-package-names` が例である。テストは同じ名前に `.test.mjs` を付ける。
 - スキルの名前と本文の規則は、core のスキル write-skill にある。
 - ブランチは `feature/<issue 番号>` と `fix/<issue 番号>` にする。規則は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。
-- Design Doc と context の節の見出しは、英語の名詞で書く。
+- Design Doc と context のセクションの見出しは、英語の名詞で書く。
 
 ## Comments
 
@@ -35,7 +35,7 @@ status: stable
 
 - 文書のチェックは `.textlintrc.json` と `prh.yml`。パッケージの本文の固有の名前は `prh-packages.yml`。
 - コミットメッセージは `commitlint.config.mjs`。Git のフックは `lefthook.yml`。CI は `.github/workflows/ci.yml`。ツールのバージョンは `mise.toml`。
-- 文書の書き方で判断が要る規則は、docs のスキル write-prose と、この文書の Documents の節にある。
+- 文書の書き方で判断が要る規則は、docs のスキル write-prose と、この文書の Documents のセクションにある。
 
 ## Check Exclusions
 
