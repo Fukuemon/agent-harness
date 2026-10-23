@@ -13,6 +13,7 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 | screens | 画面ごとの状態、構成要素、操作できるモックの画面仕様書と、規約の点検 | write-screen-spec |
 | e2e | E2E のテストの書き方と、録画とテストの書き方の lint の規則を持つ kit（npm のパッケージ） | setup-e2e、write-e2e-test |
 | design-system | 意味のトークンの段の分け方、デザインシステムの文書、アクセシビリティの基準、カタログの構成 | write-design-system、setup-design-system |
+| docs-site | 文書、カタログ、図を 1 つのサイトに並べた公開と、保護の確認 | publish-docs-site |
 
 core と docs はフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 
