@@ -1,0 +1,61 @@
+/*
+ * テーマの段の例。Tailwind CSS v4 の @theme inline で、意味の段のトークンをユーティリティにする。
+ * Tailwind の既定の色、文字の大きさ、角丸、影、ブレークポイントを initial で消し、ここに書いた名前だけを使えるようにする。
+ * 基本の段の名前（--base-*）は書かず、意味の段（--app-color-*）だけを参照する。
+ * 使う側の CSS は `@import 'tailwindcss';` の後にこのファイルを読み込む。
+ */
+
+@import './semantic.css';
+
+@theme inline {
+  --color-*: initial;
+  --color-surface: var(--app-color-surface);
+  --color-surface-canvas: var(--app-color-surface-canvas);
+  --color-surface-subtle: var(--app-color-surface-subtle);
+  --color-text: var(--app-color-text);
+  --color-text-secondary: var(--app-color-text-secondary);
+  --color-text-inverse: var(--app-color-text-inverse);
+  --color-border: var(--app-color-border);
+  --color-border-field: var(--app-color-border-field);
+  --color-primary: var(--app-color-primary);
+  --color-primary-surface: var(--app-color-primary-surface);
+  --color-danger: var(--app-color-danger);
+  --color-danger-surface: var(--app-color-danger-surface);
+
+  --font-sans: var(--base-font-family-sans);
+
+  /* 文字は用途の名前にし、大きさ、行高、文字の間隔をまとめて決める */
+  --text-*: initial;
+  --text-caption: var(--base-font-size-14);
+  --text-caption--line-height: var(--base-line-height-130);
+  --text-body: var(--base-font-size-16);
+  --text-body--line-height: var(--base-line-height-170);
+  --text-heading: var(--base-font-size-20);
+  --text-heading--line-height: var(--base-line-height-150);
+  --text-heading--font-weight: 700;
+
+  --radius-*: initial;
+  --radius-4: var(--base-border-radius-4);
+  --radius-8: var(--base-border-radius-8);
+  --radius-full: var(--base-border-radius-full);
+
+  --shadow-*: initial;
+  --shadow-1: var(--base-elevation-1);
+  --shadow-3: var(--base-elevation-3);
+
+  --breakpoint-*: initial;
+  --breakpoint-desktop: 48rem;
+}
+
+/* フォーカスの表示は 1 つだけにし、コンポーネントごとに変えない */
+@utility focus-ring {
+  outline: 4px solid var(--app-color-focus-outline);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--app-color-focus-halo);
+}
+
+@layer base {
+  body {
+    @apply bg-surface-canvas font-sans text-body text-text;
+  }
+}
