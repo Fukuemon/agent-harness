@@ -130,7 +130,8 @@ gitGraph
 main へ push するたびに、`.github/workflows/release.yml` がリリース用の pull request を作るか更新する。作業用のブランチのマージも、main への直接のコミットも同じ扱いになる。  
 リリース用の pull request は常に 1 つで、マージするまで変更がたまる。タグとリリースができるのは、この pull request をマージしたときだけ。
 
-- release-please の対象のパッケージ（`packages/core` と `packages/docs`）の外だけを変えた push では、リリース用の pull request は変わらない。
+- release-please の対象のパッケージ（`release-please-config.json` の `packages` にあるもの）の外だけを変えた push では、リリース用の pull request は変わらない。
+- パッケージを足すときは、`release-please-config.json` の `packages` にだけ足し、`.release-please-manifest.json` には書かない。前のリリースがなく、マニフェストに番号もないパッケージは、`initial-version` の `0.1.0` で最初のリリースになる。
 - 次のバージョンは、前のリリースより後のコミットのうち、最も大きい変更で決まる。`feat` と `fix` が何件あっても、1 回のリリースで上がるのは 1 段だけ。例は `0.1.0` から `0.1.1`。
 - main へ直接コミットしたコミットも、作業用のブランチの中のコミットと同じく 1 つずつ読まれる。Conventional Commits の形でないメッセージは読まれず、バージョンにも変更履歴にも入らない。
 - バージョンを書き換えるコミットの後に、workflow が `apm.lock.yaml` を作り直してコミットする。その前のコミットの CI は、lock のずれで失敗する。

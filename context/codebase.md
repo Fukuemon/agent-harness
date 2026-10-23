@@ -9,7 +9,7 @@ status: stable
 
 ## Module Boundaries
 
-- 境界はパッケージ（`packages/<名前>`）である。core は共通の基盤で、docs と process は 1 つずつ外せる。
+- 境界はパッケージ（`packages/<名前>`）である。core は共通の基盤で、ほかのパッケージ（docs、verification など）は 1 つずつ外せる。
   - ADR-0013: [共通の基盤はパッケージ core に置き、ほかのパッケージはそれを前提にする](../adr/0013-core-package.md)
   - ADR-0021: [ガードレールは考え方として持ち、止める仕組みと値は配らない](../adr/0021-guardrails-as-principle.md)
 - パッケージ global は、開発者個人の global の構成で、製品のパッケージの境界の外にある。ほかのパッケージのスキルは、このリポジトリを指す依存で参照し、ほかのパッケージからは参照されない。

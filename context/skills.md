@@ -14,10 +14,11 @@ verified_commit: d45aeafb7bb083783d5c2f77d1a2dfb2a2acbe94
 
 このリポジトリの開発に使うスキルの元は 2 か所にある。  
 このリポジトリだけのスキルを作るときは、`skills/` に置く。  
-利用者にも届けるスキルは `packages/core/skills/` と `packages/docs/skills/` にある。  
+利用者にも届けるスキルは `packages/<名前>/skills/` にある。  
 core のスキルは 6 つある。setup-agent-harness、write-context、write-skill、write-commit、write-issue-pr、write-comments である。  
 docs のスキルは、write-design-docs、write-prose、setup-design-docs の 3 つ。  
-`apm.yml` が両方を列挙している。
+verification のスキルは、design-test-cases と capture-browser-evidence の 2 つ。  
+`apm.yml` がパッケージを列挙している。
 
 - `.claude/skills/` と `.agents/skills/` は、`apm install` が作る写しである。Git で管理しない。無視する行は、`apm.yml` の post-install が、配置したスキルとフックごとに `.gitignore` へ足す。利用者のリポジトリと同じ仕組みを使うためである。
 - core と docs のフックも `apm install` が配置する。フックの設定は `.claude/settings.json` と `.codex/hooks.json` に統合され、Git で管理する。apm がどの項目を統合したかの記録 `.claude/apm-hooks.json` と `.codex/apm-hooks.json` も管理する。記録がないと、clone 直後の `apm install` が既存の項目を利用者のものと見て、同じ項目を重ねて足すためである。スクリプトの写し `.claude/hooks/` と `.codex/hooks/` は管理しない。
