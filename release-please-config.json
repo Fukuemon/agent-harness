@@ -1,11 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "simple",
-  "include-component-in-tag": false,
+  "include-component-in-tag": true,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "initial-version": "0.1.0",
-  "changelog-path": "/CHANGELOG.md",
   "changelog-sections": [
     { "type": "feat", "section": "Features" },
     { "type": "feature", "section": "Features" },
@@ -21,12 +20,17 @@
     { "type": "ci", "section": "Continuous Integration", "hidden": true }
   ],
   "packages": {
-    "packages": {
-      "exclude-paths": ["packages/global"],
+    "packages/core": {
+      "component": "core",
       "extra-files": [
-        { "type": "json", "path": "core/.claude-plugin/plugin.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "docs/.claude-plugin/plugin.json", "jsonpath": "$.version" },
+        { "type": "json", "path": ".claude-plugin/plugin.json", "jsonpath": "$.version" },
         { "type": "generic", "path": "/examples/apm.yml" }
+      ]
+    },
+    "packages/docs": {
+      "component": "docs",
+      "extra-files": [
+        { "type": "json", "path": ".claude-plugin/plugin.json", "jsonpath": "$.version" }
       ]
     }
   }
