@@ -26,6 +26,7 @@ description: どのリポジトリでも守る、この端末の作法と、モ�
 - Python のランタイムは `uv` を使う。`pip` と `python -m venv` を直接使わない。
 - `rg` の `-r` は置換のフラグである。`-rn "pattern"` はマッチを文字列 `n` に置き換えて出力し、偽の調査結果になる。行番号は `-n` だけで出る。
 - CLI を新しく入れるときは、`mise` か devbox の global の宣言に足してから入れる。`go install`、`cargo install`、`npm -g` で入れない。
+- Python や Node.js のスクリプトを、heredoc（`python3 - <<'EOF'`）でシェルに流さない。`.ai-out/` にファイルとして書いてから流すか、ファイルの編集のツールで直す。heredoc のコマンドが終わらずに止まることがあり、書いたスクリプトも流し直せない。
 
 ## コードの調査
 
