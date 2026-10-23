@@ -97,6 +97,7 @@ pnpm check:links
 - スキルの改名と削除
 - `context/project.yml` の schema と互換のない変更
 - テンプレートを写す先と、フックの登録の形の変更
+- スキルが読む context のセクションに、利用者が書く内容を移す変更
 
 取り込んだ変更を取り消すときは、取り消すコミットの type と scope を引き継ぎ、`revert(<scope>): <要約>` の形で書く。  
 `git revert` の既定のメッセージ `Revert "..."` は commitlint を通るが、release-please が解析できず、取り消しが新しいバージョンに入らない。
