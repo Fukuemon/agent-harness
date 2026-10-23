@@ -34,7 +34,7 @@
 認証のない要求でリダイレクトをたどり、Access の認証の画面（`*.cloudflareaccess.com`）に着き、保護した中身を取得できないことを確認する。ワークフローは公開のたびに同じ確認を流す。
 
 ```sh
-node scripts/check-docs-site-protection.mjs "$DOCS_SITE_URL" "$DOCS_SITE_MARKER"
+node scripts/check-docs-site-protection.mjs "$DOCS_SITE_URL" "$DOCS_SITE_MARKER" cloudflareaccess.com
 ```
 
 - 終了コード 0 は保護されている。1 は保護されていない。2 は引数の誤りか、要求が失敗した。
