@@ -31,7 +31,7 @@ export const ensureSavedLogin = async (
   const context = await browser.newContext({ baseURL: o.baseUrl, storageState: saved })
   try {
     const page = await context.newPage()
-    // 保存した状態で入れたときも保存し直す。入れたかを確かめる間に、アプリがトークンを替えることがあるため
+    // 保存した状態で入れたときも保存し直す。入れたかを確認する間に、アプリがトークンを替えることがあるため
     if (!(saved && (await o.isLoggedIn(page)))) {
       await o.login(page)
       if (!(await o.isLoggedIn(page)))

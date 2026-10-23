@@ -53,7 +53,7 @@ describe('ensureSavedLogin', () => {
       await page.goto('/')
       await page.evaluate(() => localStorage.setItem('token', '1'))
     }
-    // 入れたかを確かめる間に、アプリがトークンを替えたことにする
+    // 入れたかを確認する間に、アプリがトークンを替えたことにする
     const isLoggedIn = async (page) => {
       if (page.url() === 'about:blank') await page.goto('/')
       const now = await page.evaluate(() => localStorage.getItem('token'))
