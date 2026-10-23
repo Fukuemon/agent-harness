@@ -86,7 +86,7 @@ for src in "$IN_DIR"/*.webm; do
     -pix_fmt yuv420p -movflags +faststart -an \
     "$dst"
 
-  # 出力の妥当性を確かめる。ファイルの存在は証跡ではない
+  # 出力の妥当性を確認する。ファイルの存在は証跡ではない
   read -r codec width height duration < <(
     ffprobe -v error -select_streams v:0 \
       -show_entries stream=codec_name,width,height \

@@ -53,7 +53,7 @@ const signInOutside = async <T>(browser: Browser, take: Take, prepare: (page: Pa
 
 /**
  * 1 本を録画し、置き場へ mp4、静止画、README を書き出す。
- * prepare はログインとデータの確かめを録画の外で行い、その後のログインの状態で録画を始める。
+ * prepare はログインとデータの確認を録画の外で行い、その後のログインの状態で録画を始める。
  * 操作が途中で失敗しても、そこまでの録画は残す。何が起きたかを見るため。
  */
 export const recordEvidence = async <T>(
