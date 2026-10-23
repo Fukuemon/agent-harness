@@ -18,8 +18,12 @@ export type E2eAuthoringRuleOptions = {
 // typescript-eslint のパーサーが作る AST は、ESLint の型(estree)に無いプロパティ(importKind、typeAnnotation)を持つ。規則の中では緩い型で読む
 type AstNode = { type: string; [key: string]: any }
 
-const FIXED_WAITS = ['waitForTimeout', 'setTimeout']
-const CSS_LOCATORS = ['locator', 'waitForSelector']
+// setTimeout は、test.setTimeout のようなテストの時間の設定と区別するため、グローバルの呼び出しだけを止める
+const GLOBAL_OBJECTS = ['globalThis', 'window', 'self']
+const CSS_LOCATORS = ['locator', 'waitForSelector', '$', '$$', '$eval', '$$eval']
+// ページの操作のうち、最初の引数にセレクタの文字列を取るもの。locator の同じ名前の操作は、文字列を取らないか、引数が 1 つ少ない
+const SELECTOR_ONLY_ACTIONS = ['click', 'dblclick', 'check', 'uncheck', 'hover', 'focus', 'tap']
+const SELECTOR_AND_VALUE_ACTIONS = ['fill', 'type', 'press', 'selectOption', 'setInputFiles', 'dispatchEvent']
 const TEXT_LOCATORS = [
   'getByRole',
   'getByLabel',
@@ -44,6 +48,33 @@ const calleeName = (node: AstNode): string => {
   if (callee.object.type === 'Identifier' && callee.object.name === 'expect') return 'expect'
   return callee.property.name
 }
+
+const isFixedWait = (node: AstNode, name: string): boolean => {
+  if (name === 'waitForTimeout') return true
+  if (name !== 'setTimeout') return false
+  const callee = node.callee
+  return (
+    callee.type === 'Identifier' ||
+    (callee.object?.type === 'Identifier' && GLOBAL_OBJECTS.includes(callee.object.name))
+  )
+}
+
+const isStringNode = (node: AstNode | undefined): boolean =>
+  (node?.type === 'Literal' && typeof node.value === 'string') || node?.type === 'TemplateLiteral'
+
+// セレクタの文字列をページの操作に渡しているか
+const passesSelector = (node: AstNode, name: string): boolean => {
+  const [first, second] = node.arguments
+  if (!isStringNode(first)) return false
+  if (SELECTOR_ONLY_ACTIONS.includes(name)) return true
+  return SELECTOR_AND_VALUE_ACTIONS.includes(name) && second !== undefined && second.type !== 'ObjectExpression'
+}
+
+// 数値か、数値の四則の式(5 * 1000 など)
+const isNumericConstant = (node: AstNode): boolean =>
+  (node.type === 'Literal' && typeof node.value === 'number') ||
+  (node.type === 'BinaryExpression' && isNumericConstant(node.left) && isNumericConstant(node.right)) ||
+  (node.type === 'UnaryExpression' && isNumericConstant(node.argument))
 
 /**
  * E2E のテストのコードの書き方の規則。テストのディレクトリの下を、層(screens、widgets、selectors、specs)ごとに確認する。
@@ -74,13 +105,18 @@ export const rule: Rule.RuleModule = {
   },
   create(context) {
     const options: E2eAuthoringRuleOptions = context.options[0] ?? {}
-    const root = `${(options.testsDir ?? 'tests').replace(/\/+$/, '')}/`
-    const fixedWaitAllowedFiles = options.fixedWaitAllowedFiles ?? []
+    // ./tests や絶対パスで渡されても、ESLint の cwd からの相対パスにそろえて比べる
+    const fromCwd = (p: string) =>
+      path.relative(context.cwd, path.resolve(context.cwd, p)).split(path.sep).join('/')
+    const testsRoot = fromCwd(options.testsDir ?? 'tests')
+    const root = testsRoot === '' ? '' : `${testsRoot}/`
+    const fixedWaitAllowedFiles = (options.fixedWaitAllowedFiles ?? []).map(fromCwd)
     const timeoutDefinitionFile = options.timeoutDefinitionFile
+    const timeoutDefinitionPath = timeoutDefinitionFile && fromCwd(timeoutDefinitionFile)
     const widgetGotoAllowedUrl = options.widgetGotoAllowedUrl ?? '/'
     const screenId = options.screenIdPattern ? new RegExp(options.screenIdPattern, 'i') : undefined
-    const filePath = path.relative(context.cwd, context.filename).split(path.sep).join('/')
-    if (!filePath.startsWith(root)) return {}
+    const filePath = fromCwd(context.filename)
+    if (root.startsWith('../') || filePath.startsWith('../') || !filePath.startsWith(root)) return {}
 
     const specs = `${root}specs/`
     const isUnder = (dir: string) => filePath.startsWith(`${root}${dir}/`)
@@ -113,11 +149,15 @@ export const rule: Rule.RuleModule = {
       }
       const typeOnly =
         node.importKind === 'type' ||
-        (node.specifiers ?? []).every((x: AstNode) => x.importKind === 'type')
-      if (node.type === 'ImportDeclaration' && isValueFile && source === '@playwright/test' && !typeOnly) {
+        node.exportKind === 'type' ||
+        (node.type !== 'ExportAllDeclaration' &&
+          (node.specifiers ?? []).every(
+            (x: AstNode) => x.importKind === 'type' || x.exportKind === 'type',
+          ))
+      if (node.type !== 'ImportExpression' && isValueFile && source === '@playwright/test' && !typeOnly) {
         report(
           node,
-          'specs/<dir>/ の spec 以外のファイルでは、@playwright/test から型だけを import する。test と expect は spec に書く',
+          'specs/<dir>/ の spec 以外のファイルでは、@playwright/test から型だけを import と export する。test と expect は spec に書く',
         )
       }
     }
@@ -167,7 +207,7 @@ export const rule: Rule.RuleModule = {
               `widgets/ で画面へ goto しない。開けるのは '${widgetGotoAllowedUrl}' だけ。画面を開く手順は screens/ か spec に置く`,
             )
           }
-        } else if (FIXED_WAITS.includes(name) && !fixedWaitAllowedFiles.includes(filePath)) {
+        } else if (isFixedWait(node, name) && !fixedWaitAllowedFiles.includes(filePath)) {
           report(node, `${name} で固定時間を待たない。何が終わったかを条件にして待つ`)
         } else if (name === 'expect' && isScreenOrWidget) {
           report(node, 'screens/ と widgets/ で expect を書かない。結果の確認は spec か setup に置く')
@@ -177,6 +217,11 @@ export const rule: Rule.RuleModule = {
           report(
             node,
             `${name} で要素を拾わない。data-testid で拾う(testid の無い要素は selectors/ にまとめる)`,
+          )
+        } else if (passesSelector(node, name) && !inExternalDomDir) {
+          report(
+            node,
+            `${name} にセレクタの文字列を渡さない。data-testid で拾った locator を操作する(testid の無い要素は selectors/ にまとめる)`,
           )
         } else if (
           VALUE_READERS.includes(name) ||
@@ -198,6 +243,12 @@ export const rule: Rule.RuleModule = {
       },
 
       TemplateElement(node) {
+        if (node.value.raw === 'networkidle' && node.parent?.quasis?.length === 1) {
+          report(
+            node,
+            'networkidle に頼らない。読み込みを続ける画面では届かない。API のレスポンスか、要素が出るのを待つ',
+          )
+        }
         checkScreenId(node, node.value.raw)
       },
 
@@ -220,9 +271,9 @@ export const rule: Rule.RuleModule = {
         ) {
           report(node, 'spec に timeout を書かない。待ち時間は Playwright の設定にまとめる')
         } else if (
-          timeoutDefinitionFile &&
-          node.value.type === 'Literal' &&
-          filePath !== timeoutDefinitionFile
+          timeoutDefinitionPath &&
+          isNumericConstant(node.value) &&
+          filePath !== timeoutDefinitionPath
         ) {
           report(node, `待つ時間は直書きせず、${timeoutDefinitionFile} の名前で渡す`)
         }
