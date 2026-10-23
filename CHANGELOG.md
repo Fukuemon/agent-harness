@@ -1,5 +1,7 @@
 # Changelog
 
+このファイルは `v0.2.8` までの記録である。以後は、パッケージごとにバージョンを上げ、変更履歴は `packages/<名前>/CHANGELOG.md` に、タグは `<名前>-v<バージョン>` の形で付ける。`apm.yml` の書き換え方は [README の Update](README.md#update) にある。
+
 ## [0.2.8](https://github.com/Fukuemon/agent-harness/compare/v0.2.7...v0.2.8) (2026-10-23)
 
 

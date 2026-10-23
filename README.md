@@ -51,11 +51,11 @@ version: 0.1.0
 targets: [claude, codex]
 dependencies:
   apm:
-    - Fukuemon/agent-harness/packages/core#<ref>
-    - Fukuemon/agent-harness/packages/docs#<ref>
+    - Fukuemon/agent-harness/packages/core#core-v<バージョン>
+    - Fukuemon/agent-harness/packages/docs#docs-v<バージョン>
 ```
 
-`<ref>` には、`v0.1.0` の形のタグを書く。タグとバージョンごとの変更は [Releases](https://github.com/Fukuemon/agent-harness/releases) にある。
+バージョンはパッケージごとに上がるので、パッケージごとに、そのパッケージのタグ `<名前>-v<バージョン>` を書く。タグとバージョンごとの変更は [Releases](https://github.com/Fukuemon/agent-harness/releases) と、各パッケージの `CHANGELOG.md` にある。
 
 ```sh
 apm install
@@ -81,6 +81,8 @@ apm lifecycle trust
 clone した後の最初のセッションでは、core のフックが `apm install --frozen` で配置をそろえる。
 
 ### プラグインでインストールする場合
+
+マーケットプレイスは、リポジトリ全体を 1 つの `<ref>` で取得する。`<ref>` には、どのパッケージのものでもよいので、最も新しいタグを書く。どのリリースのコミットでも、各パッケージはリリースしたバージョンにそろっている。
 
 Claude Code では、プロジェクトの単位で、タグを固定して入れる。`.claude/settings.json` に、マーケットプレイスのタグと有効なプラグインが書かれる。
 
@@ -116,10 +118,19 @@ npx skills add Fukuemon/agent-harness
 
 ## Update
 
-`apm.yml` の `<ref>` を変えて `apm install` を実行し、テンプレートとの差分を見る。既にあるファイルは上書きされないので、取り込む変更を手で反映する。
+`apm.yml` の、上げるパッケージのタグを変えて `apm install` を実行し、テンプレートとの差分を見る。既にあるファイルは上書きされないので、取り込む変更を手で反映する。
 
 ```sh
 node .claude/skills/setup-agent-harness/scripts/setup.mjs --diff
+```
+
+`v0.2.8` までのタグは、リポジトリ全体で 1 つの `v<バージョン>` の形だった。`#v0.2.8` を書いた `apm.yml` はそのまま動く。次に上げるときに、パッケージごとのタグに書き換える。
+
+```yaml
+# 書き換える前
+    - Fukuemon/agent-harness/packages/core#v0.2.8
+# 書き換えた後
+    - Fukuemon/agent-harness/packages/core#core-v0.2.9
 ```
 
 ## Supported Agents
