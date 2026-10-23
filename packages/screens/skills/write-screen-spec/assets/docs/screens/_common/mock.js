@@ -168,6 +168,8 @@
   buildToolbar()
   refresh()
   window.addEventListener('resize', refresh)
+  // 横に送る表をスクロールすると要素が動くので、印を置き直す。要素の scroll は伝わらないので capture で受ける
+  screen.addEventListener('scroll', placeMarkers, { capture: true, passive: true })
   window.addEventListener('load', refresh)
   document.fonts?.ready.then(refresh)
 
