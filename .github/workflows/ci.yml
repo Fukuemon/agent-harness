@@ -17,6 +17,7 @@ jobs:
       - run: pnpm lint:text
       - run: pnpm lint:packages
       - run: pnpm test
+      - run: pnpm check:kit
       - run: pnpm check:index
       - run: pnpm check:project
       - run: pnpm check:history
