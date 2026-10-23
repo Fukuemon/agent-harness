@@ -1,4 +1,4 @@
-// 字幕とカーソルを重ねて、1 本の証跡を録画する。対象のリポジトリへ写して使う。
+// 字幕とカーソルを重ねて、1 本のエビデンスを録画する。対象のリポジトリへ写して使う。
 import { mkdirSync, rmdirSync } from 'node:fs';
 import path from 'node:path';
 import type { Browser, Page } from '@playwright/test';
@@ -18,8 +18,8 @@ export type Recording = {
 };
 
 /**
- * 1 本の証跡。dir は検証名の置き場、name は拡張子を除くファイル名で、比べる条件を含める。
- * header は字幕の 1 段目に出す、どの証跡かの名前。
+ * 1 本のエビデンス。dir は検証名の置き場、name は拡張子を除くファイル名で、比べる条件を含める。
+ * header は字幕の 1 段目に出す、どのエビデンスかの名前。
  * version はログインした後の画面から、撮った対象のバージョンを読む。読めた値を header の後ろに足す。
  */
 export type Take = {
