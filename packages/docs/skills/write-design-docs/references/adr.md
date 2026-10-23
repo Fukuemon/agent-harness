@@ -10,7 +10,7 @@
 4. Considered Options。選択肢ごとの強みと弱みの表。1 行目に採用した案を「採用:」と付けて書く。
 5. Consequences。Positive と Negative に分ける。
 
-見出しは英語で、Nygard と MADR の形に合わせる。確かめた結果があれば、Decision の後に「Verification」を置く。
+見出しは英語で、Nygard と MADR の形に合わせる。確認した結果があれば、Decision の後に「Verification」を置く。
 
 - 出典: [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 - 出典: [MADR](https://adr.github.io/madr/)

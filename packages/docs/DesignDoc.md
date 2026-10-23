@@ -103,7 +103,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 - 読むスキル: どの文書を書くときも読む `write-prose`、PRD と Design Doc と ADR と spec を書くときの `write-design-docs`、導入と用語の追加の `setup-design-docs`。
 - 読む値: `docs` の各ディレクトリ名。
 - 動くチェック: 次の表のとおり。
-- 動くフック: Markdown の編集の後に、経緯の混入とリンクを確かめるよう促すフック `hooks/check-docs.mjs`。編集は拒否しない。
+- 動くフック: Markdown の編集の後に、経緯の混入とリンクを確認するよう促すフック `hooks/check-docs.mjs`。編集は拒否しない。
 
 ### チェック
 
