@@ -8,6 +8,8 @@ dependencies:
     # このリポジトリのほかのパッケージにあるスキル
     - Fukuemon/agent-harness/packages/docs/skills/write-prose
     - Fukuemon/agent-harness/packages/core/skills/write-skill
+    - Fukuemon/agent-harness/packages/verification/skills/design-test-cases
+    - Fukuemon/agent-harness/packages/verification/skills/capture-browser-evidence
     - vercel-labs/skills/skills/find-skills
     - vercel-labs/agent-browser/skills/agent-browser
     - anthropics/skills/skills/skill-creator

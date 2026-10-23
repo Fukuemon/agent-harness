@@ -24,3 +24,7 @@ apm_modules/
 /.claude/skills/write-issue-pr/
 /.claude/skills/write-prose/
 /.claude/skills/write-skill/
+/.agents/skills/capture-browser-evidence/
+/.agents/skills/design-test-cases/
+/.claude/skills/capture-browser-evidence/
+/.claude/skills/design-test-cases/

@@ -7,7 +7,7 @@ description: 対象の処理の実装と仕様を読み、テスト観点とケ�
 
 実装の分岐を、仕様としてのテスト観点に変える。テストの実装は、依頼されたときだけ行う。
 
-- 文書は [assets/test-case-design-template.md](assets/test-case-design-template.md) の形で書く。
+- 文書は [references/test-case-design-template.md](references/test-case-design-template.md) の形で書く。
 - 文書の置き場所、テストの方式（実 DB か単体か、mock を使うか）は、リポジトリの AGENTS.md と context に従う。書かれていなければ利用者に尋ねる。
 - 呼び出し元も読む。返した結果を後続がどう解釈するかで、観測すべき結果が決まる。
 
