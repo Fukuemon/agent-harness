@@ -60,7 +60,7 @@ pnpm test
 pnpm check:kit
 ```
 
-録画のテストは、Playwright のブラウザのエンジンと ffmpeg が無いと飛ばされる。CI では飛ばされるので、録画を変えたら手元で流す。  
+録画とログインの保存のテストは、Playwright のブラウザのエンジンが無いと飛ばされる。録画のテストは ffmpeg も要る。CI では飛ばされるので、録画かログインの保存を変えたら手元で流す。  
 構成とテストの形は、[E2E の Design Doc](packages/e2e/DesignDoc.md#ビルドとテスト) にある。
 
 ## コミットするとき
