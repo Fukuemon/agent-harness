@@ -13,7 +13,7 @@ status: draft
 
 ## Background
 
-<!-- なぜ今これが要るか。主張ごとの節。今の業務の全体の流れの図 -->
+<!-- なぜ今これが要るか。主張ごとのセクション。今の業務の全体の流れの図 -->
 
 ## Goals
 
@@ -29,7 +29,7 @@ status: draft
 
 ## User Stories
 
-<!-- 場面ごとの節。困りごとと How Might We -->
+<!-- 場面ごとのセクション。困りごとと How Might We -->
 
 ## Proposed Solution / Feature Description
 
@@ -37,7 +37,7 @@ status: draft
 
 <!-- 作るものが全体として何をするか。利用者、作るもの、関わる外部のシステムの C4 の L1 の図 -->
 
-<!-- 機能ごとの節。User Stories と同じ粒度で分ける。画面と機能の一覧はここに置く -->
+<!-- 機能ごとのセクション。User Stories と同じ粒度で分ける。画面と機能の一覧はここに置く -->
 
 ### Milestones
 

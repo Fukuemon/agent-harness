@@ -6,7 +6,7 @@ description: PRD、Design Doc、ADR、spec を書くとき、直すとき、レ�
 # write-design-docs
 
 文書は 4 種類である。PRD は誰のどの課題を何で解決するか、Design Doc は現在の設計、ADR は選択肢を比較して決めた判断、spec は issue ごとの要求と論点を持つ。画面ごとの UI の設計は、別のスキルが扱う。  
-種類ごとの節の構成と骨組みは `references/` にある。書く文書の 1 つだけを開く。
+種類ごとのセクションの構成と骨組みは `references/` にある。書く文書の 1 つだけを開く。
 
 - PRD を書くときは [references/prd.md](references/prd.md)
 - 全体像の Design Doc を書くときは [references/design-doc.md](references/design-doc.md)
