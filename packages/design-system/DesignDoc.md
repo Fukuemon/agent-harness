@@ -46,7 +46,8 @@ keywords: [デザインシステム, トークン, アクセシビリティ, カ
 
 ファイルの置き場は、導入のスキル setup-agent-harness が `assets/` を全部、利用者のリポジトリへ写すことに合わせて決める。
 
-- 3 つの雛形（デザインシステムの文書の骨組み、コントラストのチェック、生成のスクリプト）は、写す先が利用者ごとに違う。`assets/` に置かず、setup-design-system の `references/` に置き、setup-design-system が利用者の決めた場所へ写す。
+- 3 つの雛形（デザインシステムの文書の骨組み、コントラストのチェック、生成のスクリプト）は、setup-design-system の `references/` に置く。setup-design-system が、利用者の決めた場所へ写す。
+  - ADR-0023 は、利用者が選んで写す雛形を `references/` に置くとした。このパッケージでは、導入で必ず写すが、写す先が利用者ごとに違う雛形も `references/` に置く。setup-agent-harness は `assets/` を、リポジトリのルートからの同じパスへ写すためである。
   - ADR-0023: [検証、E2E、デザインシステム、画面仕様書、文書のサイトを関心ごとのパッケージにし、組み合わせは値のファイルのキーで渡す](../../adr/0023-concern-packages.md)
 - 2 つのスクリプトは Node.js の標準のモジュールだけで書き、隣の `.test.mjs` がこのリポジトリの `pnpm test` で動きを確かめる。利用者のテストの仕組みに依らず、終了コードで結果を返す。
 - デザインシステムの文書と 3 つの段のファイルの場所は、キーにせず、利用者の `context/codebase.md` の Placement Rules に書く。読むスクリプトがなく、write-design-system が作業の前に読むだけのためである。
@@ -54,6 +55,6 @@ keywords: [デザインシステム, トークン, アクセシビリティ, カ
 
 ## Interface
 
-- 読むキー: `design_system.tokens_css`（意味の段から生成する CSS のパス）、`design_system.catalog_url`（公開したカタログの URL）。どちらもスキルが読むだけで、読むスクリプトがないので schema は置かない。
+- 読むキー: `design_system.tokens_css`（意味の段から生成する CSS のパス）、`design_system.catalog_url`（公開したカタログの URL）。値の形は `schemas/design-system.schema.json` が持ち、隣のテストで確認する。
 - 利用者の context: `context/codebase.md` の Placement Rules に、デザインシステムの文書と 3 つの段のファイルの場所。
 - 写す雛形: デザインシステムの文書の骨組み、コントラストのチェック、静的なファイル用のトークンの CSS の生成のスクリプト。

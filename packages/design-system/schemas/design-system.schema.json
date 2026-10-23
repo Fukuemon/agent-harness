@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fukuemon/agent-harness/packages/design-system/schemas/design-system.schema.json",
+  "title": "context/project.yml のうち、デザインシステムが読むキー",
+  "type": "object",
+  "properties": {
+    "design_system": {
+      "type": "object",
+      "properties": {
+        "tokens_css": { "$ref": "#/$defs/path", "description": "静的なファイルが読むトークンの CSS。意味の段から生成する。省くと生成しない" },
+        "catalog_url": {
+          "type": "string",
+          "description": "公開したカタログの URL。省くとカタログへのリンクを書かない",
+          "pattern": "^https?://\\S+$"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "description": "リポジトリのルートからの相対パス。先頭と末尾の / は付けない。空、.、.. の区切りは使えない",
+      "pattern": "^(?!\\.\\.?(/|$))[^/]+(/(?!\\.\\.?(/|$))[^/]+)*$"
+    }
+  }
+}
