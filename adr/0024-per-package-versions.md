@@ -48,14 +48,16 @@ npm の trusted publishing は、GitHub Actions の OIDC で公開し、トー�
   - 1.0 に上げるかは、パッケージごとに判断する。2 つ以上の利用者のリポジトリで使い、破壊的な変更が要らなくなったパッケージから上げる。
 - 利用者のマニフェストには、パッケージごとにそのパッケージのタグを書く。移行の案内は、README の Installation と Update の節と、ルートの `CHANGELOG.md` の冒頭に置く。
   - 既存の `v0.2.8` を書いたマニフェストは、そのまま動く。新しい形へは、そのパッケージを次に上げるときに書き換えればよい。
-  - プラグインのマーケットプレイスは、リポジトリ全体を 1 つの ref で取得する。ref には core のタグを書くよう案内する。そのコミットの時点の各パッケージが、それぞれの `plugin.json` のバージョンで入る。
-- e2e の kit は、`packages/e2e/kit/` に置き、npm のレジストリに `@agent-harness/e2e-kit` の名前で公開する。lint の規則も、同じ npm のパッケージに入れる。
-  - scope の `@agent-harness` は製品の名前で、利用者が製品の名前で探せる。scope を使うには、npm に `agent-harness` の組織を作る。名前を取れなければ、この ADR を置き換えて名前を決め直す。
+  - プラグインのマーケットプレイスは、リポジトリ全体を 1 つの ref で取得する。ref には、どのパッケージのものでもよいので、最も新しいタグを書くよう案内する。リリース用の pull request を 1 つにまとめるので、どのリリースのコミットでも、変更のあったパッケージはすべてリリースしたバージョンにそろう。core のタグに限ると、core を変えないリリースの後に、ほかのパッケージの新しいバージョンを取れない。
+- e2e の kit は、`packages/e2e/kit/` に置き、npm のレジストリに `@fukuemon/e2e-kit` の名前で公開する。lint の規則も、同じ npm のパッケージに入れる。
+  - scope の `@fukuemon` は、GitHub の owner の名前を小文字にしたもので、リポジトリの path と対応が取れる。scope を使うには、npm に `fukuemon` のユーザーか組織を作る。
+  - `@agent-harness` の scope は、既に npm にある。レジストリの `/-/org/agent-harness/package` が 200 を返し、`fukuemon` は `Scope not found` を返した。
   - 公開は、`.github/workflows/release.yml` の中の、e2e のリリースができたときだけ動くジョブで行う。そのジョブだけに `id-token: write` を与え、npm のトークンを secrets に置かない。信頼する発行元には `release.yml` を登録する。
   - まだ公開していないパッケージに信頼する発行元を登録できないときは、最初の 1 回だけ、Owner が手元から 2 要素認証で公開する。この場合も、トークンを secrets に置かない。
 - e2e のスキルと kit は、同じ component で同じバージョンにし、同じタグ `e2e-v<バージョン>` で公開する。
   - e2e の `extra-files` で、`kit/package.json` の `$.version` も書き換える。
-  - e2e の導入のスキルは、配置された e2e の `plugin.json` の `version` を読み、同じバージョンの kit を入れる。スキルの本文にバージョンの範囲を書いて保守せずに済む。
+  - e2e の導入のスキルのディレクトリに、kit のバージョンを書いたファイル `kit-version.json` を置き、`extra-files` で同じバージョンに書き換える。導入のスキルはこのファイルを読み、同じバージョンの kit を入れる。スキルの本文にバージョンの範囲を書いて保守せずに済む。
+  - `plugin.json` を読まないのは、パッケージマネージャーが配置するのはスキルとフックだけで、`plugin.json` は配置先にないためである。スキルの中のファイルなら、パッケージマネージャーでもプラグインでも、スキルと一緒に届く。
 
 移行後の `apm.yml` の書き方は、次のとおり。
 
@@ -116,8 +118,8 @@ npm のパッケージの名前の選択肢。
 
 | 選択肢 | 強み | 弱み |
 | --- | --- | --- |
-| **採用:** `@agent-harness/e2e-kit` | 製品の名前で探せる。scope の中の名前は衝突しない | npm に `agent-harness` の組織が要り、その名前を取れるかを確認していない |
-| `@fukuemon/e2e-kit` | リポジトリの owner と対応が取れる | npm に `fukuemon` のユーザーか組織が要る。製品の名前で探せない |
+| **採用:** `@fukuemon/e2e-kit` | リポジトリの owner と対応が取れる。scope が空いている | npm に `fukuemon` のユーザーか組織を作る。製品の名前で探せない |
+| `@agent-harness/e2e-kit` | 製品の名前で探せる | scope が既に npm にあり、持ち主を確認できない |
 | scope のない `agent-harness-e2e-kit` | npm の組織が要らない | 名前が長い。似た名前のパッケージと見分けにくい |
 
 スキルと kit のバージョンの合わせ方の選択肢。
