@@ -52,10 +52,10 @@ const semantic = (overrides = {}) => {
   return `:root {\n${Object.entries(tokens).map(([k, v]) => `  --app-color-${k}: ${v};`).join("\n")}\n}\n`;
 };
 
-const run = (semanticCss) => {
+const run = (semanticCss, baseCss = BASE) => {
   const dir = mkdtempSync(join(tmpdir(), "check-contrast-"));
   mkdirSync(join(dir, "src/tokens"), { recursive: true });
-  writeFileSync(join(dir, "src/tokens/base.css"), BASE);
+  writeFileSync(join(dir, "src/tokens/base.css"), baseCss);
   writeFileSync(join(dir, "src/tokens/semantic.css"), semanticCss);
   return spawnSync(process.execPath, [script], { cwd: dir, encoding: "utf8" });
 };
@@ -107,10 +107,56 @@ test("参照の先が定義されていなければ、名前を出して 1 で�
 test("16 進でない値は、色に解決できないと報告して 1 で終わる", () => {
   const r = run(semantic({ primary: "rgb(29 78 216)" }));
   assert.equal(r.status, 1);
-  assert.match(r.stderr, /primary の値 rgb\(29 78 216\) は 6 桁の 16 進の色でない/);
+  assert.match(r.stderr, /primary の値 rgb\(29 78 216\) は 16 進の色でない/);
 });
 
 test("CSS が読めなければ、2 で終わる", () => {
   const r = spawnSync(process.execPath, [script, "./missing.css"], { cwd: tmpdir(), encoding: "utf8" });
   assert.equal(r.status, 2);
+});
+
+test("基本の段をパッケージのパスから読む", () => {
+  const dir = mkdtempSync(join(tmpdir(), "check-contrast-"));
+  mkdirSync(join(dir, "node_modules/base-tokens/dist"), { recursive: true });
+  writeFileSync(join(dir, "package.json"), '{ "name": "app", "private": true }\n');
+  writeFileSync(join(dir, "node_modules/base-tokens/package.json"), '{ "name": "base-tokens" }\n');
+  writeFileSync(join(dir, "node_modules/base-tokens/dist/tokens.css"), BASE);
+  writeFileSync(join(dir, "semantic.css"), semantic());
+  const r = spawnSync(process.execPath, [script, "base-tokens/dist/tokens.css", "./semantic.css"], { cwd: dir, encoding: "utf8" });
+  assert.equal(r.status, 0, r.stderr);
+});
+
+test(":root, :host のセレクタと @layer の中の :root は、画面に効く値として読む", () => {
+  const base = BASE.replace(":root {", "@layer base { :root, :host {").replace(/}\n$/, "} }\n");
+  const r = run(semantic({ "text-secondary": "#999999" }).replace(":root {", ":root, :host {"), base);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
+
+test("基本の段の、:root 以外のブロックの宣言は読み飛ばして数を出す", () => {
+  const r = run(semantic(), `${BASE}[data-theme=dark] { --base-white: #000000; }\n`);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stderr, /基本の段の宣言を 1 個読み飛ばした/);
+});
+
+test("var() の循環は、16 進でない値と別のメッセージで報告する", () => {
+  const r = run(semantic({ text: "var(--app-color-text-loop)", "text-loop": "var(--app-color-text)" }));
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text の参照が --app-color-text-loop で循環する|text の参照が --app-color-text で循環する/);
+});
+
+test("フォールバックのある var()、空白のある var()、#rgb、!important を読む", () => {
+  const r = run(semantic({ text: "var( --base-undefined, #111 )", "text-secondary": "var( --base-gray-600 ) !important" }));
+  assert.equal(r.status, 0, r.stderr);
+});
+
+test("--root で渡したブロックは、:root の後の値として読む", () => {
+  const css = `${semantic()}[data-theme=dark] { --app-color-text-secondary: #999999; }\n`;
+  assert.equal(run(css).status, 1);
+  const dir = mkdtempSync(join(tmpdir(), "check-contrast-"));
+  writeFileSync(join(dir, "base.css"), BASE);
+  writeFileSync(join(dir, "semantic.css"), css);
+  const r = spawnSync(process.execPath, [script, "--root", "[data-theme=dark]", "./base.css", "./semantic.css"], { cwd: dir, encoding: "utf8" });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
 });

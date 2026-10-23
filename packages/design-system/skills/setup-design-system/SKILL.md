@@ -1,6 +1,6 @@
 ---
 name: setup-design-system
-description: パッケージ design-system を導入するとき、デザインシステムの文書、コントラストのチェック、静的なファイル用のトークンの CSS の生成を、利用者のリポジトリに置くときに使う。context/project.yml の design_system のキーを尋ねて書き、雛形を写し、CONTRIBUTING.md と CI にチェックを組み込む。
+description: トークンの CSS の生成、コントラストのチェック、カタログの URL を、パッケージ design-system を入れた利用者のリポジトリで使えるようにするときに使う。「デザインシステムを導入して」「トークンの CSS を生成できるようにして」「コントラストのチェックを CI に入れて」で読み込む。context/project.yml の design_system のキーを尋ねて書き、デザインシステムの文書の骨組みと 2 つのスクリプトの雛形を写し、CONTRIBUTING.md と CI にチェックを組み込む。
 ---
 
 # setup-design-system
@@ -43,6 +43,7 @@ design_system:
 | [references/check-contrast.mjs](references/check-contrast.mjs) | リポジトリのスクリプトの置き場 | 冒頭の `SOURCES`、`PREFIX`、`TEXT_PAIRS`、`NON_TEXT_PAIRS` を、意味の段のトークンに合わせる |
 | [references/build-static-tokens.mjs](references/build-static-tokens.mjs) | リポジトリのスクリプトの置き場。`tokens_css` を省いたときは写さない | なし。元の CSS と書き出す先は引数で渡す |
 
+- 雛形はファイルごと写す。中身を読んで書き直さない。直すのは、表の「写した後に直すもの」だけにする。
 - 隣の `.test.mjs` は、パッケージのテストなので写さない。
 - 2 つのスクリプトは、Node.js の標準のモジュールだけで動く。リポジトリが別のテストの仕組みを使っていても、テストから実行して終了コードを見ればよい。
 - 意味の段がまだなければ、文書の骨組みだけを写し、スクリプトは意味の段を作った後に写す。
@@ -58,6 +59,9 @@ node <スクリプトの置き場>/check-contrast.mjs
 ```
 
 2. コントラストのチェックが失敗したら、出た組を利用者に見せる。値を直すか、組を外すかは利用者が決める。組を外すのは、無効のコンポーネントの文字のように、基準の対象外のものだけにする。
+   - 「条件つきのブロック」と出たら、意味の段の変数を `@media` や `:root` 以外のセレクタの中で上書きしている。
+     - ダークモードのように画面に表示される値なら、報告に出たブロックを `--root` で渡し、条件ごとに流す。CI にも条件ごとのコマンドを足す。
+     - 基本の段の条件つきのブロックは、読み飛ばして数だけを出す。失敗にはならない。
 
 ## 5. チェックを組み込む
 

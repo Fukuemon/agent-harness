@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 // 意味の段のトークンの組が、WCAG 2.2 のコントラスト比の基準に届くかを確認する。
 // 写した後に、SOURCES、PREFIX、TEXT_PAIRS、NON_TEXT_PAIRS を、自分のトークンに合わせて書き換える。
-// 使い方: node check-contrast.mjs [CSS のファイルかパッケージのパス]...
-//   引数を省くと SOURCES を読む。パッケージのパス（`@scope/name/dist/tokens.css` の形）は、カレントディレクトリの package.json から解決する
-// 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の宣言がある、2 は CSS が読めない
+// 使い方: node check-contrast.mjs [--root <ブロック>]... [CSS のファイルかパッケージのパス]...
+//   --root は、:root のほかに画面に効く値として読むブロックを、報告に出た形（`[data-theme=dark]`、`@media (prefers-color-scheme: dark) :root`）で渡す。
+//   ダークモードのように条件ごとの値があるときは、条件ごとに --root を替えて流す
+//   引数を省くと SOURCES を読む。リポジトリの中のファイルは ./ で始める。
+//   パッケージのパス（`@scope/name/dist/tokens.css` の形）は、カレントディレクトリの package.json から解決する
+// 読む値: :root のブロック（`:root, :host` のようなセレクタの並びと、@layer の中を含む）の変数の宣言だけを、画面に効く値として読む。
+//   値は、var() の参照（空白とフォールバックを含む）、#rgb、#rrggbb を受ける。!important は外して読む。
+//   rgb()、hsl()、色の名前、calc() は色に解決できないと報告する。
+//   :root 以外のブロックと @media などの中の宣言は、PREFIX の変数なら確認できないと報告し、ほかの変数（基本の段）は読み飛ばして数を出す
+// 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の意味の段の宣言がある、2 は CSS が読めない
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { isAbsolute, join, resolve } from "node:path";
@@ -38,9 +45,17 @@ const NON_TEXT_PAIRS = [
   ["focus-outline", "focus-halo"],
 ];
 
-const sources = process.argv.length > 2 ? process.argv.slice(2) : SOURCES;
+const MAX_DEPTH = 10;
+const roots = [];
+const args = [];
+for (let i = 2; i < process.argv.length; i++) {
+  if (process.argv[i] === "--root") roots.push(process.argv[++i] ?? "");
+  else args.push(process.argv[i]);
+}
+const sources = args.length ? args : SOURCES;
 const properties = new Map();
 const conditional = [];
+let skipped = 0;
 for (const source of sources) {
   let css;
   try {
@@ -50,12 +65,12 @@ for (const source of sources) {
     process.exit(2);
   }
   // コメントに残した古い値や例の宣言を、今の値として読まない
-  css = css.replace(/\/\*[\s\S]*?\*\//g, "");
-  readDeclarations(css, source);
+  readDeclarations(css.replace(/\/\*[\s\S]*?\*\//g, ""), source);
 }
+if (skipped) console.error(`:root 以外のブロックか条件つきのブロックにある基本の段の宣言を ${skipped} 個読み飛ばした`);
 
 if (conditional.length) {
-  console.error(`条件つきのブロック（@media、:root 以外のセレクタなど）の中の宣言は確認できない。条件ごとの値を別の CSS に分け、別に流す\n${conditional.join("\n")}`);
+  console.error(`条件つきのブロック（@media、:root 以外のセレクタなど）の中の意味の段の宣言は確認できない。画面に効く値として読むなら、ブロックを --root で渡して流す\n${conditional.join("\n")}`);
   process.exit(1);
 }
 
@@ -78,15 +93,21 @@ if (failures.length) {
 }
 console.log(`${TEXT_PAIRS.length + NON_TEXT_PAIRS.length} 組が基準に届いた`);
 
-// 一番外の :root のブロックの宣言だけを、画面に効く値として読む。ほかのブロックの変数の宣言は conditional に残す
+// ブロックの入れ子をたどり、:root のブロックの宣言を properties に、ほかのブロックの意味の段の宣言を conditional に入れる
 function readDeclarations(css, source) {
   const blocks = [];
   let text = "";
+  // @layer は条件ではないので、ブロックの名前から外す
+  const key = () => blocks.filter((b) => !/^@layer\b/.test(b)).join(" ");
+  const isRoot = () => key().split(",").some((s) => s.trim() === ":root") || roots.includes(key());
   const flush = () => {
     const m = /^(--[\w-]+)\s*:\s*([\s\S]+)$/.exec(text.trim());
-    if (m && blocks.length === 1 && blocks[0] === ":root") properties.set(m[1], m[2].trim());
-    else if (m && blocks.length) conditional.push(`${source}: ${blocks.join(" ")} の ${m[1]}`);
     text = "";
+    if (!m || !blocks.length) return;
+    const value = m[2].replace(/\s*!important\s*$/i, "").trim();
+    if (isRoot()) properties.set(m[1], value);
+    else if (m[1].startsWith(PREFIX)) conditional.push(`${source}: ${key()} の ${m[1]}`);
+    else skipped++;
   };
   for (const ch of css) {
     if (ch === "{") {
@@ -105,16 +126,23 @@ function locate(source) {
   return createRequire(join(process.cwd(), "package.json")).resolve(source);
 }
 
-// var() の参照をたどり、6 桁の 16 進の色にする
+// var() の参照をたどり、6 桁の 16 進の色にする。参照の先がなければフォールバックを使う
 function color(token) {
   let value = `var(${PREFIX}${token})`;
-  for (let depth = 0; depth < 10; depth++) {
-    const ref = /^var\((--[\w-]+)\)$/.exec(value);
+  const seen = new Set();
+  for (;;) {
+    const ref = /^var\(\s*(--[\w-]+)\s*(?:,\s*([\s\S]+?))?\s*\)$/.exec(value);
     if (!ref) break;
-    if (!properties.has(ref[1])) throw new Error(`${ref[1]} が定義されていない（${token}）`);
-    value = properties.get(ref[1]);
+    if (seen.has(ref[1])) throw new Error(`${token} の参照が ${ref[1]} で循環する`);
+    if (seen.size >= MAX_DEPTH) throw new Error(`${token} の参照が ${MAX_DEPTH} 段を超える`);
+    seen.add(ref[1]);
+    if (properties.has(ref[1])) value = properties.get(ref[1]);
+    else if (ref[2] !== undefined) value = ref[2];
+    else throw new Error(`${ref[1]} が定義されていない（${token}）`);
   }
-  if (!/^#[0-9a-f]{6}$/i.test(value)) throw new Error(`${token} の値 ${value} は 6 桁の 16 進の色でない`);
+  const short = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(value);
+  if (short) value = `#${short[1]}${short[1]}${short[2]}${short[2]}${short[3]}${short[3]}`;
+  if (!/^#[0-9a-f]{6}$/i.test(value)) throw new Error(`${token} の値 ${value} は 16 進の色でない`);
   return value;
 }
 
