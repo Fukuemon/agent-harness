@@ -258,18 +258,44 @@ dependencies:
   version: 0.1.0
   package_type: marketplace_plugin
   deployed_files:
+  - .agents/skills/setup-e2e
+  - .agents/skills/setup-e2e/SKILL.md
+  - .agents/skills/setup-e2e/kit-version.json
+  - .agents/skills/setup-e2e/references/playwright/eslint.config.mjs
+  - .agents/skills/setup-e2e/references/playwright/playwright.config.ts
+  - .agents/skills/setup-e2e/references/playwright/tests/fixtures/evidence.ts
+  - .agents/skills/setup-e2e/references/playwright/tests/fixtures/timeouts.ts
   - .agents/skills/write-e2e-test
   - .agents/skills/write-e2e-test/SKILL.md
   - .agents/skills/write-e2e-test/assets/context/testing/e2e.md
   - .agents/skills/write-e2e-test/references/situations.md
+  - .claude/skills/setup-e2e
+  - .claude/skills/setup-e2e/SKILL.md
+  - .claude/skills/setup-e2e/kit-version.json
+  - .claude/skills/setup-e2e/references/playwright/eslint.config.mjs
+  - .claude/skills/setup-e2e/references/playwright/playwright.config.ts
+  - .claude/skills/setup-e2e/references/playwright/tests/fixtures/evidence.ts
+  - .claude/skills/setup-e2e/references/playwright/tests/fixtures/timeouts.ts
   - .claude/skills/write-e2e-test
   - .claude/skills/write-e2e-test/SKILL.md
   - .claude/skills/write-e2e-test/assets/context/testing/e2e.md
   - .claude/skills/write-e2e-test/references/situations.md
   deployed_file_hashes:
+    .agents/skills/setup-e2e/SKILL.md: sha256:feec2d612ae4adb1f5c3235c9699a6b407f10308b755788df83ff5927ba63468
+    .agents/skills/setup-e2e/kit-version.json: sha256:515482625ffbdbe2fb9e85eb09acb84e0e90ca32b1f4bbb74f7e10f502045361
+    .agents/skills/setup-e2e/references/playwright/eslint.config.mjs: sha256:28be1ed6eeca7a792e0ab57bc3c268f0e52296ca952adbf34e6383774479935e
+    .agents/skills/setup-e2e/references/playwright/playwright.config.ts: sha256:1cdd8553b423819b8795374f7468a54e08868e51e9c3d00c680507c5a6391e37
+    .agents/skills/setup-e2e/references/playwright/tests/fixtures/evidence.ts: sha256:bd733dddce633b4cfd7e102707714833defe73696c2b4c00e5064c718a9d1557
+    .agents/skills/setup-e2e/references/playwright/tests/fixtures/timeouts.ts: sha256:d8a7326ab0e5ae6574801fc3dd3111bafff943dd9a007c0bf863c4c44cb89ec8
     .agents/skills/write-e2e-test/SKILL.md: sha256:42dfe5730ad4c70e882a2d325aa1e313a637fce1282b6077d829e6b4758e548a
     .agents/skills/write-e2e-test/assets/context/testing/e2e.md: sha256:6816655f5de3194bf1746cd920ba2938e9cbbdabb4734864d98f7e4eb21314ae
     .agents/skills/write-e2e-test/references/situations.md: sha256:495705a9b8b6a9eee045b4693ae4a0dfdea251c159d2a941fe2b2afa3c5cd4b9
+    .claude/skills/setup-e2e/SKILL.md: sha256:feec2d612ae4adb1f5c3235c9699a6b407f10308b755788df83ff5927ba63468
+    .claude/skills/setup-e2e/kit-version.json: sha256:515482625ffbdbe2fb9e85eb09acb84e0e90ca32b1f4bbb74f7e10f502045361
+    .claude/skills/setup-e2e/references/playwright/eslint.config.mjs: sha256:28be1ed6eeca7a792e0ab57bc3c268f0e52296ca952adbf34e6383774479935e
+    .claude/skills/setup-e2e/references/playwright/playwright.config.ts: sha256:1cdd8553b423819b8795374f7468a54e08868e51e9c3d00c680507c5a6391e37
+    .claude/skills/setup-e2e/references/playwright/tests/fixtures/evidence.ts: sha256:bd733dddce633b4cfd7e102707714833defe73696c2b4c00e5064c718a9d1557
+    .claude/skills/setup-e2e/references/playwright/tests/fixtures/timeouts.ts: sha256:d8a7326ab0e5ae6574801fc3dd3111bafff943dd9a007c0bf863c4c44cb89ec8
     .claude/skills/write-e2e-test/SKILL.md: sha256:42dfe5730ad4c70e882a2d325aa1e313a637fce1282b6077d829e6b4758e548a
     .claude/skills/write-e2e-test/assets/context/testing/e2e.md: sha256:6816655f5de3194bf1746cd920ba2938e9cbbdabb4734864d98f7e4eb21314ae
     .claude/skills/write-e2e-test/references/situations.md: sha256:495705a9b8b6a9eee045b4693ae4a0dfdea251c159d2a941fe2b2afa3c5cd4b9
@@ -857,6 +883,69 @@ deployments:
   - ./packages/docs
   active_owner: ./packages/docs
   content_hash: sha256:331f5b640e86cd85f3c752b3ed165804faa127f9cc115e7b6f8914f8d8e277cb
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:feec2d612ae4adb1f5c3235c9699a6b407f10308b755788df83ff5927ba63468
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e/kit-version.json
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:515482625ffbdbe2fb9e85eb09acb84e0e90ca32b1f4bbb74f7e10f502045361
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e/references/playwright/eslint.config.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:28be1ed6eeca7a792e0ab57bc3c268f0e52296ca952adbf34e6383774479935e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e/references/playwright/playwright.config.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:1cdd8553b423819b8795374f7468a54e08868e51e9c3d00c680507c5a6391e37
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e/references/playwright/tests/fixtures/evidence.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:bd733dddce633b4cfd7e102707714833defe73696c2b4c00e5064c718a9d1557
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-e2e/references/playwright/tests/fixtures/timeouts.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:d8a7326ab0e5ae6574801fc3dd3111bafff943dd9a007c0bf863c4c44cb89ec8
 - kind: project-relative
   target: claude
   value: .claude/skills/write-comments
@@ -1712,6 +1801,69 @@ deployments:
   - ./packages/docs
   active_owner: ./packages/docs
   content_hash: sha256:331f5b640e86cd85f3c752b3ed165804faa127f9cc115e7b6f8914f8d8e277cb
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:feec2d612ae4adb1f5c3235c9699a6b407f10308b755788df83ff5927ba63468
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e/kit-version.json
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:515482625ffbdbe2fb9e85eb09acb84e0e90ca32b1f4bbb74f7e10f502045361
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e/references/playwright/eslint.config.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:28be1ed6eeca7a792e0ab57bc3c268f0e52296ca952adbf34e6383774479935e
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e/references/playwright/playwright.config.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:1cdd8553b423819b8795374f7468a54e08868e51e9c3d00c680507c5a6391e37
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e/references/playwright/tests/fixtures/evidence.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:bd733dddce633b4cfd7e102707714833defe73696c2b4c00e5064c718a9d1557
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-e2e/references/playwright/tests/fixtures/timeouts.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:d8a7326ab0e5ae6574801fc3dd3111bafff943dd9a007c0bf863c4c44cb89ec8
 - kind: project-relative
   target: codex
   value: .agents/skills/write-comments

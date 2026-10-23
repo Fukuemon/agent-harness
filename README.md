@@ -11,7 +11,7 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 | docs | PRD、Design Doc、ADR、spec の形と、文章の規則とチェック | setup-design-docs、write-design-docs、write-prose |
 | verification | 観点の設計と、動作の確認のエビデンスの撮影と添付 | attach-evidence、design-test-cases、write-verification-spec、run-verification-scenarios、capture-browser-evidence |
 | screens | 画面ごとの状態、構成要素、操作できるモックの画面仕様書と、規約の点検 | write-screen-spec |
-| e2e | E2E のテストの書き方と、録画とテストの書き方の lint の規則を持つ kit（npm のパッケージ） | write-e2e-test |
+| e2e | E2E のテストの書き方と、録画とテストの書き方の lint の規則を持つ kit（npm のパッケージ） | setup-e2e、write-e2e-test |
 
 core と docs はフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 
@@ -70,6 +70,8 @@ apm install
 
 1. `/setup-agent-harness`: 保護するブランチと文書のディレクトリ名を尋ね、`context/`、AGENTS.md、CONTRIBUTING.md、文書のテンプレートを写す。`.gitignore` に apm の配置先を、`apm.yml` に同じ行を足す post-install を足す。
 2. `/setup-design-docs`: textlint をインストールし、CONTRIBUTING.md、lefthook、CI にチェックを組み込み、用語の規則を利用者と決める。
+
+e2e を入れたときは、続けて `/setup-e2e` を呼ぶ。E2E のテストのディレクトリを尋ね、スキルと同じバージョンの kit `@fukuemon/e2e-kit` を入れ、テストのツールの設定と lint の設定の雛形を写す。
 
 写されたファイルをコミットする。以後は利用者のファイルとして編集する。
 
