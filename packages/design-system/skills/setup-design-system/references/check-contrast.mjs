@@ -50,7 +50,7 @@ for (const source of sources) {
   }
   // コメントに残した古い値や例の宣言を、今の値として読まない
   css = css.replace(/\/\*[\s\S]*?\*\//g, "");
-  for (const [, name, value] of css.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) properties.set(name, value.trim());
+  for (const [, name, value] of css.matchAll(/(--[\w-]+)\s*:\s*([^;{}]+)(?=[;}])/g)) properties.set(name, value.trim());
 }
 
 const failures = [];

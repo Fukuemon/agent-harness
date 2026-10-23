@@ -79,6 +79,12 @@ test("コメントの中の宣言は、今の値として読まない", () => {
   assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
 });
 
+test("ブロックの最後の、セミコロンのない宣言も読む", () => {
+  const r = run(`${semantic()}:root { --app-color-text-secondary: #999999 }\n`);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
+
 test("枠が 3:1 に届かなければ、1 で終わる", () => {
   const r = run(semantic({ "border-field": "#e9e9eb" }));
   assert.equal(r.status, 1);
