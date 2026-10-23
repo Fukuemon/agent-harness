@@ -2,7 +2,7 @@
 // 実行: node --test "packages/design-system/**/*.test.mjs"
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -67,11 +67,36 @@ test("複数行のコメントの中の @import で始まる行は、後ろの�
   assert.equal(run(dir, ...ARGS).status, 0);
   const out = readFileSync(join(dir, "docs/screens/_common/tokens.css"), "utf8");
   assert.match(out, /--app-color-surface: var\(--base-white\);/);
-  assert.doesNotMatch(out, /documents where/);
+  assert.match(out, /@import documents where tokens came from\n\*\//);
 });
 
 test("--out か元の CSS がなければ、2 で終わる", () => {
   const dir = setup();
   assert.equal(run(dir, "./src/tokens/semantic.css").status, 2);
   assert.equal(run(dir, "--out", "x.css").status, 2);
+});
+
+test("--check は、--out と元の CSS の ./ の有無が違っても、中身が同じなら 0 で終わる", () => {
+  const dir = setup();
+  assert.equal(run(dir, "--out", "out/t.css", "base-tokens/dist/tokens.css", "./src/tokens/../tokens/semantic.css").status, 0);
+  const r = run(dir, "--check", "--out", "./out/t.css", "base-tokens/dist/tokens.css", "./src/tokens/semantic.css");
+  assert.equal(r.status, 0, r.stderr);
+});
+
+test("--out の次が -- で始まれば、ファイルを書かずに 2 で終わる", () => {
+  const dir = setup();
+  const r = run(dir, "--out", "--check", ...ARGS.slice(2));
+  assert.equal(r.status, 2);
+  assert.ok(!existsSync(join(dir, "--check")));
+});
+
+test("ライセンスのコメントを残し、外部の URL の @import を外したら標準エラーに出す", () => {
+  const dir = setup();
+  writeFileSync(join(dir, "src/tokens/semantic.css"), "/*! MIT License */\n@import url('https://fonts.example.com/a.css');\n:root { --app-color-surface: var(--base-white); }\n");
+  const r = run(dir, ...ARGS);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stderr, /外部の URL の @import を外した: .*fonts\.example\.com/);
+  const out = readFileSync(join(dir, "docs/screens/_common/tokens.css"), "utf8");
+  assert.match(out, /\/\*! MIT License \*\//);
+  assert.doesNotMatch(out, /fonts\.example\.com/);
 });
