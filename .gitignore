@@ -1,5 +1,6 @@
 .ai-out/
 node_modules/
+packages/e2e/kit/dist/
 
 apm_modules/
 /.agents/skills/setup-agent-harness/
@@ -36,3 +37,5 @@ apm_modules/
 /.claude/skills/write-verification-spec/
 /.agents/skills/write-screen-spec/
 /.claude/skills/write-screen-spec/
+/.agents/skills/write-e2e-test/
+/.claude/skills/write-e2e-test/

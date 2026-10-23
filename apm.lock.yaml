@@ -253,6 +253,22 @@ dependencies:
   source: local
   local_path: ./packages/docs
   declared_license: MIT
+- repo_url: _local/e2e
+  name: e2e
+  version: 0.1.0
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/write-e2e-test
+  - .agents/skills/write-e2e-test/SKILL.md
+  - .agents/skills/write-e2e-test/assets/context/testing/e2e.md
+  - .agents/skills/write-e2e-test/references/situations.md
+  deployed_file_hashes:
+    .agents/skills/write-e2e-test/SKILL.md: sha256:33d229f09912b90f56644f416c326aafd9b9ea0acf6ac8fa095b705734728f64
+    .agents/skills/write-e2e-test/assets/context/testing/e2e.md: sha256:6816655f5de3194bf1746cd920ba2938e9cbbdabb4734864d98f7e4eb21314ae
+    .agents/skills/write-e2e-test/references/situations.md: sha256:495705a9b8b6a9eee045b4693ae4a0dfdea251c159d2a941fe2b2afa3c5cd4b9
+  source: local
+  local_path: ./packages/e2e
+  declared_license: MIT
 - repo_url: _local/screens
   name: screens
   version: 0.1.0
@@ -1824,6 +1840,42 @@ deployments:
   - ./packages/docs
   active_owner: ./packages/docs
   content_hash: sha256:27413b5eb34bb2eca8e629f785d7ac95db0e5b81f601e25f592f399a0b6c08a3
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-e2e-test
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-e2e-test/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:33d229f09912b90f56644f416c326aafd9b9ea0acf6ac8fa095b705734728f64
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-e2e-test/assets/context/testing/e2e.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:6816655f5de3194bf1746cd920ba2938e9cbbdabb4734864d98f7e4eb21314ae
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-e2e-test/references/situations.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/e2e
+  active_owner: ./packages/e2e
+  content_hash: sha256:495705a9b8b6a9eee045b4693ae4a0dfdea251c159d2a941fe2b2afa3c5cd4b9
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr

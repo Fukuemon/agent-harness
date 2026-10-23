@@ -11,6 +11,7 @@ Claude Code と Codex CLI で、どのリポジトリでも同じ形で使える
 | docs | PRD、Design Doc、ADR、spec の形と、文章の規則とチェック | setup-design-docs、write-design-docs、write-prose |
 | verification | 観点の設計と、動作の確認のエビデンスの撮影と添付 | attach-evidence、design-test-cases、write-verification-spec、run-verification-scenarios、capture-browser-evidence |
 | screens | 画面ごとの状態、構成要素、操作できるモックの画面仕様書と、規約の点検 | write-screen-spec |
+| e2e | E2E のテストの書き方と、録画とテストの書き方の lint の規則を持つ kit（npm のパッケージ） | write-e2e-test |
 
 core と docs はフックを持つ。ファイルを編集すると、確かめるべき点をコーディングエージェントに伝える。編集は拒否しない。
 

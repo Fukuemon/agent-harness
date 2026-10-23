@@ -20,6 +20,10 @@
     {
       "name": "screens",
       "source": "./packages/screens"
+    },
+    {
+      "name": "e2e",
+      "source": "./packages/e2e"
     }
   ]
 }
