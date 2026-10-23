@@ -43,5 +43,9 @@ jobs:
           pnpm run build
           pnpm run deploy
 
+      # 値を run に直接埋めると、シェルが $ や引用符を解釈するので、環境変数で渡す
       - name: 保護を確認する
-        run: node scripts/check-docs-site-protection.mjs "${{ vars.DOCS_SITE_URL }}" "${{ vars.DOCS_SITE_MARKER }}"
+        env:
+          DOCS_SITE_URL: ${{ vars.DOCS_SITE_URL }}
+          DOCS_SITE_MARKER: ${{ vars.DOCS_SITE_MARKER }}
+        run: node scripts/check-docs-site-protection.mjs "$DOCS_SITE_URL" "$DOCS_SITE_MARKER" cloudflareaccess.com
