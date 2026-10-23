@@ -40,7 +40,7 @@ status: stable
 ## Check Exclusions
 
 - textlint の対象は、ルート、`adr/`、`design/`、`packages/`、`context/`、`skills/`、`.github/` の Markdown である。`.ai-out/` は Git で追跡せず、チェックもしない。
-- ルートの `CHANGELOG.md` は `.textlintignore` で textlint の対象から外す。release-please がコミットの要約から生成し、文の長さや語の規則に合わせられない。
+- `CHANGELOG.md`（ルートと各パッケージ）は `.textlintignore` で textlint の対象から外す。各パッケージのものは release-please がコミットの要約から生成し、文の長さや語の規則に合わせられない。
 - パッケージ global の output style は、`.textlintignore` で textlint の対象から外す。会話の語形の例として、敬体の語を並べるためである。
 - 固有の名前のチェックは、`packages/*/skills/` の Markdown だけに掛け、パッケージ global は除く。global は開発者の環境を前提に書く。パッケージの `DesignDoc.md` はこのリポジトリの開発者が読むので、コーディングエージェントの名前を書いてよい。
 - release-please と changesets は、テンプレートに選択肢として示すと決めたので、禁止する語に含めない。

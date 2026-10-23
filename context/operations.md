@@ -19,7 +19,7 @@ status: stable
 - タグとリリースは release-please が作る。main へ push するたびに `.github/workflows/release.yml` がリリース用の pull request を作るか更新し、その pull request をマージするとタグとリリースができる。
   - ADR-0019: [packages/ を変えたコミットだけでバージョンを上げ、切り戻しは新しいバージョンで行う](../adr/0019-release-scope-and-rollback.md)
 - バージョンが上がるのは、コミットが変えたパッケージだけ。どの変更で minor を上げるかは [CONTRIBUTING.md](../CONTRIBUTING.md#ブランチとリリース) にある。
-- リリース用の pull request は、変えたパッケージの `plugin.json` と `CHANGELOG.md`、`examples/apm.yml`、`apm.lock.yaml` のバージョンを書き換える。マージの条件は、ほかの pull request と同じく CI が通ることである。
+- リリース用の pull request は、変えたパッケージの `plugin.json` と `CHANGELOG.md`、`apm.lock.yaml` のバージョンを書き換える。core を上げるときは、`examples/apm.yml` も書き換える。マージの条件は、ほかの pull request と同じく CI が通ることである。
 - main へは pull request でだけ取り込む。CI が通り、レビューの指摘に対応していることが条件である。手順は [CONTRIBUTING.md](../CONTRIBUTING.md) にある。
 
 ## Health and Monitoring
