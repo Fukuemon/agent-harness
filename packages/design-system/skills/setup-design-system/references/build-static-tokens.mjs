@@ -28,9 +28,11 @@ const parts = sources.map((source) => {
   } catch (e) {
     fail(`読めない: ${source}\n${e.message}`);
   }
+  // コメントの中の @import を文と取り違えないよう、先にコメントを外す。生成物にはコメントを残さない
+  css = css.replace(/\/\*[\s\S]*?\*\//g, "");
   // 元の CSS は、次の段の CSS を @import で読む。中身は sources の順に並べるので、行ごと外す
-  css = css.replace(/^@import [^;]+;\r?\n?/gm, "").trim();
-  if (/@import/.test(css.replace(/\/\*[\s\S]*?\*\//g, ""))) fail(`@import が行の途中に残る: ${source}。静的なファイルは読めないので、元の CSS を直す`);
+  css = css.replace(/^\s*@import [^;]+;[ \t]*\r?\n?/gm, "").trim();
+  if (/@import/.test(css)) fail(`@import が行の途中に残る: ${source}。静的なファイルは読めないので、元の CSS を直す`);
   return css;
 });
 

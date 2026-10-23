@@ -61,6 +61,15 @@ test("コメントの中の @import は、残った @import として扱わな�
   assert.equal(run(dir, ...ARGS).status, 0);
 });
 
+test("複数行のコメントの中の @import で始まる行は、後ろの宣言ごと外さない", () => {
+  const dir = setup();
+  writeFileSync(join(dir, "src/tokens/semantic.css"), "/*\n@import documents where tokens came from\n*/\n:root { --app-color-surface: var(--base-white); }\n");
+  assert.equal(run(dir, ...ARGS).status, 0);
+  const out = readFileSync(join(dir, "docs/screens/_common/tokens.css"), "utf8");
+  assert.match(out, /--app-color-surface: var\(--base-white\);/);
+  assert.doesNotMatch(out, /documents where/);
+});
+
 test("--out か元の CSS がなければ、2 で終わる", () => {
   const dir = setup();
   assert.equal(run(dir, "./src/tokens/semantic.css").status, 2);
