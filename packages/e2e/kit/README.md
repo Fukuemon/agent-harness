@@ -5,8 +5,10 @@ Playwright の E2E のテストで使う kit。字幕とカーソルを重ねた
 
 ## Installation
 
+パッケージ e2e のスキルと同じバージョンを、範囲にせず固定で入れる。e2e の導入のスキル setup-e2e も、この形で入れる。
+
 ```sh
-npm install --save-dev @fukuemon/e2e-kit
+npm install --save-dev --save-exact @fukuemon/e2e-kit@<e2e のバージョン>
 ```
 
 - `@playwright/test` の 1.59 以上を peer に取る。ESLint の規則を使うときは、ESLint の 9 以上と `@typescript-eslint/parser` も入れる。

@@ -7,7 +7,7 @@ status: draft
 
 # E2E のテスト
 
-パッケージ e2e のスキル write-e2e-test が読む、利用者の context の例。write-e2e-test が写す骨組みのうち、Test Tool、Lint Rule Options、Running Tests のセクションを、Playwright を使う構成で埋めた。  
+パッケージ e2e のスキル write-e2e-test が読む、利用者の context の例。骨組みは write-e2e-test の `assets/` にあり、core の導入のスキルが写す。そのうち、Test Tool、Lint Rule Options、Running Tests のセクションを、Playwright を使う構成で埋めた。  
 写して使うときは、利用者のリポジトリのディレクトリとコマンドに書き換える。
 
 ## Test Tool
