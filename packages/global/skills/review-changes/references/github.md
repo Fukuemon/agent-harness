@@ -64,4 +64,7 @@ gh api repos/<owner>/<repo>/pulls/<number>/comments \
 ## 動画を添えるとき
 
 差分行のコメントには、gh の `--attach` を使えない。  
-先にスキル capture-browser-evidence の手順で、pull request のコメントに添付する。そのコメントの本文から `https://github.com/user-attachments/assets/...` の URL を取り、差分行のコメントの本文に貼る。動画として表示される。
+動画は、スキル attach-evidence の手順で先に上げ、上げた先の `https://github.com/user-attachments/assets/...` の URL を差分行のコメントの本文に貼る。動画として表示される。
+
+- 自分の pull request では、動画を本文の「検証とエビデンス」に入れ、本文から URL を取る。
+- ほかの人の pull request では、本文を書き換えない。pull request のコメントに上げ、そのコメントの本文から URL を取る。
