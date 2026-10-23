@@ -10,6 +10,7 @@ dependencies:
     - ./packages/verification
     - ./packages/screens
     - ./packages/e2e
+    - ./packages/design-system
 lifecycle:
   post-install:
   - type: command

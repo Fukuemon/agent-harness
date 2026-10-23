@@ -42,3 +42,7 @@ apm_modules/
 /.claude/skills/write-e2e-test/
 /.agents/skills/setup-e2e/
 /.claude/skills/setup-e2e/
+/.agents/skills/setup-design-system/
+/.agents/skills/write-design-system/
+/.claude/skills/setup-design-system/
+/.claude/skills/write-design-system/

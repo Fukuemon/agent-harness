@@ -24,6 +24,10 @@
     {
       "name": "e2e",
       "source": "./packages/e2e"
+    },
+    {
+      "name": "design-system",
+      "source": "./packages/design-system"
     }
   ]
 }

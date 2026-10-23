@@ -52,6 +52,12 @@
         { "type": "json", "path": "kit/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "skills/setup-e2e/kit-version.json", "jsonpath": "$.version" }
       ]
+    },
+    "packages/design-system": {
+      "component": "design-system",
+      "extra-files": [
+        { "type": "json", "path": ".claude-plugin/plugin.json", "jsonpath": "$.version" }
+      ]
     }
   }
 }
