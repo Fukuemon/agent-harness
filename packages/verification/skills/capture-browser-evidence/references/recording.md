@@ -70,13 +70,11 @@
 録画のディレクトリ名は、テスト名を途中で切ることがある。テストのツールの JSON のレポートには、完全なテスト名と動画のパスが入る。  
 JSON のレポートから録画に名前を付けて写すスクリプトが、このスキルの `scripts/` にある。
 
-スクリプトは Python 3 の標準ライブラリだけを使う。uv があれば、対象のリポジトリの仮想環境を使わずに流す。
+スクリプトは Python 3 の標準ライブラリだけを使うので、Python 3 で流す。Python 3 がなければ、利用者に入れてもらう。
 
 ```bash
-uv run --no-project python {このスキルのディレクトリ}/scripts/collect-playwright-videos.py <report.json> <置き場所>/<検証名>/<条件> --prefix <条件>
+python3 {このスキルのディレクトリ}/scripts/collect-playwright-videos.py <report.json> <置き場所>/<検証名>/<条件> --prefix <条件>
 ```
-
-uv がなければ、`uv run --no-project python` を `python3` に替えて流す。どちらもなければ、利用者に Python 3 を入れてもらう。
 
 - 出力は `<出力先>/webm/<条件>-<spec のファイル名>-<連番>-<describe 名>-<テスト名>.webm`。describe 名が末尾の丸括弧に画面名を持つときは、括弧の中だけを使う。
 - 終了コード 0: 全部のテストの録画を取り出した。

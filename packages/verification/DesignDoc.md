@@ -40,7 +40,7 @@ keywords: [検証, エビデンス, 観点, EARS, 録画]
 | write-verification-spec | シナリオから録画の spec を書く。字幕の規則、改修の前と後を比べる規則 |
 | run-verification-scenarios | spec を流して撮り、確かめる。撮る順と、並列で流さない理由 |
 | attach-evidence | 観点の設計から添付までを順に進める。エビデンスを本文の表に入れ、入ったことを確かめる。コメントにある動画を本文へ移す |
-| capture-browser-evidence | spec を書かずに、ブラウザを操作して録画とテキストのログを残す |
+| capture-browser-evidence | spec を書かずに、ブラウザを操作して録画とテキストのログを残す。エビデンスの元のファイルの置き場と名前の規則を持つ |
 
 ファイルの置き場は、導入のスキルが `assets/` を全部、利用者のリポジトリへ写すことに合わせて決める。
 

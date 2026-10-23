@@ -5,7 +5,7 @@ description: 検証のシナリオ（前提、もし、かつ、ならば の文
 
 # write-verification-spec
 
-撮る仕組み（録画のライブラリ、それを呼ぶ薄い層、配置先と名前の決まり）は、利用者の `context/testing/evidence.md` の Capture Tools が持つ。  
+撮る仕組み（録画のライブラリ、それを呼ぶ薄い層、spec の配置先と名前）は、利用者の `context/testing/evidence.md` の Capture Tools が持つ。  
 このスキルは、spec を書いて撮るときの判断だけを持つ。コードの層と待ち方は、利用者の `context/testing.md` と、テストのコードの書き方の取り決めに従う。
 
 ## 始める前に読むもの

@@ -117,7 +117,7 @@ gh pr create -R <owner>/<repo> --draft --title <題> --body-file <本文.md> \
 - 作った後に足すときは `gh pr edit <number> --body-file <本文.md> --attach ...` にする。本文のファイルを渡さないと、ファイルは今の本文の末尾に足され、表に入らない。
 - 撮り直して差し替えるときは、`gh pr view <number> --json body --jq .body` で今の本文を取り、差し替える参照だけを `./<path>` に戻して `gh pr edit` に渡す。手元の下書きから上げ直すと、画面で直した本文が消える。
 - 本文の上限は文字数で数える。上げた先の URL は 1 つあたり 80 文字ほどで、上限に近づくのは `<details>` に貼るコードと出力である。
-- 差分行のコメントに動画を添えるときは、動画を先に本文に入れ、本文から URL を取って貼る。
+- 自分の pull request の差分行のコメントに動画を添えるときは、動画を先に本文に入れ、本文から URL を取って貼る。ほかの人の pull request では本文を書き換えず、pull request のコメントに上げてから、そのコメントの本文から URL を取る。
 
 入ったことは、API で本文を取り、`user-attachments/assets/` の参照の数で確認する。
 
