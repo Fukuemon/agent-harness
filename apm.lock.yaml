@@ -100,17 +100,17 @@ dependencies:
     .agents/skills/write-comments/SKILL.md: sha256:64d9e0b02f5ab9f1645b949cc04414825c6e508faadcaaea39ac29375f419582
     .agents/skills/write-commit/SKILL.md: sha256:9fe6d1b19ffacfae5a86b08ca04fae0eb331131a9fa12f30661369c79c80d404
     .agents/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
-    .agents/skills/write-context/SKILL.md: sha256:5097779ee5eda59bf76d7c04040ea5035cc997ccbdf2f83e23d84962f24577f7
+    .agents/skills/write-context/SKILL.md: sha256:723f994cfa4a9751bbe4b81b6cefa8a355e2301ce51a63a3a5fbd3e2f7427295
     .agents/skills/write-issue-pr/SKILL.md: sha256:0f79d6aea88502a2855abb0d5755342f37fe9f79905e355361745a54cc5b763a
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:e5842676423d34aa1bc3ac10f6120c6e60e1186c614b14473887f4010eff0650
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/config.yml: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
     .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:e51dcb1d2966a61c6cd70244dd721a13dd3ba9ddd1aff746195f42eb58aaaedf
-    .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:be12c1419eb032bf65ced42bc1380a5e9b6dcd79a72702bf5b16f08731a24d01
-    .agents/skills/write-issue-pr/assets/.github/pull_request_template.md: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+    .agents/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:7f26450412f1896c838223edc31de03f5806209b19a9cef01da2815f5aa6571a
+    .agents/skills/write-issue-pr/assets/.github/pull_request_template.md: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
     .agents/skills/write-issue-pr/assets/.gitlab/issue_templates/bug.md: sha256:677da2ce59aee659113fb8b18607e87e6bfae038320120d5f23f331659229c8c
     .agents/skills/write-issue-pr/assets/.gitlab/issue_templates/requirements.md: sha256:a31aa8dd6898f337dee824575a113c9d885a1c876c405230509ee82c20b9de4b
-    .agents/skills/write-issue-pr/assets/.gitlab/issue_templates/task.md: sha256:211473d172e8a2f0c5b27ab39070c41fe8204e0fb3758c5cb149cffc9a1037c5
-    .agents/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+    .agents/skills/write-issue-pr/assets/.gitlab/issue_templates/task.md: sha256:a20029b8990145cb47845afbdeb463e6d959a59e09b22c6ecfe86c1b0b37aeb9
+    .agents/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
     .agents/skills/write-issue-pr/references/issue.md: sha256:8d90b454ae36e5d7b7254a454be472a528eabffe0a3204f5cc776beeeeda8e94
     .agents/skills/write-issue-pr/references/pull-request.md: sha256:c048536f56e9ec0cb9be64f8fc124bd403d1191e1bb61a5420177d4e5785deed
     .agents/skills/write-skill/SKILL.md: sha256:bca033dfa6c267549f1f9756ddc47f7bf12c010c0336fdd0daf7bf4ab1d1402e
@@ -133,17 +133,17 @@ dependencies:
     .claude/skills/write-comments/SKILL.md: sha256:64d9e0b02f5ab9f1645b949cc04414825c6e508faadcaaea39ac29375f419582
     .claude/skills/write-commit/SKILL.md: sha256:9fe6d1b19ffacfae5a86b08ca04fae0eb331131a9fa12f30661369c79c80d404
     .claude/skills/write-commit/assets/commitlint.config.mjs: sha256:cd461a4287ce68a1474c912821bf02c48ed7317464b3b54afb9e9944fcd1df8a
-    .claude/skills/write-context/SKILL.md: sha256:5097779ee5eda59bf76d7c04040ea5035cc997ccbdf2f83e23d84962f24577f7
+    .claude/skills/write-context/SKILL.md: sha256:723f994cfa4a9751bbe4b81b6cefa8a355e2301ce51a63a3a5fbd3e2f7427295
     .claude/skills/write-issue-pr/SKILL.md: sha256:0f79d6aea88502a2855abb0d5755342f37fe9f79905e355361745a54cc5b763a
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/bug.yml: sha256:e5842676423d34aa1bc3ac10f6120c6e60e1186c614b14473887f4010eff0650
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/config.yml: sha256:1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb
     .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/requirements.yml: sha256:e51dcb1d2966a61c6cd70244dd721a13dd3ba9ddd1aff746195f42eb58aaaedf
-    .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:be12c1419eb032bf65ced42bc1380a5e9b6dcd79a72702bf5b16f08731a24d01
-    .claude/skills/write-issue-pr/assets/.github/pull_request_template.md: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+    .claude/skills/write-issue-pr/assets/.github/ISSUE_TEMPLATE/task.yml: sha256:7f26450412f1896c838223edc31de03f5806209b19a9cef01da2815f5aa6571a
+    .claude/skills/write-issue-pr/assets/.github/pull_request_template.md: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
     .claude/skills/write-issue-pr/assets/.gitlab/issue_templates/bug.md: sha256:677da2ce59aee659113fb8b18607e87e6bfae038320120d5f23f331659229c8c
     .claude/skills/write-issue-pr/assets/.gitlab/issue_templates/requirements.md: sha256:a31aa8dd6898f337dee824575a113c9d885a1c876c405230509ee82c20b9de4b
-    .claude/skills/write-issue-pr/assets/.gitlab/issue_templates/task.md: sha256:211473d172e8a2f0c5b27ab39070c41fe8204e0fb3758c5cb149cffc9a1037c5
-    .claude/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+    .claude/skills/write-issue-pr/assets/.gitlab/issue_templates/task.md: sha256:a20029b8990145cb47845afbdeb463e6d959a59e09b22c6ecfe86c1b0b37aeb9
+    .claude/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
     .claude/skills/write-issue-pr/references/issue.md: sha256:8d90b454ae36e5d7b7254a454be472a528eabffe0a3204f5cc776beeeeda8e94
     .claude/skills/write-issue-pr/references/pull-request.md: sha256:c048536f56e9ec0cb9be64f8fc124bd403d1191e1bb61a5420177d4e5785deed
     .claude/skills/write-skill/SKILL.md: sha256:bca033dfa6c267549f1f9756ddc47f7bf12c010c0336fdd0daf7bf4ab1d1402e
@@ -214,13 +214,13 @@ dependencies:
     .agents/skills/write-design-docs/assets/PRD.md: sha256:afe99d687a2202dcd24055de33a868ac2a679c3f3be4895f4a45f2570c365f85
     .agents/skills/write-design-docs/assets/adr/template.md: sha256:aa451d658e0fa6f7b02248ce182d830487e0cd74a70218e9ad94bcedb2474c2a
     .agents/skills/write-design-docs/assets/design/DesignDoc.md: sha256:35beba67b63dff1cb9b15bb6d9373087293c77af24b8d5d25d594753d0602460
-    .agents/skills/write-design-docs/assets/prh.yml: sha256:a923ae23ac808652fb205f549be72738dc5a81403e7cddb3c2d390ad73934ed5
+    .agents/skills/write-design-docs/assets/prh.yml: sha256:7815ca7da501a7db81fdff7d9dcca620a0bfd5bf6984d60cc21612d35d3aae0e
     .agents/skills/write-design-docs/references/adr.md: sha256:a86f43e32e8ed1fd9f191f063b3cfc201b2a366f1676fa070bb3dd4f0478d6d2
     .agents/skills/write-design-docs/references/design-doc.md: sha256:7818d3c7482be682e40f8c42f7d38f235a1f3d20e3253ba957702c2f2675c6dc
     .agents/skills/write-design-docs/references/feature-design-doc.md: sha256:e11254b26e4656d8dbb59a91e383579a46017917a9dd08fcf7d42574522d234d
     .agents/skills/write-design-docs/references/prd.md: sha256:bceae48a95ef3ce5bc4b5467e1b77e8c2e309549c84df6e9d18a07ffce459822
     .agents/skills/write-design-docs/references/spec.md: sha256:27413b5eb34bb2eca8e629f785d7ac95db0e5b81f601e25f592f399a0b6c08a3
-    .agents/skills/write-prose/SKILL.md: sha256:3b8ce41de8b81edfda276f8288b6d91863b5ee88f305bea817d497fe1f9b9a57
+    .agents/skills/write-prose/SKILL.md: sha256:f84312281c3448eb0047133260e97c03d7fb93ce4e78911274af9d46fb563869
     .claude/hooks/docs/hooks/check-docs.mjs: sha256:0f3d06c73e84cb4bf3dc9efd0c0f76894497bacee16b9452bd66300c059960da
     .claude/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
     .claude/hooks/docs/hooks/check-history.mjs: sha256:daca850c0bc10ddb47c0ce8039529ec289a49aec4cf3e6494f606e171731082b
@@ -235,13 +235,13 @@ dependencies:
     .claude/skills/write-design-docs/assets/PRD.md: sha256:afe99d687a2202dcd24055de33a868ac2a679c3f3be4895f4a45f2570c365f85
     .claude/skills/write-design-docs/assets/adr/template.md: sha256:aa451d658e0fa6f7b02248ce182d830487e0cd74a70218e9ad94bcedb2474c2a
     .claude/skills/write-design-docs/assets/design/DesignDoc.md: sha256:35beba67b63dff1cb9b15bb6d9373087293c77af24b8d5d25d594753d0602460
-    .claude/skills/write-design-docs/assets/prh.yml: sha256:a923ae23ac808652fb205f549be72738dc5a81403e7cddb3c2d390ad73934ed5
+    .claude/skills/write-design-docs/assets/prh.yml: sha256:7815ca7da501a7db81fdff7d9dcca620a0bfd5bf6984d60cc21612d35d3aae0e
     .claude/skills/write-design-docs/references/adr.md: sha256:a86f43e32e8ed1fd9f191f063b3cfc201b2a366f1676fa070bb3dd4f0478d6d2
     .claude/skills/write-design-docs/references/design-doc.md: sha256:7818d3c7482be682e40f8c42f7d38f235a1f3d20e3253ba957702c2f2675c6dc
     .claude/skills/write-design-docs/references/feature-design-doc.md: sha256:e11254b26e4656d8dbb59a91e383579a46017917a9dd08fcf7d42574522d234d
     .claude/skills/write-design-docs/references/prd.md: sha256:bceae48a95ef3ce5bc4b5467e1b77e8c2e309549c84df6e9d18a07ffce459822
     .claude/skills/write-design-docs/references/spec.md: sha256:27413b5eb34bb2eca8e629f785d7ac95db0e5b81f601e25f592f399a0b6c08a3
-    .claude/skills/write-prose/SKILL.md: sha256:3b8ce41de8b81edfda276f8288b6d91863b5ee88f305bea817d497fe1f9b9a57
+    .claude/skills/write-prose/SKILL.md: sha256:f84312281c3448eb0047133260e97c03d7fb93ce4e78911274af9d46fb563869
     .codex/hooks/docs/hooks/check-docs.mjs: sha256:0f3d06c73e84cb4bf3dc9efd0c0f76894497bacee16b9452bd66300c059960da
     .codex/hooks/docs/hooks/check-docs.test.mjs: sha256:cab5fea82f1fbfbe39ba858f11f12c0888ba8c6b12972b7fcc6d123b1e0a5d77
     .codex/hooks/docs/hooks/check-history.mjs: sha256:daca850c0bc10ddb47c0ce8039529ec289a49aec4cf3e6494f606e171731082b
@@ -559,7 +559,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:5097779ee5eda59bf76d7c04040ea5035cc997ccbdf2f83e23d84962f24577f7
+  content_hash: sha256:723f994cfa4a9751bbe4b81b6cefa8a355e2301ce51a63a3a5fbd3e2f7427295
 - kind: project-relative
   target: claude
   value: .claude/skills/write-design-docs
@@ -622,7 +622,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:a923ae23ac808652fb205f549be72738dc5a81403e7cddb3c2d390ad73934ed5
+  content_hash: sha256:7815ca7da501a7db81fdff7d9dcca620a0bfd5bf6984d60cc21612d35d3aae0e
 - kind: project-relative
   target: claude
   value: .claude/skills/write-design-docs/references/adr.md
@@ -721,7 +721,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:be12c1419eb032bf65ced42bc1380a5e9b6dcd79a72702bf5b16f08731a24d01
+  content_hash: sha256:7f26450412f1896c838223edc31de03f5806209b19a9cef01da2815f5aa6571a
 - kind: project-relative
   target: claude
   value: .claude/skills/write-issue-pr/assets/.github/pull_request_template.md
@@ -730,7 +730,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+  content_hash: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
 - kind: project-relative
   target: claude
   value: .claude/skills/write-issue-pr/assets/.gitlab/issue_templates/bug.md
@@ -757,7 +757,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:211473d172e8a2f0c5b27ab39070c41fe8204e0fb3758c5cb149cffc9a1037c5
+  content_hash: sha256:a20029b8990145cb47845afbdeb463e6d959a59e09b22c6ecfe86c1b0b37aeb9
 - kind: project-relative
   target: claude
   value: .claude/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md
@@ -766,7 +766,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+  content_hash: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
 - kind: project-relative
   target: claude
   value: .claude/skills/write-issue-pr/references/issue.md
@@ -802,7 +802,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:3b8ce41de8b81edfda276f8288b6d91863b5ee88f305bea817d497fe1f9b9a57
+  content_hash: sha256:f84312281c3448eb0047133260e97c03d7fb93ce4e78911274af9d46fb563869
 - kind: project-relative
   target: claude
   value: .claude/skills/write-skill
@@ -1018,7 +1018,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:5097779ee5eda59bf76d7c04040ea5035cc997ccbdf2f83e23d84962f24577f7
+  content_hash: sha256:723f994cfa4a9751bbe4b81b6cefa8a355e2301ce51a63a3a5fbd3e2f7427295
 - kind: project-relative
   target: codex
   value: .agents/skills/write-design-docs
@@ -1081,7 +1081,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:a923ae23ac808652fb205f549be72738dc5a81403e7cddb3c2d390ad73934ed5
+  content_hash: sha256:7815ca7da501a7db81fdff7d9dcca620a0bfd5bf6984d60cc21612d35d3aae0e
 - kind: project-relative
   target: codex
   value: .agents/skills/write-design-docs/references/adr.md
@@ -1180,7 +1180,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:be12c1419eb032bf65ced42bc1380a5e9b6dcd79a72702bf5b16f08731a24d01
+  content_hash: sha256:7f26450412f1896c838223edc31de03f5806209b19a9cef01da2815f5aa6571a
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr/assets/.github/pull_request_template.md
@@ -1189,7 +1189,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+  content_hash: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr/assets/.gitlab/issue_templates/bug.md
@@ -1216,7 +1216,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:211473d172e8a2f0c5b27ab39070c41fe8204e0fb3758c5cb149cffc9a1037c5
+  content_hash: sha256:a20029b8990145cb47845afbdeb463e6d959a59e09b22c6ecfe86c1b0b37aeb9
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md
@@ -1225,7 +1225,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:3ce771f31b01864f66d115d6627e4fec1f7e1841ddfeeb87de6bb9296a86fc70
+  content_hash: sha256:a1f4cdcda0f24030cbc9451bf519da348c4e996b0753bbd18ae701118b9cd341
 - kind: project-relative
   target: codex
   value: .agents/skills/write-issue-pr/references/issue.md
@@ -1261,7 +1261,7 @@ deployments:
   owners:
   - ./packages/docs
   active_owner: ./packages/docs
-  content_hash: sha256:3b8ce41de8b81edfda276f8288b6d91863b5ee88f305bea817d497fe1f9b9a57
+  content_hash: sha256:f84312281c3448eb0047133260e97c03d7fb93ce4e78911274af9d46fb563869
 - kind: project-relative
   target: codex
   value: .agents/skills/write-skill

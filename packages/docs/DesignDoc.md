@@ -70,20 +70,20 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 
 ### テンプレートと書き方のスキル
 
-文章の規則のスキル `write-prose` が、どの文書にも当てはまる規則（文書の分け方、文、段落と箇条書き、表、図、見出しと用語）を持つ。そのリポジトリだけの文章の規則は、利用者の `context/conventions.md` の Documents の節に置き、`write-prose` が書く前に読む。一般の規則はパッケージが、そのリポジトリだけの規則は context が持つ。  
-書き方のスキル `write-design-docs` が、4 つの文書に何を書き何を書かないか、全体像と機能ごとの分け方、spec を閉じる前に残す設計を移す規則を持つ。節の構成と骨組みは、文書の種類ごとに `references/` に分ける。  
+文章の規則のスキル `write-prose` が、どの文書にも当てはまる規則（文書の分け方、文、段落と箇条書き、表、図、見出しと用語）を持つ。そのリポジトリだけの文章の規則は、利用者の `context/conventions.md` の Documents のセクションに置き、`write-prose` が書く前に読む。一般の規則はパッケージが、そのリポジトリだけの規則は context が持つ。  
+書き方のスキル `write-design-docs` が、4 つの文書に何を書き何を書かないか、全体像と機能ごとの分け方、spec を閉じる前に残す設計を移す規則を持つ。セクションの構成と骨組みは、文書の種類ごとに `references/` に分ける。  
 テンプレートは 2 つに分ける。導入のときに 1 度写すものはスキルの `assets/` に置き、core の導入のスキルが写す。文書ごとに新しく作るものは `references/` の骨組みとして持ち、書くときにスキルが写す。導入のときに写すと、使わないファイルが目次に載るためである。
 
-導入のスキル `setup-design-docs` は、テンプレートが写された後に、プロジェクトごとに違う設定を利用者と決める。textlint のパッケージを入れ、CONTRIBUTING.md の「文書を直すとき」の節と、lefthook と CI にチェックの呼び方を書く。CONTRIBUTING.md のテンプレートは core が持つので、docs は節の中身だけを埋める。core から docs への依存を作らないためである。  
+導入のスキル `setup-design-docs` は、テンプレートが写された後に、プロジェクトごとに違う設定を利用者と決める。textlint のパッケージを入れ、CONTRIBUTING.md の「文書を直すとき」のセクションと、lefthook と CI にチェックの呼び方を書く。CONTRIBUTING.md のテンプレートは core が持つので、docs はセクションの中身だけを埋める。core から docs への依存を作らないためである。  
 プロジェクトの用語の規則は、コードベース、issue、pull request から候補を集め、利用者と決めて `prh.yml` に足す。issue と pull request の本文は、語を集めるためだけに読み、リポジトリに写さない。
 
 | テンプレート | 置き場 | 内容 |
 | --- | --- | --- |
-| PRD | `assets/` | 10 節の骨組みと frontmatter |
-| 全体像の Design Doc | `assets/` | 8 節の骨組みと frontmatter |
+| PRD | `assets/` | 10 セクションの骨組みと frontmatter |
+| 全体像の Design Doc | `assets/` | 8 セクションの骨組みと frontmatter |
 | ADR | `assets/` | `adr/template.md`。Status、Context、Decision、Considered Options、Consequences |
 | textlint と prh の設定 | `assets/` | 文章の規則。どのプロジェクトでも成り立つ規則だけを持ち、用語の規則は利用者が足す |
-| 機能ごとの Design Doc | `references/` | 4 節の骨組みと frontmatter |
+| 機能ごとの Design Doc | `references/` | 4 セクションの骨組みと frontmatter |
 | spec | `references/` | `index.md` の骨組み。`process.yml` は開発プロセスのテンプレートから写す |
 | レビュー用の HTML の骨組み | `assets/` | spec の Markdown を 1 本にまとめる枠 |
 
@@ -115,7 +115,7 @@ Design Doc と context の frontmatter に、core の基本のキーに加えて
 | 文章の規則 | textlint と prh で、使わない語と文の形を確認する。設定はテンプレートとして写す | 編集後、pre-commit、CI | 失敗 |
 | 実装とずれた可能性の一覧 | `verified_commit` より後に `governs` の範囲が変更された文書を一覧する | CI | 失敗にしない。一覧は見直しの作業リスト |
 | spec の消し忘れ | close 済みの issue に対応する spec のディレクトリが残っていないかを確認する。issue の状態はホスティングサービスの API で読み、CI の token を使う | CI | 残っているディレクトリを報告 |
-| 経緯の混入 | Design Doc と context に、変更履歴の節と解決済みの issue 番号がないかを確認する | 編集後、CI | 変更履歴の見出しは失敗。issue の番号は一覧だけを出す |
+| 経緯の混入 | Design Doc と context に、変更履歴のセクションと解決済みの issue 番号がないかを確認する | 編集後、CI | 変更履歴の見出しは失敗。issue の番号は一覧だけを出す |
 | リンク | 文書の中のリンク切れを確認する | 編集後、CI | 失敗 |
 
 チェックのスクリプトは、編集後のフックと一緒に `hooks/` に置き、依存するライブラリを持たない。パッケージマネージャーは `hooks/` だけを利用者のリポジトリへ写し、`scripts/` は写さないためである。経緯の混入とリンクの処理は `hooks/doc-checks.mjs` に 1 つだけ持つ。  
