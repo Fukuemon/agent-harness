@@ -10,7 +10,7 @@ export const savedLoginPath = (dir: string, baseUrl: string, key: string): strin
   path.join(dir, new URL(baseUrl).host.replace(':', '_'), `${key}.json`)
 
 /**
- * 保存したログインの状態で入れればそれを使い、入れなければログインして状態を保存する。
+ * 保存したログインの状態で入れればそれを使い、入れなければログインする。どちらでも、入れた後の状態を保存し直す。
  * 保存するのは Cookie、localStorage、IndexedDB で、sessionStorage は保存しない。ファイルは本人だけが読める権限(600)にする。
  * 同じファイルを並列の worker で共有しない。refresh のトークンを使うたびに替えるアプリでは、全部のセッションが失効する。
  * ログインした後も isLoggedIn が false なら、例外を投げる。
@@ -31,13 +31,12 @@ export const ensureSavedLogin = async (
   const context = await browser.newContext({ baseURL: o.baseUrl, storageState: saved })
   try {
     const page = await context.newPage()
-    if (saved && (await o.isLoggedIn(page))) {
-      chmodSync(saved, 0o600)
-      return
+    // 保存した状態で入れたときも保存し直す。入れたかを確かめる間に、アプリがトークンを替えることがあるため
+    if (!(saved && (await o.isLoggedIn(page)))) {
+      await o.login(page)
+      if (!(await o.isLoggedIn(page)))
+        throw new Error(`ログインした後も、アプリに入れない: ${page.url()}`)
     }
-    await o.login(page)
-    if (!(await o.isLoggedIn(page)))
-      throw new Error(`ログインした後も、アプリに入れない: ${page.url()}`)
     mkdirSync(path.dirname(o.path), { recursive: true, mode: 0o700 })
     await context.storageState({ path: o.path, indexedDB: true })
     chmodSync(o.path, 0o600)
