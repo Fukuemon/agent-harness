@@ -1,5 +1,5 @@
 // convert-captures.sh が、webm を H.264 の mp4 に変換し、変換する物が無いときは終了コード 1 で止まることを確かめる。
-// 実行: node --test packages/global/skills/capture-browser-evidence/scripts/
+// 実行: node --test packages/verification/skills/capture-browser-evidence/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, mkdirSync, mkdtempSync } from "node:fs";

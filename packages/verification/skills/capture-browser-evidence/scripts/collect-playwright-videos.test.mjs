@@ -1,5 +1,5 @@
 // collect-playwright-videos.py が、JSON レポートの録画を名前を付けて写し、録画の無いテストを終了コード 1 で知らせることを確かめる。
-// 実行: node --test packages/global/skills/capture-browser-evidence/scripts/
+// 実行: node --test packages/verification/skills/capture-browser-evidence/scripts/
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, mkdtempSync, writeFileSync } from "node:fs";

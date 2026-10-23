@@ -12,6 +12,10 @@
     {
       "name": "docs",
       "source": "./packages/docs"
+    },
+    {
+      "name": "verification",
+      "source": "./packages/verification"
     }
   ]
 }
