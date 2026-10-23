@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 
 const script = fileURLToPath(new URL("check-screens.mjs", import.meta.url));
-const assets = fileURLToPath(new URL("../assets/", import.meta.url));
+const templates = fileURLToPath(new URL("../references/screens/", import.meta.url));
 const schema = fileURLToPath(new URL("../../../schemas/screens.schema.json", import.meta.url));
 
 const SCREEN = "docs/screens/order-list_注文の一覧";
@@ -85,7 +85,7 @@ ${head}    <link rel="stylesheet" href="../../_common/wireframe.css" />
 
 function repo({ project = "", files = {} } = {}) {
   const dir = mkdtempSync(join(tmpdir(), "check-screens-"));
-  cpSync(assets, dir, { recursive: true });
+  cpSync(templates, join(dir, "docs/screens"), { recursive: true });
   mkdirSync(join(dir, "context"));
   writeFileSync(join(dir, "context/project.yml"), `version: 2\n${project}`);
   mkdirSync(join(dir, SCREEN, "mocks"), { recursive: true });

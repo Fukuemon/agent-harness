@@ -8,11 +8,13 @@ description: 画面仕様書（画面ごとの index.md、api.md、mocks/ の操
 書き方の規則は、利用者のリポジトリの画面仕様書の規約（`<screens.dir>/rules.md`）が持つ。このスキルは、規約に沿って作業を進める順と、確認の方法だけを持つ。規則をここに写さない。  
 `screens.dir` は `context/project.yml` にあり、省くと `docs/screens` になる。
 
-作業の最初に、規約の全文と、目次（`<screens.dir>/index.md`）の「画面の ID の規則」を読む。規約と食い違うことをこのスキルで見つけたら、規約を直す変更として分けて提案する。
+作業の最初に、`<screens.dir>/rules.md` の全文と、`<screens.dir>/index.md` の「画面の ID の規則」を読む。`rules.md` が無ければ、下の「初めて使うとき」を先に行う。規約と食い違うことをこのスキルで見つけたら、規約を直す変更として分けて提案する。
+
+スクリプトは、どれもリポジトリのルートで流す。
 
 ## 初めて使うとき
 
-`context/project.yml` に `screens` のキーが無ければ、次の値を利用者に 1 度にまとめて尋ね、`screens` の下に書く。
+`context/project.yml` に `screens` のキーが無ければ、次の値を利用者に 1 度にまとめて尋ね、`screens` の下に 1 行ずつ書く。
 
 - `dir`: 画面仕様書の置き場。既定は `docs/screens`。
 - `tokens_css`: モックが読むトークンの CSS のパス。トークンの CSS が無ければ省く。
@@ -21,11 +23,22 @@ description: 画面仕様書（画面ごとの index.md、api.md、mocks/ の操
 
 `context/project.yml` にほかのパッケージのキーで同じ値（トークンの CSS のパス、カタログの URL、テストのディレクトリ）があれば、尋ねるときに候補として示す。値はほかのキーから読まず、`screens` の下に同じ値を書く。
 
-導入のスキルは、このスキルの `assets/` を `docs/screens/` に写す。続けて次をそろえる。
+続けて、雛形を `<screens.dir>` へ写す。
 
-- `dir` が `docs/screens` でなければ、写ったディレクトリを `dir` へ移す。
+```sh
+node {このスキルのディレクトリ}/scripts/copy-screen-templates.mjs [--update]
+```
+
+- 終了コード 0: 写し終えた。既にあるファイルは上書きしていない。
+- 終了コード 1: 既にある `_common/` の共通の処理が雛形と違う。出た差分を利用者に見せ、取り込むと決まったら `--update` を付けて流し直す。
+- 終了コード 2: `screens` の値か引数が誤っている。値を直す。
+
+写した後に、次をそろえる。
+
 - `tokens_css` を書いたら、`<screens.dir>/_common/wireframe.css` の `:root` で、意味のトークンを `--wf-*` に当てる。
-- 仕様書のページを描くサイトがあれば、仕様書のページで `<screens.dir>/_common/embed-mock.js` を読み込むよう設定する。サイトの設定の仕方は、利用者の context か、サイトの設定ファイルを読んで決める。
+- 仕様書のページを描くサイトがあれば、仕様書のページで `<screens.dir>/_common/embed-mock.js` を読み込むよう設定する。サイトが、`source` が `screen-mock` のメッセージを受けるスクリプトを既に読んでいれば足さない。サイトの設定の仕方は、利用者の context か、サイトの設定ファイルを読んで決める。
+
+パッケージを更新した後も、同じスクリプトを流して `_common/` の共通の処理を取り込む。
 
 ## 新しい画面を書く
 
@@ -57,7 +70,7 @@ description: 画面仕様書（画面ごとの index.md、api.md、mocks/ の操
    node {このスキルのディレクトリ}/scripts/check-screens.mjs [<screens.dir>/<画面のディレクトリ>]...
    ```
 
-   - 終了コード 0: 違反なし。
+   - 終了コード 0: 違反なし。リテラルで始まらない testid の引数は照らさず、件数だけを出す。
    - 終了コード 1: 違反の一覧が出る。規約に合わせて直し、流し直す。
    - 終了コード 2: `context/project.yml` の `screens` の値か、`_common/mock.js` の置き場が誤っている。値を直す。
 2. 利用者の CONTRIBUTING.md にある文書のチェックを、書いた `index.md` と `api.md` に流す。

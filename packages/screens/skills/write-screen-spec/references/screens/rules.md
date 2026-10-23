@@ -187,14 +187,14 @@
 
 ## 点検
 
-スキル write-screen-spec の `scripts/check-screens.mjs` が、規約のうち機械的に確認できるものを見る。
+リポジトリのルートで流すスキル write-screen-spec の `scripts/check-screens.mjs` が、規約のうち機械的に確認できるものを見る。
 
 - 名前と仕様書: ディレクトリとファイルの名前、仕様書の 1 行目と生の HTML、状態のタブ、iframe と別タブのリンク、構成要素の表の見出し
 - 番号: 表の番号とモックの `data-m` の一致、`data-m` の連番
 - 操作: `data-go` の先のモックがあるか、`data-open` と `data-close` の名前の `data-panel` があるか、属性の値が空でないか、`data-escape` を操作の属性を持つ要素に付けたか
 - モック: 構造と読み込みの順、`data-view`、`data-testid` の形、禁止の記述と幅と配置の規則（外部の URL、`position: fixed`、viewport の単位と寸法の `@media`、ダークモード）
 - テンプレートの `<…>` の消し忘れ（`index.md`、`api.md`、モック、画面の CSS）
-- カタログ: `screens.catalog_url` があるとき、カタログの欄にリンクがあり、全てがその URL で始まるか
-- テスト: `screens.e2e_dir` があり、全ての画面を見るとき、テストのコードの testid がどれかのモックの `data-testid` にあるか
+- カタログ: `screens.catalog_url` があるとき、カタログの欄にリンクがあり、全てがその URL の下にあるか
+- テスト: `screens.e2e_dir` があり、全ての画面を見るとき、テストのコードがリテラルで書いた testid がどれかのモックの `data-testid` にあるか。変数で受けた testid は照らさない
 
 見た目（番号の位置、デバイスごとの崩れ）と操作は、モックを別タブで開き、ツールバーでデバイスを切り替え、押せる要素を押して確認する。
