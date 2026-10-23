@@ -293,7 +293,7 @@ dependencies:
     .agents/skills/write-screen-spec/assets/docs/screens/_common/embed-mock.js: sha256:51f552af92c59250696114e52ccfba5be20c518a39a7660a80724ee6f7a74779
     .agents/skills/write-screen-spec/assets/docs/screens/_common/interact.js: sha256:07709412617a9c8d5f8ef54dff089a386fd2f3d922474b9a4df49091274758d5
     .agents/skills/write-screen-spec/assets/docs/screens/_common/mock.css: sha256:5783a3cb2b9082891352c6aef88bbb63e3c5652932ab1794bb74e0e312a5bd73
-    .agents/skills/write-screen-spec/assets/docs/screens/_common/mock.js: sha256:4363e14e0a9289a3c202eef2fc32e916d1df7255a79048c739f656ad25077794
+    .agents/skills/write-screen-spec/assets/docs/screens/_common/mock.js: sha256:1b1021b1553b0903373f4e52aab678f07f7bca23764b11c91b676dd7d2eb0180
     .agents/skills/write-screen-spec/assets/docs/screens/_common/wireframe.css: sha256:8dfa48d161f924c86e988f66bb07b155f4718506aa2cec6a7837d0ad030ed376
     .agents/skills/write-screen-spec/assets/docs/screens/_template/api.md: sha256:a0fc5caa2b01f71f11e9bfb6ef6b9e25beb7b6c816bbb8c1137a71aae44b3eb3
     .agents/skills/write-screen-spec/assets/docs/screens/_template/index.md: sha256:90e2bf3e23b3465fb7612cfcff7ae9151fe50b8a7ec7771e2721c797a2b570a6
@@ -301,13 +301,13 @@ dependencies:
     .agents/skills/write-screen-spec/assets/docs/screens/_template/mocks/screen-id.css: sha256:0827bd7961e358a41363905a697ab10766b8331e170936c9fc93ccceaad49890
     .agents/skills/write-screen-spec/assets/docs/screens/index.md: sha256:39114d03d7cd1177dd4cde856efe8655d3f46f62780d1383cdad68c166913fa6
     .agents/skills/write-screen-spec/assets/docs/screens/rules.md: sha256:874f67abcb26d72edcb487264341a1d7f6dcade5c8d775cc02b06b4d57d0d405
-    .agents/skills/write-screen-spec/scripts/check-screens.mjs: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
-    .agents/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
+    .agents/skills/write-screen-spec/scripts/check-screens.mjs: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
+    .agents/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:138b0f701fd5bd17e3af2f51db8ebfad048db3ca9716ccd75a2d5086ddb63c68
     .claude/skills/write-screen-spec/SKILL.md: sha256:c3a1ef7e34b3aa89e618a70ed72de09268aa893c707bcfafb087f2e3fe5e038a
     .claude/skills/write-screen-spec/assets/docs/screens/_common/embed-mock.js: sha256:51f552af92c59250696114e52ccfba5be20c518a39a7660a80724ee6f7a74779
     .claude/skills/write-screen-spec/assets/docs/screens/_common/interact.js: sha256:07709412617a9c8d5f8ef54dff089a386fd2f3d922474b9a4df49091274758d5
     .claude/skills/write-screen-spec/assets/docs/screens/_common/mock.css: sha256:5783a3cb2b9082891352c6aef88bbb63e3c5652932ab1794bb74e0e312a5bd73
-    .claude/skills/write-screen-spec/assets/docs/screens/_common/mock.js: sha256:4363e14e0a9289a3c202eef2fc32e916d1df7255a79048c739f656ad25077794
+    .claude/skills/write-screen-spec/assets/docs/screens/_common/mock.js: sha256:1b1021b1553b0903373f4e52aab678f07f7bca23764b11c91b676dd7d2eb0180
     .claude/skills/write-screen-spec/assets/docs/screens/_common/wireframe.css: sha256:8dfa48d161f924c86e988f66bb07b155f4718506aa2cec6a7837d0ad030ed376
     .claude/skills/write-screen-spec/assets/docs/screens/_template/api.md: sha256:a0fc5caa2b01f71f11e9bfb6ef6b9e25beb7b6c816bbb8c1137a71aae44b3eb3
     .claude/skills/write-screen-spec/assets/docs/screens/_template/index.md: sha256:90e2bf3e23b3465fb7612cfcff7ae9151fe50b8a7ec7771e2721c797a2b570a6
@@ -315,8 +315,8 @@ dependencies:
     .claude/skills/write-screen-spec/assets/docs/screens/_template/mocks/screen-id.css: sha256:0827bd7961e358a41363905a697ab10766b8331e170936c9fc93ccceaad49890
     .claude/skills/write-screen-spec/assets/docs/screens/index.md: sha256:39114d03d7cd1177dd4cde856efe8655d3f46f62780d1383cdad68c166913fa6
     .claude/skills/write-screen-spec/assets/docs/screens/rules.md: sha256:874f67abcb26d72edcb487264341a1d7f6dcade5c8d775cc02b06b4d57d0d405
-    .claude/skills/write-screen-spec/scripts/check-screens.mjs: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
-    .claude/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
+    .claude/skills/write-screen-spec/scripts/check-screens.mjs: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
+    .claude/skills/write-screen-spec/scripts/check-screens.test.mjs: sha256:138b0f701fd5bd17e3af2f51db8ebfad048db3ca9716ccd75a2d5086ddb63c68
   source: local
   local_path: ./packages/screens
   declared_license: MIT
@@ -1203,7 +1203,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:4363e14e0a9289a3c202eef2fc32e916d1df7255a79048c739f656ad25077794
+  content_hash: sha256:1b1021b1553b0903373f4e52aab678f07f7bca23764b11c91b676dd7d2eb0180
 - kind: project-relative
   target: claude
   value: .claude/skills/write-screen-spec/assets/docs/screens/_common/wireframe.css
@@ -1275,7 +1275,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
+  content_hash: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
 - kind: project-relative
   target: claude
   value: .claude/skills/write-screen-spec/scripts/check-screens.test.mjs
@@ -1284,7 +1284,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
+  content_hash: sha256:138b0f701fd5bd17e3af2f51db8ebfad048db3ca9716ccd75a2d5086ddb63c68
 - kind: project-relative
   target: claude
   value: .claude/skills/write-skill
@@ -2004,7 +2004,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:4363e14e0a9289a3c202eef2fc32e916d1df7255a79048c739f656ad25077794
+  content_hash: sha256:1b1021b1553b0903373f4e52aab678f07f7bca23764b11c91b676dd7d2eb0180
 - kind: project-relative
   target: codex
   value: .agents/skills/write-screen-spec/assets/docs/screens/_common/wireframe.css
@@ -2076,7 +2076,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:44dd44cca0a14e9ce9d7056eaaea09d9a20c23c614ffcc0a25b889314aa389fe
+  content_hash: sha256:3556174c7c5c466cd1b3a2244e0143c07e9cfef6a827a5ab3c3ec48fbd91862a
 - kind: project-relative
   target: codex
   value: .agents/skills/write-screen-spec/scripts/check-screens.test.mjs
@@ -2085,7 +2085,7 @@ deployments:
   owners:
   - ./packages/screens
   active_owner: ./packages/screens
-  content_hash: sha256:9b6985211d1aead8abf749acdb5858aa3f9fda9ee2c502597026425ed9975dbc
+  content_hash: sha256:138b0f701fd5bd17e3af2f51db8ebfad048db3ca9716ccd75a2d5086ddb63c68
 - kind: project-relative
   target: codex
   value: .agents/skills/write-skill

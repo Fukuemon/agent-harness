@@ -149,6 +149,12 @@ test("禁止の記述と、先の無い操作の属性を、終了コード 1 �
   assert.match(r.out, /viewport の単位を使わない/);
 });
 
+test("インラインの SVG の xmlns は、外部の URL として報告しない", () => {
+  const button = '<button type="button" class="wf-btn" data-m="1" data-testid="order-list-submit"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16"></svg>注文する</button>';
+  const r = run(repo({ files: { [`${SCREEN}/mocks/01-initial.html`]: mock({ button }) } }));
+  assert.equal(r.code, 0, r.out);
+});
+
 test("screens.tokens_css があると、モックがトークンの CSS を mock.css の次に読むことを求める", () => {
   const project = "screens:\n  tokens_css: docs/tokens.css\n";
   const files = { "docs/tokens.css": ":root {}\n" };

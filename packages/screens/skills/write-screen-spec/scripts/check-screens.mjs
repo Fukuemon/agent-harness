@@ -217,7 +217,9 @@ function checkMock(mockPath, screenId) {
   const scripts = [...code.matchAll(/<script\b[^>]*>/g)].map((m) => attr(m[0], "src"));
   if (scripts.join() !== SCRIPTS.join()) report(mockPath, `script は ${SCRIPTS.join("、")} だけをこの順に読む`);
   checkInteractions(code, mockPath);
-  for (const [pattern, label] of FORBIDDEN) if (pattern.test(code)) report(mockPath, `${label}を使わない`);
+  // xmlns の URL は名前空間の名前で、外部から読み込まない
+  const loaded = code.replace(/\sxmlns(:[\w-]+)?="[^"]*"/g, "");
+  for (const [pattern, label] of FORBIDDEN) if (pattern.test(loaded)) report(mockPath, `${label}を使わない`);
   if (PLACEHOLDER.test(html)) report(mockPath, `テンプレートの ${html.match(PLACEHOLDER)[0]} が残っている`);
   const numbers = new Set();
   for (const m of code.matchAll(/\sdata-m=["']([^"']*)["']/g)) {
