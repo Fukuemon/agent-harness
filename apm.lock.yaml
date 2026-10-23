@@ -305,7 +305,7 @@ dependencies:
   - .claude/skills/write-verification-spec
   - .claude/skills/write-verification-spec/SKILL.md
   deployed_file_hashes:
-    .agents/skills/attach-evidence/SKILL.md: sha256:1f1ed771db5c05ea0ed17f42bfb8eeb15df758f40d20c674839f5ba5a7cc0444
+    .agents/skills/attach-evidence/SKILL.md: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
     .agents/skills/attach-evidence/assets/context/testing/evidence.md: sha256:bf4529af9268c0a8c7e06169c45577df5d0478a2b5c947e37ab1a4bfe1c37c0f
     .agents/skills/attach-evidence/references/github.md: sha256:7d53045b4ab0031dc37d41ffb0e3cfcf3decc9732f2b47e66f510c5057f9b423
     .agents/skills/attach-evidence/references/gitlab.md: sha256:d3c267aad0eb228b207b807305ccdc9960201a023acc60dd8db3bc87e17eafef
@@ -323,7 +323,7 @@ dependencies:
     .agents/skills/design-test-cases/references/test-case-design-template.md: sha256:87ab5f97f2adea7c0ce23f8369d278b2a4528febecc2774a29a05925dea3509a
     .agents/skills/run-verification-scenarios/SKILL.md: sha256:b1939c18ca6049d29691e4eedec59a3b98d18d61d2e6f633519cfdb6fc1a2fee
     .agents/skills/write-verification-spec/SKILL.md: sha256:40ff3fb9900c963d56cfb8b0f9febc2870edca50bfc413d6e3166781dfd1310b
-    .claude/skills/attach-evidence/SKILL.md: sha256:1f1ed771db5c05ea0ed17f42bfb8eeb15df758f40d20c674839f5ba5a7cc0444
+    .claude/skills/attach-evidence/SKILL.md: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
     .claude/skills/attach-evidence/assets/context/testing/evidence.md: sha256:bf4529af9268c0a8c7e06169c45577df5d0478a2b5c947e37ab1a4bfe1c37c0f
     .claude/skills/attach-evidence/references/github.md: sha256:7d53045b4ab0031dc37d41ffb0e3cfcf3decc9732f2b47e66f510c5057f9b423
     .claude/skills/attach-evidence/references/gitlab.md: sha256:d3c267aad0eb228b207b807305ccdc9960201a023acc60dd8db3bc87e17eafef
@@ -470,7 +470,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:1f1ed771db5c05ea0ed17f42bfb8eeb15df758f40d20c674839f5ba5a7cc0444
+  content_hash: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
 - kind: project-relative
   target: claude
   value: .claude/skills/attach-evidence/assets/context/testing/evidence.md
@@ -1136,7 +1136,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:1f1ed771db5c05ea0ed17f42bfb8eeb15df758f40d20c674839f5ba5a7cc0444
+  content_hash: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
 - kind: project-relative
   target: codex
   value: .agents/skills/attach-evidence/assets/context/testing/evidence.md
