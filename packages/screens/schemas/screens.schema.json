@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fukuemon/agent-harness/packages/screens/schemas/screens.schema.json",
+  "title": "context/project.yml のうち、画面仕様書が読むキー",
+  "type": "object",
+  "properties": {
+    "screens": {
+      "type": "object",
+      "properties": {
+        "dir": { "$ref": "#/$defs/path", "description": "画面仕様書の置き場。省くと docs/screens" },
+        "tokens_css": { "$ref": "#/$defs/path", "description": "モックが読むトークンの CSS。省くと読まない" },
+        "catalog_url": {
+          "type": "string",
+          "description": "コンポーネントのカタログの URL。カタログの欄のリンクはこの値で始める。省くとリンクを見ない",
+          "pattern": "^https?://\\S+$"
+        },
+        "e2e_dir": { "$ref": "#/$defs/path", "description": "テストの testid をモックと照らすディレクトリ。省くと見ない" }
+      }
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "description": "リポジトリのルートからの相対パス。先頭と末尾の / は付けない。空、.、.. の区切りは使えない",
+      "pattern": "^(?!\\.\\.?(/|$))[^/]+(/(?!\\.\\.?(/|$))[^/]+)*$"
+    }
+  }
+}
