@@ -113,7 +113,7 @@ dependencies:
     .agents/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md: sha256:1704deaf6c2ffb0a2d6cc90d2e4c3e36f0d91fca1bf9f812c0bfa8846a90ead6
     .agents/skills/write-issue-pr/references/issue.md: sha256:8d90b454ae36e5d7b7254a454be472a528eabffe0a3204f5cc776beeeeda8e94
     .agents/skills/write-issue-pr/references/pull-request.md: sha256:2019064300f52cc4d2ee80513243fbd6bdd6d42928e7432f222bc7aeb83f36b6
-    .agents/skills/write-skill/SKILL.md: sha256:bca033dfa6c267549f1f9756ddc47f7bf12c010c0336fdd0daf7bf4ab1d1402e
+    .agents/skills/write-skill/SKILL.md: sha256:0f9fe1efa93f1ed77319925964f81dc35e50a7577abcff328b2f735b25212b94
     .claude/hooks/core/hooks/check-comments.mjs: sha256:4f193c4e21e6434a8d9c44d8e862f116b5746b79d41a0a63019614a9f367570e
     .claude/hooks/core/hooks/check-comments.test.mjs: sha256:9d40113fca8ea810e5cca6f27c47a0ea745d719c1c8ddecdb205a56bb7d268d9
     .claude/hooks/core/hooks/hooks.test.mjs: sha256:13f98a6c05b0f6b1d3ab60ff2beef81fcbe3b37eeb7100cc221b35f4045f035d
@@ -146,7 +146,7 @@ dependencies:
     .claude/skills/write-issue-pr/assets/.gitlab/merge_request_templates/Default.md: sha256:1704deaf6c2ffb0a2d6cc90d2e4c3e36f0d91fca1bf9f812c0bfa8846a90ead6
     .claude/skills/write-issue-pr/references/issue.md: sha256:8d90b454ae36e5d7b7254a454be472a528eabffe0a3204f5cc776beeeeda8e94
     .claude/skills/write-issue-pr/references/pull-request.md: sha256:2019064300f52cc4d2ee80513243fbd6bdd6d42928e7432f222bc7aeb83f36b6
-    .claude/skills/write-skill/SKILL.md: sha256:bca033dfa6c267549f1f9756ddc47f7bf12c010c0336fdd0daf7bf4ab1d1402e
+    .claude/skills/write-skill/SKILL.md: sha256:0f9fe1efa93f1ed77319925964f81dc35e50a7577abcff328b2f735b25212b94
     .codex/hooks/core/hooks/check-comments.mjs: sha256:4f193c4e21e6434a8d9c44d8e862f116b5746b79d41a0a63019614a9f367570e
     .codex/hooks/core/hooks/check-comments.test.mjs: sha256:9d40113fca8ea810e5cca6f27c47a0ea745d719c1c8ddecdb205a56bb7d268d9
     .codex/hooks/core/hooks/hooks.test.mjs: sha256:13f98a6c05b0f6b1d3ab60ff2beef81fcbe3b37eeb7100cc221b35f4045f035d
@@ -1100,7 +1100,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:bca033dfa6c267549f1f9756ddc47f7bf12c010c0336fdd0daf7bf4ab1d1402e
+  content_hash: sha256:0f9fe1efa93f1ed77319925964f81dc35e50a7577abcff328b2f735b25212b94
 - kind: project-relative
   target: claude
   value: .claude/skills/write-verification-spec
@@ -1766,7 +1766,7 @@ deployments:
   owners:
   - ./packages/core
   active_owner: ./packages/core
-  content_hash: sha256:bca033dfa6c267549f1f9756ddc47f7bf12c010c0336fdd0daf7bf4ab1d1402e
+  content_hash: sha256:0f9fe1efa93f1ed77319925964f81dc35e50a7577abcff328b2f735b25212b94
 - kind: project-relative
   target: codex
   value: .agents/skills/write-verification-spec
