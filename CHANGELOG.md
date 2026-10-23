@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.8](https://github.com/Fukuemon/agent-harness/compare/v0.2.7...v0.2.8) (2026-10-23)
+
+
+### Bug Fixes
+
+* **docs:** prh のテンプレートで、名詞の前の確かめが要るを確認が必要なと指摘する [#124](https://github.com/Fukuemon/agent-harness/issues/124) ([19eec8d](https://github.com/Fukuemon/agent-harness/commit/19eec8dcf1447fff8ca783505e1349e5ae15319c))
+* **docs:** prh のテンプレートの地の規則が、地味と地下を指摘しないようにする [#119](https://github.com/Fukuemon/agent-harness/issues/119) ([aed5822](https://github.com/Fukuemon/agent-harness/commit/aed5822efab732c17a3990c1a0f64021bf8751da))
+* **docs:** 確認が必要なと指摘する形に、はず、わけ、英字が続く形を足す [#124](https://github.com/Fukuemon/agent-harness/issues/124) ([9434f0d](https://github.com/Fukuemon/agent-harness/commit/9434f0d01d801e2508cd920ab24ca97ab5acc5a9))
+
 ## [0.2.7](https://github.com/Fukuemon/agent-harness/compare/v0.2.6...v0.2.7) (2026-10-23)
 
 
