@@ -32,7 +32,7 @@ pnpm lint:text
 ```
 
 対象は、ルート、`adr/`、`design/`、`context/`、`skills/` の Markdown である。  
-書き方の規則は、スキル write-prose と、[コードと文書の規約](context/conventions.md) の Documents の節にある。
+書き方の規則は、スキル write-prose と、[コードと文書の規約](context/conventions.md) の Documents のセクションにある。
 
 `context/` と `design/` の文書を足したり frontmatter を変えたりしたら、目次を生成し直す。
 
@@ -56,7 +56,7 @@ pnpm check:links
 - コミットの前に、ステージした Markdown を textlint でチェックする。
 - コミットメッセージは commitlint でチェックする。Conventional Commits の形式に加えて、要約の末尾の句点と、AI の帰属表示を禁止している。
 - メッセージの書き方と変更の分け方は、スキル write-commit にある。
-- ブランチの切り方と main への取り込み方は、[ブランチとリリース](#ブランチとリリース)の節にある。
+- ブランチの切り方と main への取り込み方は、[ブランチとリリース](#ブランチとリリース)のセクションにある。
 
 ## ブランチとリリース
 
@@ -80,12 +80,12 @@ pnpm check:links
 
 バージョンが上がるのは、`packages/` の下を変えたコミットだけ。コミットの type と、上がるバージョンの桁の対応は次のとおり。
 
-| コミットの type | 1.0 より前 | 1.0 以降 | 変更履歴の節 |
+| コミットの type | 1.0 より前 | 1.0 以降 | 変更履歴のセクション |
 | --- | --- | --- | --- |
 | type の後に `!`、または本文に `BREAKING CHANGE:` | minor | major | BREAKING CHANGES |
 | `feat` | patch | minor | Features |
 | `fix` | patch | patch | Bug Fixes |
-| `perf`、`revert`、`docs` | patch | patch | 各 type の節 |
+| `perf`、`revert`、`docs` | patch | patch | 各 type のセクション |
 | `chore`、`refactor`、`test`、`build`、`ci`、`style` | patch | patch | 載らない |
 
 - 変更履歴に載るコミットが 1 つもないと、リリース用の pull request は作られない。`chore` や `refactor` だけでは、バージョンは上がらない。
@@ -167,4 +167,4 @@ sequenceDiagram
 - 設計が要る作業だけ、`specs/<issue 番号>-<短い主題>/` に spec と `process.yml` を置く。それ以外は `context/project.yml` の既定の選択のまま進め、進み具合は issue の状態で表す。
 - pull request は 1 つの issue に対応させ、作業を始めた時点で Draft として作る。
 - issue と pull request の題と本文の書き方は、スキル write-issue-pr にある。
-- pull request のレビューには Codex が付く。指摘は対応して返信する。返信の書き方は、スキル write-issue-pr の共通の節に従う。
+- pull request のレビューには Codex が付く。指摘は対応して返信する。返信の書き方は、スキル write-issue-pr の共通のセクションに従う。

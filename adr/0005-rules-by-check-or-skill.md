@@ -18,17 +18,17 @@ Claude Code には、ルールをモデルに守らせる手段が 5 つある�
   - セッションの開始やプロンプトの送信のたびにスクリプトが動き、返した文章がモデルのコンテキストに入る。
     - 公式の文書は、この手段を、現在のブランチや直前の操作の結果のような、その時点の状態を伝える用途に勧めている。変わらない指示には規約ファイルを使うよう書いている。
     - 命令の形で書いた文章は、モデルがプロンプトへの攻撃とみなし、コンテキストとして扱わない場合がある、とも書いている。
-    - [Hooks reference](https://code.claude.com/docs/en/hooks) — 「Add context for Claude」の節
+    - [Hooks reference](https://code.claude.com/docs/en/hooks) — 「Add context for Claude」のセクション
 - **スキルにする。** 
   - 名前と説明だけが常にコンテキストに入り、本文はスキルが呼ばれたときにオンデマンドで読み込まれる。
     - スキルは、使われなくても、1 つごとに毎回のコンテキストを使う。数が多いと、説明が短縮される。
     - [Extend Claude with skills](https://code.claude.com/docs/en/skills)
 - **編集の後のフックで、自動でチェックする。** 
   - ファイルの編集の後にスクリプトが必ず動く。公式のガイドは、編集の後の自動整形を例に挙げている。
-    - [Automate actions with hooks](https://code.claude.com/docs/en/hooks-guide) — 「Auto-format code after edits」の節
+    - [Automate actions with hooks](https://code.claude.com/docs/en/hooks-guide) — 「Auto-format code after edits」のセクション
 - **操作の前のフックで止める。** 
   - ツールの実行の前にスクリプトが動き、操作を拒否できる。公式のガイドは、保護したファイルの編集の拒否を例に挙げている。
-    - 同じガイドの「Block edits to protected files」の節
+    - 同じガイドの「Block edits to protected files」のセクション
 
 公式のガイドは、規約ファイルの指示は助言であり、フックは決定的に実行される、と区別している。
 
@@ -88,7 +88,7 @@ Claude Code には、ルールをモデルに守らせる手段が 5 つある�
 | AI に多い語、使わない用語、英字と数字だけの記号による採番       | textlint                                                    |
 | 常体と丁寧語を混ぜない                          | textlint                                                    |
 | 1 文の長さ                               | textlint                                                    |
-| PRD、Design Doc、ADR に何を書くか。節の順。出典の示し方 | スキル「docs-writing」                                           |
+| PRD、Design Doc、ADR に何を書くか。セクションの順。出典の示し方 | スキル「docs-writing」                                           |
 | 事実と判断を分ける、異常系を書く、などの一般的な文章術          | 持たない。モデルに任せる                                                |
 | チャットでの口調                             | agent-harness は扱わない。使いたい人が、自分の global に genshijin などを入れる    |
 | ブログなどの読み物のリズム                        | agent-harness は扱わない。使いたい人が、そのリポジトリに natural-japanese などを入れる |
@@ -109,9 +109,9 @@ Claude Code には、ルールをモデルに守らせる手段が 5 つある�
 - セッションの開始のフックで、毎回コンテキストに追加する形にもしない。ルールが要るのは、コメントを書いた時点だけである。
 - 編集の後のフックは、編集を拒否しない。コメントを足したかどうかは機械で判定できるが、残してよいかどうかは判定できないためである。
 - 公式の文書は、フックで追加するコンテキストの用途に、直前の操作に応じた条件付きのプロジェクトのルールを挙げている。この使い方は、それに当たる。
-  - [Hooks reference](https://code.claude.com/docs/en/hooks) — 「Add context for Claude」の節
+  - [Hooks reference](https://code.claude.com/docs/en/hooks) — 「Add context for Claude」のセクション
 - この形は、サブエージェントにも届く。Claude Code では、設定ファイルとプラグインのフックがサブエージェントの中でも動く。スキルはサブエージェントに引き継がれない。
-  - [Create custom subagents](https://code.claude.com/docs/en/sub-agents) — 「What loads at startup」の節
+  - [Create custom subagents](https://code.claude.com/docs/en/sub-agents) — 「What loads at startup」のセクション
 
 ## Considered Options
 

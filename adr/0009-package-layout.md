@@ -35,7 +35,7 @@ microsoft/apm が配置するのは、コーディングエージェントが読
 - 利用者は、マニフェストに `Fukuemon/agent-harness/packages/<名前>` とタグを書いて導入する。
 - パッケージマネージャーを使わない利用者のために、リポジトリのルートに、Claude Code の形式のプラグインの一覧を 1 つ置く。Claude Code と Codex CLI は、どちらもこの一覧からプラグインを導入できる。
   - Codex CLI の公式文書は、Claude Code の形式の一覧とプラグインを読めると書いている。
-    - [Codex の公式文書](https://developers.openai.com/codex/llms-full.txt) — プラグインの一覧の形式を定めた節
+    - [Codex の公式文書](https://developers.openai.com/codex/llms-full.txt) — プラグインの一覧の形式を定めたセクション
 - Git のフックの設定は、lefthook の `remotes` で配る。利用者は、このリポジトリの URL とタグを、自分の `lefthook.yml` に書く。
   - Git のフックが呼ぶスクリプトは、lefthook の決まりに従い、このリポジトリのルートのディレクトリに置く。
   - `docs/configuration/remotes.md` / [github](https://github.com/evilmartians/lefthook/blob/1e23553eec2392753c5420d348e63a63f517cd45/docs/configuration/remotes.md)

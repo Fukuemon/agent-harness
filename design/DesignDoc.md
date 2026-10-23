@@ -20,7 +20,7 @@ agent-harness は、3 つのパッケージと、利用者が写して使う例�
 
 - [PRD](../PRD.md) — 課題、目標、受け入れの条件
 
-この文書は全体像だけを持つ。機能ごとの設計は、[Components](#components)の節から機能ごとの Design Doc へリンクする。
+この文書は全体像だけを持つ。機能ごとの設計は、[Components](#components)のセクションから機能ごとの Design Doc へリンクする。
 
 ## Goals and Non-Goals
 
@@ -56,7 +56,7 @@ agent-harness のチェックは、利用者の環境を読み取るだけで変
 
 開発者、コーディングエージェント、パッケージマネージャーとの関係の全体像は、[PRD の System Context](../PRD.md#system-context) にある。  
 次の図は、パッケージマネージャーで導入する場合の、agent-harness のパッケージと、取得から配置までの関係を示す。  
-コーディングエージェントの標準の方法と lefthook の remotes で導入する場合は、[Interfaces](#interfaces)の節に書いてある。
+コーディングエージェントの標準の方法と lefthook の remotes で導入する場合は、[Interfaces](#interfaces)のセクションに書いてある。
 
 ```mermaid
 flowchart TB
@@ -218,7 +218,7 @@ core を入れない利用者は、`packages/core/skills/setup-agent-harness/ass
 - 取り返しのつかない操作は、モデルへの指示に頼らず、プログラムで止める。agent-harness は、この考え方を持つが、止める仕組みと値は配らない。
   - ADR-0021: [ガードレールは考え方として持ち、止める仕組みと値は配らない](../adr/0021-guardrails-as-principle.md)
 - 止める設定は、利用者が書く。コマンドの禁止はコーディングエージェントの権限の設定で、保護ブランチと秘密情報は Git のフックで止める。
-- 保護するブランチと、直接コミットを許す場面は、CONTRIBUTING.md のブランチの節に書く。スキルは、そこを読んで判断する。
+- 保護するブランチと、直接コミットを許す場面は、CONTRIBUTING.md のブランチのセクションに書く。スキルは、そこを読んで判断する。
 
 ## Repository Layout
 
