@@ -70,6 +70,23 @@ test("別のコマンドが 8 分を超えたら、LONGCMD をもう一度出す
   assert.deepEqual(lines(r), ["LONGCMD 8m", "LONGCMD 8m"]);
 });
 
+test("読み取りが 8 分や 10 の倍数の分を飛ばしても、閾値を超えたら LONGCMD を出す", () => {
+  const r = watch([7, 9, 11, 13, 19, 21].map((m) => read([`Running 1 shell command… (${m}m 0s)`])));
+  assert.deepEqual(lines(r), ["LONGCMD 9m", "LONGCMD 11m", "LONGCMD 21m"]);
+});
+
+test("終わった heredoc のコマンドが画面に残っていても、別のコマンドでは HEREDOC を出さない", () => {
+  const r = watch([
+    read(["⏺ Bash(python3 - <<'EOF')", "  ⎿  done", "⏺ Bash(pnpm test)", "Running 1 shell command… (3m 10s)"]),
+  ]);
+  assert.deepEqual(lines(r), []);
+});
+
+test("実行中の呼び出しが heredoc なら、HEREDOC を出す", () => {
+  const r = watch([read(["⏺ Bash(pnpm test)", "  ⎿  ok", "⏺ Bash(python3 - <<'EOF')", "Running 1 shell command… (3m 10s)"])]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
+});
+
 test("読み取りが失敗したら、READFAIL を理由ごとに 1 回出す", () => {
   const stale = JSON.stringify({ ok: false, error: { code: "terminal_handle_stale" } });
   const r = watch([stale, stale, "not json"]);

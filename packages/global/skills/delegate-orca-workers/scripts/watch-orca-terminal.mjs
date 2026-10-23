@@ -52,12 +52,14 @@ if (!args) {
 // 表示の文言は Claude Code と Codex CLI の端末の表示に合わせている。表示が変わったら正規表現を直す
 const spinner = /^[✻✳✽✶✢·*] |esc to interrupt|tokens/;
 const heredoc = /<<-?\s*['"]?[A-Z_]+['"]?/;
-const shellMinutes = /Running [0-9]+ shell command[^0-9]*([0-9]+)m/g;
+// Claude Code は、ツールの呼び出しを行頭の ⏺ で表示する。最後の呼び出しから後を、実行中のコマンドとみなす
+const toolCall = /^\s*⏺ /;
+const shellMinutes =/Running [0-9]+ shell command[^0-9]*([0-9]+)m/g;
 const limitText = /usage limit reached|you've hit your|limit will reset|resets at [0-9]|5-hour limit|weekly limit/i;
 const waitingText = /◯ |[0-9]+ shell|background agent/;
 
 const readsFor = (minutes) => Math.ceil((minutes * 60) / args.interval);
-const state = { status: "running", readFail: "", heredocTold: false, limit: "", lastLong: 0, prev: null, same: 0 };
+const state = { status: "running", readFail: "", heredocTold: false, limit: "", lastLong: 0, nextLong: 8, prev: null, same: 0 };
 
 function say(line) {
   console.log(line);
@@ -88,10 +90,11 @@ function inspect(raw) {
 
   const text = tail.join("\n");
   const minutes = [...text.matchAll(shellMinutes)].map((m) => Number(m[1]));
-  const longest = minutes.length ? minutes[minutes.length - 1] : 0;
+  const elapsed = minutes.length ? minutes[minutes.length - 1] : 0;
+  const current = tail.slice(Math.max(0, tail.findLastIndex((line) => toolCall.test(line)))).join("\n");
 
-  if (heredoc.test(text)) {
-    if (longest >= 3 && !state.heredocTold) {
+  if (heredoc.test(current)) {
+    if (elapsed >= 3 && !state.heredocTold) {
       say("HEREDOC 3 分を超えた heredoc のコマンドがある");
       state.heredocTold = true;
     }
@@ -103,10 +106,12 @@ function inspect(raw) {
   if (limitLine && limitLine !== state.limit) say(`LIMIT ${limitLine.trim()}`);
   state.limit = limitLine;
 
-  if (longest < state.lastLong) state.lastLong = 0;
-  if (longest >= 8 && (longest === 8 || longest % 10 === 0) && longest !== state.lastLong) {
-    say(`LONGCMD ${longest}m`);
-    state.lastLong = longest;
+  // 経過の分が前より減ったら、別のコマンドが始まったとみなす
+  if (elapsed < state.lastLong) state.nextLong = 8;
+  state.lastLong = elapsed;
+  if (elapsed >= state.nextLong) {
+    say(`LONGCMD ${elapsed}m`);
+    state.nextLong = (Math.floor(elapsed / 10) + 1) * 10;
   }
 
   const body = tail.filter((line) => !spinner.test(line)).join("\n");
