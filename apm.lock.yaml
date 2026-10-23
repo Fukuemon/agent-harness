@@ -344,8 +344,6 @@ dependencies:
   - .agents/skills/attach-evidence
   - .agents/skills/attach-evidence/SKILL.md
   - .agents/skills/attach-evidence/assets/context/testing/evidence.md
-  - .agents/skills/attach-evidence/references/github.md
-  - .agents/skills/attach-evidence/references/gitlab.md
   - .agents/skills/capture-browser-evidence
   - .agents/skills/capture-browser-evidence/SKILL.md
   - .agents/skills/capture-browser-evidence/references/playwright-overlay/caption.ts
@@ -367,8 +365,6 @@ dependencies:
   - .claude/skills/attach-evidence
   - .claude/skills/attach-evidence/SKILL.md
   - .claude/skills/attach-evidence/assets/context/testing/evidence.md
-  - .claude/skills/attach-evidence/references/github.md
-  - .claude/skills/attach-evidence/references/gitlab.md
   - .claude/skills/capture-browser-evidence
   - .claude/skills/capture-browser-evidence/SKILL.md
   - .claude/skills/capture-browser-evidence/references/playwright-overlay/caption.ts
@@ -388,42 +384,38 @@ dependencies:
   - .claude/skills/write-verification-spec
   - .claude/skills/write-verification-spec/SKILL.md
   deployed_file_hashes:
-    .agents/skills/attach-evidence/SKILL.md: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
-    .agents/skills/attach-evidence/assets/context/testing/evidence.md: sha256:bf4529af9268c0a8c7e06169c45577df5d0478a2b5c947e37ab1a4bfe1c37c0f
-    .agents/skills/attach-evidence/references/github.md: sha256:7d53045b4ab0031dc37d41ffb0e3cfcf3decc9732f2b47e66f510c5057f9b423
-    .agents/skills/attach-evidence/references/gitlab.md: sha256:d3c267aad0eb228b207b807305ccdc9960201a023acc60dd8db3bc87e17eafef
-    .agents/skills/capture-browser-evidence/SKILL.md: sha256:60331e4c6172838fa96a71f261eac2175b7f28f9a7802ecfa1860348973fb428
-    .agents/skills/capture-browser-evidence/references/playwright-overlay/caption.ts: sha256:131d5dd45a69ea253ab96f62300eec0f8806e68c52a4c91e2342459349477e85
+    .agents/skills/attach-evidence/SKILL.md: sha256:33de4b685e3f0b0aaab88afedc9904e095a99bd588388ddcc1a37263415af6af
+    .agents/skills/attach-evidence/assets/context/testing/evidence.md: sha256:7777f7316793799fcb5648c7b08a6b08771c7b621834b2d56f0f72c731dafbc3
+    .agents/skills/capture-browser-evidence/SKILL.md: sha256:384442c892df5cf4ecfa3e5471055490dbcd8fc84b221adb6651bf39d00308f3
+    .agents/skills/capture-browser-evidence/references/playwright-overlay/caption.ts: sha256:509ccff0d394acc0d6642b383305c0397b3b710d858675424c26b8bc2dffd388
     .agents/skills/capture-browser-evidence/references/playwright-overlay/cursor.ts: sha256:90878ec83029afd8db64a6248d1a3888c90cf20829c100c531b2657fdf71001b
-    .agents/skills/capture-browser-evidence/references/playwright-overlay/files.ts: sha256:efe6aeec04cf7057ab2abf76ff7e0f16fbef7ed474514ea8857b6e928b101da0
-    .agents/skills/capture-browser-evidence/references/playwright-overlay/record.ts: sha256:e2a3969504a255823b8127de8859ec0769851d2ec42bef76bb71b63a7045648f
-    .agents/skills/capture-browser-evidence/references/recording.md: sha256:5483f2627ac992518ef477d7bc7302d5675927b86e8c9016dd56d69bc6b0ed03
+    .agents/skills/capture-browser-evidence/references/playwright-overlay/files.ts: sha256:ae1f6ed7af69937bcf2d544e4143724b2da80d882e2c17f29088d9a85d37a8d1
+    .agents/skills/capture-browser-evidence/references/playwright-overlay/record.ts: sha256:0cf92bc9a38def57da8d0d4ae27467b1702adaa992a177099bfaa7d32d20a1e7
+    .agents/skills/capture-browser-evidence/references/recording.md: sha256:d47e386548ab5bf8862e139efa85077c7c8f691de99726ba9709124f85975edb
     .agents/skills/capture-browser-evidence/scripts/collect-playwright-videos.py: sha256:3bc69351ef26bbcb4a191452f211133003429d85699f4315873e2aa66c0e6119
     .agents/skills/capture-browser-evidence/scripts/collect-playwright-videos.test.mjs: sha256:710c551d938facbf2a55a981bef906f0b3e3c442b2e45c102ee232acd2714ba6
-    .agents/skills/capture-browser-evidence/scripts/convert-captures.sh: sha256:50314434362b7950e5c40ee5063b1ad8e7b1e37f2ad4691cf72d4415422fd023
+    .agents/skills/capture-browser-evidence/scripts/convert-captures.sh: sha256:61d45bbbb73d97d386ddbbee9aa79fb76cf59b44d1943aa50130421c4829ae82
     .agents/skills/capture-browser-evidence/scripts/convert-captures.test.mjs: sha256:3dc1a4b3976b4946d61cefb24ff8eca169e29e939e3408751da960873970c443
-    .agents/skills/design-test-cases/SKILL.md: sha256:88996690ee4b3369c186f3df05e193b4912de931e8eea9c9ff2d9a8a4fd95765
-    .agents/skills/design-test-cases/references/test-case-design-template.md: sha256:87ab5f97f2adea7c0ce23f8369d278b2a4528febecc2774a29a05925dea3509a
-    .agents/skills/run-verification-scenarios/SKILL.md: sha256:b1939c18ca6049d29691e4eedec59a3b98d18d61d2e6f633519cfdb6fc1a2fee
-    .agents/skills/write-verification-spec/SKILL.md: sha256:40ff3fb9900c963d56cfb8b0f9febc2870edca50bfc413d6e3166781dfd1310b
-    .claude/skills/attach-evidence/SKILL.md: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
-    .claude/skills/attach-evidence/assets/context/testing/evidence.md: sha256:bf4529af9268c0a8c7e06169c45577df5d0478a2b5c947e37ab1a4bfe1c37c0f
-    .claude/skills/attach-evidence/references/github.md: sha256:7d53045b4ab0031dc37d41ffb0e3cfcf3decc9732f2b47e66f510c5057f9b423
-    .claude/skills/attach-evidence/references/gitlab.md: sha256:d3c267aad0eb228b207b807305ccdc9960201a023acc60dd8db3bc87e17eafef
-    .claude/skills/capture-browser-evidence/SKILL.md: sha256:60331e4c6172838fa96a71f261eac2175b7f28f9a7802ecfa1860348973fb428
-    .claude/skills/capture-browser-evidence/references/playwright-overlay/caption.ts: sha256:131d5dd45a69ea253ab96f62300eec0f8806e68c52a4c91e2342459349477e85
+    .agents/skills/design-test-cases/SKILL.md: sha256:e945c81d6af065ea50b0848bce8939bf6344ed353a1b144c9dea2a45050e672e
+    .agents/skills/design-test-cases/references/test-case-design-template.md: sha256:8f43b3a26c86a99f6e4b21d66b0a9007e4a6012e9773e065797dd77a291ed691
+    .agents/skills/run-verification-scenarios/SKILL.md: sha256:352d37fcee3a0fad70938627b32a2998d6c18559084b6470c30147a1d06c9a3e
+    .agents/skills/write-verification-spec/SKILL.md: sha256:e734f4516e09ac9eae25302ff218960a269d3a2124e9655213968addc301ee30
+    .claude/skills/attach-evidence/SKILL.md: sha256:33de4b685e3f0b0aaab88afedc9904e095a99bd588388ddcc1a37263415af6af
+    .claude/skills/attach-evidence/assets/context/testing/evidence.md: sha256:7777f7316793799fcb5648c7b08a6b08771c7b621834b2d56f0f72c731dafbc3
+    .claude/skills/capture-browser-evidence/SKILL.md: sha256:384442c892df5cf4ecfa3e5471055490dbcd8fc84b221adb6651bf39d00308f3
+    .claude/skills/capture-browser-evidence/references/playwright-overlay/caption.ts: sha256:509ccff0d394acc0d6642b383305c0397b3b710d858675424c26b8bc2dffd388
     .claude/skills/capture-browser-evidence/references/playwright-overlay/cursor.ts: sha256:90878ec83029afd8db64a6248d1a3888c90cf20829c100c531b2657fdf71001b
-    .claude/skills/capture-browser-evidence/references/playwright-overlay/files.ts: sha256:efe6aeec04cf7057ab2abf76ff7e0f16fbef7ed474514ea8857b6e928b101da0
-    .claude/skills/capture-browser-evidence/references/playwright-overlay/record.ts: sha256:e2a3969504a255823b8127de8859ec0769851d2ec42bef76bb71b63a7045648f
-    .claude/skills/capture-browser-evidence/references/recording.md: sha256:5483f2627ac992518ef477d7bc7302d5675927b86e8c9016dd56d69bc6b0ed03
+    .claude/skills/capture-browser-evidence/references/playwright-overlay/files.ts: sha256:ae1f6ed7af69937bcf2d544e4143724b2da80d882e2c17f29088d9a85d37a8d1
+    .claude/skills/capture-browser-evidence/references/playwright-overlay/record.ts: sha256:0cf92bc9a38def57da8d0d4ae27467b1702adaa992a177099bfaa7d32d20a1e7
+    .claude/skills/capture-browser-evidence/references/recording.md: sha256:d47e386548ab5bf8862e139efa85077c7c8f691de99726ba9709124f85975edb
     .claude/skills/capture-browser-evidence/scripts/collect-playwright-videos.py: sha256:3bc69351ef26bbcb4a191452f211133003429d85699f4315873e2aa66c0e6119
     .claude/skills/capture-browser-evidence/scripts/collect-playwright-videos.test.mjs: sha256:710c551d938facbf2a55a981bef906f0b3e3c442b2e45c102ee232acd2714ba6
-    .claude/skills/capture-browser-evidence/scripts/convert-captures.sh: sha256:50314434362b7950e5c40ee5063b1ad8e7b1e37f2ad4691cf72d4415422fd023
+    .claude/skills/capture-browser-evidence/scripts/convert-captures.sh: sha256:61d45bbbb73d97d386ddbbee9aa79fb76cf59b44d1943aa50130421c4829ae82
     .claude/skills/capture-browser-evidence/scripts/convert-captures.test.mjs: sha256:3dc1a4b3976b4946d61cefb24ff8eca169e29e939e3408751da960873970c443
-    .claude/skills/design-test-cases/SKILL.md: sha256:88996690ee4b3369c186f3df05e193b4912de931e8eea9c9ff2d9a8a4fd95765
-    .claude/skills/design-test-cases/references/test-case-design-template.md: sha256:87ab5f97f2adea7c0ce23f8369d278b2a4528febecc2774a29a05925dea3509a
-    .claude/skills/run-verification-scenarios/SKILL.md: sha256:b1939c18ca6049d29691e4eedec59a3b98d18d61d2e6f633519cfdb6fc1a2fee
-    .claude/skills/write-verification-spec/SKILL.md: sha256:40ff3fb9900c963d56cfb8b0f9febc2870edca50bfc413d6e3166781dfd1310b
+    .claude/skills/design-test-cases/SKILL.md: sha256:e945c81d6af065ea50b0848bce8939bf6344ed353a1b144c9dea2a45050e672e
+    .claude/skills/design-test-cases/references/test-case-design-template.md: sha256:8f43b3a26c86a99f6e4b21d66b0a9007e4a6012e9773e065797dd77a291ed691
+    .claude/skills/run-verification-scenarios/SKILL.md: sha256:352d37fcee3a0fad70938627b32a2998d6c18559084b6470c30147a1d06c9a3e
+    .claude/skills/write-verification-spec/SKILL.md: sha256:e734f4516e09ac9eae25302ff218960a269d3a2124e9655213968addc301ee30
   source: local
   local_path: ./packages/verification
   declared_license: MIT
@@ -553,7 +545,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
+  content_hash: sha256:33de4b685e3f0b0aaab88afedc9904e095a99bd588388ddcc1a37263415af6af
 - kind: project-relative
   target: claude
   value: .claude/skills/attach-evidence/assets/context/testing/evidence.md
@@ -562,25 +554,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:bf4529af9268c0a8c7e06169c45577df5d0478a2b5c947e37ab1a4bfe1c37c0f
-- kind: project-relative
-  target: claude
-  value: .claude/skills/attach-evidence/references/github.md
-  runtime: null
-  scope: project
-  owners:
-  - ./packages/verification
-  active_owner: ./packages/verification
-  content_hash: sha256:7d53045b4ab0031dc37d41ffb0e3cfcf3decc9732f2b47e66f510c5057f9b423
-- kind: project-relative
-  target: claude
-  value: .claude/skills/attach-evidence/references/gitlab.md
-  runtime: null
-  scope: project
-  owners:
-  - ./packages/verification
-  active_owner: ./packages/verification
-  content_hash: sha256:d3c267aad0eb228b207b807305ccdc9960201a023acc60dd8db3bc87e17eafef
+  content_hash: sha256:7777f7316793799fcb5648c7b08a6b08771c7b621834b2d56f0f72c731dafbc3
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence
@@ -598,7 +572,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:60331e4c6172838fa96a71f261eac2175b7f28f9a7802ecfa1860348973fb428
+  content_hash: sha256:384442c892df5cf4ecfa3e5471055490dbcd8fc84b221adb6651bf39d00308f3
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence/references/playwright-overlay/caption.ts
@@ -607,7 +581,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:131d5dd45a69ea253ab96f62300eec0f8806e68c52a4c91e2342459349477e85
+  content_hash: sha256:509ccff0d394acc0d6642b383305c0397b3b710d858675424c26b8bc2dffd388
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence/references/playwright-overlay/cursor.ts
@@ -625,7 +599,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:efe6aeec04cf7057ab2abf76ff7e0f16fbef7ed474514ea8857b6e928b101da0
+  content_hash: sha256:ae1f6ed7af69937bcf2d544e4143724b2da80d882e2c17f29088d9a85d37a8d1
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence/references/playwright-overlay/record.ts
@@ -634,7 +608,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:e2a3969504a255823b8127de8859ec0769851d2ec42bef76bb71b63a7045648f
+  content_hash: sha256:0cf92bc9a38def57da8d0d4ae27467b1702adaa992a177099bfaa7d32d20a1e7
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence/references/recording.md
@@ -643,7 +617,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:5483f2627ac992518ef477d7bc7302d5675927b86e8c9016dd56d69bc6b0ed03
+  content_hash: sha256:d47e386548ab5bf8862e139efa85077c7c8f691de99726ba9709124f85975edb
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence/scripts/collect-playwright-videos.py
@@ -670,7 +644,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:50314434362b7950e5c40ee5063b1ad8e7b1e37f2ad4691cf72d4415422fd023
+  content_hash: sha256:61d45bbbb73d97d386ddbbee9aa79fb76cf59b44d1943aa50130421c4829ae82
 - kind: project-relative
   target: claude
   value: .claude/skills/capture-browser-evidence/scripts/convert-captures.test.mjs
@@ -697,7 +671,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:88996690ee4b3369c186f3df05e193b4912de931e8eea9c9ff2d9a8a4fd95765
+  content_hash: sha256:e945c81d6af065ea50b0848bce8939bf6344ed353a1b144c9dea2a45050e672e
 - kind: project-relative
   target: claude
   value: .claude/skills/design-test-cases/references/test-case-design-template.md
@@ -706,7 +680,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:87ab5f97f2adea7c0ce23f8369d278b2a4528febecc2774a29a05925dea3509a
+  content_hash: sha256:8f43b3a26c86a99f6e4b21d66b0a9007e4a6012e9773e065797dd77a291ed691
 - kind: project-relative
   target: claude
   value: .claude/skills/run-verification-scenarios
@@ -724,7 +698,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:b1939c18ca6049d29691e4eedec59a3b98d18d61d2e6f633519cfdb6fc1a2fee
+  content_hash: sha256:352d37fcee3a0fad70938627b32a2998d6c18559084b6470c30147a1d06c9a3e
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-agent-harness
@@ -1372,7 +1346,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:40ff3fb9900c963d56cfb8b0f9febc2870edca50bfc413d6e3166781dfd1310b
+  content_hash: sha256:e734f4516e09ac9eae25302ff218960a269d3a2124e9655213968addc301ee30
 - kind: project-relative
   target: codex
   value: .agents/skills/attach-evidence
@@ -1390,7 +1364,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:8efb301c4579de95daf1304f86b7775933db220d7f6ad5a7da5b616de7c4529d
+  content_hash: sha256:33de4b685e3f0b0aaab88afedc9904e095a99bd588388ddcc1a37263415af6af
 - kind: project-relative
   target: codex
   value: .agents/skills/attach-evidence/assets/context/testing/evidence.md
@@ -1399,25 +1373,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:bf4529af9268c0a8c7e06169c45577df5d0478a2b5c947e37ab1a4bfe1c37c0f
-- kind: project-relative
-  target: codex
-  value: .agents/skills/attach-evidence/references/github.md
-  runtime: null
-  scope: project
-  owners:
-  - ./packages/verification
-  active_owner: ./packages/verification
-  content_hash: sha256:7d53045b4ab0031dc37d41ffb0e3cfcf3decc9732f2b47e66f510c5057f9b423
-- kind: project-relative
-  target: codex
-  value: .agents/skills/attach-evidence/references/gitlab.md
-  runtime: null
-  scope: project
-  owners:
-  - ./packages/verification
-  active_owner: ./packages/verification
-  content_hash: sha256:d3c267aad0eb228b207b807305ccdc9960201a023acc60dd8db3bc87e17eafef
+  content_hash: sha256:7777f7316793799fcb5648c7b08a6b08771c7b621834b2d56f0f72c731dafbc3
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence
@@ -1435,7 +1391,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:60331e4c6172838fa96a71f261eac2175b7f28f9a7802ecfa1860348973fb428
+  content_hash: sha256:384442c892df5cf4ecfa3e5471055490dbcd8fc84b221adb6651bf39d00308f3
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence/references/playwright-overlay/caption.ts
@@ -1444,7 +1400,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:131d5dd45a69ea253ab96f62300eec0f8806e68c52a4c91e2342459349477e85
+  content_hash: sha256:509ccff0d394acc0d6642b383305c0397b3b710d858675424c26b8bc2dffd388
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence/references/playwright-overlay/cursor.ts
@@ -1462,7 +1418,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:efe6aeec04cf7057ab2abf76ff7e0f16fbef7ed474514ea8857b6e928b101da0
+  content_hash: sha256:ae1f6ed7af69937bcf2d544e4143724b2da80d882e2c17f29088d9a85d37a8d1
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence/references/playwright-overlay/record.ts
@@ -1471,7 +1427,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:e2a3969504a255823b8127de8859ec0769851d2ec42bef76bb71b63a7045648f
+  content_hash: sha256:0cf92bc9a38def57da8d0d4ae27467b1702adaa992a177099bfaa7d32d20a1e7
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence/references/recording.md
@@ -1480,7 +1436,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:5483f2627ac992518ef477d7bc7302d5675927b86e8c9016dd56d69bc6b0ed03
+  content_hash: sha256:d47e386548ab5bf8862e139efa85077c7c8f691de99726ba9709124f85975edb
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence/scripts/collect-playwright-videos.py
@@ -1507,7 +1463,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:50314434362b7950e5c40ee5063b1ad8e7b1e37f2ad4691cf72d4415422fd023
+  content_hash: sha256:61d45bbbb73d97d386ddbbee9aa79fb76cf59b44d1943aa50130421c4829ae82
 - kind: project-relative
   target: codex
   value: .agents/skills/capture-browser-evidence/scripts/convert-captures.test.mjs
@@ -1534,7 +1490,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:88996690ee4b3369c186f3df05e193b4912de931e8eea9c9ff2d9a8a4fd95765
+  content_hash: sha256:e945c81d6af065ea50b0848bce8939bf6344ed353a1b144c9dea2a45050e672e
 - kind: project-relative
   target: codex
   value: .agents/skills/design-test-cases/references/test-case-design-template.md
@@ -1543,7 +1499,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:87ab5f97f2adea7c0ce23f8369d278b2a4528febecc2774a29a05925dea3509a
+  content_hash: sha256:8f43b3a26c86a99f6e4b21d66b0a9007e4a6012e9773e065797dd77a291ed691
 - kind: project-relative
   target: codex
   value: .agents/skills/run-verification-scenarios
@@ -1561,7 +1517,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:b1939c18ca6049d29691e4eedec59a3b98d18d61d2e6f633519cfdb6fc1a2fee
+  content_hash: sha256:352d37fcee3a0fad70938627b32a2998d6c18559084b6470c30147a1d06c9a3e
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-agent-harness
@@ -2209,7 +2165,7 @@ deployments:
   owners:
   - ./packages/verification
   active_owner: ./packages/verification
-  content_hash: sha256:40ff3fb9900c963d56cfb8b0f9febc2870edca50bfc413d6e3166781dfd1310b
+  content_hash: sha256:e734f4516e09ac9eae25302ff218960a269d3a2124e9655213968addc301ee30
 - kind: project-relative
   target: codex
   value: .codex/hooks/core/hooks/check-comments.mjs

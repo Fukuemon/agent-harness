@@ -40,15 +40,16 @@ keywords: [検証, エビデンス, 観点, EARS, 録画]
 | write-verification-spec | シナリオから録画の spec を書く。字幕の規則、改修の前と後を比べる規則 |
 | run-verification-scenarios | spec を流して撮り、確かめる。撮る順と、並列で流さない理由 |
 | attach-evidence | 観点の設計から添付までを順に進める。エビデンスを本文の表に入れ、入ったことを確かめる。コメントにある動画を本文へ移す |
-| capture-browser-evidence | spec を書かずに、ブラウザを操作して録画とテキストのログを残す |
+| capture-browser-evidence | spec を書かずに、ブラウザを操作して録画とテキストのログを残す。エビデンスの元のファイルの置き場と名前の規則を持つ |
 
 ファイルの置き場は、導入のスキルが `assets/` を全部、利用者のリポジトリへ写すことに合わせて決める。
 
-- 本文の表の書き方とホスティングサービスごとの添付の仕方は、attach-evidence だけが持つ。ほかのスキルは attach-evidence を参照する。
-  - 添付の仕方は、`context/project.yml` の `hosting` の値（`github`、`gitlab`）を名前にした `references/` のファイルに置く。スキルは、`hosting` に合う 1 つだけを読む。
+- 本文の表に入れるときのエビデンスに固有の規則は、attach-evidence だけが持つ。ほかのスキルは attach-evidence を参照する。表の形と書き方は、写された pull request の雛形が持つ。
+- ホスティングサービスごとの添付の手順は、利用者の `context/testing/evidence.md` の Attachment のセクションが持つ。スキルは、そのセクションの手順で添付する。
+- 元のファイルの置き場と名前の規則は、capture-browser-evidence だけが持つ。ほかのスキルは capture-browser-evidence を参照する。
 - EARS の要件の書き方（条件の形、主語の扱い、表の列への写し方）は、design-test-cases だけが持つ。
 - `context/testing/evidence.md` の骨組みは、attach-evidence の `assets/` に置く。導入のスキルが利用者のリポジトリへ写す。
-- 撮影の手段の具体は、利用者の `context/testing/evidence.md` が持つ。スキルの `references/` には、どの手段でも間違えやすい点だけを置く。手段ごとの書き方の例は、`examples/verification/` にある。
+- 撮影の手段の具体は、利用者の `context/testing/evidence.md` が持つ。スキルの `references/` には、どの手段でも間違えやすい点だけを置く。手段ごとの書き方と、ホスティングサービスごとの添付の手順の例は、`examples/verification/` にある。
 - 観点の設計の文書の骨組みは、写さずにスキルが読むので `references/` に置く。
 - 録画に字幕とカーソルを重ねる雛形のコードは、利用者が選んで写すので、`references/` の下に撮影の手段の名前のディレクトリで置く。e2e の kit が同じ仕組みを配るようになったら消す。
   - ADR-0023: [検証、E2E、デザインシステム、画面仕様書、文書のサイトを関心ごとのパッケージにし、組み合わせは値のファイルのキーで渡す](../../adr/0023-concern-packages.md)

@@ -23,7 +23,7 @@
 #
 # NOTE: 撮影時に遅くできるならそちらを優先する(字幕で止める時間と mouse.move の steps。既存のテストなら slowMo)。
 # 後段の引き伸ばしはフレームを補間しないため、動きがカクつく。
-# 「読めない録画」の一次対処としては有効だが、証跡の質は撮影時に決まる。
+# 「読めない録画」の一次対処としては有効だが、エビデンスの質は撮影時に決まる。
 
 set -euo pipefail
 
@@ -86,7 +86,7 @@ for src in "$IN_DIR"/*.webm; do
     -pix_fmt yuv420p -movflags +faststart -an \
     "$dst"
 
-  # 出力の妥当性を確認する。ファイルの存在は証跡ではない
+  # 出力の妥当性を確認する。ファイルがあるだけでは、変換できたとは言えない
   read -r codec width height duration < <(
     ffprobe -v error -select_streams v:0 \
       -show_entries stream=codec_name,width,height \
