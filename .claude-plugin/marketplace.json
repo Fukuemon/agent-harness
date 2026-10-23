@@ -28,6 +28,10 @@
     {
       "name": "design-system",
       "source": "./packages/design-system"
+    },
+    {
+      "name": "docs-site",
+      "source": "./packages/docs-site"
     }
   ]
 }

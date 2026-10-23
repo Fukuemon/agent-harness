@@ -1,0 +1,10 @@
+{
+  "name": "docs-site",
+  "description": "文書、カタログ、図を 1 つの文書のサイトに並べ、既定のブランチへ取り込んだら公開先へ公開する。組み立てと保護の確認のスクリプト、ジェネレーターと公開先の設定の雛形。",
+  "version": "0.1.0",
+  "author": {
+    "name": "Fukuemon"
+  },
+  "repository": "https://github.com/Fukuemon/agent-harness",
+  "license": "MIT"
+}
