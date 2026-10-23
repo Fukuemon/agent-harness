@@ -34,3 +34,5 @@ apm_modules/
 /.claude/skills/attach-evidence/
 /.claude/skills/run-verification-scenarios/
 /.claude/skills/write-verification-spec/
+/.agents/skills/write-screen-spec/
+/.claude/skills/write-screen-spec/

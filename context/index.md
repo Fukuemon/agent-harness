@@ -19,7 +19,7 @@
 - [文書のサイト](../design/features/docs-site/DesignDoc_docs-site.md) — パッケージ docs-site の設計。文書、カタログ、図を 1 つのサイトに並べて公開先へ公開する構成と、保護の手順（draft）
 - [E2E](../design/features/e2e/DesignDoc_e2e.md) — パッケージ e2e の設計。E2E のテストの書き方、テストと録画の kit のコード、テストの書き方の lint の規則の責務と、配り方（draft）
 - [開発プロセス](../design/features/process/DesignDoc_process.md) — 開発のプロセスの種類、要求ごとの選択、選んだ結果の宣言、agent-harness とワークフローのハーネスの分担（draft）
-- [画面仕様書](../design/features/screens/DesignDoc_screens.md) — パッケージ screens の設計。画面ごとの状態、構成要素、操作できるモックの型、モックの共通のファイル、規約の点検、機能の Design Doc との分担（draft）
 - [core](../packages/core/DesignDoc.md) — 利用者のリポジトリに固有の知識の置き場を作るパッケージ。値のファイル、context、目次、AGENTS.md、導入のスキル（draft）
 - [文書の体系](../packages/docs/DesignDoc.md) — Design Doc、ADR、spec の種類とライフサイクル、実装とのずれの検出、spec を削除する前の保証、文書のチェック（draft）
+- [画面仕様書](../packages/screens/DesignDoc.md) — パッケージ screens の設計。画面ごとの状態、構成要素、操作できるモックの型、モックの共通のファイル、規約の点検、機能の Design Doc との分担（draft）
 - [検証](../packages/verification/DesignDoc.md) — パッケージ verification の設計。観点の設計、検証の spec、撮影と確認、pull request へのエビデンスの添付の責務、読むキー、スキルと雛形（draft）

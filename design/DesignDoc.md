@@ -141,7 +141,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 - **デザインシステム `design-system`:** トークンの段の分け方、デザインシステムの文書の型、アクセシビリティの基準と確認の方法、カタログの構成を持つ。
   - [デザインシステムの Design Doc](features/design-system/DesignDoc_design-system.md)
 - **画面仕様書 `screens`:** 画面ごとの状態、構成要素、操作できるモックの型と、モックの共通のファイル、規約の点検を持つ。処理と通信は機能の Design Doc が持つ。
-  - [画面仕様書の Design Doc](features/screens/DesignDoc_screens.md)
+  - [画面仕様書の Design Doc](../packages/screens/DesignDoc.md)
 - **文書のサイト `docs-site`:** 文書、カタログ、図を 1 つのサイトに並べ、公開先へ公開する構成を持つ。
   - [文書のサイトの Design Doc](features/docs-site/DesignDoc_docs-site.md)
 

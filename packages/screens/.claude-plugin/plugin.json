@@ -1,0 +1,10 @@
+{
+  "name": "screens",
+  "description": "画面ごとの状態、構成要素、操作できるモックを、同じ形の画面仕様書で書いて点検する。画面仕様書の規約、モックの共通のファイル、規約の点検のスキル。",
+  "version": "0.1.0",
+  "author": {
+    "name": "Fukuemon"
+  },
+  "repository": "https://github.com/Fukuemon/agent-harness",
+  "license": "MIT"
+}

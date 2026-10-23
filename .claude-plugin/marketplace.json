@@ -16,6 +16,10 @@
     {
       "name": "verification",
       "source": "./packages/verification"
+    },
+    {
+      "name": "screens",
+      "source": "./packages/screens"
     }
   ]
 }
