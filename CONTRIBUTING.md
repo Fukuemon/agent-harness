@@ -66,19 +66,20 @@ pnpm check:links
 - main へは、pull request を通して取り込む。マージの方法はマージコミットだけで、取り込んだブランチは消す。
 - 保護するブランチは `main` である。直接コミットを許す場面があれば、この行の下に場面と理由を書く。
 
-バージョンは、セマンティック バージョニングに従う。リポジトリ全体で 1 つのバージョンにする。  
+バージョンは、セマンティック バージョニングに従い、`packages/` の下のパッケージごとに付ける。packages/global は対象外である。  
 `<major>.<minor>.<patch>` の 3 つの数のうち、利用者のリポジトリで手直しが要る変更は major を、機能の追加は minor を、不具合の修正は patch を上げる。  
 1.0 より前は、セマンティック バージョニングが何でも変わりうる初期の開発の期間と定めているので、1 つずつ下の桁で上げる。
 
 - 出典: [Semantic Versioning 2.0.0](https://semver.org/lang/ja/)
 
 バージョンの決定とタグ付けには release-please を使う。コミットメッセージから次のバージョンを決め、リリース用の pull request を作る。  
-リリース用の pull request をマージすると、タグとリリースができる。
+リリース用の pull request は全パッケージで 1 つにまとまり、マージすると、変えたパッケージごとに `<名前>-v<バージョン>` のタグとリリースができる。
 
 - ADR-0007: [main と作業用のブランチだけで運用し、release-please でタグを付ける](adr/0007-branch-and-release.md)
 - ADR-0019: [packages/ を変えたコミットだけでバージョンを上げ、切り戻しは新しいバージョンで行う](adr/0019-release-scope-and-rollback.md)
+- ADR-0024: [パッケージごとにバージョンを上げ、e2e の kit を npm のレジストリで配る](adr/0024-per-package-versions.md)
 
-バージョンが上がるのは、`packages/` の下を変えたコミットだけ。コミットの type と、上がるバージョンの桁の対応は次のとおり。
+バージョンが上がるのは、コミットが変えたパッケージだけ。コミットの type と、上がるバージョンの桁の対応は次のとおり。
 
 | コミットの type | 1.0 より前 | 1.0 以降 | 変更履歴のセクション |
 | --- | --- | --- | --- |
@@ -104,7 +105,7 @@ pnpm check:links
 
 ```mermaid
 gitGraph
-    commit id: "v0.1.0" tag: "v0.1.0"
+    commit id: "core-v0.2.8" tag: "core-v0.2.8"
     branch "feature/42"
     checkout "feature/42"
     commit id: "42-1"
@@ -119,7 +120,7 @@ gitGraph
     commit id: "43-3"
     checkout main
     merge "feature/43" id: "PR #43"
-    commit id: "release-please" tag: "v0.2.0"
+    commit id: "release-please" tag: "core-v0.2.9"
 ```
 
 これは、このリポジトリ自身の選択である。利用者のブランチ運用と、バージョンの付け方は、利用者が決める。
@@ -129,7 +130,7 @@ gitGraph
 main へ push するたびに、`.github/workflows/release.yml` がリリース用の pull request を作るか更新する。作業用のブランチのマージも、main への直接のコミットも同じ扱いになる。  
 リリース用の pull request は常に 1 つで、マージするまで変更がたまる。タグとリリースができるのは、この pull request をマージしたときだけ。
 
-- `packages/` の外だけを変えた push では、リリース用の pull request は変わらない。
+- release-please の対象のパッケージ（`packages/core` と `packages/docs`）の外だけを変えた push では、リリース用の pull request は変わらない。
 - 次のバージョンは、前のリリースより後のコミットのうち、最も大きい変更で決まる。`feat` と `fix` が何件あっても、1 回のリリースで上がるのは 1 段だけ。例は `0.1.0` から `0.1.1`。
 - main へ直接コミットしたコミットも、作業用のブランチの中のコミットと同じく 1 つずつ読まれる。Conventional Commits の形でないメッセージは読まれず、バージョンにも変更履歴にも入らない。
 - バージョンを書き換えるコミットの後に、workflow が `apm.lock.yaml` を作り直してコミットする。その前のコミットの CI は、lock のずれで失敗する。
@@ -144,21 +145,21 @@ sequenceDiagram
     participant PR as リリース用の pull request
     Dev->>Main: 作業用のブランチをマージ、または直接コミット
     Main->>WF: push で起動
-    WF->>PR: バージョンと CHANGELOG.md を書き換えて作成か更新
+    WF->>PR: 変えたパッケージのバージョンと CHANGELOG.md を書き換えて作成か更新
     WF->>PR: apm.lock.yaml を作り直してコミット
     Note over Main,PR: マージするまで、push のたびに同じ pull request へ変更がたまる
     Dev->>PR: バージョンと変更履歴を確かめてマージ
     PR->>Main: マージコミット
     Main->>WF: push で起動
-    WF->>Main: タグ v<バージョン> と GitHub のリリースを作成
+    WF->>Main: タグ <名前>-v<バージョン> と GitHub のリリースを、変えたパッケージごとに作成
 ```
 
 リリースするときは、次の順に進める。
 
-1. リリース用の pull request（題は `chore(main): release <バージョン>`）を開き、バージョンと `CHANGELOG.md` の変更を確かめる。
+1. リリース用の pull request（題は `chore: release main`）を開き、パッケージごとのバージョンと `packages/<名前>/CHANGELOG.md` の変更を確かめる。
 2. `apm.lock.yaml` のバージョンが `plugin.json` と合っていて、最新のコミットの CI が通っていることを確かめる。
 3. マージコミットでマージする。
-4. release workflow が終わったら、`gh release view v<バージョン>` でタグとリリースができたことを確かめる。
+4. release workflow が終わったら、`gh release view <名前>-v<バージョン>` で、変えたパッケージごとにタグとリリースができたことを確かめる。
 5. release workflow が失敗したときは、GitHub の Actions の画面で失敗した実行を再実行する。
 
 ## issue と pull request 
