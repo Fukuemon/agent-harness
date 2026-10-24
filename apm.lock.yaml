@@ -180,21 +180,21 @@ dependencies:
   - .claude/skills/write-design-system/SKILL.md
   - .claude/skills/write-design-system/references/catalog.md
   deployed_file_hashes:
-    .agents/skills/setup-design-system/SKILL.md: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+    .agents/skills/setup-design-system/SKILL.md: sha256:e013f2754fc0c835b8fc6a4e45ad7fbcafa53f112a3a545066bc0d1e3a5a9685
     .agents/skills/setup-design-system/references/build-static-tokens.mjs: sha256:6b2a206f52e638ac0a9eb6ce7df64b0821be497ca30c16d9eaf40596f0f5b74c
     .agents/skills/setup-design-system/references/build-static-tokens.test.mjs: sha256:595c03477ee8578cebedb5184edc158111323df2a8445cf2a32e677f02b118c1
     .agents/skills/setup-design-system/references/check-contrast.mjs: sha256:7248893b83fca755cc331adecf4593e16c82db1150e391519ca7094987e35a1e
     .agents/skills/setup-design-system/references/check-contrast.test.mjs: sha256:2ae06b391bea3982ac27c0b6ef645f439fc9b5c4b2ce4f1c410c0e105bd4199c
-    .agents/skills/setup-design-system/references/design-system.md: sha256:dd5132ea1ed1ee4c2fce22a8e851a043ee57684dda52eb3d94554a333b0921de
-    .agents/skills/write-design-system/SKILL.md: sha256:c45616dfe0d952e240d5265119995ad2f350ad53800bb26acadc02409a6f6c14
+    .agents/skills/setup-design-system/references/design-system.md: sha256:ab1a561b9803e1d44e1c4222cd27a1cafe03131e75e84e78e81dd866bfae7a0c
+    .agents/skills/write-design-system/SKILL.md: sha256:5562698edd4e3f1c1178cbcfb3b510ee175fcd8e8fa4f73c760216fc0bb18b4c
     .agents/skills/write-design-system/references/catalog.md: sha256:243b097059be893626d7f794ea9ae277a8f6237b874dde6345d4ee1bac7650a4
-    .claude/skills/setup-design-system/SKILL.md: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+    .claude/skills/setup-design-system/SKILL.md: sha256:e013f2754fc0c835b8fc6a4e45ad7fbcafa53f112a3a545066bc0d1e3a5a9685
     .claude/skills/setup-design-system/references/build-static-tokens.mjs: sha256:6b2a206f52e638ac0a9eb6ce7df64b0821be497ca30c16d9eaf40596f0f5b74c
     .claude/skills/setup-design-system/references/build-static-tokens.test.mjs: sha256:595c03477ee8578cebedb5184edc158111323df2a8445cf2a32e677f02b118c1
     .claude/skills/setup-design-system/references/check-contrast.mjs: sha256:7248893b83fca755cc331adecf4593e16c82db1150e391519ca7094987e35a1e
     .claude/skills/setup-design-system/references/check-contrast.test.mjs: sha256:2ae06b391bea3982ac27c0b6ef645f439fc9b5c4b2ce4f1c410c0e105bd4199c
-    .claude/skills/setup-design-system/references/design-system.md: sha256:dd5132ea1ed1ee4c2fce22a8e851a043ee57684dda52eb3d94554a333b0921de
-    .claude/skills/write-design-system/SKILL.md: sha256:c45616dfe0d952e240d5265119995ad2f350ad53800bb26acadc02409a6f6c14
+    .claude/skills/setup-design-system/references/design-system.md: sha256:ab1a561b9803e1d44e1c4222cd27a1cafe03131e75e84e78e81dd866bfae7a0c
+    .claude/skills/write-design-system/SKILL.md: sha256:5562698edd4e3f1c1178cbcfb3b510ee175fcd8e8fa4f73c760216fc0bb18b4c
     .claude/skills/write-design-system/references/catalog.md: sha256:243b097059be893626d7f794ea9ae277a8f6237b874dde6345d4ee1bac7650a4
   source: local
   local_path: ./packages/design-system
@@ -1125,7 +1125,7 @@ deployments:
   owners:
   - ./packages/design-system
   active_owner: ./packages/design-system
-  content_hash: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+  content_hash: sha256:e013f2754fc0c835b8fc6a4e45ad7fbcafa53f112a3a545066bc0d1e3a5a9685
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-design-system/references/build-static-tokens.mjs
@@ -1170,7 +1170,7 @@ deployments:
   owners:
   - ./packages/design-system
   active_owner: ./packages/design-system
-  content_hash: sha256:dd5132ea1ed1ee4c2fce22a8e851a043ee57684dda52eb3d94554a333b0921de
+  content_hash: sha256:ab1a561b9803e1d44e1c4222cd27a1cafe03131e75e84e78e81dd866bfae7a0c
 - kind: project-relative
   target: claude
   value: .claude/skills/setup-e2e
@@ -1431,7 +1431,7 @@ deployments:
   owners:
   - ./packages/design-system
   active_owner: ./packages/design-system
-  content_hash: sha256:c45616dfe0d952e240d5265119995ad2f350ad53800bb26acadc02409a6f6c14
+  content_hash: sha256:5562698edd4e3f1c1178cbcfb3b510ee175fcd8e8fa4f73c760216fc0bb18b4c
 - kind: project-relative
   target: claude
   value: .claude/skills/write-design-system/references/catalog.md
@@ -2259,7 +2259,7 @@ deployments:
   owners:
   - ./packages/design-system
   active_owner: ./packages/design-system
-  content_hash: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+  content_hash: sha256:e013f2754fc0c835b8fc6a4e45ad7fbcafa53f112a3a545066bc0d1e3a5a9685
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-design-system/references/build-static-tokens.mjs
@@ -2304,7 +2304,7 @@ deployments:
   owners:
   - ./packages/design-system
   active_owner: ./packages/design-system
-  content_hash: sha256:dd5132ea1ed1ee4c2fce22a8e851a043ee57684dda52eb3d94554a333b0921de
+  content_hash: sha256:ab1a561b9803e1d44e1c4222cd27a1cafe03131e75e84e78e81dd866bfae7a0c
 - kind: project-relative
   target: codex
   value: .agents/skills/setup-e2e
@@ -2565,7 +2565,7 @@ deployments:
   owners:
   - ./packages/design-system
   active_owner: ./packages/design-system
-  content_hash: sha256:c45616dfe0d952e240d5265119995ad2f350ad53800bb26acadc02409a6f6c14
+  content_hash: sha256:5562698edd4e3f1c1178cbcfb3b510ee175fcd8e8fa4f73c760216fc0bb18b4c
 - kind: project-relative
   target: codex
   value: .agents/skills/write-design-system/references/catalog.md

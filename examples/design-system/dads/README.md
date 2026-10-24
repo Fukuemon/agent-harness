@@ -9,9 +9,11 @@
 ## 3 つの段のファイル
 
 - 基本の段: `@digital-go-jp/design-tokens` の `dist/tokens.css`。依存にしてバージョンを固定する。
-  - 名前は、色が `--color-*`、文字が `--font-size-*` と `--line-height-*`、角丸が `--border-radius-*`、影が `--elevation-*` で始まる。
+  - 色の接頭辞は `--color-key-`、`--color-neutral-`、`--color-primitive-`、`--color-semantic-`。
+  - 文字は `--font-size-` と `--line-height-`、角丸は `--border-radius-`、影は `--elevation-`。
+  - Tailwind CSS のテーマの段も `--color-` で始まる名前（`--color-surface`）を出す。基本の段を `--color-` の 1 つにまとめると、テーマの段の名前と見分けられない。基本の段の名前を探すチェックには、上の接頭辞を細かく分けて並べる。
 - 意味の段: [semantic.css](semantic.css)。接頭辞は `--app-color-`。基本の段の `--color-` と重ならない。
-- テーマの段: [../tailwind/theme.css](../tailwind/theme.css) の `--base-*` を、上の基本の段の名前に読み替える。
+- テーマの段: [../tailwind/theme.css](../tailwind/theme.css) の `--base-*` を、上の基本の段の名前に読み替える。色は意味の段を、文字、角丸、影は基本の段を参照する。
 
 コントラストのチェックの雛形は、`SOURCES` を次のように書けば、この例の名前の組をそのまま確認できる。
 
@@ -35,11 +37,12 @@ const PREFIX = "--app-color-";
 | 角丸 | 任せる。5 段階は目安で、コンポーネントごとに決める | 入力欄とボタンは 8px |
 | ブレークポイント | 任せる。768px の 1 つが基本で、要れば増やす | 768px の 1 つ |
 | コントラスト | 変えない。文字は 4.5:1、枠と区切りは 3:1 | コントラストのチェックで確認する |
-| フォーカスの表示 | 変えない。黒の線と Yellow-300 の縁の 2 重 | `focus-ring` のユーティリティ 1 つ |
+| フォーカスの表示 | 変えない。黒の線と Yellow-300 の縁の 2 重。線の太さ 4px と縁の 2px は、コードスニペットの値 | `focus-ring` のユーティリティ 1 つ |
 | 状態の色 | 明度と彩度は任せる。色相と意味の対応は変えない | エラーは赤、成功は緑、注意はオレンジ |
 | 文字の大きさ | 変えない。本文と操作の文字は 16px 以上、読み物の行高は 1.5 倍以上 | 本文は `Std-16N-170` |
 
-- 出典: [ローカルデザインシステム（スタイルガイド）](https://design.digital.go.jp/dads/guidance/local-design-system/) のコンテンツを加工して作成
+- 出典: [ローカルデザインシステム（スタイルガイド）](https://design.digital.go.jp/dads/guidance/local-design-system/)、[カラー](https://design.digital.go.jp/dads/foundations/color/)、[余白](https://design.digital.go.jp/dads/foundations/spacing/)、[レイアウト](https://design.digital.go.jp/dads/foundations/layout/) のコンテンツを加工して作成
+- 出典: フォーカスの表示の太さは、デジタル庁GitHub https://github.com/digital-go-jp の design-system-example-components-html の値
 
 ## 文字のスタイルの例
 

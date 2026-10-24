@@ -34,6 +34,7 @@ design_system:
 ```
 
 2. `context/codebase.md` の Placement Rules に、デザインシステムの文書と 3 つの段のファイルの場所を 1 行ずつ書く。スキル write-design-system が、作業の前にここを読む。
+3. 同じ Placement Rules の、画面とコンポーネントのコードの置き場の行に、コードを書く前にデザインシステムの文書を読むことを書く。スキルが読み込まれない作業でも、context から文書に辿り着ける。
 
 ## 3. 雛形を写す
 
