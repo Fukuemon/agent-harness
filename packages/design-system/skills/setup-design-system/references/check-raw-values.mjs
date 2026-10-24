@@ -85,6 +85,13 @@ const stripComments = (text, lineComments) => {
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (quote) {
+      // テンプレートの文字列には CSS を書くことがある（CSS-in-JS）ので、/* */ のコメントを除く
+      if (quote === "`" && text.startsWith("/*", i)) {
+        const end = close(text, "*/", i + 2);
+        out += blank(text.slice(i, end));
+        i = end - 1;
+        continue;
+      }
       if (c === "\\" && text[i + 1] !== "\n") {
         out += c + (text[i + 1] ?? "");
         i++;

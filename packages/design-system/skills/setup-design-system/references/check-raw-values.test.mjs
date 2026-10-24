@@ -127,3 +127,11 @@ test("color() と大文字の色の関数を見つけ、メソッドの .color()
   assert.match(r.stdout, /src\/upper\.css:1: 色の関数 Oklch\(/);
   assert.doesNotMatch(r.stdout, /m\.ts/);
 });
+
+test("テンプレートの文字列の中の /* */ は CSS のコメントとして見ない", () => {
+  const body = "const Card = styled.div`\n  /* previous color: #ff0000; */\n  color: var(--app-color-text);\n  border-color: #00ff00;\n`;\n";
+  const r = run({ "src/card.ts": body });
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /src\/card\.ts:4: 色の値 #00ff00/);
+  assert.doesNotMatch(r.stdout, /#ff0000/);
+});
