@@ -1,35 +1,41 @@
-// 組み立てのスクリプト build-docs-site.mjs が docs_site.parts のとおりに並べ、不正な値と欠けた出力を報告すること、
-// schemas/docs-site.schema.json がスクリプトと同じ値を通して拒むことを確認する。
+// 組み立てのスクリプト build-docs-site.mjs が docs_site.parts のとおりに並べ、
+// 値の誤り、読めない形、欠けた出力、Git で追跡するファイルのある出力先、ぶつかるファイルを、決めた終了コードで報告することを確認する。
 // 実行: node --test packages/docs-site/scripts/build-docs-site.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { stringify } from "yaml";
-import Ajv2020 from "ajv/dist/2020.js";
 
 const script = fileURLToPath(new URL("../skills/publish-docs-site/assets/scripts/build-docs-site.mjs", import.meta.url));
-const schema = JSON.parse(readFileSync(new URL("../schemas/docs-site.schema.json", import.meta.url), "utf8"));
-const validate = new Ajv2020({ allErrors: true }).compile(schema);
 
-const example = () => ({
-  docs_site: {
-    parts: [
-      { path: "site", subpath: "" },
-      { path: "catalog/dist", subpath: "catalog", build: "make catalog" },
-      { path: "erd", subpath: "erd", exclude: ["serve.json"] },
-    ],
-    tokens_css: "docs/stylesheets/tokens.css",
-  },
-});
+const PROJECT = `version: 2
+docs_site:
+  parts:
+    - path: site
+      subpath: ""
+    - path: catalog/dist
+      subpath: catalog
+      build: make catalog
+    - path: erd/dist
+      subpath: erd
+      exclude: [serve.json, dist]
+`;
 
-function repo(project, files = {}) {
+const OUTPUTS = {
+  "site/index.html": "docs",
+  "catalog/dist/index.html": "catalog",
+  "erd/dist/index.html": "erd",
+  "erd/dist/serve.json": "{}",
+};
+
+function repo(project, files = OUTPUTS) {
   const dir = mkdtempSync(join(tmpdir(), "docs-site-"));
+  execFileSync("git", ["init", "-q"], { cwd: dir });
   mkdirSync(join(dir, "context"));
-  writeFileSync(join(dir, "context/project.yml"), stringify({ version: 2, ...project }));
+  writeFileSync(join(dir, "context/project.yml"), project);
   for (const [p, body] of Object.entries(files)) {
     mkdirSync(dirname(join(dir, p)), { recursive: true });
     writeFileSync(join(dir, p), body);
@@ -38,16 +44,10 @@ function repo(project, files = {}) {
 }
 
 const run = (dir, ...args) => spawnSync(process.execPath, [script, ...args], { cwd: dir, encoding: "utf8" });
+const parts = (...lines) => `docs_site:\n  parts:\n${lines.join("\n")}\n`;
 
-const outputs = {
-  "site/index.html": "docs",
-  "catalog/dist/index.html": "catalog",
-  "erd/index.html": "erd",
-  "erd/serve.json": "{}",
-};
-
-test("parts のとおりにサブパスへ並べ、exclude のファイルを写さず、前の出力を消す", () => {
-  const dir = repo(example(), { ...outputs, "public/stale.html": "old" });
+test("parts のとおりにサブパスへ並べ、exclude の名前を part の中でだけ外し、前の出力を消す", () => {
+  const dir = repo(PROJECT, { ...OUTPUTS, "public/stale.html": "old" });
   const r = run(dir, "--out", "public");
   assert.equal(r.status, 0, r.stderr);
   assert.equal(readFileSync(join(dir, "public/index.html"), "utf8"), "docs");
@@ -58,64 +58,51 @@ test("parts のとおりにサブパスへ並べ、exclude のファイルを写
 });
 
 test("並べるものがなければ、build のコマンドを案内して終了コード 1", () => {
-  const { "catalog/dist/index.html": _, ...rest } = outputs;
-  const r = run(repo(example(), rest), "--out", "public");
+  const { "catalog/dist/index.html": _, ...rest } = OUTPUTS;
+  const r = run(repo(PROJECT, rest), "--out", "public");
   assert.equal(r.status, 1);
   assert.match(r.stderr, /catalog\/dist がない。先に make catalog を実行する/);
 });
 
-test("--build は並べる前に build のコマンドを実行し、失敗したら終了コード 2", () => {
-  const project = { docs_site: { parts: [{ path: "out", subpath: "", build: "mkdir out && echo built > out/index.html" }] } };
-  const dir = repo(project);
+test("--build は、並べる前に build のコマンドをリポジトリのルートで実行し、失敗したら終了コード 2", () => {
+  const ok = parts("    - path: out", '      subpath: ""', '      build: "mkdir out && pwd > out/index.html"');
+  const dir = repo(ok, {});
   const r = run(dir, "--out", "public", "--build");
   assert.equal(r.status, 0, r.stderr);
-  assert.equal(readFileSync(join(dir, "public/index.html"), "utf8").trim(), "built");
+  const cwd = readFileSync(join(dir, "public/index.html"), "utf8").trim();
+  assert.equal(execFileSync("realpath", [cwd], { encoding: "utf8" }).trim(), execFileSync("realpath", [dir], { encoding: "utf8" }).trim());
 
-  project.docs_site.parts[0].build = "exit 3";
-  assert.equal(run(repo(project), "--out", "public", "--build").status, 2);
+  const ng = parts("    - path: out", '      subpath: ""', "      build: exit 3");
+  assert.equal(run(repo(ng, {}), "--out", "public", "--build").status, 2);
 });
 
-test("--out がないか、並べるものと重なれば終了コード 1", () => {
-  const dir = repo(example(), outputs);
-  assert.equal(run(dir).status, 1);
-  assert.equal(run(dir, "--out", "../public").status, 1);
-  assert.equal(run(dir, "--out", "site").status, 1);
-  assert.equal(run(dir, "--out", "catalog").status, 1);
+test("--out の欠け、値のない引数、リポジトリの外、.git、並べるものとの重なりは終了コード 1", () => {
+  const dir = repo(PROJECT);
+  for (const args of [[], ["--out"], ["--out", "--build"], ["--out", "public", "--project"], ["--out", "../public"], ["--out", ".git"], ["--out", "x/.git"], ["--out", "site"], ["--out", "catalog"]]) {
+    assert.equal(run(dir, ...args).status, 1, args.join(" "));
+  }
   assert.equal(existsSync(join(dir, "site/index.html")), true);
 });
 
-test("値のファイルが読めなければ終了コード 2", () => {
-  const dir = repo(example());
-  assert.equal(run(dir, "--out", "public", "--project", "missing.yml").status, 2);
-});
-
-test("schema とスクリプトは、同じ値を通して同じ値を拒む", () => {
-  const cases = [
-    ["例", (d) => d, true],
-    ["tokens_css を省く", (d) => delete d.docs_site.tokens_css, true],
-    ["parts が空", (d) => (d.docs_site.parts = []), false],
-    ["parts がない", (d) => delete d.docs_site.parts, false],
-    ["subpath を省く", (d) => delete d.docs_site.parts[1].subpath, false],
-    ["path が親を指す", (d) => (d.docs_site.parts[1].path = "../dist"), false],
-    ["path の先頭に /", (d) => (d.docs_site.parts[1].path = "/dist"), false],
-    ["subpath の末尾に /", (d) => (d.docs_site.parts[1].subpath = "catalog/"), false],
-    ["知らないキー", (d) => (d.docs_site.parts[1].target = "x"), false],
-    ["exclude にパス", (d) => (d.docs_site.parts[2].exclude = ["a/b"]), false],
-    ["build が空", (d) => (d.docs_site.parts[1].build = ""), false],
-  ];
-  for (const [name, edit, ok] of cases) {
-    const doc = example();
-    edit(doc);
-    assert.equal(validate({ version: 2, ...doc }), ok, `schema: ${name}`);
-    const r = run(repo(doc, outputs), "--out", "public");
-    assert.equal(r.status, ok ? 0 : 1, `スクリプト: ${name}\n${r.stderr}`);
-  }
-});
-
-test("subpath の重なりはスクリプトが拒む", () => {
-  const doc = example();
-  doc.docs_site.parts[2].subpath = "catalog";
-  const r = run(repo(doc, outputs), "--out", "public");
+test("--out の下に Git で追跡するファイルがあれば、消さずに終了コード 1", () => {
+  const dir = repo(PROJECT, { ...OUTPUTS, "docs/index.md": "# 文書" });
+  execFileSync("git", ["add", "docs/index.md"], { cwd: dir });
+  const r = run(dir, "--out", "docs");
   assert.equal(r.status, 1);
-  assert.match(r.stderr, /ほかの part と重なる/);
+  assert.match(r.stderr, /Git で追跡している/);
+  assert.equal(readFileSync(join(dir, "docs/index.md"), "utf8"), "# 文書");
+});
+
+test("ほかの part の出力とファイルがぶつかれば終了コード 1", () => {
+  const r = run(repo(PROJECT, { ...OUTPUTS, "site/catalog/index.html": "root" }), "--out", "public");
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /ぶつかる/);
+});
+
+test("値の誤りは終了コード 1、読めない形と読めない値のファイルは終了コード 2", () => {
+  assert.equal(run(repo(parts("    - path: ../site", '      subpath: ""')), "--out", "public").status, 1);
+  assert.equal(run(repo(parts("    - path: site", "      subpath: catalog", "    - path: erd/dist", "      subpath: catalog/erd")), "--out", "public").status, 1);
+  assert.equal(run(repo("version: 2\n"), "--out", "public").status, 1);
+  assert.equal(run(repo("docs_site: {parts: []}\n"), "--out", "public").status, 2);
+  assert.equal(run(repo(PROJECT), "--out", "public", "--project", "missing.yml").status, 2);
 });

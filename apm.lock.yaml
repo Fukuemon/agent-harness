@@ -303,6 +303,7 @@ dependencies:
   - .agents/skills/publish-docs-site/SKILL.md
   - .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
   - .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
+  - .agents/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
   - .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
   - .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
   - .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json
@@ -315,6 +316,7 @@ dependencies:
   - .claude/skills/publish-docs-site/SKILL.md
   - .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
   - .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
+  - .claude/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
   - .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
   - .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
   - .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json
@@ -324,10 +326,11 @@ dependencies:
   - .claude/skills/publish-docs-site/references/zensical/pyproject.toml
   - .claude/skills/publish-docs-site/references/zensical/zensical.toml
   deployed_file_hashes:
-    .agents/skills/publish-docs-site/SKILL.md: sha256:d1218bcc324fd496ad5c08c022ee7ee046c5a2a8f25f8a9ae40c3880080c4445
-    .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:aaa148e10184160ef4f4beeed52fdce78193b428e23917996a9038f7e3f682de
-    .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:796272fcd75254fbf64ec418b2fe05dc93891ffaf174968b64ab3e4064de3991
-    .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml: sha256:5c7bde0e14346614e4debfe2556b0c00063ec12148a8b2fa33d94809879147e3
+    .agents/skills/publish-docs-site/SKILL.md: sha256:005e2749767a7bb021e1e042796fd2d1246aaa3593c63d81923f44e25c1c2d22
+    .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:689c0b5f6c4cc154380360e18844746d2a75cb77e4df145bf0a99ae3830a9ec3
+    .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+    .agents/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
+    .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
     .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts: sha256:c86b26675c5746557a4caecbb4f27232e35e3cb3dbe5ca66f24c3509af45be2f
     .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json: sha256:a08619145395d3088eb6789d85a58192cbe3a70461fe7a8736a304b2c45b1a61
     .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts: sha256:f816170a371992c3871e62045552bc5909b392aa2eb20af54fc137159bcfdcdf
@@ -335,10 +338,11 @@ dependencies:
     .agents/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
     .agents/skills/publish-docs-site/references/zensical/pyproject.toml: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
     .agents/skills/publish-docs-site/references/zensical/zensical.toml: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
-    .claude/skills/publish-docs-site/SKILL.md: sha256:d1218bcc324fd496ad5c08c022ee7ee046c5a2a8f25f8a9ae40c3880080c4445
-    .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:aaa148e10184160ef4f4beeed52fdce78193b428e23917996a9038f7e3f682de
-    .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:796272fcd75254fbf64ec418b2fe05dc93891ffaf174968b64ab3e4064de3991
-    .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml: sha256:5c7bde0e14346614e4debfe2556b0c00063ec12148a8b2fa33d94809879147e3
+    .claude/skills/publish-docs-site/SKILL.md: sha256:005e2749767a7bb021e1e042796fd2d1246aaa3593c63d81923f44e25c1c2d22
+    .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:689c0b5f6c4cc154380360e18844746d2a75cb77e4df145bf0a99ae3830a9ec3
+    .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+    .claude/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
+    .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
     .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts: sha256:c86b26675c5746557a4caecbb4f27232e35e3cb3dbe5ca66f24c3509af45be2f
     .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json: sha256:a08619145395d3088eb6789d85a58192cbe3a70461fe7a8736a304b2c45b1a61
     .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts: sha256:f816170a371992c3871e62045552bc5909b392aa2eb20af54fc137159bcfdcdf
@@ -847,7 +851,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:d1218bcc324fd496ad5c08c022ee7ee046c5a2a8f25f8a9ae40c3880080c4445
+  content_hash: sha256:005e2749767a7bb021e1e042796fd2d1246aaa3593c63d81923f44e25c1c2d22
 - kind: project-relative
   target: claude
   value: .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
@@ -856,7 +860,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:aaa148e10184160ef4f4beeed52fdce78193b428e23917996a9038f7e3f682de
+  content_hash: sha256:689c0b5f6c4cc154380360e18844746d2a75cb77e4df145bf0a99ae3830a9ec3
 - kind: project-relative
   target: claude
   value: .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
@@ -865,7 +869,16 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:796272fcd75254fbf64ec418b2fe05dc93891ffaf174968b64ab3e4064de3991
+  content_hash: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
 - kind: project-relative
   target: claude
   value: .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
@@ -874,7 +887,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:5c7bde0e14346614e4debfe2556b0c00063ec12148a8b2fa33d94809879147e3
+  content_hash: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
 - kind: project-relative
   target: claude
   value: .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
@@ -1963,7 +1976,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:d1218bcc324fd496ad5c08c022ee7ee046c5a2a8f25f8a9ae40c3880080c4445
+  content_hash: sha256:005e2749767a7bb021e1e042796fd2d1246aaa3593c63d81923f44e25c1c2d22
 - kind: project-relative
   target: codex
   value: .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
@@ -1972,7 +1985,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:aaa148e10184160ef4f4beeed52fdce78193b428e23917996a9038f7e3f682de
+  content_hash: sha256:689c0b5f6c4cc154380360e18844746d2a75cb77e4df145bf0a99ae3830a9ec3
 - kind: project-relative
   target: codex
   value: .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
@@ -1981,7 +1994,16 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:796272fcd75254fbf64ec418b2fe05dc93891ffaf174968b64ab3e4064de3991
+  content_hash: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
 - kind: project-relative
   target: codex
   value: .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
@@ -1990,7 +2012,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:5c7bde0e14346614e4debfe2556b0c00063ec12148a8b2fa33d94809879147e3
+  content_hash: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
 - kind: project-relative
   target: codex
   value: .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
