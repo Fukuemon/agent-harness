@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/Fukuemon/agent-harness/compare/docs-site-v0.1.0...docs-site-v0.1.1) (2026-10-24)
+
+
+### Bug Fixes
+
+* **docs-site:** 文書のサイトの設定の雛形で、画面仕様書のテンプレートをサイトから外す [#169](https://github.com/Fukuemon/agent-harness/issues/169) ([b719a81](https://github.com/Fukuemon/agent-harness/commit/b719a81f7c38a1baec844b2429aca1beab3127c3))
+
 ## 0.1.0 (2026-10-24)
 
 

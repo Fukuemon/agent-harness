@@ -1,6 +1,6 @@
 {
   "name": "@fukuemon/e2e-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Playwright の E2E のテストで、字幕とカーソルを重ねたエビデンスの録画、エビデンスの名前と置き場、ログインの保存を行う kit と、テストの書き方の ESLint の規則",
   "license": "MIT",
   "repository": {
