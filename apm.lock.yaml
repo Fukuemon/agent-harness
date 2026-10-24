@@ -267,10 +267,10 @@ dependencies:
   - .claude/skills/write-e2e-test/assets/context/testing/e2e.md
   - .claude/skills/write-e2e-test/references/situations.md
   deployed_file_hashes:
-    .agents/skills/write-e2e-test/SKILL.md: sha256:33d229f09912b90f56644f416c326aafd9b9ea0acf6ac8fa095b705734728f64
+    .agents/skills/write-e2e-test/SKILL.md: sha256:42dfe5730ad4c70e882a2d325aa1e313a637fce1282b6077d829e6b4758e548a
     .agents/skills/write-e2e-test/assets/context/testing/e2e.md: sha256:6816655f5de3194bf1746cd920ba2938e9cbbdabb4734864d98f7e4eb21314ae
     .agents/skills/write-e2e-test/references/situations.md: sha256:495705a9b8b6a9eee045b4693ae4a0dfdea251c159d2a941fe2b2afa3c5cd4b9
-    .claude/skills/write-e2e-test/SKILL.md: sha256:33d229f09912b90f56644f416c326aafd9b9ea0acf6ac8fa095b705734728f64
+    .claude/skills/write-e2e-test/SKILL.md: sha256:42dfe5730ad4c70e882a2d325aa1e313a637fce1282b6077d829e6b4758e548a
     .claude/skills/write-e2e-test/assets/context/testing/e2e.md: sha256:6816655f5de3194bf1746cd920ba2938e9cbbdabb4734864d98f7e4eb21314ae
     .claude/skills/write-e2e-test/references/situations.md: sha256:495705a9b8b6a9eee045b4693ae4a0dfdea251c159d2a941fe2b2afa3c5cd4b9
   source: local
@@ -1045,7 +1045,7 @@ deployments:
   owners:
   - ./packages/e2e
   active_owner: ./packages/e2e
-  content_hash: sha256:33d229f09912b90f56644f416c326aafd9b9ea0acf6ac8fa095b705734728f64
+  content_hash: sha256:42dfe5730ad4c70e882a2d325aa1e313a637fce1282b6077d829e6b4758e548a
 - kind: project-relative
   target: claude
   value: .claude/skills/write-e2e-test/assets/context/testing/e2e.md
@@ -1900,7 +1900,7 @@ deployments:
   owners:
   - ./packages/e2e
   active_owner: ./packages/e2e
-  content_hash: sha256:33d229f09912b90f56644f416c326aafd9b9ea0acf6ac8fa095b705734728f64
+  content_hash: sha256:42dfe5730ad4c70e882a2d325aa1e313a637fce1282b6077d829e6b4758e548a
 - kind: project-relative
   target: codex
   value: .agents/skills/write-e2e-test/assets/context/testing/e2e.md
