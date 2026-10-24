@@ -1,0 +1,39 @@
+import { ColorItem, ColorPalette, Meta } from '@storybook/addon-docs/blocks'
+
+{/* トークンのページの例。題は配置先（src/tokens/色.mdx）から「トークン/色」と決める。色は意味の段の変数で示し、16 進の値を書かない */}
+
+<Meta title="トークン/色" />
+
+# 色
+
+画面とコンポーネントは、意味のトークンだけを使う。使い分けの規則は、デザインシステムの文書にある。
+
+## 面と線
+
+<ColorPalette>
+  <ColorItem
+    title="surface"
+    subtitle="カード、入力欄、ダイアログの背景"
+    colors={{ surface: 'var(--app-color-surface)' }}
+  />
+  <ColorItem
+    title="border-field"
+    subtitle="入力欄と押せるものの枠。surface の上で 3:1 以上"
+    colors={{ 'border-field': 'var(--app-color-border-field)' }}
+  />
+</ColorPalette>
+
+## 文字
+
+<ColorPalette>
+  <ColorItem
+    title="text"
+    subtitle="本文、見出し、入力した値"
+    colors={{ text: 'var(--app-color-text)' }}
+  />
+  <ColorItem
+    title="text-secondary"
+    subtitle="補足、項目のラベル、プレースホルダー"
+    colors={{ 'text-secondary': 'var(--app-color-text-secondary)' }}
+  />
+</ColorPalette>

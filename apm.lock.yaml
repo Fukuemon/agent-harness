@@ -154,6 +154,47 @@ dependencies:
   source: local
   local_path: ./packages/core
   declared_license: MIT
+- repo_url: _local/design-system
+  name: design-system
+  version: 0.1.0
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/setup-design-system
+  - .agents/skills/setup-design-system/SKILL.md
+  - .agents/skills/setup-design-system/references/build-static-tokens.mjs
+  - .agents/skills/setup-design-system/references/build-static-tokens.test.mjs
+  - .agents/skills/setup-design-system/references/check-contrast.mjs
+  - .agents/skills/setup-design-system/references/check-contrast.test.mjs
+  - .agents/skills/setup-design-system/references/design-system.md
+  - .agents/skills/write-design-system
+  - .agents/skills/write-design-system/SKILL.md
+  - .claude/skills/setup-design-system
+  - .claude/skills/setup-design-system/SKILL.md
+  - .claude/skills/setup-design-system/references/build-static-tokens.mjs
+  - .claude/skills/setup-design-system/references/build-static-tokens.test.mjs
+  - .claude/skills/setup-design-system/references/check-contrast.mjs
+  - .claude/skills/setup-design-system/references/check-contrast.test.mjs
+  - .claude/skills/setup-design-system/references/design-system.md
+  - .claude/skills/write-design-system
+  - .claude/skills/write-design-system/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/setup-design-system/SKILL.md: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+    .agents/skills/setup-design-system/references/build-static-tokens.mjs: sha256:6b2a206f52e638ac0a9eb6ce7df64b0821be497ca30c16d9eaf40596f0f5b74c
+    .agents/skills/setup-design-system/references/build-static-tokens.test.mjs: sha256:595c03477ee8578cebedb5184edc158111323df2a8445cf2a32e677f02b118c1
+    .agents/skills/setup-design-system/references/check-contrast.mjs: sha256:7248893b83fca755cc331adecf4593e16c82db1150e391519ca7094987e35a1e
+    .agents/skills/setup-design-system/references/check-contrast.test.mjs: sha256:2ae06b391bea3982ac27c0b6ef645f439fc9b5c4b2ce4f1c410c0e105bd4199c
+    .agents/skills/setup-design-system/references/design-system.md: sha256:e81b7b01a8591c7cd4bdafa5c2876f32170ed398d3d9c80b374f9c5ffafe55ba
+    .agents/skills/write-design-system/SKILL.md: sha256:228d4e3a2c0b1e4e40ecde993eb0b6a824b8829548b355eedb6a16f1b7c9e052
+    .claude/skills/setup-design-system/SKILL.md: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+    .claude/skills/setup-design-system/references/build-static-tokens.mjs: sha256:6b2a206f52e638ac0a9eb6ce7df64b0821be497ca30c16d9eaf40596f0f5b74c
+    .claude/skills/setup-design-system/references/build-static-tokens.test.mjs: sha256:595c03477ee8578cebedb5184edc158111323df2a8445cf2a32e677f02b118c1
+    .claude/skills/setup-design-system/references/check-contrast.mjs: sha256:7248893b83fca755cc331adecf4593e16c82db1150e391519ca7094987e35a1e
+    .claude/skills/setup-design-system/references/check-contrast.test.mjs: sha256:2ae06b391bea3982ac27c0b6ef645f439fc9b5c4b2ce4f1c410c0e105bd4199c
+    .claude/skills/setup-design-system/references/design-system.md: sha256:e81b7b01a8591c7cd4bdafa5c2876f32170ed398d3d9c80b374f9c5ffafe55ba
+    .claude/skills/write-design-system/SKILL.md: sha256:228d4e3a2c0b1e4e40ecde993eb0b6a824b8829548b355eedb6a16f1b7c9e052
+  source: local
+  local_path: ./packages/design-system
+  declared_license: MIT
 - repo_url: _local/docs
   name: docs
   version: 0.2.9
@@ -889,6 +930,69 @@ deployments:
   content_hash: sha256:331f5b640e86cd85f3c752b3ed165804faa127f9cc115e7b6f8914f8d8e277cb
 - kind: project-relative
   target: claude
+  value: .claude/skills/setup-design-system
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-design-system/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-design-system/references/build-static-tokens.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:6b2a206f52e638ac0a9eb6ce7df64b0821be497ca30c16d9eaf40596f0f5b74c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-design-system/references/build-static-tokens.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:595c03477ee8578cebedb5184edc158111323df2a8445cf2a32e677f02b118c1
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-design-system/references/check-contrast.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:7248893b83fca755cc331adecf4593e16c82db1150e391519ca7094987e35a1e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-design-system/references/check-contrast.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:2ae06b391bea3982ac27c0b6ef645f439fc9b5c4b2ce4f1c410c0e105bd4199c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/setup-design-system/references/design-system.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:e81b7b01a8591c7cd4bdafa5c2876f32170ed398d3d9c80b374f9c5ffafe55ba
+- kind: project-relative
+  target: claude
   value: .claude/skills/setup-e2e
   runtime: null
   scope: project
@@ -1130,6 +1234,24 @@ deployments:
   - ./packages/docs
   active_owner: ./packages/docs
   content_hash: sha256:27413b5eb34bb2eca8e629f785d7ac95db0e5b81f601e25f592f399a0b6c08a3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/write-design-system
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/write-design-system/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:228d4e3a2c0b1e4e40ecde993eb0b6a824b8829548b355eedb6a16f1b7c9e052
 - kind: project-relative
   target: claude
   value: .claude/skills/write-e2e-test
@@ -1816,6 +1938,69 @@ deployments:
   content_hash: sha256:331f5b640e86cd85f3c752b3ed165804faa127f9cc115e7b6f8914f8d8e277cb
 - kind: project-relative
   target: codex
+  value: .agents/skills/setup-design-system
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-design-system/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:9baf68687c21d0ae8a6ccbad1d1bea406662a6ff5fdcba5537f0d40eef898a4e
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-design-system/references/build-static-tokens.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:6b2a206f52e638ac0a9eb6ce7df64b0821be497ca30c16d9eaf40596f0f5b74c
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-design-system/references/build-static-tokens.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:595c03477ee8578cebedb5184edc158111323df2a8445cf2a32e677f02b118c1
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-design-system/references/check-contrast.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:7248893b83fca755cc331adecf4593e16c82db1150e391519ca7094987e35a1e
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-design-system/references/check-contrast.test.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:2ae06b391bea3982ac27c0b6ef645f439fc9b5c4b2ce4f1c410c0e105bd4199c
+- kind: project-relative
+  target: codex
+  value: .agents/skills/setup-design-system/references/design-system.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:e81b7b01a8591c7cd4bdafa5c2876f32170ed398d3d9c80b374f9c5ffafe55ba
+- kind: project-relative
+  target: codex
   value: .agents/skills/setup-e2e
   runtime: null
   scope: project
@@ -2057,6 +2242,24 @@ deployments:
   - ./packages/docs
   active_owner: ./packages/docs
   content_hash: sha256:27413b5eb34bb2eca8e629f785d7ac95db0e5b81f601e25f592f399a0b6c08a3
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-design-system
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/write-design-system/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/design-system
+  active_owner: ./packages/design-system
+  content_hash: sha256:228d4e3a2c0b1e4e40ecde993eb0b6a824b8829548b355eedb6a16f1b7c9e052
 - kind: project-relative
   target: codex
   value: .agents/skills/write-e2e-test
