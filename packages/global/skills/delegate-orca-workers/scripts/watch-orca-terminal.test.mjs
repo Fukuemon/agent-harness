@@ -107,6 +107,13 @@ test("here-string は heredoc とみなさない", () => {
   assert.deepEqual(lines(r), []);
 });
 
+test("前の呼び出しの経過を、実行中の呼び出しの経過とみなさない", () => {
+  const r = watch([
+    read(["⏺ Bash(pnpm build)", "Running 1 shell command… (10m 10s)", "⏺ Bash(python3 - <<'EOF'", "Running 1 shell command… (10s)"]),
+  ]);
+  assert.deepEqual(lines(r), []);
+});
+
 test("シフト演算は heredoc とみなさない", () => {
   const r = watch([read(["⏺ Bash(python3 -c 'n = 12; size = 1 << n; time.sleep(240)')", "Running 1 shell command… (3m 10s)"])]);
   assert.deepEqual(lines(r), []);

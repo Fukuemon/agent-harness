@@ -52,10 +52,11 @@ if (!args) {
 // 表示の文言は、元にした運用で見た Claude Code の端末の表示に合わせている。表示が変わったら正規表現を直す
 const spinner = /^[✻✳✽✶✢·*] |esc to interrupt|tokens/;
 // 区切り語の後に、行末、`)`、`>`、`|` が続くものだけを heredoc とみなす。here-string とシフト演算を除くための簡略化で、ほかの書き方の heredoc は取りこぼす
-const heredoc =/(?<!<)<<(?!<)-?\s*(['"]?)[A-Za-z_]\w*\1\s*(?:\)|[>|]|$)/m;
+const heredoc = /(?<!<)<<(?!<)-?\s*(['"]?)[A-Za-z_]\w*\1\s*(?:\)|[>|]|$)/m;
 // Claude Code は、ツールの呼び出しを行頭の ⏺ で表示する。最後の呼び出しから後を、実行中のコマンドとみなす
 const toolCall = /^\s*⏺ /;
-const shellMinutes = /Running [0-9]+ shell command[^0-9]*([0-9]+)m/g;
+const shellRunning = /Running [0-9]+ shell command/;
+const shellMinutes = /Running [0-9]+ shell command[^0-9]*([0-9]+)m/;
 const limitText = /usage limit reached|you've hit your|limit will reset|resets at [0-9]|5-hour limit|weekly limit/i;
 const waitingText = /◯ |[0-9]+ shell|background agent/;
 
@@ -89,11 +90,12 @@ function inspect(raw) {
   if (status !== state.status && status !== "running") say(`STATUS ${status}`);
   state.status = status;
 
-  const text = tail.join("\n");
-  const minutes = [...text.matchAll(shellMinutes)].map((m) => Number(m[1]));
-  const elapsed = minutes.length ? minutes[minutes.length - 1] : 0;
   const callIndex = tail.findLastIndex((line) => toolCall.test(line));
-  const current = tail.slice(Math.max(0, callIndex)).join("\n");
+  const currentLines = tail.slice(Math.max(0, callIndex));
+  const current = currentLines.join("\n");
+  // 経過が秒だけの表示（`(10s)`）は 0 分とみなす
+  const running = currentLines.findLast((line) => shellRunning.test(line)) ?? "";
+  const elapsed = Number(running.match(shellMinutes)?.[1] ?? 0);
   // 経過の分が前より減るか、最後の呼び出しの行が変わったら、別のコマンドが始まったとみなす
   const call = callIndex >= 0 ? tail[callIndex] : "";
   if (elapsed < state.lastElapsed || call !== state.call) {
