@@ -37,6 +37,8 @@ keywords: [画面仕様書, モック, 状態, 構成要素]
 
 導入のスキルは、配置されたスキルの `assets/` を全部、同じパスで利用者のリポジトリへ写す。写す先を値のファイルで変えられず、既にあるファイルは更新しない。そのため雛形は `assets/` に置かず、`references/screens/` に置き、このスキルの `scripts/copy-screen-templates.mjs` が `screens.dir` へ写す。
 
+- ADR-0025: [写す先が利用者ごとに違うテンプレートは references/ に置き、キーを尋ねる場所と schema の有無はパッケージが決める](../../adr/0025-templates-keys-and-schemas.md)
+
 - `rules.md`: 規約。
 - `index.md`: 目次。画面の一覧と、画面の ID の規則（`<ドメイン>-<種類>` の形と種類の語）を持つ。ドメインの語は利用者が足す。
 - `_template/`: 仕様書、API との対応、モック、画面の CSS のテンプレート。
