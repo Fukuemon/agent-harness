@@ -1,0 +1,51 @@
+/*
+ * 意味の段の例。基本の段に、デジタル庁デザインシステムのトークン（@digital-go-jp/design-tokens 2.1.0、MIT）を使う。
+ * 使う側の CSS は、先に `@import '@digital-go-jp/design-tokens/dist/tokens.css';` を読み、次にこのファイルを読む。
+ * 操作の色とフォーカスの表示は、デジタル庁デザインシステムのコードスニペット（design-system-example-components-html、MIT）のボタン、リンク、入力欄の値に合わせた。
+ * 面と文字の割り当ては、この例での選択である。プロダクトの文書で決める。
+ * 出典: デジタル庁デザインシステムウェブサイト https://design.digital.go.jp/dads/ および デジタル庁GitHub https://github.com/digital-go-jp のコンテンツを加工して作成
+ */
+
+:root {
+  /* 面 */
+  --app-color-surface: var(--color-neutral-white);
+  --app-color-surface-canvas: var(--color-neutral-solid-gray-50);
+  --app-color-surface-subtle: var(--color-neutral-solid-gray-100);
+  --app-color-surface-overlay: var(--color-neutral-white);
+  --app-color-backdrop: var(--color-neutral-opacity-gray-500);
+
+  /* 文字 */
+  --app-color-text: var(--color-neutral-solid-gray-800);
+  --app-color-text-secondary: var(--color-neutral-solid-gray-600);
+  --app-color-text-inverse: var(--color-neutral-white);
+  /* 無効のコンポーネントだけに使う。WCAG 1.4.3 の対象外なので、コントラストのチェックの組に入れない */
+  --app-color-text-disabled: var(--color-neutral-solid-gray-420);
+
+  /* 枠 */
+  --app-color-border: var(--color-neutral-solid-gray-200);
+  --app-color-border-field: var(--color-neutral-solid-gray-600);
+
+  /* 操作 */
+  --app-color-primary: var(--color-key-900);
+  --app-color-primary-hover: var(--color-key-1000);
+  --app-color-primary-active: var(--color-key-1200);
+  --app-color-primary-surface: var(--color-key-50);
+  --app-color-link: var(--color-primitive-blue-1000);
+  --app-color-link-hover: var(--color-primitive-blue-900);
+  --app-color-link-active: var(--color-primitive-orange-800);
+  --app-color-link-visited: var(--color-primitive-magenta-900);
+  --app-color-disabled-surface: var(--color-neutral-solid-gray-300);
+
+  /* フォーカス。デジタル庁デザインシステムは、黒の線と Yellow-300 の縁の 2 重を変えないとしている */
+  --app-color-focus-outline: var(--color-neutral-black);
+  --app-color-focus-halo: var(--color-primitive-yellow-300);
+
+  /* 状態。色相と意味の対応（エラーは赤、成功は緑）は変えない */
+  --app-color-danger: var(--color-semantic-error-2);
+  --app-color-danger-surface: var(--color-primitive-red-50);
+  /* warning-orange-2 と warning-yellow-2 は、薄い面の上で 4.5:1 に届かない。同じ色相の濃い階調を使う */
+  --app-color-warning: var(--color-primitive-orange-900);
+  --app-color-warning-surface: var(--color-primitive-orange-50);
+  --app-color-success: var(--color-semantic-success-2);
+  --app-color-success-surface: var(--color-primitive-green-50);
+}
