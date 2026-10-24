@@ -19,23 +19,28 @@
    - 権限は 1 つだけにする。製品は Workers、範囲は Specified Workers の手順 2 の Worker、役割は Editor。
    - Editor は Worker の中身と設定を書き換えて出せるが、Worker を消せない。ほかの Worker と Access の設定には届かない。
    - 送り元の IP は絞らない。GitHub Actions の runner の IP は決まっていない。
-4. GitHub のリポジトリの「Settings → Secrets and variables → Actions」に登録する。
-   - Secrets: `CLOUDFLARE_API_TOKEN`（手順 3 のトークン）
-   - Variables: `CLOUDFLARE_ACCOUNT_ID`（ダッシュボードの Account ID）
-   - Variables: `DOCS_SITE_URL`（Worker の workers.dev の URL）と `DOCS_SITE_MARKER`（トップのページにだけある文字列）
-5. Worker の Access のタブで「すべてのトラフィック」を選び、開ける人（メールアドレスかメールのドメイン）を決める。
+4. GitHub のリポジトリの「Settings → Environments」で、環境 `docs-site` を作る。
+   - 「Deployment branches and tags」を「Selected branches and tags」にし、既定のブランチだけを足す。
+   - 環境の Secrets に `CLOUDFLARE_API_TOKEN`（手順 3 のトークン）を置く。リポジトリの Secrets には置かない。
+   - ワークフローの `on: push` はどのブランチでも動く。トークンをリポジトリの Secrets に置くと、書き込みの権限を持つ人は、ジョブの `if` を外したワークフローを別のブランチへ push してトークンを読める。
+5. 「Settings → Secrets and variables → Actions」の Variables に登録する。
+   - `CLOUDFLARE_ACCOUNT_ID`（ダッシュボードの Account ID）
+   - `DOCS_SITE_URL`（Worker の workers.dev の URL）と `DOCS_SITE_MARKER`（トップのページにだけある文字列）
+   - `DOCS_SITE_AUTH_HOST`（Access の team のドメイン `<team>.cloudflareaccess.com`。Zero Trust の「Settings → Custom Pages」の Team domain）
+6. Worker の Access のタブで「すべてのトラフィック」を選び、開ける人（メールアドレスかメールのドメイン）を決める。
 
 - アカウント全体の Access（Workers & Pages の概要の「Cloudflare Access」のスイッチ）は使わない。同じアカウントの、公開しているほかの Worker も守られて開けなくなるためである。
-- Worker の名前を変えると、新しい Worker が Access なしで出る。名前を変えるときは、先に手順 2、3、5 を新しい名前で行う。
+- Worker の名前を変えると、新しい Worker が Access なしで出る。名前を変えるときは、先に手順 2、3、6 を新しい名前で行う。
 - `DOCS_SITE_MARKER` に、サイトの名前と Worker の名前を使わない。Access の認証の画面にもアプリの名前が出ることがあり、保護されていても確認が失敗する。
 
 ## 保護を確認する
 
-認証のない要求でリダイレクトをたどり、Access の認証の画面（`*.cloudflareaccess.com`）に着き、保護した中身を取得できないことを確認する。ワークフローは公開のたびに同じ確認を流す。
+認証のない要求でリダイレクトをたどり、Access の team のドメインの認証の画面に着き、保護した中身を取得できないことを確認する。ワークフローは公開のたびに同じ確認を流す。
 
 ```sh
-node scripts/check-docs-site-protection.mjs "$DOCS_SITE_URL" "$DOCS_SITE_MARKER" cloudflareaccess.com
+node scripts/check-docs-site-protection.mjs "$DOCS_SITE_URL" "$DOCS_SITE_MARKER" "$DOCS_SITE_AUTH_HOST"
 ```
 
 - 終了コード 0 は保護されている。1 は保護されていない。2 は引数の誤りか、要求が失敗した。
+- カタログと図も確認するときは、`"$DOCS_SITE_URL/catalog/"` のような URL と、その part にだけある文字列で、もう 1 回流す。
 - 1 が出たら、Worker の Access のタブの設定と、Worker の名前が手順 2 と同じかを見る。
