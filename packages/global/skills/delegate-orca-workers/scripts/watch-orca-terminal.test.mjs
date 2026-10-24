@@ -134,6 +134,55 @@ test("実行中の呼び出しが heredoc なら、HEREDOC を出す", () => {
   assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
 });
 
+// Claude Code 2.1.310 の端末を `orca terminal read --json` で読んだときの、heredoc のコマンドを実行中の画面
+const runningScreen = (time) => [
+  "❯ 次のコマンドを 1 回実行する",
+  `  Running the display test command · ${time}`,
+  "  ⎿  $ cat <<'EOF' > /dev/null && sleep 240",
+  "     x",
+  "     EOF (3m 30s)",
+  "     (ctrl+b to run in background)",
+  "✳ Befuddling… (3m 37s · ↓ 99 tokens)",
+  "─".repeat(61),
+  "❯",
+  "─".repeat(61),
+  "  ⏵⏵ bypass permissions on (shift+tab to cycle) · PR #152 ·",
+];
+
+test("Claude Code 2.1.310 の見出しの形でも、HEREDOC と LONGCMD を出す", () => {
+  const r = watch([read(runningScreen("3m 31s")), read(runningScreen("8m 2s"))]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある", "LONGCMD 8m"]);
+});
+
+test("フッターに ⏺ main とサブエージェントの一覧があっても、実行中のコマンドを見失わない", () => {
+  const r = watch([read([...runningScreen("8m 2s"), "  ⏺ main", "  ◯ general-purpose  Worker: … 10s · ↓ 238.1k tokens"])]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある", "LONGCMD 8m"]);
+});
+
+test("前の形でも、フッターの ⏺ main を呼び出しとみなさない", () => {
+  const footer = ["─".repeat(61), "❯", "─".repeat(61), "  ⏺ main", "  ◯ general-purpose  Reading"];
+  const r = watch([read(["⏺ Bash(pnpm build)", "Running 1 shell command… (8m 0s)", ...footer])]);
+  assert.deepEqual(lines(r), ["LONGCMD 8m"]);
+});
+
+test("経過が時間の単位で出ても、分に直して LONGCMD を出す", () => {
+  const r = watch([read(["⏺ Bash(pnpm build)", "Running 1 shell command… (1h 5m)"])]);
+  assert.deepEqual(lines(r), ["LONGCMD 65m"]);
+});
+
+test("区切り語の後に && が続く heredoc でも、HEREDOC を出す", () => {
+  const r = watch([read(["⏺ Bash(cat <<EOF && make", "Running 1 shell command… (3m 10s)"])]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
+});
+
+test("IDLE の閾値が 20 分から 4 分に変わっても、IDLE を 1 回だけ出す", () => {
+  // スピナーの行は画面の比較から外れるので、待ちの表示が消えても画面は変わらないとみなされる
+  const waiting = read(["作業中", "* 1 background agent"]);
+  const stopped = read(["作業中", "* Thinking"]);
+  const r = watch([...Array(6).fill(waiting), stopped, stopped, stopped]);
+  assert.deepEqual(lines(r), ["IDLE 4 作業中"]);
+});
+
 test("読み取りが失敗したら、READFAIL を理由ごとに 1 回出す", () => {
   const stale = JSON.stringify({ ok: false, error: { code: "terminal_handle_stale" } });
   const r = watch([stale, stale, "not json"]);
@@ -151,4 +200,10 @@ test("orca のコマンドを起動できなければ、1 で終わる", () => {
   const r = spawnSync("node", [script, "term_x"], { encoding: "utf8", env: { ...process.env, ORCA_CLI_COMMAND: "/nonexistent/orca" } });
   assert.equal(r.status, 1);
   assert.match(r.stderr, /起動できない/);
+});
+
+test("orca のコマンドが実行できないファイルなら、1 で終わる", () => {
+  const r = spawnSync("node", [script, "term_x"], { encoding: "utf8", env: { ...process.env, ORCA_CLI_COMMAND: fileURLToPath(import.meta.url) } });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /EACCES/);
 });
