@@ -12,7 +12,8 @@ npm install --save-dev --save-exact @fukuemon/e2e-kit@<e2e のバージョン>
 ```
 
 - `@playwright/test` の 1.59 以上を peer に取る。ESLint の規則を使うときは、ESLint の 9 以上と `@typescript-eslint/parser` も入れる。
-- 録画を mp4 に変換するので、`ffmpeg` と `ffprobe` が要る。
+- 録画を mp4 に変換するので、`ffmpeg` と `ffprobe` が要る。`ffmpeg -version` と `ffprobe -version` で、入っているかを確認できる。
+- テストを流すブラウザのエンジンが要る。`npx playwright install chromium` で入れる。
 - Node.js の 22.12 以上で動く。
 
 ## Usage

@@ -40,3 +40,5 @@ apm_modules/
 /.claude/skills/write-screen-spec/
 /.agents/skills/write-e2e-test/
 /.claude/skills/write-e2e-test/
+/.agents/skills/setup-e2e/
+/.claude/skills/setup-e2e/

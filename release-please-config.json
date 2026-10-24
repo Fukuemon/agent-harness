@@ -49,7 +49,8 @@
       "component": "e2e",
       "extra-files": [
         { "type": "json", "path": ".claude-plugin/plugin.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "kit/package.json", "jsonpath": "$.version" }
+        { "type": "json", "path": "kit/package.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "skills/setup-e2e/kit-version.json", "jsonpath": "$.version" }
       ]
     }
   }

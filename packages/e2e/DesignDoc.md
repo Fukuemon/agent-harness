@@ -30,6 +30,11 @@ kit はブラウザのテストのツール（Playwright）に依るコードな
 
 ### スキル
 
+| スキル | 担う手順 |
+| --- | --- |
+| write-e2e-test | テストのコードの層、置き場、名前、待ち方、確認の方法を決めて書く |
+| setup-e2e | E2E のテストのディレクトリを決め、スキルと同じバージョンの kit を入れ、雛形を写し、`context/testing/e2e.md` を埋める |
+
 スキル write-e2e-test は、テストのコードを 6 つの層（specs、setup、screens、widgets、selectors、fixtures）に分け、どの層に置くか、何を待つか、どう確認するかを決める。  
 本文はテストのツールの名前を書かず、一般の語で書く。ツールの API の名前は、利用者の `context/testing/e2e.md` の Test Tool のセクションが持つ。Playwright で埋めた例は `examples/e2e/` にある。
 
@@ -38,7 +43,9 @@ kit はブラウザのテストのツール（Playwright）に依るコードな
 - 層のディレクトリの名前は、lint の規則が読むので、スキルと規則で同じにする。
 - Page Object を使わず、ページを引数に取る関数を並べる。共有するのは 3 本以上の spec が使う関数だけにし、使われない関数を増やさない。
 - アプリに描画の完了の信号を足さない。描画のライブラリを置き換える改修で、改修の前と後が同じ振る舞いだと示せなくなるためである。待ちは、テストの側で観測できるもの（API のレスポンス、ライブラリが作る DOM）で組み立てる。
-- `context/testing/e2e.md` の骨組みは、スキルの `assets/` に置き、導入のスキルが利用者のリポジトリへ写す。
+- `context/testing/e2e.md` の骨組みは、write-e2e-test の `assets/` に置き、core の導入のスキルが利用者のリポジトリへ写す。
+- テストのツールの設定、lint の設定、エビデンスの薄い層、待つ時間の名前の雛形は、利用者が選んで写すので、setup-e2e の `references/` の下に、ツールの名前のディレクトリ（`playwright/`）で置く。中は、E2E のテストのディレクトリからの相対パスで並べる。
+- setup-e2e は、スキルのディレクトリの `kit-version.json` に書いた名前とバージョンの kit を、範囲にせず固定で入れる。スキルの中のファイルなら、パッケージマネージャーでもプラグインでも、スキルと一緒に届く。
 
 ### kit の構成
 
@@ -159,11 +166,20 @@ kit の開発の依存（TypeScript、Playwright、ESLint）は、ルートの `
 - 型のチェックとビルドは `tsc` で行う。ビルドは、import の拡張子を `.js` に書き換えて `dist/` に JavaScript と型の宣言を書き出す。ビルドは npm のパッケージを作るときに `prepack` で流し、公開するのは `dist/` と、ルートから写す LICENSE だけにする。
 - Playwright は、peer の範囲の下限（1.59.0）と同じバージョンを開発の依存に入れ、下限のバージョンで型のチェックとテストを通す。
 - ESLint の peer は 9 以上にしているが、テストは開発の依存の 10 だけで流す。9 で動くかは確認していない。
+- プラグイン、kit、`kit-version.json` のバージョンと名前がそろっていることを、`pnpm test` が確認する。
+
+### 公開
+
+kit は、e2e のリリースと同じタグから公開する。release-please の e2e の `extra-files` が、`plugin.json`、`kit/package.json`、setup-e2e の `kit-version.json` のバージョンを同じ値に書き換える。
+
+- `release.yml` の `publish-e2e-kit` のジョブは、release-please のジョブの出力で e2e のリリースができたときだけ動く。タグを checkout し、テストと `pnpm check:kit` を通してから公開する。
+- 公開は trusted publishing で行う。`id-token: write` はこのジョブだけに与え、npm のトークンを secrets に置かない。このジョブの actions は SHA で固定し、npm の CLI が trusted publishing に要る 11.5.1 より古ければ、公開の前に落とす。
+- ジョブは、リポジトリの変数 `E2E_KIT_PUBLISH` が `true` のときだけ動く。信頼する発行元を登録する前に、公開が失敗するジョブを動かさないためである。変数が無いまま e2e をリリースしたときは、`warn-e2e-kit-unpublished` のジョブが、kit を公開していないことを警告に出す。最初の公開の手順は CONTRIBUTING.md にある。
 
 ## Interface
 
 - npm のパッケージ: `@fukuemon/e2e-kit`。サブパスは `recording`、`evidence`、`auth`、`eslint`。peer は Playwright の 1.59 以上と、任意の ESLint の 9 以上。
 - 読むキー: `e2e.dir`（E2E のテストのディレクトリ）。スキルが読み、スクリプトは読まないので schema を置かない。
 - 利用者の context: `context/testing/e2e.md`。テストのツールでの書き方、testid の名前、lint の規則に渡す値、流すコマンドと環境、テストデータとログイン、待つ時間の決め方を持つ。
-- 写す雛形: `context/testing/e2e.md` の骨組み。
+- 写す雛形: `context/testing/e2e.md` の骨組み（core の導入のスキルが写す）。テストのツールの設定、lint の設定、エビデンスの薄い層、待つ時間の名前（setup-e2e が、利用者が選んだものだけを写す）。
 - このリポジトリのチェック: `pnpm test` が kit のテストを流し、`pnpm check:kit` が型のチェックを行い、ビルドして公開する中身を一覧する。CI は両方を流す。
