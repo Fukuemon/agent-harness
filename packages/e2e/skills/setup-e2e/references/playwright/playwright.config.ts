@@ -1,6 +1,6 @@
 // E2E のテストの設定の雛形。<e2e.dir>/playwright.config.ts に写し、<> の値を利用者のリポジトリの値に置き換える
 import { defineConfig, devices } from '@playwright/test'
-import { BASE_URL } from './tests/fixtures/evidence'
+import { BASE_URL } from './tests/fixtures/env'
 import { TIMEOUTS } from './tests/fixtures/timeouts'
 
 export default defineConfig({
@@ -28,7 +28,7 @@ export default defineConfig({
       dependencies: ['setup'],
       use: { storageState: '<setup が保存するログインの状態のファイル>' },
     },
-    // 録画は recordEvidence が新しいコンテキストで撮り、prepare の中でログインするので、setup に依らない
+    // エビデンスは tests/fixtures/evidence.ts の captureEvidence が新しいコンテキストで撮り、prepare の中でログインするので、setup に依らない
     { name: 'evidence', testMatch: /tests\/evidence\/.*\.e2e\.ts/, timeout: TIMEOUTS.evidence },
   ],
 })

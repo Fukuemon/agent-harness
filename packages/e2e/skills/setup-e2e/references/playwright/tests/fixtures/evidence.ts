@@ -3,15 +3,16 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from '@playwright/test'
 import { variantsFromEnv, type Variant } from '@fukuemon/e2e-kit/evidence'
 import { recordPrEvidence, type Recording, type Viewport } from '@fukuemon/e2e-kit/recording'
+import { BASE_URL } from './env'
 
 /** リポジトリのルート。このファイルからルートまでの深さに合わせる */
 const root = fileURLToPath(new URL('<このファイルからリポジトリのルートへの相対パス。例: ../../../>', import.meta.url))
 
-/** テストを向けるアプリの URL */
-export const BASE_URL = process.env.E2E_BASE_URL ?? '<ローカルで起動したアプリの URL>'
-
-/** 撮る版。EVIDENCE_BEFORE_URL と EVIDENCE_ONLY で、改修前と改修後を切り替える */
-export const EVIDENCE_VARIANTS = variantsFromEnv(BASE_URL)
+/**
+ * 撮る版の一覧。EVIDENCE_BEFORE_URL と EVIDENCE_ONLY で、改修前と改修後を切り替える。
+ * EVIDENCE_ONLY が before と after のどちらでもなければ、例外を投げる。エビデンスの spec の中で呼ぶ
+ */
+export const evidenceVariants = (): Variant[] => variantsFromEnv(BASE_URL)
 
 /** パソコンの幅の画面と録画の大きさ。pull request の本文で読める大きさにする */
 export const DESKTOP_VIEWPORT: Viewport = { width: 1280, height: 800 }
@@ -24,7 +25,7 @@ export const DESKTOP_VIEWPORT: Viewport = { width: 1280, height: 800 }
  * @param prepare 録画の外で、ログインとテストデータの確認を行い、録画する画面の origin を開いたまま返す
  * @param body 録画する操作。step と check で字幕を出してから操作する
  */
-export const recordEvidence = <T>(
+export const captureEvidence = <T>(
   browser: Browser,
   o: { name: string; title: string; actor: string; variant: Variant; viewport?: Viewport },
   prepare: (page: Page) => Promise<T>,
