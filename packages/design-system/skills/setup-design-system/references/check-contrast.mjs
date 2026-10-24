@@ -10,7 +10,7 @@
 //   値は、var() の参照（空白とフォールバックを含む）、#rgb、#rrggbb を受ける。同じ変数の値は、CSS のカスケードの順（!important、@layer の順、後の宣言）で決める。
 //   rgb()、hsl()、色の名前、calc() は色に解決できないと報告する。
 //   :root 以外のブロックと @media などの中の宣言は、PREFIX の変数なら確認できないと報告し、ほかの変数（基本の段）は読み飛ばして数を出す
-// 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の意味の段の宣言がある、2 は CSS が読めない
+// 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の意味の段の宣言か、CSS にない --root のブロックがある、2 は CSS が読めない
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { isAbsolute, join, resolve } from "node:path";
@@ -62,6 +62,7 @@ const declarations = [];
 // 名前のある @layer を、最初に現れた順に並べる。後の layer ほど通常の宣言で勝つ
 const layers = [];
 let anonymous = 0;
+const matchedRoots = new Set();
 for (const source of sources) {
   let css;
   try {
@@ -82,6 +83,11 @@ for (const d of declarations) {
     properties.set(d.name, d.value);
     ranks.set(d.name, rank);
   }
+}
+const unmatched = roots.filter((r) => !matchedRoots.has(r));
+if (unmatched.length) {
+  console.error(`--root のブロックが CSS にない: ${unmatched.map((r) => `"${r}"`).join("、")}。セレクタの名前を直す`);
+  process.exit(1);
 }
 if (skipped) console.error(`:root 以外のブロックか条件つきのブロックにある基本の段の宣言を ${skipped} 個読み飛ばした`);
 if (otherConditions) console.error(`--root の外の条件つきのブロックにある意味の段の宣言を ${otherConditions} 個読み飛ばした`);
@@ -119,7 +125,12 @@ function readDeclarations(css, source) {
   // 外側のブロックが @layer だけで、一番内側のセレクタの並びに :root があるときだけ、条件のない値とみなす
   const isPlainRoot = () =>
     blocks.slice(0, -1).every((b) => /^@layer\b/.test(b)) && blocks.at(-1).split(",").some((s) => s.trim() === ":root");
-  const isRoot = () => isPlainRoot() || roots.includes(key());
+  const isRoot = () => {
+    if (isPlainRoot()) return true;
+    if (!roots.includes(key())) return false;
+    matchedRoots.add(key());
+    return true;
+  };
   const layerName = () => blocks.filter((b) => /^@layer\b/.test(b)).map(nameOf).join(".");
   const flush = () => {
     const statement = /^@layer\s+([^{]+)$/.exec(text.trim());

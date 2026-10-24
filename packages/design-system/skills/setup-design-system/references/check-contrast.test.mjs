@@ -210,3 +210,12 @@ test("--root で渡したブロックは、後の :root の宣言より優先す
   assert.equal(r.status, 1);
   assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
 });
+
+test("--root のブロックが CSS になければ、名前を出して 1 で終わる", () => {
+  const dir = mkdtempSync(join(tmpdir(), "check-contrast-"));
+  writeFileSync(join(dir, "base.css"), BASE);
+  writeFileSync(join(dir, "semantic.css"), `${semantic()}[data-theme=dark] { --app-color-text-secondary: #999999; }\n`);
+  const r = spawnSync(process.execPath, [script, "--root", "[data-theme=night]", "./base.css", "./semantic.css"], { cwd: dir, encoding: "utf8" });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /--root のブロックが CSS にない: "\[data-theme=night\]"/);
+});
