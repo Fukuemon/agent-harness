@@ -5,7 +5,7 @@
 //   引数のパスを省くと TARGETS を読む。--prefix と --exclude を渡すと、BASE_PREFIXES と EXCLUDES の代わりに使う。
 //   ディレクトリは、EXTENSIONS の拡張子のファイルを再帰で読む。node_modules と、. で始まるディレクトリは読まない。
 // 見つけるもの: 16 進の色（#fff、#ffffff、#ffffff80）、色の関数（rgb()、hsl()、oklch()、color() など）、BASE_PREFIXES で始まる変数の名前。
-//   コメント（/* */、<!-- -->、CSS 以外の行の // の後）の中は見ない。引用符の中の // と /* はコメントにしない。issue の番号のような # を色と判定しないためである。
+//   コメント（/* */、<!-- -->、CSS 以外の行の // の後）の中は見ない。引用符の中と URL の // と /* はコメントにしない。issue の番号のような # を色と判定しないためである。
 //   ALLOW_MARK を含む行は見ず、外した行の数を出す。外す理由は、同じ行のコメントに書く。
 //   CSS の id のセレクタと private のフィールドの宣言で 16 進に見える名前（#add、#fade）と、color という名前の関数の呼び出しは、誤って色と判定する。その行は ALLOW_MARK で外す。
 // 終了コード: 0 は見つからなかった、1 は見つかった、2 はパスが読めないか、引数が正しくない
@@ -102,8 +102,9 @@ const stripComments = (text, lineComments) => {
     let end = -1;
     if (text.startsWith("/*", i)) end = close(text, "*/", i + 2);
     else if (text.startsWith("<!--", i)) end = close(text, "-->", i + 4);
-    // CSS は // をコメントにしない。: の直後の // は URL の一部なので、コメントにしない
-    else if (lineComments && text.startsWith("//", i) && text[i - 1] !== ":") end = close(text, "\n", i + 2, false);
+    // CSS は // をコメントにしない。ほかのファイルでも、行の初め、空白、; { } , ) の直後の // だけをコメントにする。
+    // https:// や url(//cdn...) や src=//cdn... の // は URL の一部なので、コメントにしない
+    else if (lineComments && text.startsWith("//", i) && (i === 0 || /[\s;{},)]/.test(text[i - 1]))) end = close(text, "\n", i + 2, false);
     else {
       out += c;
       continue;
