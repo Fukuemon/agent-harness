@@ -173,8 +173,8 @@ kit の開発の依存（TypeScript、Playwright、ESLint）は、ルートの `
 kit は、e2e のリリースと同じタグから公開する。release-please の e2e の `extra-files` が、`plugin.json`、`kit/package.json`、setup-e2e の `kit-version.json` のバージョンを同じ値に書き換える。
 
 - `release.yml` の `publish-e2e-kit` のジョブは、release-please のジョブの出力で e2e のリリースができたときだけ動く。タグを checkout し、テストと `pnpm check:kit` を通してから公開する。
-- 公開は trusted publishing で行う。`id-token: write` はこのジョブだけに与え、npm のトークンを secrets に置かない。
-- ジョブは、リポジトリの変数 `E2E_KIT_PUBLISH` が `true` のときだけ動く。信頼する発行元を登録する前に、公開が失敗するジョブを動かさないためである。最初の公開の手順は CONTRIBUTING.md にある。
+- 公開は trusted publishing で行う。`id-token: write` はこのジョブだけに与え、npm のトークンを secrets に置かない。このジョブの actions は SHA で固定し、npm の CLI が trusted publishing に要る 11.5.1 より古ければ、公開の前に落とす。
+- ジョブは、リポジトリの変数 `E2E_KIT_PUBLISH` が `true` のときだけ動く。信頼する発行元を登録する前に、公開が失敗するジョブを動かさないためである。変数が無いまま e2e をリリースしたときは、`warn-e2e-kit-unpublished` のジョブが、kit を公開していないことを警告に出す。最初の公開の手順は CONTRIBUTING.md にある。
 
 ## Interface
 
