@@ -1,7 +1,7 @@
 {
   "name": "verification",
   "description": "変更が期待どおりに動くことを、観点の表とエビデンスで示す。観点の設計、撮影と確認、pull request へのエビデンスの添付のスキル。",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Fukuemon"
   },

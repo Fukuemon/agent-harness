@@ -3,7 +3,7 @@ apm_version: 0.32.0
 dependencies:
 - repo_url: _local/core
   name: core
-  version: 0.2.9
+  version: 0.2.10
   package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/setup-agent-harness
@@ -491,7 +491,7 @@ dependencies:
   declared_license: MIT
 - repo_url: _local/verification
   name: verification
-  version: 0.1.0
+  version: 0.2.0
   package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/attach-evidence
