@@ -99,3 +99,25 @@ test("読めないパスと、値のない --prefix で 2", () => {
   assert.equal(run({}, ["missing"]).status, 2);
   assert.equal(run({ "src/a.css": "" }, ["--prefix"]).status, 2);
 });
+
+test("引用符の中の // と /* はコメントにしない。CSS の // もコメントにしない", () => {
+  const r = run({
+    "src/img.tsx": '<img src="//cdn.example.com/logo.svg" style={{ color: "#ff0000" }} />\n',
+    "src/s.ts": 'const a = "/* not a comment"; const b = "#00ff00"; // */\n',
+    "src/u.css": ".a { background: url(//cdn.example.com/a.png); color: #0000ff; }\n",
+  });
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /src\/img\.tsx:1: 色の値 #ff0000/);
+  assert.match(r.stdout, /src\/s\.ts:1: 色の値 #00ff00/);
+  assert.match(r.stdout, /src\/u\.css:1: 色の値 #0000ff/);
+});
+
+test("color() を色の関数として見つけ、メソッドの .color() は見ない", () => {
+  const r = run({
+    "src/p3.css": ".card { color: color(display-p3 1 0 0); }\n",
+    "src/m.ts": "chart.color(series);\n",
+  });
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /src\/p3\.css:1: 色の関数 color\(/);
+  assert.doesNotMatch(r.stdout, /m\.ts/);
+});

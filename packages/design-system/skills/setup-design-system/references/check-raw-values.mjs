@@ -4,10 +4,10 @@
 // 使い方: node check-raw-values.mjs [--prefix <基本の段の接頭辞>]... [--exclude <パス>]... [ファイルかディレクトリ]...
 //   引数のパスを省くと TARGETS を読む。--prefix と --exclude を渡すと、BASE_PREFIXES と EXCLUDES の代わりに使う。
 //   ディレクトリは、EXTENSIONS の拡張子のファイルを再帰で読む。node_modules と、. で始まるディレクトリは読まない。
-// 見つけるもの: 16 進の色（#fff、#ffffff、#ffffff80）、色の関数（rgb()、hsl()、oklch() など）、BASE_PREFIXES で始まる変数の名前。
-//   コメント（/* */、<!-- -->、行の // の後）の中は見ない。issue の番号のような # を色と判定しないためである。
+// 見つけるもの: 16 進の色（#fff、#ffffff、#ffffff80）、色の関数（rgb()、hsl()、oklch()、color() など）、BASE_PREFIXES で始まる変数の名前。
+//   コメント（/* */、<!-- -->、CSS 以外の行の // の後）の中は見ない。引用符の中の // と /* はコメントにしない。issue の番号のような # を色と判定しないためである。
 //   ALLOW_MARK を含む行は見ず、外した行の数を出す。外す理由は、同じ行のコメントに書く。
-//   CSS の id のセレクタと private のフィールドの宣言で、16 進に見える名前（#add、#fade）は、誤って色と判定する。その行は ALLOW_MARK で外す。
+//   CSS の id のセレクタと private のフィールドの宣言で 16 進に見える名前（#add、#fade）と、color という名前の関数の呼び出しは、誤って色と判定する。その行は ALLOW_MARK で外す。
 // 終了コード: 0 は見つからなかった、1 は見つかった、2 はパスが読めないか、引数が正しくない
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, relative, resolve, sep } from "node:path";
@@ -42,7 +42,7 @@ const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const patterns = [
   // 直前が語の文字、&（文字参照）、.（private のフィールド）なら色にしない
   { label: "色の値", re: /(?<![\w&.#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])/g },
-  { label: "色の関数", re: /(?<![\w-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch)\(/g },
+  { label: "色の関数", re: /(?<![\w.-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/g },
   ...basePrefixes.map((p) => ({ label: "基本の段の名前", re: new RegExp(`${escape(p)}[\\w-]+`, "g") })),
 ];
 
@@ -69,14 +69,49 @@ const collect = (p) => {
 };
 for (const p of paths.length ? paths : TARGETS) collect(p);
 
-// コメントを空白に置き換える。改行は残し、行の番号をずらさない
 const blank = (s) => s.replace(/[^\n]/g, " ");
-const stripComments = (text) =>
-  text
-    .replace(/\/\*[\s\S]*?\*\//g, blank)
-    .replace(/<!--[\s\S]*?-->/g, blank)
-    // : の直後の // は URL の一部なので、コメントにしない
-    .replace(/(^|[^:\\])\/\/[^\n]*/gm, (m, head) => head + blank(m.slice(head.length)));
+// 閉じる印の後ろの位置を返す。閉じていないコメントは、ファイルの終わりまで続く。行のコメントは改行を残す
+const close = (text, marker, from, includeMarker = true) => {
+  const at = text.indexOf(marker, from);
+  if (at === -1) return text.length;
+  return includeMarker ? at + marker.length : at;
+};
+// コメントを空白に置き換える。改行は残し、行の番号をずらさない
+// 引用符の中は文字列なので、コメントの印があってもそのまま残す。' と " の文字列は行末で閉じたものとして扱う
+const stripComments = (text, lineComments) => {
+  let out = "";
+  let quote = null;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quote) {
+      if (c === "\\" && text[i + 1] !== "\n") {
+        out += c + (text[i + 1] ?? "");
+        i++;
+        continue;
+      }
+      out += c;
+      if (c === quote || (c === "\n" && quote !== "`")) quote = null;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") {
+      quote = c;
+      out += c;
+      continue;
+    }
+    let end = -1;
+    if (text.startsWith("/*", i)) end = close(text, "*/", i + 2);
+    else if (text.startsWith("<!--", i)) end = close(text, "-->", i + 4);
+    // CSS は // をコメントにしない。: の直後の // は URL の一部なので、コメントにしない
+    else if (lineComments && text.startsWith("//", i) && text[i - 1] !== ":") end = close(text, "\n", i + 2, false);
+    else {
+      out += c;
+      continue;
+    }
+    out += blank(text.slice(i, end));
+    i = end - 1;
+  }
+  return out;
+};
 
 let found = 0;
 let allowed = 0;
@@ -89,7 +124,7 @@ for (const file of files) {
     process.exit(2);
   }
   const original = text.split("\n");
-  const code = stripComments(text).split("\n");
+  const code = stripComments(text, extname(file) !== ".css").split("\n");
   code.forEach((line, i) => {
     if (original[i].includes(ALLOW_MARK)) {
       allowed++;
