@@ -112,12 +112,15 @@ test("引用符の中の // と /* はコメントにしない。CSS の // も�
   assert.match(r.stdout, /src\/u\.css:1: 色の値 #0000ff/);
 });
 
-test("color() を色の関数として見つけ、メソッドの .color() は見ない", () => {
+test("color() と大文字の色の関数を見つけ、メソッドの .color() は見ない", () => {
   const r = run({
     "src/p3.css": ".card { color: color(display-p3 1 0 0); }\n",
+    "src/upper.css": ".card { color: RGB(255 0 0); background: Oklch(0.5 0.1 200); }\n",
     "src/m.ts": "chart.color(series);\n",
   });
   assert.equal(r.status, 1);
   assert.match(r.stdout, /src\/p3\.css:1: 色の関数 color\(/);
+  assert.match(r.stdout, /src\/upper\.css:1: 色の関数 RGB\(/);
+  assert.match(r.stdout, /src\/upper\.css:1: 色の関数 Oklch\(/);
   assert.doesNotMatch(r.stdout, /m\.ts/);
 });

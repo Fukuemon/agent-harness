@@ -42,7 +42,8 @@ const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const patterns = [
   // 直前が語の文字、&（文字参照）、.（private のフィールド）なら色にしない
   { label: "色の値", re: /(?<![\w&.#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])/g },
-  { label: "色の関数", re: /(?<![\w.-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/g },
+  // CSS の関数の名前は、大文字と小文字を区別しない
+  { label: "色の関数", re: /(?<![\w.-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/gi },
   ...basePrefixes.map((p) => ({ label: "基本の段の名前", re: new RegExp(`${escape(p)}[\\w-]+`, "g") })),
 ];
 
