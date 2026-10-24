@@ -82,6 +82,9 @@ const close = (text, marker, from, includeMarker = true) => {
 const stripComments = (text, lineComments) => {
   let out = "";
   let quote = null;
+  // テンプレートの文字列の ${ } の中はコードとして読む。入れ子ごとに、${ を開いた時点の { の深さを積む
+  const templates = [];
+  let depth = 0;
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (quote) {
@@ -90,6 +93,14 @@ const stripComments = (text, lineComments) => {
         const end = close(text, "*/", i + 2);
         out += blank(text.slice(i, end));
         i = end - 1;
+        continue;
+      }
+      if (quote === "`" && text.startsWith("${", i)) {
+        out += "${";
+        i++;
+        templates.push(depth);
+        depth = 0;
+        quote = null;
         continue;
       }
       if (c === "\\" && text[i + 1] !== "\n") {
@@ -105,6 +116,17 @@ const stripComments = (text, lineComments) => {
       quote = c;
       out += c;
       continue;
+    }
+    if (c === "{") depth++;
+    if (c === "}" && templates.length) {
+      if (depth === 0) {
+        // ${ } が閉じ、テンプレートの文字列に戻る
+        depth = templates.pop();
+        quote = "`";
+        out += c;
+        continue;
+      }
+      depth--;
     }
     let end = -1;
     if (text.startsWith("/*", i)) end = close(text, "*/", i + 2);

@@ -135,3 +135,20 @@ test("テンプレートの文字列の中の /* */ は CSS のコメントと�
   assert.match(r.stdout, /src\/card\.ts:4: 色の値 #00ff00/);
   assert.doesNotMatch(r.stdout, /#ff0000/);
 });
+
+test("テンプレートの文字列の ${ } の中は、コードとしてコメントを除き、閉じた後は文字列に戻る", () => {
+  const body = [
+    "const Card = styled.div`",
+    "  color: ${(props) => {",
+    "    // Previously #ff0000",
+    '    return "var(--app-color-text)";',
+    "  }};",
+    "  /* old #00ff00 */",
+    "  border-color: #0000ff;",
+    "`;",
+  ].join("\n");
+  const r = run({ "src/card.ts": body });
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /src\/card\.ts:7: 色の値 #0000ff/);
+  assert.doesNotMatch(r.stdout, /#ff0000|#00ff00/);
+});
