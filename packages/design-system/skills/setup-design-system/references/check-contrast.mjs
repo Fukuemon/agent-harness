@@ -76,7 +76,8 @@ for (const source of sources) {
 // 優先度が大きいほど勝ち、同じなら後の宣言が勝つ
 const ranks = new Map();
 for (const d of declarations) {
-  const rank = cascadeRank(d.layer, d.important);
+  // --root で渡したブロックは、:root より詳細度が高いものとして扱う。セレクタの詳細度は計算しない
+  const rank = cascadeRank(d.layer, d.important) * 2 + (d.selected ? 1 : 0);
   if (rank >= (ranks.get(d.name) ?? -Infinity)) {
     properties.set(d.name, d.value);
     ranks.set(d.name, rank);
@@ -116,9 +117,9 @@ function readDeclarations(css, source) {
   // @layer は条件ではないので、ブロックの名前から外す
   const key = () => blocks.filter((b) => !/^@layer\b/.test(b)).join(" ");
   // 外側のブロックが @layer だけで、一番内側のセレクタの並びに :root があるときだけ、条件のない値とみなす
-  const isRoot = () =>
-    (blocks.slice(0, -1).every((b) => /^@layer\b/.test(b)) && blocks.at(-1).split(",").some((s) => s.trim() === ":root")) ||
-    roots.includes(key());
+  const isPlainRoot = () =>
+    blocks.slice(0, -1).every((b) => /^@layer\b/.test(b)) && blocks.at(-1).split(",").some((s) => s.trim() === ":root");
+  const isRoot = () => isPlainRoot() || roots.includes(key());
   const layerName = () => blocks.filter((b) => /^@layer\b/.test(b)).map(nameOf).join(".");
   const flush = () => {
     const statement = /^@layer\s+([^{]+)$/.exec(text.trim());
@@ -128,7 +129,7 @@ function readDeclarations(css, source) {
     if (!m || !blocks.length) return;
     const important = /!important\s*$/i.test(m[2]);
     const value = m[2].replace(/\s*!important\s*$/i, "").trim();
-    if (isRoot()) declarations.push({ name: m[1], value, layer: layerName(), important });
+    if (isRoot()) declarations.push({ name: m[1], value, layer: layerName(), important, selected: !isPlainRoot() });
     else if (m[1].startsWith(PREFIX) && roots.length) otherConditions++;
     else if (m[1].startsWith(PREFIX)) conditional.push(`${source}: ${key()} の ${m[1]}`);
     else skipped++;

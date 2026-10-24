@@ -201,3 +201,12 @@ test("!important は、@layer の順が逆になる", () => {
   assert.equal(r.status, 1);
   assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
 });
+
+test("--root で渡したブロックは、後の :root の宣言より優先する", () => {
+  const dir = mkdtempSync(join(tmpdir(), "check-contrast-"));
+  writeFileSync(join(dir, "base.css"), BASE);
+  writeFileSync(join(dir, "semantic.css"), `:root[data-theme=dark] { --app-color-text-secondary: #999999; }\n${semantic()}`);
+  const r = spawnSync(process.execPath, [script, "--root", ":root[data-theme=dark]", "./base.css", "./semantic.css"], { cwd: dir, encoding: "utf8" });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
