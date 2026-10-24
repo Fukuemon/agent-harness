@@ -62,8 +62,10 @@ const isFixedWait = (node: AstNode, name: string): boolean => {
 const isStringNode = (node: AstNode | undefined): boolean =>
   (node?.type === 'Literal' && typeof node.value === 'string') || node?.type === 'TemplateLiteral'
 
-// セレクタの文字列をページの操作に渡しているか
+// セレクタの文字列をページの操作に渡しているか。ページの操作はメソッドとして呼ぶので、
+// 録画の body が受け取る check(text) のように、関数として呼んだものは見ない
 const passesSelector = (node: AstNode, name: string): boolean => {
+  if (node.callee.type !== 'MemberExpression') return false
   const [first, second] = node.arguments
   if (!isStringNode(first)) return false
   if (SELECTOR_ONLY_ACTIONS.includes(name)) return true
