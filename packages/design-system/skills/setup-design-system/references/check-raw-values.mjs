@@ -41,8 +41,8 @@ const excluded = (excludes.length ? excludes : EXCLUDES).map((p) => resolve(p));
 
 const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const patterns = [
-  // 直前が英数字、&（文字参照）、.（private のフィールド）なら色にしない。_ はユーティリティのクラスの値の区切り（0_2px_8px_#000）なので色にする
-  { label: "色の値", re: /(?<![A-Za-z0-9&.#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])/g },
+  // 直前が英数字、&（文字参照）、.（private のフィールド）なら色にしない。_ はユーティリティのクラスの値の区切り（0_2px_8px_#000、#fff_0%）なので、前後にあっても色にする
+  { label: "色の値", re: /(?<![A-Za-z0-9&.#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![A-Za-z0-9-])/g },
   // CSS の関数の名前は、大文字と小文字を区別しない。色の値と同じく、_ の直後も色にする
   { label: "色の関数", re: /(?<![A-Za-z0-9.-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/gi },
   ...basePrefixes.map((p) => ({ label: "基本の段の名前", re: new RegExp(`${escape(p)}[\\w-]+`, "g") })),
