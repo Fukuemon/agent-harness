@@ -47,8 +47,8 @@ keywords: [デザインシステム, トークン, アクセシビリティ, カ
 ファイルの置き場は、導入のスキル setup-agent-harness が `assets/` を全部、利用者のリポジトリへ写すことに合わせて決める。
 
 - 3 つの雛形（デザインシステムの文書の骨組み、コントラストのチェック、生成のスクリプト）は、setup-design-system の `references/` に置く。setup-design-system が、利用者の決めた場所へ写す。
-  - ADR-0023 は、利用者が選んで写す雛形を `references/` に置くとした。このパッケージでは、導入で必ず写すが、写す先が利用者ごとに違う雛形も `references/` に置く。setup-agent-harness は `assets/` を、リポジトリのルートからの同じパスへ写すためである。
-  - ADR-0023: [検証、E2E、デザインシステム、画面仕様書、文書のサイトを関心ごとのパッケージにし、組み合わせは値のファイルのキーで渡す](../../adr/0023-concern-packages.md)
+  - 3 つとも、どの利用者にも写すが、写す先が利用者ごとに違う。setup-agent-harness は `assets/` を、リポジトリのルートからの同じパスへ写すので、`assets/` に置かない。
+  - ADR-0025: [写す先が利用者ごとに違うテンプレートは references/ に置き、キーを尋ねる場所と schema の有無はパッケージが決める](../../adr/0025-templates-keys-and-schemas.md)
 - 2 つのスクリプトは Node.js の標準のモジュールだけで書き、隣の `.test.mjs` がこのリポジトリの `pnpm test` で動きを確かめる。利用者のテストの仕組みに依らず、終了コードで結果を返す。
 - デザインシステムの文書と 3 つの段のファイルの場所は、キーにせず、利用者の `context/codebase.md` の Placement Rules に書く。読むスクリプトがなく、write-design-system が作業の前に読むだけのためである。
 - スタイルの仕組みとカタログのツールに依る例（テーマの段の CSS、カタログの preview の設定、トークンのページ）は、`examples/design-system/` に置く。名前のチェックの外で、ツールの名前を書ける。
