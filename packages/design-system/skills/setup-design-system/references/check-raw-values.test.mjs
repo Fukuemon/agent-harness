@@ -152,3 +152,13 @@ test("テンプレートの文字列の ${ } の中は、コードとしてコ�
   assert.match(r.stdout, /src\/card\.ts:7: 色の値 #0000ff/);
   assert.doesNotMatch(r.stdout, /#ff0000|#00ff00/);
 });
+
+test("ユーティリティのクラスの _ の後ろの色を見つけ、閉じないテンプレートの /* で後ろを読み飛ばさない", () => {
+  const r = run({
+    "src/s.tsx": '<div className="shadow-[0_2px_8px_#000000]" />\n',
+    "src/u.tsx": 'const accept = `image/*`;\nexport const A = () => <p style={{ color: "#ff0000" }} />;\n',
+  });
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /src\/s\.tsx:1: 色の値 #000000/);
+  assert.match(r.stdout, /src\/u\.tsx:2: 色の値 #ff0000/);
+});

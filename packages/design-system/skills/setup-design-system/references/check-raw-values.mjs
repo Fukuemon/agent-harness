@@ -8,6 +8,7 @@
 //   コメント（/* */、<!-- -->、CSS 以外の行の // の後）の中は見ない。引用符の中と URL の // と /* はコメントにしない。issue の番号のような # を色と判定しないためである。
 //   ALLOW_MARK を含む行は見ず、外した行の数を出す。外す理由は、同じ行のコメントに書く。
 //   CSS の id のセレクタと private のフィールドの宣言で 16 進に見える名前（#add、#fade）と、color という名前の関数の呼び出しは、誤って色と判定する。その行は ALLOW_MARK で外す。
+//   言語の構文は読まず、文字列とコメントの区切りを近似で見分ける。見つからない書き方と、誤って色と判定する書き方がありうる。
 // 終了コード: 0 は見つからなかった、1 は見つかった、2 はパスが読めないか、引数が正しくない
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, relative, resolve, sep } from "node:path";
@@ -40,8 +41,8 @@ const excluded = (excludes.length ? excludes : EXCLUDES).map((p) => resolve(p));
 
 const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const patterns = [
-  // 直前が語の文字、&（文字参照）、.（private のフィールド）なら色にしない
-  { label: "色の値", re: /(?<![\w&.#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])/g },
+  // 直前が英数字、&（文字参照）、.（private のフィールド）なら色にしない。_ はユーティリティのクラスの値の区切り（0_2px_8px_#000）なので色にする
+  { label: "色の値", re: /(?<![A-Za-z0-9&.#-])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])/g },
   // CSS の関数の名前は、大文字と小文字を区別しない
   { label: "色の関数", re: /(?<![\w.-])(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/gi },
   ...basePrefixes.map((p) => ({ label: "基本の段の名前", re: new RegExp(`${escape(p)}[\\w-]+`, "g") })),
@@ -89,8 +90,10 @@ const stripComments = (text, lineComments) => {
     const c = text[i];
     if (quote) {
       // テンプレートの文字列には CSS を書くことがある（CSS-in-JS）ので、/* */ のコメントを除く
-      if (quote === "`" && text.startsWith("/*", i)) {
-        const end = close(text, "*/", i + 2);
+      // 閉じる */ がテンプレートの終わりの ` より後ろにあるなら、コメントではなく文字（image/* など）として残す
+      const commentEnd = quote === "`" && text.startsWith("/*", i) ? text.indexOf("*/", i + 2) : -1;
+      if (commentEnd !== -1 && !text.slice(i, commentEnd).includes("`")) {
+        const end = commentEnd + 2;
         out += blank(text.slice(i, end));
         i = end - 1;
         continue;
