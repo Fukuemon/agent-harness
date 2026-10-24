@@ -88,5 +88,5 @@ export default defineConfig({
 | コマンド | 流すもの |
 | --- | --- |
 | `npx playwright test --project=e2e` | E2E のテスト。CI も同じものを流す |
-| `EVIDENCE_NO=<番号> npx playwright test --project=evidence` | エビデンスの spec。`.ai-out/evidence/<番号>/` に動画を書き出す |
+| `EVIDENCE_FOR=issue-<番号> npx playwright test --project=evidence` | エビデンスの spec。`.ai-out/evidence/issue-<番号>/` に動画を書き出す。pull request を作った後に初めて撮るなら `pr-<番号>` にする |
 | `npx eslint && npx tsc --noEmit` | テストの書き方の規則と、型のチェック |

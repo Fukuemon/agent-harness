@@ -13,16 +13,18 @@ const target = { root: tmpdir(), appName: 'app', viewport: { width: 1280, height
 const never = () => assert.fail('撮る前に止まるはず')
 
 describe('recordPrEvidence', () => {
-  it('番号が数字でなければ、撮らずに例外を投げる', async () => {
-    await assert.rejects(
-      recordPrEvidence(null, { ...target, number: 'abc' }, { name: 'a', title: 't', actor: 'x', variant: single }, never, never),
-      /EVIDENCE_NO/,
-    )
-  })
+  for (const evidenceFor of ['12', 'issue-', 'issue-01', 'mr-12', 'pr-12x']) {
+    it(`入れる先が issue-<番号> か pr-<番号> でなければ、撮らずに例外を投げる: ${evidenceFor}`, async () => {
+      await assert.rejects(
+        recordPrEvidence(null, { ...target, evidenceFor }, { name: 'a', title: 't', actor: 'x', variant: single }, never, never),
+        /EVIDENCE_FOR/,
+      )
+    })
+  }
 
   it('name が英小文字、数字、ハイフンでなければ、撮らずに例外を投げる', async () => {
     await assert.rejects(
-      recordPrEvidence(null, { ...target, number: '12' }, { name: 'List_View', title: 't', actor: 'x', variant: single }, never, never),
+      recordPrEvidence(null, { ...target, evidenceFor: 'pr-12' }, { name: 'List_View', title: 't', actor: 'x', variant: single }, never, never),
       /name は英小文字/,
     )
   })
@@ -49,16 +51,16 @@ describe('recordPrEvidence で撮る', () => {
     await r.check('ならば 見える')
   }
   const take = (variant) => ({ name: 'open-list', title: '一覧を開く', actor: 'ログインなし', variant })
-  const versioned = (root) => ({ ...target, root, number: '12', readVersion: async () => 'v1' })
+  const versioned = (root) => ({ ...target, root, evidenceFor: 'issue-12', readVersion: async () => 'v1' })
 
-  it('添付する mp4 を <番号>/<名前>.mp4 にコピーする', async (t) => {
+  it('添付する mp4 を <入れる先>/<名前>.mp4 にコピーする', async (t) => {
     if (!browser) return t.skip('ブラウザのエンジンか ffmpeg が無い')
     const root = mkdtempSync(path.join(tmpdir(), 'e2e-kit-pr-'))
     await recordPrEvidence(browser, versioned(root), take(single), async () => undefined, body)
-    const out = path.join(root, '.ai-out/evidence/12')
+    const out = path.join(root, '.ai-out/evidence/issue-12')
     assert.ok(existsSync(path.join(out, 'open-list.mp4')))
     assert.ok(existsSync(path.join(out, 'open-list', '実施.mp4')))
-    assert.match(readFileSync(path.join(out, 'open-list', 'README.md'), 'utf8'), /#12 open-list \/ 実施 \/ ローカル環境 v1/)
+    assert.match(readFileSync(path.join(out, 'open-list', 'README.md'), 'utf8'), /issue-12 open-list \/ 実施 \/ ローカル環境 v1/)
   })
 
   it('改修前と改修後は、-before と -after を付けてコピーする', async (t) => {
@@ -68,7 +70,7 @@ describe('recordPrEvidence で撮る', () => {
       await recordPrEvidence(browser, { ...versioned(root), evidenceDir: 'out' }, take(variant), async () => undefined, body)
     }
     assert.deepEqual(
-      readdirSync(path.join(root, 'out/12')).filter((f) => f.endsWith('.mp4')).sort(),
+      readdirSync(path.join(root, 'out/issue-12')).filter((f) => f.endsWith('.mp4')).sort(),
       ['open-list-after.mp4', 'open-list-before.mp4'],
     )
   })
@@ -77,7 +79,7 @@ describe('recordPrEvidence で撮る', () => {
     if (!browser) return t.skip('ブラウザのエンジンか ffmpeg が無い')
     const root = mkdtempSync(path.join(tmpdir(), 'e2e-kit-pr-'))
     await recordPrEvidence(browser, versioned(root), take(single), async () => undefined, body)
-    const attached = path.join(root, '.ai-out/evidence/12/open-list.mp4')
+    const attached = path.join(root, '.ai-out/evidence/issue-12/open-list.mp4')
     await assert.rejects(
       recordPrEvidence(browser, versioned(root), take(single), async () => undefined, async () => {
         throw new Error('押せなかった')
