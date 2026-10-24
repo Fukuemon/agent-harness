@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/Fukuemon/agent-harness/compare/e2e-v0.1.0...e2e-v0.1.1) (2026-10-24)
+
+
+### Bug Fixes
+
+* **e2e:** kit のエビデンスの置き場を issue-&lt;番号&gt; か pr-&lt;番号&gt; にする [#170](https://github.com/Fukuemon/agent-harness/issues/170) ([7a7a122](https://github.com/Fukuemon/agent-harness/commit/7a7a12284b6a1bfb1e59ad3433ccefffa2902381))
+* **e2e:** lint の規則が、字幕を出す check の呼び出しを違反にしないようにする [#168](https://github.com/Fukuemon/agent-harness/issues/168) ([14cedb5](https://github.com/Fukuemon/agent-harness/commit/14cedb5b4c3f7d3f6c3c4b5ef6bfcb5390469442))
+
 ## 0.1.0 (2026-10-24)
 
 
