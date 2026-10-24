@@ -5,9 +5,9 @@
 //   引数のパスを省くと TARGETS を読む。--prefix と --exclude を渡すと、BASE_PREFIXES と EXCLUDES の代わりに使う。
 //   ディレクトリは、EXTENSIONS の拡張子のファイルを再帰で読む。node_modules と、. で始まるディレクトリは読まない。
 // 見つけるもの: 16 進の色（#fff、#ffffff、#ffffff80）、色の関数（rgb()、hsl()、oklch() など）、BASE_PREFIXES で始まる変数の名前。
-//   コメント（/* */、<!-- -->、行の // の後）の中は見ない。issue の番号のような # を色と取り違えないためである。
+//   コメント（/* */、<!-- -->、行の // の後）の中は見ない。issue の番号のような # を色と判定しないためである。
 //   ALLOW_MARK を含む行は見ず、外した行の数を出す。外す理由は、同じ行のコメントに書く。
-//   CSS の id のセレクタと private のフィールドの宣言で、16 進に見える名前（#add、#fade）は色と取り違える。その行は ALLOW_MARK で外す。
+//   CSS の id のセレクタと private のフィールドの宣言で、16 進に見える名前（#add、#fade）は、誤って色と判定する。その行は ALLOW_MARK で外す。
 // 終了コード: 0 は見つからなかった、1 は見つかった、2 はパスが読めないか、引数が正しくない
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, relative, resolve, sep } from "node:path";
