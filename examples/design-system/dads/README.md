@@ -1,0 +1,59 @@
+# デジタル庁デザインシステムを基本の段にする例
+
+元にする公開のデザインシステムに、デジタル庁デザインシステムを選んだときの例。  
+パッケージ design-system のスキルは、特定のデザインシステムを前提にしない。この例の名前と値は、利用者が選んだときに写して直す。
+
+- 出典: デジタル庁デザインシステムウェブサイト https://design.digital.go.jp/dads/ のコンテンツを加工して作成
+- 確認したバージョン: サイトは v2.18.2（2026-10-21）、トークンのパッケージ `@digital-go-jp/design-tokens` は 2.1.0
+
+## 3 つの段のファイル
+
+- 基本の段: `@digital-go-jp/design-tokens` の `dist/tokens.css`。依存にしてバージョンを固定する。
+  - 色の接頭辞は `--color-key-`、`--color-neutral-`、`--color-primitive-`、`--color-semantic-`。
+  - 文字は `--font-size-` と `--line-height-`、角丸は `--border-radius-`、影は `--elevation-`。
+  - Tailwind CSS のテーマの段も `--color-` で始まる名前（`--color-surface`）を出す。基本の段を `--color-` の 1 つにまとめると、テーマの段の名前と見分けられない。基本の段の名前を探すチェックには、上の接頭辞を細かく分けて並べる。
+- 意味の段: [semantic.css](semantic.css)。接頭辞は `--app-color-`。基本の段の `--color-` と重ならない。
+- テーマの段: [../tailwind/theme.css](../tailwind/theme.css) の `--base-*` を、上の基本の段の名前に読み替える。色は意味の段を、文字、角丸、影は基本の段を参照する。
+
+コントラストのチェックの雛形は、`SOURCES` を次のように書けば、この例の名前の組をそのまま確認できる。
+
+```js
+const SOURCES = ["@digital-go-jp/design-tokens/dist/tokens.css", "./src/tokens/semantic.css"];
+const PREFIX = "--app-color-";
+```
+
+2.1.0 では、`--color-semantic-error-1` と `--color-semantic-warning-*` を薄い面（`--color-primitive-*-50`）の上の文字にすると、4.5:1 に届かない。[semantic.css](semantic.css) は、エラーに `-2` を、注意に同じ色相の濃い階調を当てている。
+
+## 元にしたデザインシステムとの関係のセクションの例
+
+デジタル庁デザインシステムは、使う組織が自分のデザインシステム（ローカルデザインシステム）を作る前提にしている。  
+使う組織に任せる値と、変えてはいけない要件を分けて示している。  
+デザインシステムの文書の「元にしたデザインシステムとの関係」には、次のように分けて書く。値はこのプロダクトの選択に書き換える。
+
+| 項目 | 元のデザインシステムの扱い | このプロダクト |
+| --- | --- | --- |
+| 主の色 | 任せる。キーカラーを選ぶか、ブランドの色で上書きする | キーカラーの青をそのまま使う |
+| 余白 | 任せる。基準の単位と、3 段から 5 段の倍率を決める | 基準を 8px にし、8、16、24、40、64 の 5 段にする |
+| 角丸 | 任せる。5 段階は目安で、コンポーネントごとに決める | 入力欄とボタンは 8px |
+| ブレークポイント | 任せる。768px の 1 つが基本で、要れば増やす | 768px の 1 つ |
+| コントラスト | 変えない。文字は 4.5:1、枠と区切りは 3:1 | コントラストのチェックで確認する |
+| フォーカスの表示 | 変えない。黒の線と Yellow-300 の縁の 2 重。線の太さ 4px と縁の 2px は、コードスニペットの値 | `focus-ring` のユーティリティ 1 つ |
+| 状態の色 | 明度と彩度は任せる。色相と意味の対応は変えない | エラーは赤、成功は緑、注意はオレンジ |
+| 文字の大きさ | 変えない。本文と操作の文字は 16px 以上、読み物の行高は 1.5 倍以上 | 本文は `Std-16N-170` |
+
+- 出典: [ローカルデザインシステム（スタイルガイド）](https://design.digital.go.jp/dads/guidance/local-design-system/)、[カラー](https://design.digital.go.jp/dads/foundations/color/)、[余白](https://design.digital.go.jp/dads/foundations/spacing/)、[レイアウト](https://design.digital.go.jp/dads/foundations/layout/) のコンテンツを加工して作成
+- 出典: フォーカスの表示の太さは、デジタル庁GitHub https://github.com/digital-go-jp の design-system-example-components-html の値
+
+## 文字のスタイルの例
+
+デジタル庁デザインシステムの文字のスタイルは、用途の系統、大きさ、太さ、行高を名前に持つ（`Std-16N-170` は Standard、16px、Normal、行高 170%）。系統は Display、Standard、Dense（密度を優先する画面）、Oneline（1 行の操作の文字）、Mono がある。  
+テーマの段の文字のユーティリティは、プロダクトで使う系統だけを選び、デザインシステムの文書の文字の表に、ユーティリティと元のスタイルの名前を並べる。
+
+| ユーティリティ | 元のスタイル | 使う場面 |
+| --- | --- | --- |
+| `text-body` | `Std-16N-170` | 本文 |
+| `text-label` | `Oln-16N-100` | ボタンとタブの 1 行の文字 |
+| `text-caption` | `Dns-14N-130` | 補足。本文には使わない。Standard の系統は 14px を持たない |
+| `text-heading` | `Std-20B-150` | セクションの見出し |
+
+- 出典: [タイポグラフィ](https://design.digital.go.jp/dads/foundations/typography/) のコンテンツを加工して作成

@@ -17,7 +17,7 @@
 - [agent-harness Design Doc](../design/DesignDoc.md) — agent-harness の全体像。パッケージの一覧と責務、配布の形、パッケージに共通する方針を書く（draft）
 - [開発プロセス](../design/features/process/DesignDoc_process.md) — 開発のプロセスの種類、要求ごとの選択、選んだ結果の宣言、agent-harness とワークフローのハーネスの分担（draft）
 - [core](../packages/core/DesignDoc.md) — 利用者のリポジトリに固有の知識の置き場を作るパッケージ。値のファイル、context、目次、AGENTS.md、導入のスキル（draft）
-- [デザインシステム](../packages/design-system/DesignDoc.md) — パッケージ design-system の設計。トークンの段の分け方、デザインシステムの文書の型、アクセシビリティの基準と確認の方法、カタログの構成、読むキー、スキルと雛形（draft）
+- [デザインシステム](../packages/design-system/DesignDoc.md) — パッケージ design-system の設計。トークンの段の分け方、デザインシステムの文書の型、画面を作るときの手順、アクセシビリティの基準と確認の方法、カタログの構成、読むキー、スキルと雛形（draft）
 - [文書のサイト](../packages/docs-site/DesignDoc.md) — パッケージ docs-site の設計。文書、カタログ、図を 1 つのサイトに並べて公開先へ公開する構成と、保護の確認、読むキー、スキルと雛形（draft）
 - [文書の体系](../packages/docs/DesignDoc.md) — Design Doc、ADR、spec の種類とライフサイクル、実装とのずれの検出、spec を削除する前の保証、文書のチェック（draft）
 - [E2E](../packages/e2e/DesignDoc.md) — パッケージ e2e の設計。E2E のテストの書き方のスキル、録画とエビデンスとログインの kit のコード、テストの書き方の lint の規則の構成と、kit のビルドとテストと配り方（draft）
