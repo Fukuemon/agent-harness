@@ -5,10 +5,13 @@
 //   引数のパスを省くと TARGETS を読む。--prefix と --exclude を渡すと、BASE_PREFIXES と EXCLUDES の代わりに使う。
 //   ディレクトリは、EXTENSIONS の拡張子のファイルを再帰で読む。node_modules と、. で始まるディレクトリは読まない。
 // 見つけるもの: 16 進の色（#fff、#ffffff、#ffffff80）、色の関数（rgb()、hsl()、oklch()、color() など）、BASE_PREFIXES で始まる変数の名前。
+// 見つけないもの: 色の名前（red、transparent、currentColor）と、色でない値（文字の大きさ、余白、角丸、影の px と rem）。それらはレビューで見る。
 //   コメント（/* */、<!-- -->、CSS 以外の行の // の後）の中は見ない。引用符の中と URL の // と /* はコメントにしない。issue の番号のような # を色と判定しないためである。
 //   ALLOW_MARK を含む行は見ず、外した行の数を出す。外す理由は、同じ行のコメントに書く。
 //   CSS の id のセレクタと private のフィールドの宣言で 16 進に見える名前（#add、#fade）と、color という名前の関数の呼び出しは、誤って色と判定する。その行は ALLOW_MARK で外す。
 //   言語の構文は読まず、文字列とコメントの区切りを近似で見分ける。見つからない書き方と、誤って色と判定する書き方がありうる。
+//     mdx と HTML の本文の「PR #165」のように、16 進に見える番号は色と判定する。その行は ALLOW_MARK で外す。
+//     JSX の本文の ' （Don't）の後と、正規表現のリテラルの中の ` の後は、文字列の中として読むので、同じ行のコメントの中の色を判定する。
 // 終了コード: 0 は見つからなかった、1 は見つかった、2 はパスが読めないか、引数が正しくない
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, relative, resolve, sep } from "node:path";
@@ -50,22 +53,26 @@ const patterns = [
 
 const isExcluded = (abs) => excluded.some((e) => abs === e || abs.startsWith(e + sep));
 
+// 読めないパス（壊れたシンボリックリンクを含む）は、読めなかったファイルを通ったことにしないよう、終了コード 2 で止める
+const statOrExit = (p) => {
+  try {
+    return statSync(p);
+  } catch (e) {
+    console.error(`読めない: ${relative(".", p) || p}\n${e.message}`);
+    process.exit(2);
+  }
+};
+
 const files = [];
 const collect = (p) => {
   const abs = resolve(p);
   if (isExcluded(abs)) return;
-  let stat;
-  try {
-    stat = statSync(abs);
-  } catch (e) {
-    console.error(`読めない: ${p}\n${e.message}`);
-    process.exit(2);
-  }
+  const stat = statOrExit(abs);
   if (stat.isDirectory()) {
     for (const name of readdirSync(abs).sort()) {
       if (name === "node_modules" || name.startsWith(".")) continue;
       const child = join(abs, name);
-      if (statSync(child).isDirectory() || EXTENSIONS.includes(extname(name))) collect(child);
+      if (statOrExit(child).isDirectory() || EXTENSIONS.includes(extname(name))) collect(child);
     }
   } else files.push(abs);
 };

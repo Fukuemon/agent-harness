@@ -2,7 +2,7 @@
 // 実行: node --test "packages/design-system/**/*.test.mjs"
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -67,7 +67,7 @@ test("文字参照、private のフィールド、16 進でない # は色にし
 });
 
 test("ALLOW_MARK の行は見ず、外した数を出す", () => {
-  const r = run({ "src/z.css": ".brand { color: #00118f; } /* design-system-allow: ロゴの色は利用規約で決まっている */\n" });
+  const r = run({ "src/z.css": ".brand { color: #123456; } /* design-system-allow: ロゴの色は利用規約で決まっている */\n" });
   assert.equal(r.status, 0, r.stdout);
   assert.match(r.stdout, /外した行: 1/);
 });
@@ -86,12 +86,12 @@ test("既定の EXCLUDES のトークンの置き場と、node_modules と . で
 
 test("--prefix と --exclude と引数のパスで、既定の値を替える", () => {
   const files = {
-    "app/ui/a.css": ".a { color: var(--color-primitive-blue-500); }\n",
-    "app/tokens/semantic.css": ":root { --app-color-primary: var(--color-key-900); }\n",
+    "app/ui/a.css": ".a { color: var(--brand-gray-500); }\n",
+    "app/tokens/semantic.css": ":root { --app-color-primary: var(--brand-blue-900); }\n",
   };
-  const r = run(files, ["--prefix", "--color-primitive-", "--prefix", "--color-key-", "--exclude", "app/tokens", "app"]);
+  const r = run(files, ["--prefix", "--brand-gray-", "--prefix", "--brand-blue-", "--exclude", "app/tokens", "app"]);
   assert.equal(r.status, 1);
-  assert.match(r.stdout, /app\/ui\/a\.css:1: 基本の段の名前 --color-primitive-blue-500/);
+  assert.match(r.stdout, /app\/ui\/a\.css:1: 基本の段の名前 --brand-gray-500/);
   assert.doesNotMatch(r.stdout, /semantic\.css/);
 });
 
@@ -164,4 +164,19 @@ test("ユーティリティのクラスの _ の後ろの色を見つけ、閉�
   assert.match(r.stdout, /src\/s\.tsx:3: 色の値 #ffffff/);
   assert.match(r.stdout, /src\/s\.tsx:3: 色の値 #000000/);
   assert.match(r.stdout, /src\/u\.tsx:2: 色の値 #ff0000/);
+});
+
+test("壊れたシンボリックリンクは、読めないパスとして 2", () => {
+  const dir = mkdtempSync(join(tmpdir(), "check-raw-values-"));
+  mkdirSync(join(dir, "src"));
+  symlinkSync(join(dir, "missing.css"), join(dir, "src", "broken.css"));
+  const r = spawnSync(process.execPath, [script], { cwd: dir, encoding: "utf8" });
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /読めない: src\/broken\.css/);
+});
+
+test("mdx の本文の 16 進に見える番号は色と判定する。ALLOW_MARK で外せる", () => {
+  assert.equal(run({ "src/a.mdx": "PR #165 で足した。\n" }).status, 1);
+  const r = run({ "src/b.mdx": "PR #165 で足した。{/* design-system-allow: pull request の番号 */}\n" });
+  assert.equal(r.status, 0, r.stdout);
 });
