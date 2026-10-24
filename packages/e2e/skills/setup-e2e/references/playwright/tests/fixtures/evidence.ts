@@ -18,7 +18,7 @@ export const evidenceVariants = (): Variant[] => variantsFromEnv(BASE_URL)
 export const DESKTOP_VIEWPORT: Viewport = { width: 1280, height: 800 }
 
 /**
- * pull request か issue のエビデンスを 1 本撮る。環境変数 EVIDENCE_NO の番号の置き場に書き出す。
+ * pull request か issue のエビデンスを 1 本撮る。環境変数 EVIDENCE_FOR の入れる先(issue-<番号> か pr-<番号>)の置き場に書き出す。
  *
  * @param o.name 観点が分かる英小文字、数字、ハイフンの名前。添付したファイル名として動画の上に出る
  * @param o.viewport 画面と録画の大きさ。無ければ DESKTOP_VIEWPORT にする

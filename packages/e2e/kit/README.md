@@ -55,7 +55,8 @@ for (const variant of variantsFromEnv('http://localhost:3000')) {
 }
 ```
 
-- 環境変数 `EVIDENCE_NO` に pull request か issue の番号を渡して流す。`<root>/.ai-out/evidence/<番号>/open-list.mp4` に添付する動画ができる。
+- 環境変数 `EVIDENCE_FOR` に、エビデンスを入れる先を `issue-<番号>` か `pr-<番号>` の形で渡して流す。`EVIDENCE_FOR=issue-12` なら、`<root>/.ai-out/evidence/issue-12/open-list.mp4` に添付する動画ができる。
+  - pull request を作る前に撮ったなら issue の番号にし、作った後も使い続ける。改修前と改修後が別の置き場に分かれないためである。
 - `EVIDENCE_BEFORE_URL` を渡すと改修前と改修後を両方撮り、`EVIDENCE_ONLY` に `before` か `after` を渡すと片方だけを撮る。
 
 ESLint の規則は、テストのディレクトリの親で流す設定に入れる。
