@@ -155,10 +155,11 @@ test("テンプレートの文字列の ${ } の中は、コードとしてコ�
 
 test("ユーティリティのクラスの _ の後ろの色を見つけ、閉じないテンプレートの /* で後ろを読み飛ばさない", () => {
   const r = run({
-    "src/s.tsx": '<div className="shadow-[0_2px_8px_#000000]" />\n',
+    "src/s.tsx": '<div className="shadow-[0_2px_8px_#000000]" />\n<div className="shadow-[0_2px_8px_rgba(0,0,0,0.5)]" />\n',
     "src/u.tsx": 'const accept = `image/*`;\nexport const A = () => <p style={{ color: "#ff0000" }} />;\n',
   });
   assert.equal(r.status, 1);
   assert.match(r.stdout, /src\/s\.tsx:1: 色の値 #000000/);
+  assert.match(r.stdout, /src\/s\.tsx:2: 色の関数 rgba\(/);
   assert.match(r.stdout, /src\/u\.tsx:2: 色の値 #ff0000/);
 });
