@@ -4,9 +4,10 @@
 site_name = "<サイトの名前>"
 docs_dir = "docs"
 site_dir = "site"
-# 文書の雛形はサイトに載せない。docs_dir からの相対パスで書く
+# 文書と画面仕様書の雛形はサイトに載せない。docs_dir からの相対パスで書く。画面仕様書がなければ、2 行目を消す
 exclude_docs = """
 adr/template.md
+<画面仕様書のテンプレートのディレクトリ。例: screens/_template/>
 """
 # 画面仕様書に埋め込んだモックの iframe の高さを、中身に合わせる。モックがなければ消す
 extra_javascript = ["javascripts/embed-mock.js"]

@@ -337,7 +337,7 @@ dependencies:
     .agents/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js: sha256:e28453e98f5be6b7f4f9032eb130c1c1cd861efd8ca23eb3bf5615860d9b1acc
     .agents/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
     .agents/skills/publish-docs-site/references/zensical/pyproject.toml: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
-    .agents/skills/publish-docs-site/references/zensical/zensical.toml: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
+    .agents/skills/publish-docs-site/references/zensical/zensical.toml: sha256:dce49956e91975732d4cede9057984da05348a78e4e90256b80a468ae42cd4c3
     .claude/skills/publish-docs-site/SKILL.md: sha256:5e832b956eb694a17e848435c4adb4e38c08be7ad7f0f0cb1c407ad7ef5facf4
     .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:527dffd21273c1c006cd76722355b60684d4845da8e7f6c91d1c18626132ebfa
     .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
@@ -349,7 +349,7 @@ dependencies:
     .claude/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js: sha256:e28453e98f5be6b7f4f9032eb130c1c1cd861efd8ca23eb3bf5615860d9b1acc
     .claude/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
     .claude/skills/publish-docs-site/references/zensical/pyproject.toml: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
-    .claude/skills/publish-docs-site/references/zensical/zensical.toml: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
+    .claude/skills/publish-docs-site/references/zensical/zensical.toml: sha256:dce49956e91975732d4cede9057984da05348a78e4e90256b80a468ae42cd4c3
   source: local
   local_path: ./packages/docs-site
   declared_license: MIT
@@ -950,7 +950,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
+  content_hash: sha256:dce49956e91975732d4cede9057984da05348a78e4e90256b80a468ae42cd4c3
 - kind: project-relative
   target: claude
   value: .claude/skills/run-verification-scenarios
@@ -2075,7 +2075,7 @@ deployments:
   owners:
   - ./packages/docs-site
   active_owner: ./packages/docs-site
-  content_hash: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
+  content_hash: sha256:dce49956e91975732d4cede9057984da05348a78e4e90256b80a468ae42cd4c3
 - kind: project-relative
   target: codex
   value: .agents/skills/run-verification-scenarios
