@@ -185,3 +185,19 @@ test("--root で 1 つのテーマを選ぶと、ほかのテーマのブロッ�
   assert.equal(dark.status, 1);
   assert.match(dark.stderr, /text-secondary は surface の上で 2\.85:1/);
 });
+
+test("通常の宣言は、@layer の中より外が、前の layer より後の layer が勝つ", () => {
+  const unlayered = run(`${semantic({ "text-secondary": "#999999" })}@layer base { :root { --app-color-text-secondary: #666666; } }\n`);
+  assert.equal(unlayered.status, 1);
+  assert.match(unlayered.stderr, /text-secondary は surface の上で 2\.85:1/);
+  const ordered = run(`@layer base, theme;\n@layer theme { :root { --app-color-text-secondary: #999999; } }\n@layer base { ${semantic().replace(/\n/g, " ")} }\n`);
+  assert.equal(ordered.status, 1);
+  assert.match(ordered.stderr, /text-secondary は surface の上で 2\.85:1/);
+});
+
+test("!important は、@layer の順が逆になる", () => {
+  const css = `@layer base, theme;\n${semantic()}@layer base { :root { --app-color-text-secondary: #999999 !important; } }\n@layer theme { :root { --app-color-text-secondary: #666666 !important; } }\n`;
+  const r = run(css);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /text-secondary は surface の上で 2\.85:1/);
+});

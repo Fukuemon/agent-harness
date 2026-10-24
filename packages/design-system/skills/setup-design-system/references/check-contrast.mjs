@@ -7,7 +7,7 @@
 //   引数を省くと SOURCES を読む。リポジトリの中のファイルは ./ で始める。
 //   パッケージのパス（`@scope/name/dist/tokens.css` の形）は、カレントディレクトリの package.json から解決する
 // 読む値: :root のブロック（`:root, :host` のようなセレクタの並びと、@layer の中を含む）の変数の宣言だけを、画面に効く値として読む。
-//   値は、var() の参照（空白とフォールバックを含む）、#rgb、#rrggbb を受ける。!important の値は、後の通常の宣言より優先する。
+//   値は、var() の参照（空白とフォールバックを含む）、#rgb、#rrggbb を受ける。同じ変数の値は、CSS のカスケードの順（!important、@layer の順、後の宣言）で決める。
 //   rgb()、hsl()、色の名前、calc() は色に解決できないと報告する。
 //   :root 以外のブロックと @media などの中の宣言は、PREFIX の変数なら確認できないと報告し、ほかの変数（基本の段）は読み飛ばして数を出す
 // 終了コード: 0 は全部の組が基準に届いた、1 は届かない組か、色に解決できないトークンか、条件つきのブロックの中の意味の段の宣言がある、2 は CSS が読めない
@@ -57,7 +57,11 @@ const properties = new Map();
 const conditional = [];
 let skipped = 0;
 let otherConditions = 0;
-const importantNames = new Set();
+// :root の宣言を、現れた順に並べる。全部を読んでから、カスケードの順で値を決める
+const declarations = [];
+// 名前のある @layer を、最初に現れた順に並べる。後の layer ほど通常の宣言で勝つ
+const layers = [];
+let anonymous = 0;
 for (const source of sources) {
   let css;
   try {
@@ -68,6 +72,15 @@ for (const source of sources) {
   }
   // コメントに残した古い値や例の宣言を、今の値として読まない
   readDeclarations(css.replace(/\/\*[\s\S]*?\*\//g, ""), source);
+}
+// 優先度が大きいほど勝ち、同じなら後の宣言が勝つ
+const ranks = new Map();
+for (const d of declarations) {
+  const rank = cascadeRank(d.layer, d.important);
+  if (rank >= (ranks.get(d.name) ?? -Infinity)) {
+    properties.set(d.name, d.value);
+    ranks.set(d.name, rank);
+  }
 }
 if (skipped) console.error(`:root 以外のブロックか条件つきのブロックにある基本の段の宣言を ${skipped} 個読み飛ばした`);
 if (otherConditions) console.error(`--root の外の条件つきのブロックにある意味の段の宣言を ${otherConditions} 個読み飛ばした`);
@@ -106,23 +119,26 @@ function readDeclarations(css, source) {
   const isRoot = () =>
     (blocks.slice(0, -1).every((b) => /^@layer\b/.test(b)) && blocks.at(-1).split(",").some((s) => s.trim() === ":root")) ||
     roots.includes(key());
+  const layerName = () => blocks.filter((b) => /^@layer\b/.test(b)).map(nameOf).join(".");
   const flush = () => {
+    const statement = /^@layer\s+([^{]+)$/.exec(text.trim());
+    if (statement) for (const n of statement[1].split(",")) order([layerName(), n.trim()].filter(Boolean).join("."));
     const m = /^(--[\w-]+)\s*:\s*([\s\S]+)$/.exec(text.trim());
     text = "";
     if (!m || !blocks.length) return;
     const important = /!important\s*$/i.test(m[2]);
     const value = m[2].replace(/\s*!important\s*$/i, "").trim();
-    // !important の宣言は、後の通常の宣言に上書きされない
-    if (isRoot()) {
-      if (important || !importantNames.has(m[1])) properties.set(m[1], value);
-      if (important) importantNames.add(m[1]);
-    } else if (m[1].startsWith(PREFIX) && roots.length) otherConditions++;
+    if (isRoot()) declarations.push({ name: m[1], value, layer: layerName(), important });
+    else if (m[1].startsWith(PREFIX) && roots.length) otherConditions++;
     else if (m[1].startsWith(PREFIX)) conditional.push(`${source}: ${key()} の ${m[1]}`);
     else skipped++;
   };
   for (const ch of css) {
     if (ch === "{") {
-      blocks.push(text.trim().replace(/\s+/g, " "));
+      const prelude = text.trim().replace(/\s+/g, " ");
+      // 名前のない @layer は、それぞれ別の layer にする
+      blocks.push(prelude === "@layer" ? `@layer (anonymous ${anonymous++})` : prelude);
+      if (/^@layer\b/.test(blocks.at(-1))) order(layerName());
       text = "";
     } else if (ch === "}") {
       flush();
@@ -130,6 +146,22 @@ function readDeclarations(css, source) {
     } else if (ch === ";") flush();
     else text += ch;
   }
+}
+
+function nameOf(block) {
+  return block.replace(/^@layer\s*/, "").trim();
+}
+
+function order(name) {
+  if (name && !layers.includes(name)) layers.push(name);
+}
+
+// CSS のカスケードの順。通常の宣言は、layer の中より layer の外が、前の layer より後の layer が勝つ。!important は全部の通常の宣言に勝ち、layer の順が逆になる。
+// 入れ子の layer は、名前を . でつないだ 1 つの layer として順に並べる。親と子の layer の順の細かい規則は扱わない
+function cascadeRank(layer, important) {
+  const base = layers.length + 1;
+  const position = layer ? layers.indexOf(layer) : base;
+  return important ? 2 * base + (layer ? base - position : 0) : position;
 }
 
 function locate(source) {
