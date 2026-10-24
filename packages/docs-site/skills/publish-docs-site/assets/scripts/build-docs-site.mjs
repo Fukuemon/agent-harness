@@ -4,7 +4,7 @@
 // 使い方: node scripts/build-docs-site.mjs --out <出力のディレクトリ> [--build] [--project <project.yml>]
 //   --build を付けると、並べる前に各 part の build のコマンドをリポジトリのルートで実行する。
 // 終了コード: 0 は並べた、1 は値か --out の誤りか並べるものがない、2 は値のファイルが読めないか読めない形か build のコマンドが失敗した
-import { cpSync, existsSync, readFileSync, rmSync } from "node:fs";
+import { cpSync, existsSync, lstatSync, readFileSync, rmSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { execFileSync, execSync } from "node:child_process";
 import { FormError, isRelativePath, nested, readDocsSiteConfig, validateDocsSite } from "./read-docs-site-config.mjs";
@@ -23,6 +23,12 @@ const projectPath = resolve(root, option("--project") ?? "context/project.yml");
 
 if (!outArg) fail(1, "--out に出力のディレクトリを渡す");
 if (!isRelativePath(outArg) || outArg.split("/").includes(".git")) fail(1, `--out はリポジトリの中の相対パスで書き、.git を含めない: ${outArg}`);
+// 重なりと追跡の確認はパスの文字列で行うので、シンボリックリンクをたどる出力先は拒む
+const segments = outArg.split("/");
+for (let i = 1; i <= segments.length; i++) {
+  const prefix = segments.slice(0, i).join("/");
+  if (lstatSync(join(root, prefix), { throwIfNoEntry: false })?.isSymbolicLink()) fail(1, `--out の ${prefix} がシンボリックリンクである。リンクをたどらないパスにする`);
+}
 
 let config;
 try {

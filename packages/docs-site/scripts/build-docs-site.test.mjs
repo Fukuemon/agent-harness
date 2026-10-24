@@ -3,7 +3,7 @@
 // 実行: node --test packages/docs-site/scripts/build-docs-site.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -91,6 +91,18 @@ test("--out の下に Git で追跡するファイルがあれば、消さずに
   assert.equal(r.status, 1);
   assert.match(r.stderr, /Git で追跡している/);
   assert.equal(readFileSync(join(dir, "docs/index.md"), "utf8"), "# 文書");
+});
+
+test("--out の途中か最後がシンボリックリンクなら、たどらずに終了コード 1", () => {
+  const dir = repo(PROJECT, { ...OUTPUTS, "docs/pages/important.md": "# 文書" });
+  execFileSync("git", ["add", "docs/pages/important.md"], { cwd: dir });
+  symlinkSync("docs", join(dir, "alias"));
+  for (const out of ["alias/pages", "alias"]) {
+    const r = run(dir, "--out", out);
+    assert.equal(r.status, 1, out);
+    assert.match(r.stderr, /シンボリックリンク/);
+  }
+  assert.equal(readFileSync(join(dir, "docs/pages/important.md"), "utf8"), "# 文書");
 });
 
 test("ほかの part の出力とファイルがぶつかれば終了コード 1", () => {
