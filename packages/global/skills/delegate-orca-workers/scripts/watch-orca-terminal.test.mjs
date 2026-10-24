@@ -107,6 +107,16 @@ test("here-string は heredoc とみなさない", () => {
   assert.deepEqual(lines(r), []);
 });
 
+test("シフト演算は heredoc とみなさない", () => {
+  const r = watch([read(["⏺ Bash(python3 -c 'n = 12; size = 1 << n; time.sleep(240)')", "Running 1 shell command… (3m 10s)"])]);
+  assert.deepEqual(lines(r), []);
+});
+
+test("出力先を続けて書いた heredoc でも、HEREDOC を出す", () => {
+  const r = watch([read(["⏺ Bash(cat <<EOF > out.txt", "Running 1 shell command… (3m 10s)"])]);
+  assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
+});
+
 test("実行中の呼び出しが heredoc なら、HEREDOC を出す", () => {
   const r = watch([read(["⏺ Bash(pnpm test)", "  ⎿  ok", "⏺ Bash(python3 - <<'EOF')", "Running 1 shell command… (3m 10s)"])]);
   assert.deepEqual(lines(r), ["HEREDOC 3 分を超えた heredoc のコマンドがある"]);
