@@ -51,6 +51,8 @@ tester.run('e2e-authoring-rule', rule, {
     at('tests/specs/a.e2e.ts', "await row.fill('値');"),
     at('tests/specs/a.e2e.ts', "await row.dispatchEvent('click', { bubbles: true });"),
     at('tests/selectors/a.ts', "export const open = (page) => page.click('#menu');"),
+    at('tests/evidence/a.e2e.ts', "await check('ならば 一覧が表示される');"),
+    at('tests/evidence/a.e2e.ts', "await step('もし 追加を押す');"),
     at('tests/specs/12/ops.ts', "export type { Page } from '@playwright/test';"),
     at('tests/specs/a.e2e.ts', 'const s = `networkidle-${n}`;'),
     at('tests/fixtures/timeouts.ts', 'export const T = { timeout: 5 * 1000 };', {
