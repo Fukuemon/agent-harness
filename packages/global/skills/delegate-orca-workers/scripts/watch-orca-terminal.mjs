@@ -92,7 +92,9 @@ function inspect(raw) {
 
   const callIndex = tail.findLastIndex((line) => toolCall.test(line));
   const currentLines = tail.slice(Math.max(0, callIndex));
-  const current = currentLines.join("\n");
+  // Claude Code は、呼び出しの出力を ⎿ の行から表示する。heredoc は、その手前のコマンドの表示だけで探す
+  const outputIndex = currentLines.findIndex((line) => /^\s*⎿/.test(line));
+  const current = currentLines.slice(0, outputIndex < 0 ? undefined : outputIndex).join("\n");
   // 経過が秒だけの表示（`(10s)`）は 0 分とみなす
   const running = currentLines.findLast((line) => shellRunning.test(line)) ?? "";
   const elapsed = Number(running.match(shellMinutes)?.[1] ?? 0);
