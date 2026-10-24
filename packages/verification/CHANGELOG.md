@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/Fukuemon/agent-harness/compare/verification-v0.1.0...verification-v0.2.0) (2026-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **verification:** attach-evidence は添付の手順を references/ から読まず、context/testing/evidence.md の Attachment のセクションから読む。導入済みの利用者のリポジトリは、examples/verification/ の例を元に Attachment のセクションを書く。
+
+### Bug Fixes
+
+* **verification:** スキルの食い違いを直し、添付の手順を利用者の context に移す [#158](https://github.com/Fukuemon/agent-harness/issues/158) ([0f44b6b](https://github.com/Fukuemon/agent-harness/commit/0f44b6b0caeac1a8b8a4d12ffae9750abe6c42f6))
+* **verification:** 検証名を最初の番号で固定し、名前の規則をエージェントが付ける部分に絞る [#158](https://github.com/Fukuemon/agent-harness/issues/158) ([1a73730](https://github.com/Fukuemon/agent-harness/commit/1a737301fdd41c1e1996fa33534dbd1898a608cc))
+
 ## 0.1.0 (2026-10-23)
 
 
