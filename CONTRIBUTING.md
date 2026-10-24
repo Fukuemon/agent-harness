@@ -51,6 +51,18 @@ pnpm check:links
 
 `verified_commit` の後に実装が変わった文書は、`pnpm list:drift` で一覧する。実装と読み比べてから `verified_commit` を進める。
 
+## e2e の kit を直すとき
+
+`packages/e2e/kit/` は、npm のレジストリで配る TypeScript のコードである。テストと、型のチェックとビルドを流す。`pnpm check:kit` は、ビルドして公開する中身を一覧する。CI も同じものを流す。
+
+```sh
+pnpm test
+pnpm check:kit
+```
+
+録画とログインの保存のテストは、Playwright のブラウザのエンジンが無いと飛ばされる。録画のテストは ffmpeg も要る。CI では飛ばされるので、録画かログインの保存を変えたら手元で流す。  
+構成とテストの形は、[E2E の Design Doc](packages/e2e/DesignDoc.md#ビルドとテスト) にある。
+
 ## コミットするとき
 
 - コミットの前に、ステージした Markdown を textlint でチェックする。

@@ -1,0 +1,48 @@
+{
+  "name": "@fukuemon/e2e-kit",
+  "version": "0.1.0",
+  "description": "Playwright の E2E のテストで、字幕とカーソルを重ねたエビデンスの録画、エビデンスの名前と置き場、ログインの保存を行う kit と、テストの書き方の ESLint の規則",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fukuemon/agent-harness.git",
+    "directory": "packages/e2e/kit"
+  },
+  "type": "module",
+  "exports": {
+    "./recording": {
+      "types": "./dist/recording/index.d.ts",
+      "default": "./dist/recording/index.js"
+    },
+    "./evidence": {
+      "types": "./dist/evidence/index.d.ts",
+      "default": "./dist/evidence/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "default": "./dist/auth/index.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint/index.d.ts",
+      "default": "./dist/eslint/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "prepack": "rm -rf dist && cp ../../../LICENSE LICENSE && tsc -p tsconfig.build.json"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.59.0 <2",
+    "eslint": ">=9.0.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  }
+}

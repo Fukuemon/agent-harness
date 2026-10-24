@@ -19,6 +19,7 @@ core のスキルは 6 つある。setup-agent-harness、write-context、write-s
 docs のスキルは、write-design-docs、write-prose、setup-design-docs の 3 つ。  
 verification のスキルは 5 つある。attach-evidence、design-test-cases、write-verification-spec、run-verification-scenarios、capture-browser-evidence である。  
 screens のスキルは write-screen-spec の 1 つ。  
+e2e のスキルは write-e2e-test の 1 つで、kit のコードは `packages/e2e/kit/` にある。  
 `apm.yml` がパッケージを列挙している。
 
 - `.claude/skills/` と `.agents/skills/` は、`apm install` が作る写しである。Git で管理しない。無視する行は、`apm.yml` の post-install が、配置したスキルとフックごとに `.gitignore` へ足す。利用者のリポジトリと同じ仕組みを使うためである。

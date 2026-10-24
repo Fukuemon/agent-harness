@@ -1,0 +1,10 @@
+{
+  "name": "e2e",
+  "description": "E2E のテストを、落ちにくく、直す場所が 1 か所で済む形で書く。テストの層、名前、待ち方、確認の方法のスキルと、録画とテストの書き方の lint の規則を持つ kit。",
+  "version": "0.1.0",
+  "author": {
+    "name": "Fukuemon"
+  },
+  "repository": "https://github.com/Fukuemon/agent-harness",
+  "license": "MIT"
+}

@@ -44,6 +44,13 @@
       "extra-files": [
         { "type": "json", "path": ".claude-plugin/plugin.json", "jsonpath": "$.version" }
       ]
+    },
+    "packages/e2e": {
+      "component": "e2e",
+      "extra-files": [
+        { "type": "json", "path": ".claude-plugin/plugin.json", "jsonpath": "$.version" },
+        { "type": "json", "path": "kit/package.json", "jsonpath": "$.version" }
+      ]
     }
   }
 }

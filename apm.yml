@@ -9,6 +9,7 @@ dependencies:
     - ./packages/docs
     - ./packages/verification
     - ./packages/screens
+    - ./packages/e2e
 lifecycle:
   post-install:
   - type: command
