@@ -294,6 +294,65 @@ dependencies:
   source: local
   local_path: ./packages/docs
   declared_license: MIT
+- repo_url: _local/docs-site
+  name: docs-site
+  version: 0.1.0
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/publish-docs-site
+  - .agents/skills/publish-docs-site/SKILL.md
+  - .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
+  - .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
+  - .agents/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
+  - .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
+  - .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
+  - .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json
+  - .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts
+  - .agents/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js
+  - .agents/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css
+  - .agents/skills/publish-docs-site/references/zensical/pyproject.toml
+  - .agents/skills/publish-docs-site/references/zensical/zensical.toml
+  - .claude/skills/publish-docs-site
+  - .claude/skills/publish-docs-site/SKILL.md
+  - .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
+  - .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
+  - .claude/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
+  - .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
+  - .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
+  - .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json
+  - .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts
+  - .claude/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js
+  - .claude/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css
+  - .claude/skills/publish-docs-site/references/zensical/pyproject.toml
+  - .claude/skills/publish-docs-site/references/zensical/zensical.toml
+  deployed_file_hashes:
+    .agents/skills/publish-docs-site/SKILL.md: sha256:5e832b956eb694a17e848435c4adb4e38c08be7ad7f0f0cb1c407ad7ef5facf4
+    .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:527dffd21273c1c006cd76722355b60684d4845da8e7f6c91d1c18626132ebfa
+    .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+    .agents/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
+    .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
+    .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts: sha256:c86b26675c5746557a4caecbb4f27232e35e3cb3dbe5ca66f24c3509af45be2f
+    .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json: sha256:a08619145395d3088eb6789d85a58192cbe3a70461fe7a8736a304b2c45b1a61
+    .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts: sha256:f816170a371992c3871e62045552bc5909b392aa2eb20af54fc137159bcfdcdf
+    .agents/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js: sha256:e28453e98f5be6b7f4f9032eb130c1c1cd861efd8ca23eb3bf5615860d9b1acc
+    .agents/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
+    .agents/skills/publish-docs-site/references/zensical/pyproject.toml: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
+    .agents/skills/publish-docs-site/references/zensical/zensical.toml: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
+    .claude/skills/publish-docs-site/SKILL.md: sha256:5e832b956eb694a17e848435c4adb4e38c08be7ad7f0f0cb1c407ad7ef5facf4
+    .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs: sha256:527dffd21273c1c006cd76722355b60684d4845da8e7f6c91d1c18626132ebfa
+    .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+    .claude/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
+    .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
+    .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts: sha256:c86b26675c5746557a4caecbb4f27232e35e3cb3dbe5ca66f24c3509af45be2f
+    .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json: sha256:a08619145395d3088eb6789d85a58192cbe3a70461fe7a8736a304b2c45b1a61
+    .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts: sha256:f816170a371992c3871e62045552bc5909b392aa2eb20af54fc137159bcfdcdf
+    .claude/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js: sha256:e28453e98f5be6b7f4f9032eb130c1c1cd861efd8ca23eb3bf5615860d9b1acc
+    .claude/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
+    .claude/skills/publish-docs-site/references/zensical/pyproject.toml: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
+    .claude/skills/publish-docs-site/references/zensical/zensical.toml: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
+  source: local
+  local_path: ./packages/docs-site
+  declared_license: MIT
 - repo_url: _local/e2e
   name: e2e
   version: 0.1.0
@@ -775,6 +834,123 @@ deployments:
   - ./packages/verification
   active_owner: ./packages/verification
   content_hash: sha256:8f43b3a26c86a99f6e4b21d66b0a9007e4a6012e9773e065797dd77a291ed691
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:5e832b956eb694a17e848435c4adb4e38c08be7ad7f0f0cb1c407ad7ef5facf4
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:527dffd21273c1c006cd76722355b60684d4845da8e7f6c91d1c18626132ebfa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:c86b26675c5746557a4caecbb4f27232e35e3cb3dbe5ca66f24c3509af45be2f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:a08619145395d3088eb6789d85a58192cbe3a70461fe7a8736a304b2c45b1a61
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:f816170a371992c3871e62045552bc5909b392aa2eb20af54fc137159bcfdcdf
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:e28453e98f5be6b7f4f9032eb130c1c1cd861efd8ca23eb3bf5615860d9b1acc
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/zensical/pyproject.toml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
+- kind: project-relative
+  target: claude
+  value: .claude/skills/publish-docs-site/references/zensical/zensical.toml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
 - kind: project-relative
   target: claude
   value: .claude/skills/run-verification-scenarios
@@ -1783,6 +1959,123 @@ deployments:
   - ./packages/verification
   active_owner: ./packages/verification
   content_hash: sha256:8f43b3a26c86a99f6e4b21d66b0a9007e4a6012e9773e065797dd77a291ed691
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:5e832b956eb694a17e848435c4adb4e38c08be7ad7f0f0cb1c407ad7ef5facf4
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/assets/scripts/build-docs-site.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:527dffd21273c1c006cd76722355b60684d4845da8e7f6c91d1c18626132ebfa
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/assets/scripts/check-docs-site-protection.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:8c3995b76837af6f732e5381795cb8a12f1dc614535161d67d6ae8e254316691
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/assets/scripts/read-docs-site-config.mjs
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:27aa78d78c5b16b448cadbed594a3f55de9eea4fc3dc93aed3f916c0b9eee704
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/cloudflare-workers/.github/workflows/docs-site.yml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:16202fc5375316523b3f91c1005c9967837463226e7aab62e6ffcb9161cd77b8
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/cloudflare.config.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:c86b26675c5746557a4caecbb4f27232e35e3cb3dbe5ca66f24c3509af45be2f
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/package.json
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:a08619145395d3088eb6789d85a58192cbe3a70461fe7a8736a304b2c45b1a61
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/cloudflare-workers/docs-site/wrangler.config.ts
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:f816170a371992c3871e62045552bc5909b392aa2eb20af54fc137159bcfdcdf
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/zensical/docs/javascripts/embed-mock.js
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:e28453e98f5be6b7f4f9032eb130c1c1cd861efd8ca23eb3bf5615860d9b1acc
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/zensical/docs/stylesheets/extra.css
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:cfb158c613f728e76626e38b22674d742a882897ca8ecb75b88bdfcb95fdb87c
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/zensical/pyproject.toml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:5807e46fc9aa7ffe0806a4015a65a32eee97f5a8aec4e25aca210cda074f484d
+- kind: project-relative
+  target: codex
+  value: .agents/skills/publish-docs-site/references/zensical/zensical.toml
+  runtime: null
+  scope: project
+  owners:
+  - ./packages/docs-site
+  active_owner: ./packages/docs-site
+  content_hash: sha256:383f48bb4ca0ecd71011d4aed32cbfd43a127984dccfde18a7471d8698ca81c1
 - kind: project-relative
   target: codex
   value: .agents/skills/run-verification-scenarios

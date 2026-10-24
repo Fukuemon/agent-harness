@@ -1,0 +1,58 @@
+# 文書のサイトを組み立て、既定のブランチへ取り込んだら Cloudflare Workers へ公開し、Access の保護を確認する。
+# pull request ごとのプレビューは出さない。プレビューは pull request のコードへ公開のトークンを渡すことになる。
+# 文書の元はリポジトリの全体に散るので、変えたパスで絞らない。
+#
+# 前提
+# - mise.toml に Node.js、pnpm、uv がある。docs-site/ は pnpm のワークスペースに入れる。
+# - context/project.yml の docs_site.parts の build に、各 part を作るコマンドがある。
+# - 環境 docs-site: デプロイできるブランチを既定のブランチだけに限り、Secrets に CLOUDFLARE_API_TOKEN（1 つの Worker の Editor だけのトークン）を置く。
+#   on: push はどのブランチでも動くので、ジョブの if だけでは、if を外したワークフローを別のブランチへ push してトークンを読める。
+# - Variables: CLOUDFLARE_ACCOUNT_ID、DOCS_SITE_URL（公開先の URL）、DOCS_SITE_MARKER（トップのページにだけある文字列。認証の画面にも出るサイトの名前と Worker の名前は避ける）、
+#   DOCS_SITE_AUTH_HOST（Access の team のドメイン。<team>.cloudflareaccess.com）
+
+name: 文書のサイト
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: docs-site
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: docs-site
+    env:
+      CF_SEND_TELEMETRY: 'false'
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/build-docs-site.mjs --out docs-site/public --build
+
+      - name: 公開する
+        working-directory: docs-site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          pnpm run build
+          pnpm run deploy
+
+      # 値を run に直接埋めると、シェルが $ や引用符を解釈するので、環境変数で渡す
+      # サブパスに置いた part も確認するときは、その URL と、その part にだけある文字列で 1 行ずつ足す
+      - name: 保護を確認する
+        env:
+          DOCS_SITE_URL: ${{ vars.DOCS_SITE_URL }}
+          DOCS_SITE_MARKER: ${{ vars.DOCS_SITE_MARKER }}
+          DOCS_SITE_AUTH_HOST: ${{ vars.DOCS_SITE_AUTH_HOST }}
+        run: node scripts/check-docs-site-protection.mjs "$DOCS_SITE_URL" "$DOCS_SITE_MARKER" "$DOCS_SITE_AUTH_HOST"

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fukuemon/agent-harness/packages/docs-site/schemas/docs-site.schema.json",
+  "title": "context/project.yml のうち、文書のサイトが読むキー",
+  "type": "object",
+  "required": ["docs_site"],
+  "properties": {
+    "docs_site": {
+      "type": "object",
+      "required": ["parts"],
+      "additionalProperties": false,
+      "properties": {
+        "parts": {
+          "description": "1 つのサイトに並べるもの。組み立てのスクリプト build-docs-site.mjs が、並べた順に出力のディレクトリへ写す。subpath は重ねない",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["path", "subpath"],
+            "additionalProperties": false,
+            "properties": {
+              "path": { "$ref": "#/$defs/path", "description": "並べるビルドの出力のディレクトリ" },
+              "subpath": {
+                "description": "出力の中の置き場。空の文字列はサイトのルート",
+                "anyOf": [{ "const": "" }, { "$ref": "#/$defs/path" }]
+              },
+              "build": { "type": "string", "minLength": 1, "description": "path を作るコマンド。--build で実行し、path がないときの案内に出す" },
+              "exclude": {
+                "description": "写さないファイルとディレクトリの名前",
+                "type": "array",
+                "items": { "type": "string", "pattern": "^[^/]+$" }
+              }
+            }
+          }
+        },
+        "tokens_css": { "$ref": "#/$defs/path", "description": "サイトの色に当てる、意味のトークンの CSS" }
+      }
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "description": "リポジトリのルートからの相対パス。先頭と末尾の / は付けない。空、.、.. の区切りは使えない",
+      "pattern": "^(?!\\.\\.?(/|$))[^/]+(/(?!\\.\\.?(/|$))[^/]+)*$"
+    }
+  }
+}

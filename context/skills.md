@@ -21,6 +21,7 @@ verification のスキルは 5 つある。attach-evidence、design-test-cases�
 screens のスキルは write-screen-spec の 1 つ。  
 e2e のスキルは、setup-e2e と write-e2e-test の 2 つ。kit のコードは `packages/e2e/kit/` にある。  
 design-system のスキルは、write-design-system と setup-design-system の 2 つ。  
+docs-site のスキルは publish-docs-site の 1 つ。  
 `apm.yml` がパッケージを列挙している。
 
 - `.claude/skills/` と `.agents/skills/` は、`apm install` が作る写しである。Git で管理しない。無視する行は、`apm.yml` の post-install が、配置したスキルとフックごとに `.gitignore` へ足す。利用者のリポジトリと同じ仕組みを使うためである。

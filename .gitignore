@@ -46,3 +46,5 @@ apm_modules/
 /.agents/skills/write-design-system/
 /.claude/skills/setup-design-system/
 /.claude/skills/write-design-system/
+/.agents/skills/publish-docs-site/
+/.claude/skills/publish-docs-site/

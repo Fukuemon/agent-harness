@@ -144,7 +144,7 @@ core 以外のパッケージは、core が置いた基盤だけを前提にし�
 - **画面仕様書 `screens`:** 画面ごとの状態、構成要素、操作できるモックの型と、モックの共通のファイル、規約の点検を持つ。処理と通信は機能の Design Doc が持つ。
   - [画面仕様書の Design Doc](../packages/screens/DesignDoc.md)
 - **文書のサイト `docs-site`:** 文書、カタログ、図を 1 つのサイトに並べ、公開先へ公開する構成を持つ。
-  - [文書のサイトの Design Doc](features/docs-site/DesignDoc_docs-site.md)
+  - [文書のサイトの Design Doc](../packages/docs-site/DesignDoc.md)
 
 このほかに、このリポジトリの開発者個人の global の構成を `packages/global` に置く。利用者に勧める製品ではなく、上の製品のパッケージとは扱いを分ける。ルートのプラグインの一覧に載せず、バージョンを上げる対象と、パッケージの本文の固有の名前のチェックからも外す。
 

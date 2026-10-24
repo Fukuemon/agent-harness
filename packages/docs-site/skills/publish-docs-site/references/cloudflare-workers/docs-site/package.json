@@ -1,0 +1,14 @@
+{
+  "name": "docs-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cf build --mode production",
+    "deploy": "cf deploy --prebuilt --mode production",
+    "deploy:dry-run": "cf deploy --prebuilt --mode production --dry-run"
+  },
+  "devDependencies": {
+    "cf": "1.0.0-beta.12",
+    "wrangler": "4.148.0"
+  }
+}

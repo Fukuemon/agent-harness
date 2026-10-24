@@ -1,0 +1,30 @@
+# 文書のサイトの設定の雛形。<...> を利用者のリポジトリの値に置き換える。
+# 文書のディレクトリは context/project.yml の docs と揃える。出力の site/ を docs_site.parts の 1 つにする
+[project]
+site_name = "<サイトの名前>"
+docs_dir = "docs"
+site_dir = "site"
+# 文書の雛形はサイトに載せない。docs_dir からの相対パスで書く
+exclude_docs = """
+adr/template.md
+"""
+# 画面仕様書に埋め込んだモックの iframe の高さを、中身に合わせる。モックがなければ消す
+extra_javascript = ["javascripts/embed-mock.js"]
+# サイトの色を、docs_site.tokens_css のトークンに当てる。docs_dir の外のファイルは読めないので、docs_dir からの相対パスで書く
+extra_css = ["<docs_site.tokens_css の docs_dir からの相対パス>", "stylesheets/extra.css"]
+# nav は利用者が書く。docs_site.parts のサブパスに置いたカタログと図は、"/<subpath>/" のリンクで載せる。ローカルの zensical serve では開けない
+
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+
+# 見出しのアンカーを、ホスティングサービスの Markdown の表示と同じく日本語のまま残す。どちらで読んでもリンクが切れない
+[project.markdown_extensions.toc]
+permalink = true
+slugify.object = "pymdownx.slugs.slugify"
+slugify.kwds.case = "lower"
+
+# 状態ごとのタブを切り替える
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
